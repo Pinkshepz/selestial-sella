@@ -7,15 +7,13 @@ const DisplayRow = ({
     cardUid,
     cardId,
     cardImageLink,
-    cardTitle,
-    cardDescription,
+    cardName,
     cardTag
 }: {
     cardUid: string,
     cardId: string,
     cardImageLink: string,
-    cardTitle: string,
-    cardDescription?: string,
+    cardName: string,
     cardTag?: string[]
 }) => {
     // prepare tag chips
@@ -26,27 +24,45 @@ const DisplayRow = ({
             // calculate representative color
             const color = hexToRgb(hslToHex(((tag.charCodeAt(0) * 333) ** 3) % 360, 80, 70))
             tagsElements.push(
-                <span
-                    className="flex justify-center items-center h-min px-2 text-sm font-semibold rounded-full max-w-max"
+                <div
+                    className="flex justify-center items-center h-min px-2 text-sm font-semibold rounded-full max-w-max h-full"
                     style={{
-                        backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.25)`,
-                        border: `solid 1px rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`
+                        backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.4)`,
+                        border: `solid 1px rgba(${color.r}, ${color.g}, ${color.b}, 0.7)`
                         }}
                     key={tag}>
                     {tag}
-                </span>
+                </div>
                 );
             }
         );
     }
 
     return (
-        <div className="flex flex-row justify-start items-start gap-8 w-full px-2 py-6 hover:bg-ter/20 dark:hover:bg-card-dark/30 border-b border-slate-400/10 dark:border-slate-400/10" key={cardUid}>
-            <span className="w-8 font-bold" key={cardUid + "1"}>{cardId}</span>
-            <span className="w-[70dvw] md:w-80 xl:w-96 font-bold" key={cardUid + "2"}>{cardTitle}</span>
-            <span className="hidden w-full md:flex md:w-[30dvw] md:flex-wrap md:gap-4 lg:w-[20dvw]" key={cardUid + "3"}>{tagsElements}</span>
-            <span className="hidden lg:inline lg:w-[30dvw]" key={cardUid + "4"}>{cardDescription ? cardDescription : "-"}</span>
-        </div>
+        <tr key={cardUid}>
+            <td className="font-bold" key={cardUid + "1"}>
+                <div className="flex flex-row items-center gap-2">
+                    <div id="frame" className="flex justify-center items-center overflow-hidden bg-cover h-6 w-6 rounded-full border-pri">
+                        <img className="h-full" src={cardImageLink} alt="" />
+                    </div>
+                    {cardId}
+                </div>
+            </td>
+            <td className="font-bold" key={cardUid + "2"}>
+                <Link 
+                    href={{ pathname: "./course/[courses]" }}
+                    as={`course/${cardId}`}
+                    className="underline hover:text-pri dark:hover:text-pri-dark ease-in-out duration-300"
+                    key={"Link " + cardUid}>
+                        {cardName}
+                </Link>
+            </td>
+            <td className="hidden md:table-cell" key={cardUid + "3"}>
+                <div className="flex flex-wrap gap-4">
+                    {tagsElements}
+                </div>
+            </td>
+        </tr>
     );
 }
 
@@ -62,33 +78,30 @@ export default function TableView ({
     Object.values(contentData).map((content, index) => {
     const uid = Object.keys(contentData)[index]
     rows.push(
-        <Link 
-            href={{ pathname: "./course/[courses]" }}
-            as={`course/${content.id}`}
-            key={"Link " + uid}>
-            <DisplayRow 
-                cardUid={uid}
-                cardId={content.id}
-                cardImageLink={content.image}
-                cardTitle={content.name}
-                cardDescription={content.description}
-                cardTag={content.tag}
-                key={content.id}/>
-        </Link>
+        <DisplayRow 
+            cardUid={uid}
+            cardId={content.id}
+            cardImageLink={content.image}
+            cardName={content.name}
+            cardTag={content.tag}
+            key={content.id}/>
       );
   });
 
     return (
         <section className="artificial-table flex flex-col justify-start items-center h-full mx-4 text-sm">
-            <div className="flex flex-row justify-center items-start gap-8 px-2 py-2 my-1 font-bold border-b border-slate-300/50 dark:border-slate-400/50">
-                <span className="w-8 font-bold">ID</span>
-                <span className="w-[70dvw] md:w-80 xl:w-96 font-bold">Course name</span>
-                <span className="hidden w-full md:flex md:w-[30dvw] md:flex-wrap md:gap-4 lg:w-[20dvw]">Tags</span>
-                <span className="hidden lg:inline lg:w-[30dvw]">Description</span>
-            </div>
-            <div className="flex flex-col h-full overflow-y-scroll">
-                {rows}
-            </div>
+            <table className="theme-table">
+                <thead>
+                    <tr>
+                        <th>Course ID</th>
+                        <th>Course name</th>
+                        <th className="hidden md:flex">Tags</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {rows}
+                </tbody>
+            </table>
         </section>
     )
 }

@@ -1,7 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
 import { useInterfaceContext } from "../provider";
 import Icon from "@/public/icon";
 
@@ -25,18 +23,23 @@ export default function LogUpdate () {
         filteredContent[Object.keys(log)[index]] = content;
         }
     }
-
-    const router = useRouter();
     
     let tableContent: React.ReactNode[] = [];
+
+    const actionMap = {
+        WRITE: "text-pri dark:text-pri-dark",
+        DELETE: "text-sec dark:text-sec-dark",
+        REMAIN: "text-black dark:text-white"
+    }
 
     Object.values(filteredContent).map((log, index) => {
         const uid: string = Object.keys(filteredContent)[index];
         tableContent.push(
             <tr key={uid}>
                 <td key={uid + "1"}>{uid}</td>
-                <td key={uid + "2"}>{log[0].toLocaleUpperCase()}</td>
-                <td key={uid + "3"}>{log[1]}</td>
+                <td className={"font-bold " + actionMap[log[0].toLocaleUpperCase() as keyof typeof actionMap]}
+                    key={uid + "2"}>{log[0].toLocaleUpperCase()}</td>
+                <td className="font-bold" key={uid + "3"}>{log[1]}</td>
                 <td key={uid + "4"}>{log[2]}</td>
             </tr>
         )

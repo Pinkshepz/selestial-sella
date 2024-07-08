@@ -55,9 +55,11 @@ export default function GlobalNavigator (): React.ReactNode {
         <Link href={'/'} id="brand" className="-button-line relative mr-2">
           Selestial Sella
         </Link>
-        <span id="pri-chip" className="hidden lg:inline mx-2 text-xs font-semibold">
-            Beta 2.0
-        </span>
+        <div className="hidden lg:inline">
+          <span id="pri-chip" className="lg:inline mx-2 text-xs font-semibold">
+              Beta 2.0
+          </span>
+        </div>
         <NavPathName />
       </div>
 

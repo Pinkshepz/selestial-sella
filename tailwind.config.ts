@@ -10,17 +10,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        base: {
-          DEFAULT: "#000",
-          dark: "#fff"
-        },
         pri: { 
           DEFAULT: "#3b82f6",
           dark: "#60a5fa"
         },
         sec: {
-          DEFAULT: "#db2777",
-          dark: "#f472b6"
+          DEFAULT: "#f43f5e",
+          dark: "#fb7185"
         },
         ter: {
           DEFAULT: "#cbd5e1",
@@ -38,9 +34,9 @@ const config: Config = {
           DEFAULT: "#d97706",
           dark: "#fbbf24"
         },
-        card: {
-          DEFAULT: "#f1f5f9",
-          dark: "#1a1c21"
+        highlight: {
+          DEFAULT: "#f3f4f6",
+          dark: "#11181c"
         },
         border: {
           DEFAULT: "#e2e8f0",

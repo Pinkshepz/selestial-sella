@@ -7,14 +7,14 @@ const DisplayCard = ({
     cardUid,
     cardId,
     cardImageLink,
-    cardTitle,
+    cardName,
     cardDescription,
     cardTag
 }: {
     cardUid: string,
     cardId: string,
     cardImageLink: string,
-    cardTitle: string,
+    cardName: string,
     cardDescription?: string,
     cardTag?: string[]
 }) => {
@@ -29,8 +29,8 @@ const DisplayCard = ({
                 <span
                     className="flex justify-center items-center h-min px-2 text-sm font-semibold rounded-full"
                     style={{
-                        backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.25)`,
-                        border: `solid 1px rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`
+                        backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.4)`,
+                        border: `solid 1px rgba(${color.r}, ${color.g}, ${color.b}, 0.7)`
                         }}
                     key={tag}>
                     {tag}
@@ -49,7 +49,7 @@ const DisplayCard = ({
             </div>
             <div className="p-4 mt-auto">
                 <p className="mt-12 text-md font-bold">{cardId}</p>
-                <h4 className="mt-1 text-md font-bold">{cardTitle}</h4>
+                <h4 className="mt-1 text-md font-bold">{cardName}</h4>
                 <div className="flex flex-wrap gap-2 mt-4">
                     {cardTag && tagsElements}
                 </div>
@@ -78,7 +78,7 @@ export default function CardView ({
                 cardUid={uid}
                 cardId={content.id}
                 cardImageLink={content.image}
-                cardTitle={content.name}
+                cardName={content.name}
                 cardDescription={content.description}
                 cardTag={content.tag}
                 key={content.id}/>

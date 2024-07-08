@@ -26,7 +26,7 @@ export default async function firestoreUpdate ({
             // if inner data is unchanged -> no action
             // else overwrite new data
             if (originalData[euid] === editedData[euid]) {
-                resultLog[euid] = ["-----", editedData[euid].id, editedData[euid].name, "-", "-"];
+                resultLog[euid] = ["remain", editedData[euid].id, editedData[euid].name, "-", "-"];
             } else {
                 const {result, error} = await firestoreWrite({collectionName: collectionName, id: euid, data: editedData[euid]});
                 resultLog[euid] = ["write", editedData[euid].id, editedData[euid].name, result, error];
