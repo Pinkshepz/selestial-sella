@@ -220,6 +220,7 @@ footer {
   border-radius: 12px;
   background-color: var(--highlight);
   backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   transform: scale3d(1.1);
   animation: smooth-appear 400ms ease forwards;
 }

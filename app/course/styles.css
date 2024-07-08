@@ -26,6 +26,7 @@
     border: solid 1px var(--border);
     background-color: var(--highlight);
     backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     overflow-y: scroll;
     transition: all ease-in-out 500ms;
     -ms-overflow-style: none;  /* Internet Explorer 10+ */
