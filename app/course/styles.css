@@ -1,0 +1,173 @@
+.controller-area {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 72px;
+    height: 90px;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 99;
+}
+
+.controller-island {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    row-gap: 6px;
+    width: fit-content;
+    padding: 4px;
+    margin: 16px;
+    border-radius: 12px;
+    border: solid 1px var(--border);
+    background-color: var(--card);
+    backdrop-filter: blur(24px);
+    transition: all ease-in-out 500ms;
+}
+
+.controller-menu {
+    position: relative;
+    height: 32px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0 10px;
+    border-radius: 8px;
+    font-weight: 800;
+    white-space: nowrap;
+    transition: all ease-in-out 300ms;
+    animation: smooth-appear 400ms ease forwards;
+}
+
+.controller-menu:hover {
+    background-color: var(--border);
+}
+
+.controller-menu > svg {
+    margin-right: 8px;
+}
+
+.controller-menu > .input-field {
+    min-width: 60px;
+    max-width: 25dvw;
+    white-space: nowrap;
+    font-weight: 400;
+    overflow: hidden;
+}
+
+.input-field:focus {
+    outline: none;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.card-main {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    min-height: 222px;
+    background-color: var(--card);
+    border: solid 1px var(--border);
+    overflow: hidden;
+    transition: all ease-in-out 300ms;
+    color: white;
+    animation: smooth-appear 400ms ease forwards;
+}
+  
+.card-main > div > img {
+    position: absolute;
+    z-index: -10;
+    transition: all ease-in-out 400ms;
+    object-fit: cover;
+}
+
+.card-main:hover > div > img {
+    transform: scale(1.02);
+    transition: all ease-in-out 400ms;
+}
+
+article#changed-all {
+    border: dashed 2px var(--pri);
+}
+
+#changed {
+    border: dashed 2px var(--pri);
+}
+
+.card-edit {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: max-content;
+    background-color: var(--card);
+    border: solid 1px var(--ter);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all ease-in-out 300ms;
+    animation: smooth-appear 400ms ease forwards;
+}
+
+.card-edit > div > img {
+    position: relative;
+    transition: all ease-in-out 400ms;
+    object-fit: cover;
+}
+
+.card-edit:hover > div > img {
+    transform: scale(1.02);
+    transition: all ease-in-out 400ms;
+}
+
+.edit-placeholder {
+    padding: 8px;
+    border-radius: 8px;
+    border: solid 1px var(--ter);
+    font-size: 0.875rem;
+    text-wrap: wrap;
+}
+
+.edit-placeholder:hover {
+    outline: solid 1px var(--pri);
+}
+
+.edit-placeholder:hover > label{
+    color: var(--pri);
+}
+
+.edit-placeholder > label {
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    font-weight: 800;
+}
+
+.edit-placeholder > .editor-field {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    outline: none;
+    text-wrap: balance;
+    white-space: wrap;
+    overflow: hidden;
+    border-bottom: solid 1px transparent;
+}
+
+.edit-placeholder:hover > .editor-field {
+    border-bottom: solid 1px var(--border);
+    background-color: var(--card);
+}
+
+.artificial-table {
+    height: calc(100dvh - 90px - 64px - 48px);
+    backdrop-filter: blur(24px);
+    animation: smooth-appear 400ms ease forwards;
+  }
