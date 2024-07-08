@@ -40,7 +40,7 @@ export default function Controller () {
                     </button>
                 }
 
-                {Object.keys(interfaceParams.logUpdate).length === 0 &&
+                {!interfaceParams.editMode &&
                     <button
                         onClick={() => setInterfaceParams("sortAscending", !interfaceParams.sortAscending)}
                         className="controller-menu">

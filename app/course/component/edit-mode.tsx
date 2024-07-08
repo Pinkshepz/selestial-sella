@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 
 import makeid from "../../libs/utils/make-id";
+import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
 import firestoreUpdate from "../../libs/firestore/firestore-manager";
 import Icon from "../../../public/icon";
 import { useGlobalContext } from "../../../app/provider";
@@ -64,7 +65,6 @@ export default function CardEditor ({
             editedData: bufferContent
         }).then(
             (data) => {
-                console.log(data);
                 setGlobalParams("popUpConfirm", false);
                 setGlobalParams("popUpAction", "");
                 setInterfaceParams("saveChangesToggle", false);
@@ -145,12 +145,16 @@ export default function CardEditor ({
         }
     }
 
+    const sortedFilteredContentData: {[key: string]: {[key: string]: string}} = sortUidObjectByValue(
+        filteredContent, "id", interfaceParams.sortAscending
+    );
+
   // Render cards
   let elements: Array<React.ReactNode> = [];
 
-  Object.values(filteredContent).map((content, index) => {
+  Object.values(sortedFilteredContentData).map((content, index) => {
     // get uid as object key
-    const uid = Object.keys(filteredContent)[index];
+    const uid = Object.keys(sortedFilteredContentData)[index];
 
     elements.push(
         // card template

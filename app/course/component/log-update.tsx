@@ -1,6 +1,7 @@
 "use client";
 
 import { useInterfaceContext } from "../provider";
+import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
 import Icon from "@/public/icon";
 
 export default function LogUpdate () {
@@ -8,7 +9,7 @@ export default function LogUpdate () {
     // connect to interface context
     const {interfaceParams, setInterfaceParams} = useInterfaceContext();
 
-    const log: {[key: string]: string[]} = interfaceParams.logUpdate;
+    const log: {[key: string]: {[key: string]: any}} = interfaceParams.logUpdate;
 
     // Filter by search key
     let filteredContent: {[key: string]: {[key: string]: any}} = {};
@@ -16,34 +17,38 @@ export default function LogUpdate () {
         // Each content data
         const content: {[key: string]: any} = Object.values(log)[index];
         // Create combination of all content information for search target
-        const search_target = content[0] + " " + content[1] + " " + content[2];
+        const search_target = content.action + " " + content.id + " " + content.name;
 
         // Check if data matches to searchkey
         if (search_target.toLowerCase().includes(interfaceParams.searchKey.toLowerCase())) {
         filteredContent[Object.keys(log)[index]] = content;
         }
-    }
+    };
+
+    const sortedFilteredContentData: {[key: string]: {[key: string]: string}} = sortUidObjectByValue(
+        filteredContent, "id", interfaceParams.sortAscending
+    );
     
     let tableContent: React.ReactNode[] = [];
 
     const actionMap = {
         WRITE: "text-pri dark:text-pri-dark",
         DELETE: "text-sec dark:text-sec-dark",
-        REMAIN: "text-black dark:text-white"
-    }
+        REMAIN: "text-amber dark:text-amber-dark"
+    };
 
-    Object.values(filteredContent).map((log, index) => {
+    Object.values(sortedFilteredContentData).map((log, index) => {
         const uid: string = Object.keys(filteredContent)[index];
         tableContent.push(
             <tr key={uid}>
                 <td key={uid + "1"}>{uid}</td>
-                <td className={"font-bold " + actionMap[log[0].toLocaleUpperCase() as keyof typeof actionMap]}
-                    key={uid + "2"}>{log[0].toLocaleUpperCase()}</td>
-                <td className="font-bold" key={uid + "3"}>{log[1]}</td>
-                <td key={uid + "4"}>{log[2]}</td>
+                <td className={"font-bold " + actionMap[log.action.toLocaleUpperCase() as keyof typeof actionMap]}
+                    key={uid + "2"}>{log.action.toLocaleUpperCase()}</td>
+                <td className="font-bold" key={uid + "3"}>{log.id}</td>
+                <td key={uid + "4"}>{log.name}</td>
             </tr>
-        )
-    })
+        );
+    });
 
     return (
         <section className="flex flex-col justify-center items-center">
@@ -70,5 +75,5 @@ export default function LogUpdate () {
                 Back to course
             </button>
         </section>
-    )
+    );
 }

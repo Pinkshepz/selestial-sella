@@ -10,7 +10,7 @@ export default async function firestoreUpdate ({
     originalData: {[key: string]: {[key: string]: any}},
     editedData: {[key: string]: {[key: string]: any}}
 }) {
-    let resultLog: {[key: string]: any[]} = {}; // record each doc writing result
+    let resultLog: {[key: string]: {[key: string]: any}} = {}; // record each doc writing result
     const uidOriginal: string[] = Object.keys(originalData); // all uids of original data
     const uidEdited: string[] = Object.keys(editedData); // all uids of edited data
 
@@ -21,15 +21,32 @@ export default async function firestoreUpdate ({
         // else compare inner data
         if (!uidOriginal.includes(euid)) {
             const {result, error} = await firestoreWrite({collectionName: collectionName, id: euid, data: editedData[euid]});
-            resultLog[euid] = ["write", editedData[euid].id, editedData[euid].name, result, error];
+            resultLog[euid] = {
+                action: "write",
+                id: editedData[euid].id,name: editedData[euid].name, 
+                result: result, 
+                error: error
+            };
         } else {
             // if inner data is unchanged -> no action
             // else overwrite new data
             if (originalData[euid] === editedData[euid]) {
-                resultLog[euid] = ["remain", editedData[euid].id, editedData[euid].name, "-", "-"];
+                resultLog[euid] = {
+                    action: "remain",
+                    id: editedData[euid].id,
+                    name: editedData[euid].name, 
+                    result: "-",
+                    error: "-"
+                };
             } else {
                 const {result, error} = await firestoreWrite({collectionName: collectionName, id: euid, data: editedData[euid]});
-                resultLog[euid] = ["write", editedData[euid].id, editedData[euid].name, result, error];
+                resultLog[euid] = {
+                    action: "write",
+                    id: editedData[euid].id,
+                    name: editedData[euid].name, 
+                    result: result, 
+                    error: error
+                };
             }
         }
     }
@@ -39,7 +56,13 @@ export default async function firestoreUpdate ({
         // check if original uid doesn't exist in edited ones -> delete doc
         if (!uidEdited.includes(ouid)) {
             const {result, error} = await firestoreDelete({collectionName: collectionName, id: ouid});
-            resultLog[ouid] = ["delete", originalData[ouid].id, originalData[ouid].name, result, error];
+            resultLog[ouid] = {
+                action: "delete",
+                id: originalData[ouid].id,
+                name: originalData[ouid].name,
+                result: result, 
+                error: error
+            };
         }
     }
 

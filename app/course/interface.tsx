@@ -17,7 +17,7 @@ export default function Interface ({
     return (
         <>
             <ConfirmPopUp />
-            <main className="relative flex flex-col mt-36 pt-2" aria-haspopup={true} aria-disabled={globalParams.popUp}>
+            <main className="relative flex flex-col mt-36 pt-2 mb-16" aria-haspopup={true} aria-disabled={globalParams.popUp}>
                 <Controller />
                 <CourseDisplay contentData={contentData} />
             </main>

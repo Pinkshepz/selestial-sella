@@ -1,7 +1,6 @@
 import Link from "next/link";
 
-import hexToRgb from "../../libs/utils/hex-to-rgb";
-import hslToHex from "../../libs/utils/hsl-to-hex";
+import stringToHex from "../../libs/utils/string-to-rgb";
 
 const DisplayCard = ({
     cardUid,
@@ -23,8 +22,7 @@ const DisplayCard = ({
 
     if (cardTag) {
         cardTag.map((tag) => {
-            // calculate representative color
-            const color = hexToRgb(hslToHex(((tag.charCodeAt(0) * 333) ** 3) % 360, 80, 70))
+            const color = stringToHex(tag);
             tagsElements.push(
                 <span
                     className="flex justify-center items-center h-min px-2 text-sm font-semibold rounded-full"
