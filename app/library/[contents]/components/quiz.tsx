@@ -5,9 +5,9 @@ import Link from 'next/link';
 
 import './interface.css';
 
-import { shuffle } from '@/app/libs/ggsheet/gadgetfx';
+import shuffle from '@/app/libs/utils/shuffle';
 import formatQuizText from '@/app/libs/utils/paragraph';
-import { useInterfaceContext } from '../provider-interface';
+import { useContentInterfaceContext } from '../content-provider';
 
 export default function QuizInterface ({
     libraryData,
@@ -21,7 +21,7 @@ export default function QuizInterface ({
     // ==================================
 
     // Connect to interfaceContext
-    const {interfaceParams, setInterfaceParams} = useInterfaceContext();
+    const {contentInterfaceParams, setContentInterfaceParams} = useContentInterfaceContext();
 
     // Create question pool
     const [questionArray, setQuestionArray] = useState(questionData);
@@ -31,11 +31,11 @@ export default function QuizInterface ({
 
     // Random question
     useEffect(() => {
-        if (interfaceParams.shuffleQuestion === true) {
+        if (contentInterfaceParams.shuffleQuestion === true) {
             setQuestionArray((prev) => shuffle(prev))}}, []);
     
     // // Random choice
-    // if (interfaceParams.shuffleChoice === true) {
+    // if (contentInterfaceParams.shuffleChoice === true) {
 
     //     questionArray.map((_question, index) => {
     //         console.log(_question, index);
@@ -47,7 +47,7 @@ export default function QuizInterface ({
     //                 ...prev[index],
     //                 choices: shuffle(_question.choices)
     //             },
-    //             ...prev.slice(index + 1, interfaceParams.questionNumber)
+    //             ...prev.slice(index + 1, contentInterfaceParams.questionNumber)
     //         ])), [])
 
     //     });
@@ -59,57 +59,57 @@ export default function QuizInterface ({
     const handleChoiceInteract = (choice_index: number, mode: string) => {
         if (mode == "CARD") {
             setQuestionArray((prev) => ([
-                ...prev.slice(0, interfaceParams.currentQuestion),
+                ...prev.slice(0, contentInterfaceParams.currentQuestion),
                 {
-                    ...prev[interfaceParams.currentQuestion],
+                    ...prev[contentInterfaceParams.currentQuestion],
                     choices: {
-                        ...prev[interfaceParams.currentQuestion].choices,
+                        ...prev[contentInterfaceParams.currentQuestion].choices,
                         [choice_index]: {
-                            ...prev[interfaceParams.currentQuestion].choices[choice_index],
-                            graded: !questionArray[interfaceParams.currentQuestion].choices[choice_index].graded
+                            ...prev[contentInterfaceParams.currentQuestion].choices[choice_index],
+                            graded: !questionArray[contentInterfaceParams.currentQuestion].choices[choice_index].graded
                         }
                     },
-                    graded: !questionArray[interfaceParams.currentQuestion].choices[choice_index].graded
+                    graded: !questionArray[contentInterfaceParams.currentQuestion].choices[choice_index].graded
                 },
-                ...prev.slice(interfaceParams.currentQuestion + 1, interfaceParams.questionNumber)
+                ...prev.slice(contentInterfaceParams.currentQuestion + 1, contentInterfaceParams.questionNumber)
             ]));
-        } else if (!questionArray[interfaceParams.currentQuestion].graded) {
+        } else if (!questionArray[contentInterfaceParams.currentQuestion].graded) {
             switch (mode) {
                 case "MCQ":
-                    for (let index = 0; index < Object.keys(questionArray[interfaceParams.currentQuestion].choices).length; index++) {
+                    for (let index = 0; index < Object.keys(questionArray[contentInterfaceParams.currentQuestion].choices).length; index++) {
                         
                         // De-select all questions
                         setQuestionArray((prev) => ([
-                            ...prev.slice(0, interfaceParams.currentQuestion),
+                            ...prev.slice(0, contentInterfaceParams.currentQuestion),
                             {
-                                ...prev[interfaceParams.currentQuestion],
+                                ...prev[contentInterfaceParams.currentQuestion],
                                 choices: {
-                                    ...prev[interfaceParams.currentQuestion].choices,
+                                    ...prev[contentInterfaceParams.currentQuestion].choices,
                                     [index]: {
-                                        ...prev[interfaceParams.currentQuestion].choices[index],
+                                        ...prev[contentInterfaceParams.currentQuestion].choices[index],
                                         selected: false
                                     }
                                 }
                             },
-                            ...prev.slice(interfaceParams.currentQuestion + 1, interfaceParams.questionNumber)
+                            ...prev.slice(contentInterfaceParams.currentQuestion + 1, contentInterfaceParams.questionNumber)
                         ]));
     
                     }
     
                     // Select selected question
                     setQuestionArray((prev) => ([
-                        ...prev.slice(0, interfaceParams.currentQuestion),
+                        ...prev.slice(0, contentInterfaceParams.currentQuestion),
                         {
-                            ...prev[interfaceParams.currentQuestion],
+                            ...prev[contentInterfaceParams.currentQuestion],
                             choices: {
-                                ...prev[interfaceParams.currentQuestion].choices,
+                                ...prev[contentInterfaceParams.currentQuestion].choices,
                                 [choice_index]: {
-                                    ...prev[interfaceParams.currentQuestion].choices[choice_index],
-                                    selected: !prev[interfaceParams.currentQuestion].choices[choice_index].selected
+                                    ...prev[contentInterfaceParams.currentQuestion].choices[choice_index],
+                                    selected: !prev[contentInterfaceParams.currentQuestion].choices[choice_index].selected
                                 }
                             }
                         },
-                        ...prev.slice(interfaceParams.currentQuestion + 1, interfaceParams.questionNumber)
+                        ...prev.slice(contentInterfaceParams.currentQuestion + 1, contentInterfaceParams.questionNumber)
                     ]));
     
                     break;
@@ -117,18 +117,18 @@ export default function QuizInterface ({
                 case "MAQ":
     
                     setQuestionArray((prev) => ([
-                        ...prev.slice(0, interfaceParams.currentQuestion),
+                        ...prev.slice(0, contentInterfaceParams.currentQuestion),
                         {
-                            ...prev[interfaceParams.currentQuestion],
+                            ...prev[contentInterfaceParams.currentQuestion],
                             choices: {
-                                ...prev[interfaceParams.currentQuestion].choices,
+                                ...prev[contentInterfaceParams.currentQuestion].choices,
                                 [choice_index]: {
-                                    ...prev[interfaceParams.currentQuestion].choices[choice_index],
-                                    selected: !prev[interfaceParams.currentQuestion].choices[choice_index].selected
+                                    ...prev[contentInterfaceParams.currentQuestion].choices[choice_index],
+                                    selected: !prev[contentInterfaceParams.currentQuestion].choices[choice_index].selected
                                 }
                             }
                         },
-                        ...prev.slice(interfaceParams.currentQuestion + 1, interfaceParams.questionNumber)
+                        ...prev.slice(contentInterfaceParams.currentQuestion + 1, contentInterfaceParams.questionNumber)
                     ]));
     
                     break;
@@ -141,65 +141,65 @@ export default function QuizInterface ({
 
     const gradeAllChoices = () => {
         let score_count = 0;
-        for (let index = 0; index < Object.keys(questionArray[interfaceParams.currentQuestion].choices).length; index++) {
+        for (let index = 0; index < Object.keys(questionArray[contentInterfaceParams.currentQuestion].choices).length; index++) {
             
             setQuestionArray((prev) => ([
-                ...prev.slice(0, interfaceParams.currentQuestion),
+                ...prev.slice(0, contentInterfaceParams.currentQuestion),
                 {
-                    ...prev[interfaceParams.currentQuestion],
+                    ...prev[contentInterfaceParams.currentQuestion],
                     choices: {
-                        ...prev[interfaceParams.currentQuestion].choices,
+                        ...prev[contentInterfaceParams.currentQuestion].choices,
                         [index]: {
-                            ...prev[interfaceParams.currentQuestion].choices[index],
+                            ...prev[contentInterfaceParams.currentQuestion].choices[index],
                             graded: true
                         }
                     },
                     graded: true
                 },
-                ...prev.slice(interfaceParams.currentQuestion + 1, interfaceParams.questionNumber)
+                ...prev.slice(contentInterfaceParams.currentQuestion + 1, contentInterfaceParams.questionNumber)
             ]));
 
             // Record choice score
-            if ((questionArray[interfaceParams.currentQuestion].mode == "MCQ") && questionArray[interfaceParams.currentQuestion].choices[index].answer) {
-                if (questionArray[interfaceParams.currentQuestion].choices[index].answer == questionArray[interfaceParams.currentQuestion].choices[index].selected) {
-                    questionArray[interfaceParams.currentQuestion].choices[index].score = 1;
+            if ((questionArray[contentInterfaceParams.currentQuestion].mode == "MCQ") && questionArray[contentInterfaceParams.currentQuestion].choices[index].answer) {
+                if (questionArray[contentInterfaceParams.currentQuestion].choices[index].answer == questionArray[contentInterfaceParams.currentQuestion].choices[index].selected) {
+                    questionArray[contentInterfaceParams.currentQuestion].choices[index].score = 1;
                     score_count += 1;
                 }
-            } else if (questionArray[interfaceParams.currentQuestion].mode == "MAQ") {
-                if (questionArray[interfaceParams.currentQuestion].choices[index].answer == questionArray[interfaceParams.currentQuestion].choices[index].selected) {
-                    questionArray[interfaceParams.currentQuestion].choices[index].score = 1;
+            } else if (questionArray[contentInterfaceParams.currentQuestion].mode == "MAQ") {
+                if (questionArray[contentInterfaceParams.currentQuestion].choices[index].answer == questionArray[contentInterfaceParams.currentQuestion].choices[index].selected) {
+                    questionArray[contentInterfaceParams.currentQuestion].choices[index].score = 1;
                     score_count += 1;
                 }
             }
         }
 
         // Record question score
-        questionArray[interfaceParams.currentQuestion].score = score_count;
+        questionArray[contentInterfaceParams.currentQuestion].score = score_count;
     }
 
     const changeQuestion = (value: number) => {
-        setInterfaceParams("currentQuestion", value);
+        setContentInterfaceParams("currentQuestion", value);
     }
 
     const handleReload = () => {
-        setInterfaceParams("pageSwitch", false);
+        setContentInterfaceParams("pageSwitch", false);
     }
 
     // Choice object rendering
     let ChoiceObject: Array<React.ReactNode> = [];
 
     // Render each choice into html object
-    for (let index = 0; index < Object.keys(questionArray[interfaceParams.currentQuestion].choices).length; index++) {
-        const _choice = questionArray[interfaceParams.currentQuestion].choices[index];
+    for (let index = 0; index < Object.keys(questionArray[contentInterfaceParams.currentQuestion].choices).length; index++) {
+        const _choice = questionArray[contentInterfaceParams.currentQuestion].choices[index];
         if (!_choice.graded) {
             ChoiceObject.push(
                 <div id='card-quiz-container' className={'h-full w-full rounded-xl'} key={index}>
                     <button 
-                        onClick={() => handleChoiceInteract(index, questionArray[interfaceParams.currentQuestion].mode)}
+                        onClick={() => handleChoiceInteract(index, questionArray[contentInterfaceParams.currentQuestion].mode)}
                         id={(_choice["selected"] 
-                            ? questionArray[interfaceParams.currentQuestion].mode == 'CARD'
+                            ? questionArray[contentInterfaceParams.currentQuestion].mode == 'CARD'
                                 ? 'card-quiz-ter'
-                                : questionArray[interfaceParams.currentQuestion].mode == 'MCQ' 
+                                : questionArray[contentInterfaceParams.currentQuestion].mode == 'MCQ' 
                                     ? 'card-quiz-pri'
                                     : 'card-quiz-sec'
                             : 'card-quiz')}
@@ -225,13 +225,13 @@ export default function QuizInterface ({
 
                         {/* Answer report */}
 
-                        {questionArray[interfaceParams.currentQuestion].mode == 'CARD'
+                        {questionArray[contentInterfaceParams.currentQuestion].mode == 'CARD'
                                 ? <span id='answer-type'>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-6 h-6">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
                                     </svg>
                                 </span>
-                                : questionArray[interfaceParams.currentQuestion].mode == 'MCQ' 
+                                : questionArray[contentInterfaceParams.currentQuestion].mode == 'MCQ' 
                                     ? <span id='answer-type'>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-6 h-6">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-9Z" />
@@ -249,7 +249,7 @@ export default function QuizInterface ({
         } else {
             ChoiceObject.push(
                 <div id='card-quiz-container' className='_graded h-full w-full rounded-xl' key={index}>
-                    <button id={(questionArray[interfaceParams.currentQuestion].mode == "CARD")
+                    <button id={(questionArray[contentInterfaceParams.currentQuestion].mode == "CARD")
                         // In case of CARD
                         ? 'card-quiz-ter'
                         // Incase of MCQ
@@ -263,13 +263,13 @@ export default function QuizInterface ({
                                 ? 'card-quiz-red' // Answer is False but choosed -> INCORRECT
                                 : 'card-quiz') // Answer is False and unchoosed -> CORRECT
                         }
-                        className={'w-full h-full text-lg sm:text-xl ' + ((questionArray[interfaceParams.currentQuestion].mode != "CARD") && 'cursor-default')}
-                        onClick={() => handleChoiceInteract(index, questionArray[interfaceParams.currentQuestion].mode)}
+                        className={'w-full h-full text-lg sm:text-xl ' + ((questionArray[contentInterfaceParams.currentQuestion].mode != "CARD") && 'cursor-default')}
+                        onClick={() => handleChoiceInteract(index, questionArray[contentInterfaceParams.currentQuestion].mode)}
                         >
                             
                             {/* Choice front text */}
 
-                            {(questionArray[interfaceParams.currentQuestion].mode != "CARD")
+                            {(questionArray[contentInterfaceParams.currentQuestion].mode != "CARD")
                                 && <div id='choice-front-text' className={(_choice["choiceText"] ? "py-1" : "")}>
                                 {formatQuizText(_choice["choiceText"])}
                             </div>}
@@ -296,7 +296,7 @@ export default function QuizInterface ({
 
                             {/* Answer report */}
 
-                            {(questionArray[interfaceParams.currentQuestion].mode == "CARD")
+                            {(questionArray[contentInterfaceParams.currentQuestion].mode == "CARD")
                                 // In case of CARD
                                 ? null
                                 // Incase of MCQ
@@ -333,13 +333,13 @@ export default function QuizInterface ({
 
     let current_topic: string = questionArray[0].questionSection;
     let question_nav: React.ReactNode[] = [
-        !interfaceParams.shuffleQuestion && <h5>{current_topic}</h5>
+        !contentInterfaceParams.shuffleQuestion && <h5>{current_topic}</h5>
     ];
     let same_topic_choice_nav: React.ReactNode[] = [];
 
-    for (let i = 0; i < interfaceParams.questionNumber; i++) {
+    for (let i = 0; i < contentInterfaceParams.questionNumber; i++) {
         // Check topic
-        if ((current_topic != questionArray[i].questionSection) && (!interfaceParams.shuffleQuestion)) {
+        if ((current_topic != questionArray[i].questionSection) && (!contentInterfaceParams.shuffleQuestion)) {
             // Push current topic questions
             question_nav.push(
                 <div className='pb-4 grid grid-cols-5 gap-2'>
@@ -359,7 +359,7 @@ export default function QuizInterface ({
 
         same_topic_choice_nav.push(
             <button
-                id={(interfaceParams.currentQuestion == i)
+                id={(contentInterfaceParams.currentQuestion == i)
                     ? 'card-nav-accent'
                     : (questionArray[i].graded)
                         ? (questionArray[i].mode == "CARD")
@@ -413,11 +413,11 @@ export default function QuizInterface ({
                             <span className='font-bold inline sm:hidden'>
                                 Quiz</span>
                             <span className='px-2 font-bold'>
-                                {interfaceParams.currentQuestion + 1}</span>
+                                {contentInterfaceParams.currentQuestion + 1}</span>
                             <span className='font-bold'>|</span>
                             <span className='px-2 font-bold'>
-                                {interfaceParams.questionNumber}</span>
-                            { interfaceParams.shuffleQuestion 
+                                {contentInterfaceParams.questionNumber}</span>
+                            { contentInterfaceParams.shuffleQuestion 
                                 ? <span>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-6 h-6 inline">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3-3 3" />
@@ -427,19 +427,19 @@ export default function QuizInterface ({
                         </div>
                         <div className='flex items-center w-max px-1 py-1 rounded-xl'>
                             <h5 className='ml-2 mr-1'>
-                            {questionArray[interfaceParams.currentQuestion].mode == 'CARD'
+                            {questionArray[contentInterfaceParams.currentQuestion].mode == 'CARD'
                                 ? <span id="chip-quiz-neu" className='h-16'>
                                     <span id='answer-type'>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
                                     </svg>
                                 </span>
-                                    {questionArray[interfaceParams.currentQuestion].mode}
+                                    {questionArray[contentInterfaceParams.currentQuestion].mode}
                                 </span>
-                                : questionArray[interfaceParams.currentQuestion].mode == 'MCQ' 
+                                : questionArray[contentInterfaceParams.currentQuestion].mode == 'MCQ' 
                                     ? <span id="chip-quiz-pri">
-                                        {questionArray[interfaceParams.currentQuestion].mode}</span>
-                                    : <span id="chip-quiz-sec">{questionArray[interfaceParams.currentQuestion].mode}</span>}
+                                        {questionArray[contentInterfaceParams.currentQuestion].mode}</span>
+                                    : <span id="chip-quiz-sec">{questionArray[contentInterfaceParams.currentQuestion].mode}</span>}
                             </h5>
                         </div>
                     </div>
@@ -447,22 +447,22 @@ export default function QuizInterface ({
                     {/* 02 - Question */}
                     <div className='relative w-full py-4 flex flex-col md:flex-row'>
                         {/* Question Image */}
-                        {questionArray[interfaceParams.currentQuestion].questionImage ?
+                        {questionArray[contentInterfaceParams.currentQuestion].questionImage ?
                             <img className='max-h-[45vh] md:max-w-[40dvw] lg:max-w-[40dvw] md:mr-4 mb-4 md:mb-0 rounded-2xl'
-                                src={questionArray[interfaceParams.currentQuestion].questionImage} alt={questionArray[interfaceParams.currentQuestion].id} /> : null}
+                                src={questionArray[contentInterfaceParams.currentQuestion].questionImage} alt={questionArray[contentInterfaceParams.currentQuestion].id} /> : null}
 
                         {/* Question Text */}
                         <div className='flex flex-col w-full lg:min-h-[10dvh] justify-between'>
                             <div className='relative p-4 h-full flex flex-col justify-center items-center rounded-xl'>
 
                                 <div className='font-semibold text-xl text-start'>
-                                    {formatQuizText(questionArray[interfaceParams.currentQuestion].question)}
+                                    {formatQuizText(questionArray[contentInterfaceParams.currentQuestion].question)}
                                 </div>
                                 
-                                {questionArray[interfaceParams.currentQuestion].graded 
-                                    ? questionArray[interfaceParams.currentQuestion].questionBackText && 
+                                {questionArray[contentInterfaceParams.currentQuestion].graded 
+                                    ? questionArray[contentInterfaceParams.currentQuestion].questionBackText && 
                                         <div className='mt-3 px-2 text-lg text-start'>
-                                            {formatQuizText(questionArray[interfaceParams.currentQuestion].questionBackText)}
+                                            {formatQuizText(questionArray[contentInterfaceParams.currentQuestion].questionBackText)}
                                         </div>
                                     : null
                                 }
@@ -472,9 +472,9 @@ export default function QuizInterface ({
                     </div>
 
                     {/* 03 - Choice */}
-                    <div className={'-scroll-none relative h-full lg:h-full w-full flex flex-col lg:grid gap-4 ' + (questionArray[interfaceParams.currentQuestion].mode == 'CARD'
+                    <div className={'-scroll-none relative h-full lg:h-full w-full flex flex-col lg:grid gap-4 ' + (questionArray[contentInterfaceParams.currentQuestion].mode == 'CARD'
                         ? 'lg:grid-cols-1'
-                        : Object.keys(questionArray[interfaceParams.currentQuestion].choices).length == 1
+                        : Object.keys(questionArray[contentInterfaceParams.currentQuestion].choices).length == 1
                             ? 'lg:grid-cols-1'
                             : 'lg:grid-cols-2')}>
                         {ChoiceObject}
@@ -496,8 +496,8 @@ export default function QuizInterface ({
                     </button>
                 </div>
 
-                { !((questionArray[interfaceParams.currentQuestion].choices[0].graded) ||
-                    (questionArray[interfaceParams.currentQuestion].mode == "CARD")) 
+                { !((questionArray[contentInterfaceParams.currentQuestion].choices[0].graded) ||
+                    (questionArray[contentInterfaceParams.currentQuestion].mode == "CARD")) 
                     
                     ? <button className="text-xl h-16 w-full"
                         onClick={() => gradeAllChoices()}>
@@ -506,11 +506,11 @@ export default function QuizInterface ({
                         </div>
                     </button>
                     
-                    : (interfaceParams.currentQuestion < interfaceParams.questionNumber - 1)
+                    : (contentInterfaceParams.currentQuestion < contentInterfaceParams.questionNumber - 1)
                         ? <div className="flex flex-col w-full items-center content-center text-center">
                             <a className='w-full'>
                                 <button className="text-xl h-16 px-3 w-full"
-                                    onClick={() => changeQuestion(interfaceParams.currentQuestion + 1)}>
+                                    onClick={() => changeQuestion(contentInterfaceParams.currentQuestion + 1)}>
                                     <div className='hidden sm:inline font-bold'>
                                         <span>Next Question</span>
                                         <span className="ml-2">→</span>
@@ -528,10 +528,10 @@ export default function QuizInterface ({
                         </Link>
                 }
 
-                { (interfaceParams.currentQuestion > 0) ?
+                { (contentInterfaceParams.currentQuestion > 0) ?
                     <div className="flex flex-col items-center content-center text-center">
                         <button id='separate-left' className="text-xl h-16 px-4"
-                            onClick={() => changeQuestion(interfaceParams.currentQuestion - 1)}>
+                            onClick={() => changeQuestion(contentInterfaceParams.currentQuestion - 1)}>
                                 <div className='font-bold'>
                                     <span>Back</span>
                                 </div>

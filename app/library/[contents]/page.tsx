@@ -1,5 +1,5 @@
 import { firestoreReadQuery } from "../../libs/firestore/firestore-read-query";
-import { InterfaceProvider } from "./provider-interface";
+import { ContentInterfaceProvider } from "./content-provider";
 import Interface from './interface';
 import ErrorMessage from '@/app/component/error';
 import uidObjectToArray from "@/app/libs/utils/uid-object-to-array";
@@ -30,11 +30,12 @@ export default async function Quizset ({ params }: { params: {contents: string} 
             previousRoute="/library" />
         );
     };
+    console.log(uidObjectToArray(questionData)[0].choices)
     return (
-        <InterfaceProvider>
+        <ContentInterfaceProvider>
             <Interface
                 libraryData={uidObjectToArray(libraryData)[0]}
-                questionData={uidObjectToArray(questionData)} />
-        </InterfaceProvider>
+                questionData={questionData} />
+        </ContentInterfaceProvider>
     );
 }

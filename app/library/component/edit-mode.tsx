@@ -75,8 +75,8 @@ export default function CardEditor ({
     }
   }, [globalParams]);
 
-  // duplicate course
-  const handleDuplicateCourse = (uid: string): void => {
+  // duplicate Library
+  const handleDuplicateLibrary = (uid: string): void => {
     const newUid = makeid(length=20);
     setBufferContent((prev) => ({
         ...prev,
@@ -85,13 +85,15 @@ export default function CardEditor ({
             name: bufferContent[uid].name,
             description: bufferContent[uid].description,
             image: bufferContent[uid].image,
-            mode: bufferContent[uid].mode
+            mode: bufferContent[uid].mode,
+            questionShuffle: bufferContent[uid].questionShuffle,
+            choiceShuffle: bufferContent[uid].choiceShuffle
         }
     }));
   }
 
-  // handle delete course
-  const handleDeleteCourse = (uid: string): void => {
+  // handle delete Library
+  const handleDeleteLibrary = (uid: string): void => {
     setBufferContent((prev) => {
         if (prev) {
             const { [uid]: {}, ...rest } = prev;
@@ -102,7 +104,7 @@ export default function CardEditor ({
     });
   }
 
-  // handle add new course
+  // handle add new Library
   useEffect(() => {
     if (interfaceParams.addLibraryToggle) {
         const newUid = makeid(length=20);
@@ -113,14 +115,16 @@ export default function CardEditor ({
                 name: "",
                 description: "",
                 image: "",
-                tag: []
+                mode: "MCQ",
+                questionShuffle: false,
+                choiceShuffle: false
             }
         }));
         setInterfaceParams("addLibraryToggle", false);
     }
   }, [interfaceParams.addLibraryToggle]);
 
-  // update course data on placeholder change
+  // update Library data on placeholder change
   const onPlaceholderChange = (uid: string, targetKey: string, targetValue: any): void => {
     setBufferContent((prev) => ({
         ...prev,
@@ -170,13 +174,13 @@ export default function CardEditor ({
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                     <button
-                        onClick={() => {handleDuplicateCourse(uid)}}
+                        onClick={() => {handleDuplicateLibrary(uid)}}
                         className="flex flex-row justify-center items-center gap-2 py-1 rounded-[8px] border border-ter dark:border-ter-dark hover:text-amber hover:border-amber dark:hover:text-amber-dark dark:hover:border-amber-dark font-bold">
                         <Icon icon="copy" size={16} />
                         DUPLICATE
                     </button>
                     <button
-                        onClick={() => {handleDeleteCourse(uid)}}
+                        onClick={() => {handleDeleteLibrary(uid)}}
                         className="flex flex-row justify-center items-center gap-2 py-1 rounded-[8px] border border-ter dark:border-ter-dark hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
                         <Icon icon="trash" size={16} />
                         DELETE
@@ -227,7 +231,7 @@ export default function CardEditor ({
                     </input>
                 </div>
 
-                <div id={handleFootprint(uid, "tag")} className="edit-placeholder">
+                <div id={handleFootprint(uid, "mode")} className="edit-placeholder">
                     <label className="flex flex-row justify-start items-center">
                         <Icon icon="tag" size={16} />
                         <p>Mode</p>
