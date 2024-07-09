@@ -110,7 +110,7 @@ display: none;  /* Safari and Chrome */
     animation: smooth-appear 400ms ease forwards;
 }
 
-.card-2-main > .card-2-image {
+.card-2-image {
     position: absolute;
     height: 100%;
     width: 100%;
@@ -121,13 +121,28 @@ display: none;  /* Safari and Chrome */
     overflow: hidden
 }
 
-.card-2-main > .card-2-content {
+.card-2-content {
     padding: 16px;
     height: 100%;
     width: 100%;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
 }
+
+.card-2-glow-image {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    height: calc(100% - 16px);
+    width: calc(100% - 16px);
+    z-index: -50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    filter: brightness(1.5);
+    -webkit-filter: brightness(1.5);
+  }
 
 article#changed-all {
     border: dashed 2px var(--pri);

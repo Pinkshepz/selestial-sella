@@ -35,8 +35,8 @@ export default function Controller () {
                     <button
                         onClick={() => setInterfaceParams("displayToggle", !interfaceParams.displayToggle)}
                         className="controller-menu">
-                        <Icon icon={interfaceParams.displayToggle ? "table" : "card"} size={16} />
-                        <p>{interfaceParams.displayToggle ? "TABLE" : "CARD"}</p>
+                        <Icon icon={interfaceParams.displayToggle ? "table" : "image"} size={16} />
+                        <p>{interfaceParams.displayToggle ? "TABLE" : "GALLERY"}</p>
                     </button>
                 }
 

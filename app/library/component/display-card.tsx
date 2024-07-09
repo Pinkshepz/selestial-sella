@@ -26,7 +26,7 @@ const DisplayCard = ({
                 <div className="card-2-image">
                     {cardImageLink && <img src={cardImageLink} alt="" height={1000} width={1000} />}
                 </div>
-                <div className="card-2-content bg-black/40 text-white">
+                <div className="card-2-content bg-black/40 dark:bg-black/60 text-white">
                     <h4 className="text-md font-bold">{cardName}</h4>
                     <p className="mt-6">{cardDescription}</p>
                     <div className="flex flex-wrap justify-start items-center gap-2 mt-4">
@@ -43,8 +43,7 @@ const DisplayCard = ({
                     </div>
                 </div>
             </div>
-            <div className="glass-cover-spread"></div>
-            <div className="under-glass-cover-spread">
+            <div className="card-2-glow-image">
                 {cardImageLink && <img src={cardImageLink} alt="" height={1000} width={1000} />}
             </div>
         </article>
@@ -82,6 +81,7 @@ export default function CardView ({
   return (
     <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 px-6">
         {elements}
+        <div className="glass-cover-spread"></div>
     </section>
   );
 }

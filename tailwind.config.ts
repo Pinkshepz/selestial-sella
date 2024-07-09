@@ -19,8 +19,8 @@ const config: Config = {
           dark: "#fb7185"
         },
         ter: {
-          DEFAULT: "#cbd5e1",
-          dark: "#475569"
+          DEFAULT: "#f0f0f0",
+          dark: "#fefefe"
         },
         red: {
           DEFAULT: "#dc2626",
