@@ -71,7 +71,7 @@ export default function GlobalNavigator (): React.ReactNode {
           <Link href={"/course"} className="-button-line relative">
             <h5>Course</h5>
           </Link>
-          <Link href={"/course"} className="-button-line relative">
+          <Link href={"/library"} className="-button-line relative">
             <h5>Library</h5>
           </Link>
         </div>

@@ -6,8 +6,8 @@ import makeid from "../../libs/utils/make-id";
 import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
 import firestoreUpdate from "../../libs/firestore/firestore-manager";
 import Icon from "../../../public/icon";
-import { useGlobalContext } from "../../../app/provider";
-import { useInterfaceContext } from "../course-provider";
+import { useGlobalContext } from "../../provider";
+import { useInterfaceContext } from "../library-provider";
 
 export default function CardEditor ({
     contentData
@@ -60,7 +60,7 @@ export default function CardEditor ({
         globalParams.popUpConfirm &&
         (globalParams.popUpAction == "saveChangesToggle")) {
         firestoreUpdate({
-            collectionName: "course",
+            collectionName: "library",
             originalData: contentData, 
             editedData: bufferContent
         }).then(
@@ -85,7 +85,7 @@ export default function CardEditor ({
             name: bufferContent[uid].name,
             description: bufferContent[uid].description,
             image: bufferContent[uid].image,
-            tag: bufferContent[uid].tag
+            mode: bufferContent[uid].mode
         }
     }));
   }
@@ -104,7 +104,7 @@ export default function CardEditor ({
 
   // handle add new course
   useEffect(() => {
-    if (interfaceParams.addCourseToggle) {
+    if (interfaceParams.addLibraryToggle) {
         const newUid = makeid(length=20);
         setBufferContent((prev) => ({
             ...prev,
@@ -116,9 +116,9 @@ export default function CardEditor ({
                 tag: []
             }
         }));
-        setInterfaceParams("addCourseToggle", false);
+        setInterfaceParams("addLibraryToggle", false);
     }
-  }, [interfaceParams.addCourseToggle]);
+  }, [interfaceParams.addLibraryToggle]);
 
   // update course data on placeholder change
   const onPlaceholderChange = (uid: string, targetKey: string, targetValue: any): void => {
@@ -208,7 +208,7 @@ export default function CardEditor ({
                 <div id={handleFootprint(uid, "name")} className="edit-placeholder">
                     <label className="flex flex-row justify-start items-center">
                         <Icon icon="h1" size={16} />
-                        <p>Title name</p>
+                        <p>Library name</p>
                     </label>
                     <input type="text" className="editor-field"
                         onChange={e => onPlaceholderChange(uid, "name", e.target.value)}
@@ -230,12 +230,35 @@ export default function CardEditor ({
                 <div id={handleFootprint(uid, "tag")} className="edit-placeholder">
                     <label className="flex flex-row justify-start items-center">
                         <Icon icon="tag" size={16} />
-                        <p>Tag</p>
+                        <p>Mode</p>
                     </label>
                     <input type="text" className="editor-field"
-                        onChange={e => onPlaceholderChange(uid, "tag", e.target.value.split(","))}
-                        defaultValue={bufferContent[uid].tag}>
+                        onChange={e => onPlaceholderChange(uid, "mode", e.target.value)}
+                        defaultValue={bufferContent[uid].mode}>
                     </input>
+                </div>
+
+                <div id={handleFootprint(uid, "shuffleQuestion")} className="edit-placeholder">
+                    <label className="flex flex-row justify-start items-center">
+                        <Icon icon="shuffleQuestion" size={16} />
+                        <p>Shuffle question</p>
+                    </label>
+                    <button className={`toggle-field ${bufferContent[uid].shuffleQuestion ? "toggleOn" : "toggleOff"}`}
+                        onClick={() => onPlaceholderChange(uid, "shuffleQuestion", !bufferContent[uid].shuffleQuestion)}>
+                        {bufferContent[uid].shuffleQuestion ? "TRUE" : "FALSE"}
+                    </button>
+                </div>
+
+                <div id={handleFootprint(uid, "shuffleChoice")} className="edit-placeholder">
+                    <label className="flex flex-row justify-start items-center">
+                        <Icon icon="shuffleChoice" size={16} />
+                        <p>Shuffle choice</p>
+                    </label>
+                    <button className={`toggle-field ${bufferContent[uid].shuffleChoice ? "toggleOn" : "toggleOff"}`}
+                        onClick={() => onPlaceholderChange(uid, "shuffleChoice", !bufferContent[uid].shuffleChoice)}
+                        defaultValue={bufferContent[uid].shuffleChoice}>
+                        {bufferContent[uid].shuffleChoice ? "TRUE" : "FALSE"}
+                    </button>
                 </div>
             </div>
         </article>

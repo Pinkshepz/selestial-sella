@@ -7,6 +7,8 @@ html.light {
   --base: rgba(0, 0, 0, 1.0);
   /* white #ffffff /100 */
   --base-inverse: rgba(255, 255, 255, 1.0);
+  /* gray-100 #f3f4f6 /90 */
+  --highlight-strong: rgba(255, 255, 255, 0.95);
   /* gray-100 #f3f4f6 /70 */
   --highlight: rgba(243, 244, 246, 0.7);
   /* gray-200 #e5e7eb /70 */
@@ -34,6 +36,8 @@ html.dark {
   --base: rgba(255, 255, 255, 1.0);
   /* black #000000 /100 */
   --base-inverse: rgba(0, 0, 0, 1.0);
+  /* gray-900 #11181c /90 */
+  --highlight-strong: rgba(0, 0, 0, 0.9);
   /* gray-900 #11181c /70 */
   --highlight: rgba(17, 24, 28, 0.7);
   /* gray-800 #1f2937 /70 */
@@ -205,9 +209,9 @@ footer {
   height: fit-content;
   min-height: 360px;
   max-height: 500px;
-  width: 70dvw;
+  width: 80dvw;
   min-width: 320px;
-  max-width: 800px;
+  max-width: 640px;
   margin: auto;
   padding: 32px;
   display: flex;
@@ -225,7 +229,7 @@ footer {
   animation: smooth-appear 400ms ease forwards;
 }
 
-.glass-cover {
+.glass-cover-screen {
   position: fixed;
   top: 64px;
   bottom: 0;
@@ -235,6 +239,32 @@ footer {
   width: 100dvw;
   background-color: var(--bgaccent);
   animation: fade-glass 800ms ease forwards;
+}
+
+.glass-cover-spread {
+  position: absolute;
+  top: -32px;
+  left: -32px;
+  height: calc(100% + 64px);
+  width: calc(100% + 64px);
+  z-index: -10;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.under-glass-cover-spread {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  height: calc(100% - 16px);
+  width: calc(100% - 16px);
+  z-index: -50;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  filter: brightness(1.5);
+  -webkit-filter: brightness(1.5);
 }
 
 /* ---------------------------------------- */

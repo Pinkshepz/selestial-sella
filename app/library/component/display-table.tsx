@@ -1,40 +1,23 @@
 import Link from "next/link";
 
 import stringToHex from "../../libs/utils/string-to-rgb";
+import Icon from "@/public/icon";
 
 const DisplayRow = ({
     cardUid,
     cardId,
     cardImageLink,
     cardName,
-    cardTag
+    cardDescription,
+    cardMode
 }: {
     cardUid: string,
     cardId: string,
     cardImageLink: string,
     cardName: string,
-    cardTag?: string[]
+    cardDescription: string,
+    cardMode: string
 }) => {
-    // prepare tag chips
-    let tagsElements: React.ReactNode[] = [];
-
-    if (cardTag) {
-        cardTag.map((tag) => {
-            const color = stringToHex(tag);
-            tagsElements.push(
-                <div
-                    className="flex justify-center items-center h-min px-2 text-sm font-semibold rounded-full max-w-max h-full"
-                    style={{
-                        backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.4)`,
-                        border: `solid 1px rgba(${color.r}, ${color.g}, ${color.b}, 0.7)`
-                        }}
-                    key={tag}>
-                    {tag}
-                </div>
-                );
-            }
-        );
-    }
 
     return (
         <tr key={cardUid}>
@@ -48,17 +31,28 @@ const DisplayRow = ({
             </td>
             <td className="font-bold" key={cardUid + "2"}>
                 <Link 
-                    href={{ pathname: "./course/[courses]" }}
-                    as={`course/${cardId}`}
+                    href={{ pathname: "./library/[courses]" }}
+                    as={`library/${cardId}`}
                     className="underline hover:text-pri dark:hover:text-pri-dark ease-in-out duration-300"
                     key={"Link " + cardUid}>
                         {cardName}
                 </Link>
             </td>
             <td className="hidden md:table-cell" key={cardUid + "3"}>
-                <div className="flex flex-wrap gap-4">
-                    {tagsElements}
+                <div className="flex flex-wrap gap-2">
+                    <span
+                        className="flex justify-center items-center gap-1 h-min px-1 text-sm font-semibold rounded-full"
+                        style={{
+                            backgroundColor: `rgba(${stringToHex(cardMode).r}, ${stringToHex(cardMode).g}, ${stringToHex(cardMode).b}, 0.4)`,
+                            border: `solid 1px rgba(${stringToHex(cardMode).r}, ${stringToHex(cardMode).g}, ${stringToHex(cardMode).b}, 0.7)`
+                            }}>
+                        <Icon icon={cardMode ? cardMode.toString().toLocaleLowerCase() : "mcq"} size={12} />
+                        {cardMode}
+                    </span>
                 </div>
+            </td>
+            <td className="hidden lg:table-cell" key={cardUid + "4"}>
+                {cardDescription}
             </td>
         </tr>
     );
@@ -81,7 +75,8 @@ export default function TableView ({
             cardId={content.id}
             cardImageLink={content.image}
             cardName={content.name}
-            cardTag={content.tag}
+            cardDescription={content.description}
+            cardMode={content.mode}
             key={content.id}/>
       );
   });
@@ -91,9 +86,10 @@ export default function TableView ({
             <table className="theme-table">
                 <thead>
                     <tr>
-                        <th>Course ID</th>
-                        <th>Course name</th>
-                        <th className="hidden md:flex">Tags</th>
+                        <th>Library ID</th>
+                        <th>Library name</th>
+                        <th className="hidden md:table-cell">Mode</th>
+                        <th className="hidden lg:table-cell">Description</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -30,7 +30,7 @@ export function useInterfaceContext() {
   return useContext(InterfaceContext);
 }
 
-export function InterfaceProvider({ children }: {children: React.ReactNode}) {
+export function CourseInterfaceProvider({ children }: {children: React.ReactNode}) {
 
   // Configure params
   const [interfaceParams, setAllInterfaceParams] = useState<interfaceStructure>(interfaceInitialValue);

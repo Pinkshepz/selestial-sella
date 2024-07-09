@@ -1,6 +1,6 @@
 "use client";
 
-import { useInterfaceContext } from '../course-provider';
+import { useInterfaceContext } from '../library-provider';
 import sortUidObjectByValue from '@/app/libs/utils/sort-uid-object-by-value';
 
 import TableView from './display-table';

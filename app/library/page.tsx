@@ -1,25 +1,25 @@
 import { firestoreRead } from "../libs/firestore/firestore-read"
 
-import { CourseInterfaceProvider } from "./course-provider";
+import { LibraryInterfaceProvider } from "./library-provider";
 
 import Interface from "./interface";
 import ErrorMessage from "../component/error";
 
 export default async function HomePage() {
-  const contentData = await firestoreRead("course");
+  const contentData = await firestoreRead("library");
 
   try {
     return (
-      <CourseInterfaceProvider>
+      <LibraryInterfaceProvider>
         <Interface contentData={contentData} />
-      </CourseInterfaceProvider>
+      </LibraryInterfaceProvider>
     );
   } catch (error) {
     return (
       <ErrorMessage 
         errorMessage={(error as Error).message}
         errorCode={"Access Denied"}
-        previousRoute={"../course"} />
+        previousRoute={"../library"} />
     )
   }
 

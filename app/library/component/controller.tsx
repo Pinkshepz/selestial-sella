@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 import Icon from "@/public/icon";
 import { useGlobalContext } from "../../provider"
-import { useInterfaceContext } from "../course-provider";
+import { useInterfaceContext } from "../library-provider";
 
 export default function Controller () {
     // connect to global context
@@ -60,10 +60,10 @@ export default function Controller () {
 
                 {interfaceParams.editMode && 
                     <button
-                        onClick={() => setInterfaceParams("addCourseToggle", !interfaceParams.addCourseToggle)}
+                        onClick={() => setInterfaceParams("addLibraryToggle", !interfaceParams.addLibraryToggle)}
                         className="controller-menu">
                         <Icon icon="add" size={16} />
-                        <p>ADD NEW COURSE</p>
+                        <p>ADD NEW LIBRARY</p>
                     </button>
                 }
 

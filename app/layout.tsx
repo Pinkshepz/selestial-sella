@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 
 import './styles/globals.css'
 import './styles/fontface.css'
+import './styles/interface.css'
 
 import "./libs/firebase/fireclient"
 
