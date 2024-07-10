@@ -8,7 +8,6 @@ import './interface.css';
 import shuffle from '@/app/libs/utils/shuffle';
 import formatQuizText from '@/app/libs/utils/paragraph';
 import { useContentInterfaceContext } from '../content-provider';
-import ErrorMessage from '@/app/component/error';
 import Icon from '@/public/icon';
 import stringToHex from '@/app/libs/utils/string-to-rgb';
 
@@ -19,15 +18,6 @@ export default function QuizInterface ({
     libraryData: {[key: string]: string}, // {uid: {library data}}
     questionData: {[key: string]: any}[] // {each question}[]
 }) {
-    // check if there are questions
-    if (Object.keys(questionData).length < 1) {return (
-        <ErrorMessage
-            errorMessage={`Library ${libraryData.id} does not exist`}
-            errorCode="404-notFound"
-            previousRoute="/library" />
-        );
-    };
-
     // ===== SECTION I: PARAMETERS ======
     // ==================================
 
@@ -43,7 +33,8 @@ export default function QuizInterface ({
     // Random question
     useEffect(() => {
         if (contentInterfaceParams.shuffleQuestion === true) {
-            setQuestionArray((prev) => shuffle(prev))}}, []);
+            setQuestionArray((prev) => shuffle(prev))}
+    }, []);
     
     // // Random choice
     // if (contentInterfaceParams.shuffleChoice === true) {
