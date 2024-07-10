@@ -1,8 +1,8 @@
 import { firestoreReadQuery } from "../../libs/firestore/firestore-read-query";
 import { ContentInterfaceProvider } from "./content-provider";
 import Interface from './interface';
-import ErrorMessage from '@/app/component/error';
 import uidObjectToArray from "@/app/libs/utils/uid-object-to-array";
+import { quizDataFetcher } from "@/app/libs/ggsheet/data-fetch";
 
 // Dynamic routing <cardsets>
 export default async function Quizset ({ params }: { params: {contents: string} }) {
@@ -23,20 +23,15 @@ export default async function Quizset ({ params }: { params: {contents: string} 
         queryValue: params.contents
     });
 
-    if (Object.keys(questionData).length < 1) {return (
-        <ErrorMessage
-            errorMessage={`Library ${params.contents} does not exist`}
-            errorCode="404-notFound"
-            previousRoute="/library" />
-        );
-    };
-    console.log(uidObjectToArray(questionData))
-    console.log(uidObjectToArray(questionData)[0].choices)
+    // fetch ggsheet data
+    const ggSheetImport = await quizDataFetcher({content: params.contents});
+
     return (
         <ContentInterfaceProvider>
             <Interface
                 libraryData={uidObjectToArray(libraryData)[0]}
-                questionData={questionData} />
+                questionData={questionData}
+                ggSheetImport={ggSheetImport} />
         </ContentInterfaceProvider>
     );
 }

@@ -13,7 +13,8 @@ interface ContentInterfaceStructure {
   addQuestionToggle: boolean,
   discardChangesToggle: boolean,
   saveChangesToggle: boolean,
-  logUpdate: {}
+  logUpdate: {},
+  importSheetToggle: boolean
 }
 
 const contentInterfaceInitialValue = {
@@ -27,7 +28,8 @@ const contentInterfaceInitialValue = {
   addQuestionToggle: false,
   discardChangesToggle: false,
   saveChangesToggle: false,
-  logUpdate: {}
+  logUpdate: {},
+  importSheetToggle: false
 };
 
 const ContentInterfaceContext = createContext<any>({});
@@ -50,7 +52,7 @@ export function ContentInterfaceProvider({ children }: {children: React.ReactNod
     setAllContentInterfaceParams((prev) => ({
       ...prev,
       [param]: value
-    }))
+    }));
   }
 
   // UseMemo optimization

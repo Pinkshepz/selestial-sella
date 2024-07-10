@@ -14,6 +14,10 @@ export default function Interface ({
     // connect to global context
     const {globalParams, setGlobalParams} = useGlobalContext();
 
+    if (globalParams.isLoading) {
+        setGlobalParams("isLoading", false);
+    }
+
     return (
         <>
             <ConfirmPopUp />

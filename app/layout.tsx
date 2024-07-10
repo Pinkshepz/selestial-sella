@@ -34,3 +34,6 @@ export default function RootLayout({
     </GlobalProvider>
   );
 }
+
+// Disable static rendering
+export const dynamic = "force-dynamic";

@@ -39,8 +39,8 @@ const config: Config = {
           dark: "#11181c"
         },
         border: {
-          DEFAULT: "#e2e8f0",
-          dark: "#1f2937"
+          DEFAULT: "#d1d5db",
+          dark: "#374151"
         }
       }
     }

@@ -20,6 +20,7 @@ interface globalContextStructure {
   user: null | {},
   authChecked: boolean,
   path: string,
+  isLoading: boolean;
   popUp: boolean,
   popUpConfirm: boolean,
   popUpAction: string,
@@ -30,6 +31,7 @@ const globalInitialValue = {
   user: null,
   authChecked: false,
   path: "/",
+  isLoading: false,
   popUp: false,
   popUpConfirm: false,
   popUpAction: "",

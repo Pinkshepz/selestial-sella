@@ -1,21 +1,23 @@
-    "use client";
+"use client";
 
-    import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, use } from "react";
 
-    import makeid from "@/app/libs/utils/make-id";
-    import firestoreUpdate from "../../../libs/firestore/firestore-manager";
-    import Icon from "@/public/icon";
-    import stringToHex from "@/app/libs/utils/string-to-rgb";
-    import { useContentInterfaceContext } from "../content-provider";
-    import { useGlobalContext } from "@/app/provider";
+import makeid from "@/app/libs/utils/make-id";
+import firestoreUpdate from "../../../libs/firestore/firestore-manager";
+import Icon from "@/public/icon";
+import stringToHex from "@/app/libs/utils/string-to-rgb";
+import { useContentInterfaceContext } from "../content-provider";
+import { useGlobalContext } from "@/app/provider";
 
-    export default function EditorInterface ({
+export default function EditorInterface ({
     libraryData,
-    questionData
-    }: {
+    questionData,
+    ggSheetImport
+}: {
     libraryData: {[key: string]: string}, // {uid: {library data}}
-    questionData: {[key: string]: {[key: string]: any}} // {uid: {each question}}
-    }): React.ReactNode {
+    questionData: {[key: string]: {[key: string]: any}}, // {uid: {each question}}
+    ggSheetImport: {[key: string]: {[key: string]: any}} | undefined // {uid: {each question}}
+}): React.ReactNode {
     const BG = "https://media.suara.com/pictures/653x366/2019/12/19/95933-aurora.jpg"
     // connect to global context
     const {globalParams, setGlobalParams} = useGlobalContext();
@@ -25,6 +27,9 @@
 
     // counterpart of content data for editing
     const [bufferQuestion, setBufferQuestion] = useState(questionData);
+
+    // recent mode of question
+    const [recentlyUsedMode, setRecentlyUsedMode] = useState("flashcard");
 
     // ref for elements
     const elementsRef: {[key: string]: any} = useRef({});
@@ -36,21 +41,21 @@
 
     // detect footprint of question and return id="changed"
     const handleFootprintQuestion = (uid: string, footprint: string) => {
-    try {
-        if (Object.keys(questionData).includes(uid)) {
-            if (questionData[uid][footprint] === bufferQuestion[uid][footprint]) {
-                return "original"
-            } else if (questionData[uid][footprint].toString() === bufferQuestion[uid][footprint].toString()) {
-                return "original"
+        try {
+            if (Object.keys(questionData).includes(uid)) {
+                if (questionData[uid][footprint] === bufferQuestion[uid][footprint]) {
+                    return "original"
+                } else if (questionData[uid][footprint].toString() === bufferQuestion[uid][footprint].toString()) {
+                    return "original"
+                } else {
+                    return "changed"
+                }
             } else {
-                return "changed"
+                return "changed-all"
             }
-        } else {
+        } catch (error) {
             return "changed-all"
         }
-    } catch (error) {
-        return "changed-all"
-    }
     }
 
     // discard all changes if toggle
@@ -80,9 +85,9 @@
                 setGlobalParams("popUpAction", "");
                 setContentInterfaceParams("saveChangesToggle", false);
                 setContentInterfaceParams("logUpdate", data);
+                setContentInterfaceParams("editMode", false);
             }
-        );
-    }
+        )}
     }, [globalParams]);
 
     // duplicate question
@@ -153,7 +158,7 @@
         setBufferQuestion((prev) => ({
             ...prev,
             [newUid]: {
-                mode: "MIXED",
+                mode: recentlyUsedMode,
                 libraryFootprint: [libraryData.id],
                 questionSection: "",
                 questionImage: "",
@@ -192,7 +197,7 @@
                     choiceBackText: "",
                     choiceText: ""
                 },
-                ...prev[uid].choices.slice(insertIndex, -1)
+                ...prev[uid].choices.slice(insertIndex, prev[uid].choices.length)
             ]
         }
     }));
@@ -233,8 +238,22 @@
         const currentIndex: number = MODE.indexOf(currentMode);
         // change to next mode
         onPlaceholderQuestionChange(uid, "mode", MODE[(currentIndex + 1) % MODE.length]);
+        setRecentlyUsedMode(MODE[(currentIndex + 1) % MODE.length]);
         return;
     }
+
+    // listen gg sheet import
+    useEffect(() => {
+        if (contentInterfaceParams.importSheetToggle) {
+            if (ggSheetImport !== undefined) {
+                setBufferQuestion((prev) => ({
+                    ...prev,
+                    ...ggSheetImport
+                }));
+            }
+        }
+        setContentInterfaceParams("importSheetToggle", false);
+    }, [contentInterfaceParams.importSheetToggle])
 
     // Filter by search key
     let filteredQuestion: {[key: string]: {[key: string]: any}} = {};
@@ -264,21 +283,7 @@
 
         questionChoices.map((choice, index) => {
             choicesElements.push(
-                <div className="edit-placeholder flex flex-col gap-2 border-t border-border dark:border-border-dark">
-                    <div className="flex flex-row gap-4 w-full">
-                        <button
-                            onClick={() => {handleDuplicateQuestionChoice(uid, index)}}
-                            className="flex flex-row justify-center items-center gap-2 px-2 py-1 rounded-[8px] border border-ter dark:border-ter-dark hover:text-amber hover:border-amber dark:hover:text-amber-dark dark:hover:border-amber-dark font-bold">
-                            <Icon icon="copy" size={16} />
-                            DUPLICATE
-                        </button>
-                        <button
-                            onClick={() => {handleDeleteQuestionChoice(uid, index)}}
-                            className="flex flex-row justify-center items-center gap-2 px-2 py-1 rounded-[8px] border border-ter dark:border-ter-dark hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
-                            <Icon icon="trash" size={16} />
-                            DELETE
-                        </button>
-                    </div>
+                <div className="edit-placeholder flex flex-col gap-2 bg-highlight dark:bg-highlight-dark">
                     <div className="edit-placeholder">
                         <label className="flex flex-row justify-start items-center">
                             <Icon icon="font" size={16} />
@@ -320,9 +325,32 @@
                             defaultValue={choice.choiceImage}>
                         </input>
                     </div>
+                    <div className="flex flex-row gap-4 w-full">
+                        <button
+                            onClick={() => {handleDuplicateQuestionChoice(uid, index)}}
+                            className="flex flex-row justify-center items-center gap-2 px-2 py-1 rounded-[8px] border border-border dark:border-border-dark hover:text-amber hover:border-amber dark:hover:text-amber-dark dark:hover:border-amber-dark font-bold">
+                            <Icon icon="copy" size={16} />
+                            DUPLICATE
+                        </button>
+                        <button
+                            onClick={() => {handleDeleteQuestionChoice(uid, index)}}
+                            className="flex flex-row justify-center items-center gap-2 px-2 py-1 rounded-[8px] border border-border dark:border-border-dark hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
+                            <Icon icon="trash" size={16} />
+                            DELETE
+                        </button>
+                    </div>
                 </div>
             );
         })
+
+        choicesElements.push(
+            <button
+                onClick={() => handleAddQuestionChoice(uid, index)}
+                className="add-button px-12">
+                <Icon icon="add" size={36} />
+                <p className="mt-4 text-lg font-bold">NEW CHOICE</p>
+            </button>
+        );
 
         elements.push(
             <section id={handleFootprintQuestion(uid, "")} className="card-edit" 
@@ -341,7 +369,7 @@
                         <span
                             id='clear-chip'
                             className='text-2xl font-semibold'>
-                            {index + 1} / {Object.keys(filteredQuestion).length}
+                            Q{index + 1}
                         </span>
                         {/* <button
                             onClick={() => toggleQuestionMode(uid, bufferQuestion[uid].mode)}
@@ -351,16 +379,16 @@
                                 <Icon icon="up" size={18} />
                             </label>
                         </button> */}
-                    </div>
-                    <div className="flex flex-row justify-start items-center gap-2 my-2 font-bold text-pri dark:text-pri-dark">
-                        <Icon icon="barcode" size={16} />
-                        <p>{uid}</p>
+                    <span
+                        id='clear-chip'
+                        className='text-2xl font-semibold'>
+                        {bufferQuestion[uid].library}
+                    </span>
                     </div>
                     <button
                         onClick={() => toggleQuestionMode(uid, bufferQuestion[uid].mode)}
                         id={handleFootprintQuestion(uid, "mode")}
                         className="edit-placeholder flex flex-row justify-start items-center gap-2 px-2 font-bold">
-                        <label className="mr-2">Mode</label>
                         <span
                             id='clear-chip'
                             className='text-sm font-semibold'
@@ -375,13 +403,13 @@
                     <div className="flex flex-row gap-4 md:ml-auto">
                         <button
                             onClick={() => {handleDuplicateQuestion(uid)}}
-                            className="flex flex-row justify-center items-center gap-2 px-2 py-1 rounded-[8px] border border-ter dark:border-ter-dark hover:text-amber hover:border-amber dark:hover:text-amber-dark dark:hover:border-amber-dark font-bold">
+                            className="flex flex-row justify-center items-center gap-2 px-2 py-1 rounded-[8px] border border-border dark:border-border-dark hover:text-amber hover:border-amber dark:hover:text-amber-dark dark:hover:border-amber-dark font-bold">
                             <Icon icon="copy" size={16} />
                             DUPLICATE
                         </button>
                         <button
                             onClick={() => {handleDeleteQuestion(uid)}}
-                            className="flex flex-row justify-center items-center gap-2 px-2 py-1 rounded-[8px] border border-ter dark:border-ter-dark hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
+                            className="flex flex-row justify-center items-center gap-2 px-2 py-1 rounded-[8px] border border-border dark:border-border-dark hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
                             <Icon icon="trash" size={16} />
                             DELETE
                         </button>
@@ -437,7 +465,7 @@
                             <img src={bufferQuestion[uid].questionImage} alt="" className="rounded-xl" />
                         </div>}
                 </article>
-                <article aria-label="question-choice" className="-scroll-none flex flex-row gap-4 overflow-x-scroll border-t border-border dark:border-border-dark w-full p-4">
+                <article aria-label="question-choice" className="-scroll-none flex flex-row gap-4 overflow-x-scroll w-full p-4">
                     {choicesElements}
                 </article>
             </section>
@@ -458,11 +486,22 @@
         );
     }
 
+    question_nav.push(
+        <button
+            id='card-nav-neu'
+            className="flex items-center justify-center"
+            key={"add"}
+            onClick={() => setContentInterfaceParams("addQuestionToggle", !contentInterfaceParams.addQuestionToggle)}>
+            <Icon icon="add" size={16} />
+        </button>
+    );
+
     return (
         <div className='flex flex-col'>
-            <div id='quiz-two-cols-fixed' key='interface'>
+            <div id='editor-two-cols-fixed' key='interface'>
 
-                <aside id="quiz-col-scroll-aside" className='-scroll-none pt-20' key='interface-aside'>
+                <aside id="quiz-col-scroll-aside" className='-scroll-none relative pt-[90px]' key='interface-aside'>
+                    <div className="border-t border-border dark:border-border-dark"></div>
                     <section className='m-4' key='interface-aside-section-1'>
                         <span id='pri-chip' className="text-sm font-bold w-fit">{libraryData.id}</span>
                         <h3 className='mt-4'>{libraryData.name}</h3>
@@ -478,13 +517,13 @@
                 </aside>
 
                 <main id="quiz-col-scroll-main" className='-scroll-none' key='interface-main'>
-                    <div className="flex flex-col gap-8 mt-24 mx-4">
+                    <div className="flex flex-col gap-8 mt-[90px] mx-4">
                         {elements}
                     </div>
                 </main>
             </div>
             <div className="glass-cover-spread"></div>
-            <img src={libraryData.image ? libraryData.image : BG} alt="" height={1000} width={1000} className="fixed z-[-50] w-full h-full object-cover"/>
+            <img src={libraryData.image ? libraryData.image : BG} alt="" height={1000} width={1000} className="fixed z-[-50] w-full h-full object-cover hidden dark:inline dark:brightness-150"/>
         </div>
-        );
-    }
+    );
+}

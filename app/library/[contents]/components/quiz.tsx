@@ -8,6 +8,9 @@ import './interface.css';
 import shuffle from '@/app/libs/utils/shuffle';
 import formatQuizText from '@/app/libs/utils/paragraph';
 import { useContentInterfaceContext } from '../content-provider';
+import ErrorMessage from '@/app/component/error';
+import Icon from '@/public/icon';
+import stringToHex from '@/app/libs/utils/string-to-rgb';
 
 export default function QuizInterface ({
     libraryData,
@@ -16,6 +19,14 @@ export default function QuizInterface ({
     libraryData: {[key: string]: string}, // {uid: {library data}}
     questionData: {[key: string]: any}[] // {each question}[]
 }) {
+    // check if there are questions
+    if (Object.keys(questionData).length < 1) {return (
+        <ErrorMessage
+            errorMessage={`Library ${libraryData.id} does not exist`}
+            errorCode="404-notFound"
+            previousRoute="/library" />
+        );
+    };
 
     // ===== SECTION I: PARAMETERS ======
     // ==================================
@@ -417,30 +428,19 @@ export default function QuizInterface ({
                             <span className='font-bold'>|</span>
                             <span className='px-2 font-bold'>
                                 {contentInterfaceParams.questionNumber}</span>
-                            { contentInterfaceParams.shuffleQuestion 
-                                ? <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-6 h-6 inline">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3-3 3" />
-                                    </svg>
-                                </span>
-                                : null }
+                            { contentInterfaceParams.shuffleQuestion && <Icon icon='shuffle' size={16} />}
                         </div>
                         <div className='flex items-center w-max px-1 py-1 rounded-xl'>
-                            <h5 className='ml-2 mr-1'>
-                            {questionArray[contentInterfaceParams.currentQuestion].mode == 'flashcard'
-                                ? <span id="chip-quiz-neu" className='h-16'>
-                                    <span id='answer-type'>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
-                                    </svg>
-                                </span>
-                                    {questionArray[contentInterfaceParams.currentQuestion].mode}
-                                </span>
-                                : questionArray[contentInterfaceParams.currentQuestion].mode == 'singleChoice' 
-                                    ? <span id="chip-quiz-pri">
-                                        {questionArray[contentInterfaceParams.currentQuestion].mode}</span>
-                                    : <span id="chip-quiz-sec">{questionArray[contentInterfaceParams.currentQuestion].mode}</span>}
-                            </h5>
+                            <span
+                                id='clear-chip'
+                                className='text-sm font-semibold'
+                                style={{
+                                    backgroundColor: `rgba(${stringToHex(questionArray[contentInterfaceParams.currentQuestion].mode).r}, ${stringToHex(questionArray[contentInterfaceParams.currentQuestion].mode).g}, ${stringToHex(questionArray[contentInterfaceParams.currentQuestion].mode).b}, 0.4)`,
+                                    border: `solid 1px rgba(${stringToHex(questionArray[contentInterfaceParams.currentQuestion].mode).r}, ${stringToHex(questionArray[contentInterfaceParams.currentQuestion].mode).g}, ${stringToHex(questionArray[contentInterfaceParams.currentQuestion].mode).b}, 0.7)`
+                                    }}>
+                                <Icon icon={questionArray[contentInterfaceParams.currentQuestion].mode} size={16} />
+                                {questionArray[contentInterfaceParams.currentQuestion].mode}
+                            </span>
                         </div>
                     </div>
 
@@ -456,7 +456,7 @@ export default function QuizInterface ({
                             <div className='relative p-4 h-full flex flex-col justify-center items-center rounded-xl'>
 
                                 <div className='font-semibold text-xl text-start'>
-                                    {formatQuizText(questionArray[contentInterfaceParams.currentQuestion].question)}
+                                    {formatQuizText(questionArray[contentInterfaceParams.currentQuestion].questionText)}
                                 </div>
                                 
                                 {questionArray[contentInterfaceParams.currentQuestion].graded 

@@ -8,15 +8,19 @@ import EditorInterface from "./components/quiz-edit";
 import ContentController from "./components/controller";
 import LogUpdate from "./components/log-update";
 import uidObjectToArray from "@/app/libs/utils/uid-object-to-array";
+import Error from "next/error";
+import ErrorMessage from "@/app/component/error";
 
 const DEFAULT_BG = 'https://images.newscientist.com/wp-content/uploads/2022/08/08121245/SEI_117967799.jpg';
 
 export default function Interface ({
     libraryData,
-    questionData
+    questionData,
+    ggSheetImport
 }: {
     libraryData: {[key: string]: string}, // {uid: {library data}}
     questionData: {[key: string]: {[key: string]: any}} // {uid: {each question}}
+    ggSheetImport: {[key: string]: {[key: string]: any}} | undefined // {uid: {each question}}
 }) {
     // Connect to contentInterfaceContext
     const {contentInterfaceParams, setContentInterfaceParams} = useContentInterfaceContext();
@@ -35,12 +39,14 @@ export default function Interface ({
                 <ContentController />
                 <ConfirmPopUp />
                 <EditorInterface
-                libraryData={libraryData}
-                questionData={questionData} />
+                    libraryData={libraryData}
+                    questionData={questionData}
+                    ggSheetImport={ggSheetImport} />
             </>
         );
     } else {
-        return (
+        try {
+            return (
             <>
                 <ConfirmPopUp />
                 <main className="relative flex flex-col h-[100dvh] w-full">
@@ -57,5 +63,14 @@ export default function Interface ({
                 </main>
             </>
         );
+        } catch (error) {
+            return (
+                <ErrorMessage
+                    errorMessage={""}
+                    errorCode={"serverNotResponse"}
+                    previousRoute="/library"
+                />
+            );
+        }
     }
 }

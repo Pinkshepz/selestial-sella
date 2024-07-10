@@ -82,55 +82,63 @@ export default function SettingInterface ({
                 </div>
 
                 {/* Settings */}
-                <div className="flex flex-col mt-8"> 
-                    {/* Shuffle */}
-                    <div className="flex flex-wrap gap-4">
-                        {/* Shuffle Quiz */}
-                        <button 
-                            onClick={() => handleShuffleQuestionToggle()} id='theme-button'
-                            className={(contentInterfaceParams?.shuffleQuestion ? "true" : "") + " flex flex-row w-max justify-center items-center"}>
-                            <div className="flex flex-row items-center w-fit py-1">
-                            <Icon icon='shuffle' size={16}/>
-                                <h5 className="font-bold ml-2 mr-4 after:bg-slate-700 dark:after:bg-slate-200">Shuffle Questions</h5>
-                            </div>
-                            {/* ENABLED OR DISABLED */}
-                            {contentInterfaceParams?.shuffleQuestion ? 
-                                <h5 className="mr-1 mt-0 font-bold text-pri after:bg-pri">ENABLED</h5> : 
-                                <h5 className="mr-1 mt-0 font-bold">DISABLED</h5>}
-                        </button>
-                        {/* Shuffle Choice */}
-                        <button 
-                            onClick={() => handleShuffleChoiceToggle()} id='theme-button'
-                            className={(contentInterfaceParams?.shuffleChoice ? "true" : "") + " flex flex-row w-max justify-center items-center"}>
-                            <div className="flex flex-row items-center w-fit py-1">
+                {!(contentInterfaceParams.questionNumber < 1) && 
+                    <div className="flex flex-col mt-8"> 
+                        {/* Shuffle */}
+                        <div className="flex flex-wrap gap-4">
+                            {/* Shuffle Quiz */}
+                            <button 
+                                onClick={() => handleShuffleQuestionToggle()} id='theme-button'
+                                className={(contentInterfaceParams?.shuffleQuestion ? "true" : "") + " flex flex-row w-max justify-center items-center"}>
+                                <div className="flex flex-row items-center w-fit py-1">
                                 <Icon icon='shuffle' size={16}/>
-                                <h5 className="font-bold ml-2 mr-4 after:bg-slate-700 dark:after:bg-slate-200">Shuffle Choice</h5>
-                            </div>
-                            {/* ENABLED OR DISABLED */}
-                            {contentInterfaceParams?.shuffleChoice ? 
-                                <h5 className="mr-1 mt-0 font-bold text-pri after:bg-pri">ENABLED</h5> : 
-                                <h5 className="mr-1 mt-0 font-bold">DISABLED</h5>}
-                        </button>
-                    </div>
+                                    <h5 className="font-bold ml-2 mr-4 after:bg-slate-700 dark:after:bg-slate-200">Shuffle Questions</h5>
+                                </div>
+                                {/* ENABLED OR DISABLED */}
+                                {contentInterfaceParams?.shuffleQuestion ? 
+                                    <h5 className="mr-1 mt-0 font-bold text-pri after:bg-pri">ENABLED</h5> : 
+                                    <h5 className="mr-1 mt-0 font-bold">DISABLED</h5>}
+                            </button>
+                            {/* Shuffle Choice */}
+                            <button 
+                                onClick={() => handleShuffleChoiceToggle()} id='theme-button'
+                                className={(contentInterfaceParams?.shuffleChoice ? "true" : "") + " flex flex-row w-max justify-center items-center"}>
+                                <div className="flex flex-row items-center w-fit py-1">
+                                    <Icon icon='shuffle' size={16}/>
+                                    <h5 className="font-bold ml-2 mr-4 after:bg-slate-700 dark:after:bg-slate-200">Shuffle Choice</h5>
+                                </div>
+                                {/* ENABLED OR DISABLED */}
+                                {contentInterfaceParams?.shuffleChoice ? 
+                                    <h5 className="mr-1 mt-0 font-bold text-pri after:bg-pri">ENABLED</h5> : 
+                                    <h5 className="mr-1 mt-0 font-bold">DISABLED</h5>}
+                            </button>
+                        </div>
 
-                    {/* Question Number */}
-                    <div id='theme-button' className="px-2 mr-2 mt-4 inline max-w-[500px]">
-                        <div className="flex flex-row items-center">
-                        <div>
-                            <Icon icon='tag' size={16}/>
-                        </div>
-                            <h5 className="font-bold ml-2 mr-4 whitespace-nowrap">
-                                Total Questions</h5>
-                            {/* Slider number */}
-                            <h5 className="font-bold text-pri dark:text-pri-dark">{contentInterfaceParams.questionNumber}</h5>
-                        </div>
-                        <div className="flex flex-row items-center w-full">
-                            {/* INPUT - slider */}
-                            <input type="range" min={1} max={questionData.length} name='QuizNumRange' 
-                                value={contentInterfaceParams.questionNumber} onChange={e => handleNumSlider(Number(e.target.value))}/>
+                        {/* Question Number */}
+                        <div id='theme-button' className="px-2 mr-2 mt-4 inline max-w-[500px]">
+                            <div className="flex flex-row items-center">
+                            <div>
+                                <Icon icon='tag' size={16}/>
+                            </div>
+                                <h5 className="font-bold ml-2 mr-4 whitespace-nowrap">
+                                    Total Questions</h5>
+                                {/* Slider number */}
+                                <h5 className="font-bold text-pri dark:text-pri-dark">{contentInterfaceParams.questionNumber}</h5>
+                            </div>
+                            <div className="flex flex-row items-center w-full">
+                                {/* INPUT - slider */}
+                                <input type="range" min={1} max={questionData.length} name='QuizNumRange' 
+                                    value={contentInterfaceParams.questionNumber} onChange={e => handleNumSlider(Number(e.target.value))}/>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
+                
+                {(contentInterfaceParams.questionNumber < 1) && 
+                    <div className='mt-8 p-4 rounded-xl border border-sec dark:border-sec-dark font-bold text-sec dark:text-sec-dark bg-red/20 dark:bg-red-dark/20'>
+                        It seems that there is no question avaliable in this library. Go to editor mode to add new questions
+                    </div>
+                }
 
                 {/* Action */}
                 <div className="flex flex-wrap lg:flex-row mt-8 gap-8">
@@ -139,12 +147,14 @@ export default function SettingInterface ({
                             Go back
                         </button>
                     </Link>
-                    <a href="#top" className="text-md">
-                        <button id="theme-button"
-                            onClick={() => setContentInterfaceParams("pageSwitch", true)}>
-                            Start Quiz
-                        </button>
-                    </a>
+                    {!(contentInterfaceParams.questionNumber < 1) && 
+                        <a href="#top" className="text-md">
+                            <button id="theme-button"
+                                onClick={() => setContentInterfaceParams("pageSwitch", true)}>
+                                Start Quiz
+                            </button>
+                        </a>
+                    }
                     <div className='hidden lg:inline'>
                         <button
                             onClick={() => {

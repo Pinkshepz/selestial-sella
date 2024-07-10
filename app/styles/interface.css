@@ -34,7 +34,7 @@
 }
 
 .-scroll-none::-webkit-scrollbar { 
-display: none;  /* Safari and Chrome */
+    display: none;  /* Safari and Chrome */
 }
 
 .controller-menu {
@@ -48,6 +48,7 @@ display: none;  /* Safari and Chrome */
     border-radius: 8px;
     font-weight: 800;
     white-space: nowrap;
+    transition: all ease-in-out 200ms;
     animation: smooth-appear 400ms ease forwards;
 }
 
@@ -145,11 +146,11 @@ display: none;  /* Safari and Chrome */
 }
 
 article#changed-all {
-    border: dashed 2px var(--pri);
+    border: dashed 1px var(--pri);
 }
 
 #changed {
-    border: dashed 2px var(--pri);
+    border: dashed 1px var(--pri);
 }
 
 .card-edit {
@@ -160,6 +161,7 @@ article#changed-all {
     background-color: var(--highlight);
     border: solid 1px var(--border);
     border-radius: 12px;
+    box-shadow: 0 4px 8px 0 var(--shadow), 0 6px 20px 0 var(--shadow);
     overflow: hidden;
     transition: all ease-in-out 300ms;
     animation: smooth-appear 400ms ease forwards;
@@ -179,13 +181,13 @@ article#changed-all {
 .edit-placeholder {
     padding: 8px;
     border-radius: 8px;
-    border: solid 1px var(--border);
+    /* border: solid 1px var(--border); */
     font-size: 0.875rem;
     text-wrap: wrap;
 }
 
 .edit-placeholder:hover {
-    outline: solid 1px var(--pri);
+    outline: solid 1px var(--border);
 }
 
 .edit-placeholder:hover > label{
@@ -205,7 +207,7 @@ article#changed-all {
     margin-top: 16px;
     outline: none;
     word-break: normal;
-    border-bottom: solid 1px transparent;
+    border-bottom: solid 1px var(--border);
 }
 
 .edit-placeholder > .toggle-field {
@@ -229,6 +231,21 @@ article#changed-all {
 }
 
 .edit-placeholder:hover > .editor-field {
-    border-bottom: solid 1px var(--border);
     background-color: var(--highlight);
+}
+
+.add-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: dashed 1px var(--border);
+    border-radius: 12px;
+    white-space: nowrap;
+    transition: all ease-in-out 200ms;
+}
+
+.add-button:hover {
+    color: var(--pri);
+    border: dashed 1px var(--pri);
 }

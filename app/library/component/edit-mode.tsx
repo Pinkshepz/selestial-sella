@@ -136,7 +136,7 @@ export default function CardEditor ({
   };
 
   // toggle question mode ["singleChoice", "multipleChoice", "flashcard"]
-  const MODE: string[] = ["MCQ", "CARD", "MIXED"];
+  const MODE: string[] = ["MCQ", "FLASHCARD", "MIXED"];
   const toggleQuestionMode = (uid: string, currentMode: string): void => {
       const currentIndex: number = MODE.indexOf(currentMode);
       // change to next mode
@@ -184,13 +184,13 @@ export default function CardEditor ({
                 <div className="grid grid-cols-2 gap-2">
                     <button
                         onClick={() => {handleDuplicateLibrary(uid)}}
-                        className="flex flex-row justify-center items-center gap-2 py-1 rounded-[8px] border border-ter dark:border-ter-dark hover:text-amber hover:border-amber dark:hover:text-amber-dark dark:hover:border-amber-dark font-bold">
+                        className="flex flex-row justify-center items-center gap-2 py-1 rounded-[8px] border border-border dark:border-border-dark hover:text-amber hover:border-amber dark:hover:text-amber-dark dark:hover:border-amber-dark font-bold">
                         <Icon icon="copy" size={16} />
                         DUPLICATE
                     </button>
                     <button
                         onClick={() => {handleDeleteLibrary(uid)}}
-                        className="flex flex-row justify-center items-center gap-2 py-1 rounded-[8px] border border-ter dark:border-ter-dark hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
+                        className="flex flex-row justify-center items-center gap-2 py-1 rounded-[8px] border border-border dark:border-border-dark hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
                         <Icon icon="trash" size={16} />
                         DELETE
                     </button>

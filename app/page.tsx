@@ -5,10 +5,10 @@ import Hero from "./component/hero";
 const Home = () => {
 
   return (
-    <main >
+    <main>
       <Hero/>
     </main>
-  )
+  );
 }
 
 export default Home

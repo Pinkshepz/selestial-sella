@@ -32,7 +32,7 @@ export default function ContentController () {
             <div className="controller-island">
 
                 <button
-                    onClick={() => {}}
+                    onClick={() => setContentInterfaceParams("importSheetToggle", !contentInterfaceParams.importSheetToggle)}
                     className="controller-menu">
                     <Icon icon="table" size={16} />
                     <p>IMPORT GGSHEET</p>
