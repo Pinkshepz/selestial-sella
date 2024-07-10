@@ -11,7 +11,7 @@ const Hero = (): React.ReactNode => {
                     <strong className="mt-24 sm:mt-16 cursor-default">Discover the journey of Selec series</strong>
                     <div className="flex flex-wrap justify-center gap-4 mt-8 text-md font-bold">
                         <a href="" id="pri-chip">SelecGame</a>
-                        <a href="https://selestial.vercel.app" id="pri-chip">Selestial Selecard 1.3.6</a>
+                        <a href="https://selestial-selecard.vercel.app" id="pri-chip">Selestial Selecard 1.3.6</a>
                         <span id="pri-chip">Selestial Sella 2.0.0</span>
                     </div>
                 </article>

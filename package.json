@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "firebase": "^10.12.2",
+    "google-auth-library": "^9.11.0",
+    "googleapis": "^140.0.1",
     "next": "14.2.4",
     "next-themes": "^0.2.1",
     "react": "^18",

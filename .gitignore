@@ -21,7 +21,6 @@
 *.pem
 firekey.json
 .prettierrc
-app/libs/ggsheet
 
 # debug
 npm-debug.log*
