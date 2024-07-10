@@ -1,7 +1,7 @@
 #quiz-two-cols-fixed {
   display: flex;
   flex-direction: row;
-  height: calc(100dvh - 64px);
+  height: calc(100dvh);
   overflow: hidden;
 }
 

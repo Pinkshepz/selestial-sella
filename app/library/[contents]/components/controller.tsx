@@ -31,6 +31,20 @@ export default function ContentController () {
         <section className="controller-area">
             <div className="controller-island">
 
+                <button
+                    onClick={() => {}}
+                    className="controller-menu">
+                    <Icon icon="table" size={16} />
+                    <p>IMPORT GGSHEET</p>
+                </button>
+
+                <button
+                    onClick={() => {}}
+                    className="controller-menu">
+                    <Icon icon="card" size={16} />
+                    <p>CARD VIEW</p>
+                </button>
+
                 <div className="controller-menu">
                     <Icon icon="search" size={16} />
                     <span className="input-field"
@@ -41,7 +55,7 @@ export default function ContentController () {
                 </div>
 
                 <button
-                    onClick={() => setContentInterfaceParams("addLibraryToggle", !contentInterfaceParams.addLibraryToggle)}
+                    onClick={() => setContentInterfaceParams("addQuestionToggle", !contentInterfaceParams.addQuestionToggle)}
                     className="controller-menu">
                     <Icon icon="add" size={16} />
                     <p>ADD NEW QUESTION</p>

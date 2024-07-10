@@ -24,7 +24,7 @@ const DisplayCard = ({
         <article className="relative">
             <div className="card-2-main" key={cardUid}>
                 <div className="card-2-image">
-                    {cardImageLink && <img src={cardImageLink} alt="" height={1000} width={1000} />}
+                    {cardImageLink && <img src={cardImageLink} alt="" className='h-full' height={1000} width={1000} />}
                 </div>
                 <div className="card-2-content bg-black/40 dark:bg-black/60 text-white">
                     <h4 className="text-md font-bold">{cardName}</h4>
@@ -44,7 +44,7 @@ const DisplayCard = ({
                 </div>
             </div>
             <div className="card-2-glow-image">
-                {cardImageLink && <img src={cardImageLink} alt="" height={1000} width={1000} />}
+                {cardImageLink && <img src={cardImageLink} alt="" className='h-full' height={1000} width={1000} />}
             </div>
         </article>
     );

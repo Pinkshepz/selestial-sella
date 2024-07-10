@@ -1,7 +1,6 @@
 "use client";
 
 import { useContentInterfaceContext } from "../content-provider";
-import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
 import Icon from "@/public/icon";
 
 export default function LogUpdate () {
@@ -24,10 +23,6 @@ export default function LogUpdate () {
         filteredContent[Object.keys(log)[index]] = content;
         }
     };
-
-    const sortedFilteredContentData: {[key: string]: {[key: string]: string}} = sortUidObjectByValue(
-        filteredContent, "id", contentInterfaceParams.sortAscending
-    );
     
     let tableContent: React.ReactNode[] = [];
 
@@ -37,7 +32,7 @@ export default function LogUpdate () {
         REMAIN: "text-amber dark:text-amber-dark"
     };
 
-    Object.values(sortedFilteredContentData).map((log, index) => {
+    Object.values(filteredContent).map((log, index) => {
         const uid: string = Object.keys(filteredContent)[index];
         tableContent.push(
             <tr key={uid}>
@@ -45,14 +40,14 @@ export default function LogUpdate () {
                 <td className={"font-bold " + actionMap[log.action.toLocaleUpperCase() as keyof typeof actionMap]}
                     key={uid + "2"}>{log.action.toLocaleUpperCase()}</td>
                 <td className="font-bold" key={uid + "3"}>{log.id}</td>
-                <td key={uid + "4"}>{log.name}</td>
-                <td key={uid + "4"}>{log.error}</td>
+                <td key={uid + "4"}>{log.questionText}</td>
+                <td key={uid + "5"}>{log.error}</td>
             </tr>
         );
     });
 
     return (
-        <section className="flex flex-col justify-center items-center">
+        <section className="flex flex-col justify-center items-center mt-36">
                 <h1>Server log summary</h1>
                 <table className="theme-table m-12">
                     <thead key={"head"}>
@@ -60,7 +55,7 @@ export default function LogUpdate () {
                             <th>UID</th>
                             <th>Action</th>
                             <th>ID</th>
-                            <th>Name</th>
+                            <th>Question</th>
                             <th>Error</th>
                         </tr>
                     </thead>

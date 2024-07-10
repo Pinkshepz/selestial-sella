@@ -55,16 +55,12 @@ export default function SettingInterface ({
     }
 
     return (
-        <div className='min-h-[100lvh] relative pt-16 flex items-center justify-center'>
-        
+        <section className='relative w-[100dvw] sm:w-[70dvw] sm:h-[full] mx-auto mt-12 sm:m-auto'>
             {/* Start page static information */}
-            <div className="panel relative w-full md:w-[70dvw] h-full p-6 m-6">
-
-                {/* Course data */}
-                <p>{libraryData.id}</p>
+            <article className="panel relative w-full sm:w-[70dvw] h-[100dvh] sm:h-full p-6">
 
                 {/* Title */}
-                <h2 className='mt-2'>{libraryData.name}</h2>
+                <h2 className='mt-8 sm:mt-2'>{libraryData.name}</h2>
 
                 {/* Description */}
                 {libraryData.description && <p className='mt-6'>{libraryData.description}</p>}
@@ -137,34 +133,38 @@ export default function SettingInterface ({
                 </div>
 
                 {/* Action */}
-                <div className="flex flex-row mt-8 gap-8">
-                    <Link href={"./"} className="text-xl">
+                <div className="flex flex-wrap lg:flex-row mt-8 gap-8">
+                    <Link href={"./"} className="text-md">
                         <button id="theme-button">
                             Go back
                         </button>
                     </Link>
-                    <a href="#top" className="text-xl">
+                    <a href="#top" className="text-md">
                         <button id="theme-button"
                             onClick={() => setContentInterfaceParams("pageSwitch", true)}>
                             Start Quiz
                         </button>
                     </a>
-                    <button
-                        onClick={() => {
-                            setGlobalParams("popUp", true);
-                            setGlobalParams("popUpAction", contentInterfaceParams.editMode ? "turnEditModeOff" : "turnEditModeOn");
-                            setGlobalParams("popUpText", contentInterfaceParams.editMode ? 
-                                "Turn editing mode off. All unsaved changes will be ignored" : 
-                                `Turn editing mode on as ${globalParams.user.displayName}`);
-                                console.log(globalParams)
-                        }}
-                        id="theme-button"
-                        className="ml-auto">
-                        <Icon icon={contentInterfaceParams.editMode ? "edit" : "map"} size={16} />
-                        {contentInterfaceParams.editMode ? "EXIT EDIT MODE" : "ENTER EDIT MODE"}
-                    </button>
+                    <div className='hidden lg:inline'>
+                        <button
+                            onClick={() => {
+                                setGlobalParams("popUp", true);
+                                setGlobalParams("popUpAction", contentInterfaceParams.editMode ? "turnEditModeOff" : "turnEditModeOn");
+                                setGlobalParams("popUpText", contentInterfaceParams.editMode ? 
+                                    "Turn editing mode off. All unsaved changes will be ignored" : 
+                                    `Turn editing mode on as ${globalParams.user.displayName}`);
+                            }}
+                            id="theme-button"
+                            className="lg:ml-auto text-md">
+                            <Icon icon={contentInterfaceParams.editMode ? "edit" : "map"} size={16} />
+                            {contentInterfaceParams.editMode ? "Exit edit mode" : "Enter edit mode"}
+                        </button>
+                    </div>
                 </div>
+            </article>
+            <div className="card-2-glow-image">
+                {libraryData.image  && <img src={libraryData.image } alt="" height={1000} width={1000} className='h-full'/>}
             </div>
-        </div>
+        </section>
     );
 }

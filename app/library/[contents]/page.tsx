@@ -30,6 +30,7 @@ export default async function Quizset ({ params }: { params: {contents: string} 
             previousRoute="/library" />
         );
     };
+    console.log(uidObjectToArray(questionData))
     console.log(uidObjectToArray(questionData)[0].choices)
     return (
         <ContentInterfaceProvider>

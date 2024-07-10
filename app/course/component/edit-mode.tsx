@@ -188,10 +188,10 @@ export default function CardEditor ({
                         <Icon icon="image" size={16} />
                         <p>Image link</p>
                     </label>
-                    <input type="text" className="editor-field"
+                    <textarea className="editor-field"
                         onChange={e => onPlaceholderChange(uid, "image", e.target.value)}
                         defaultValue={bufferContent[uid].image}>
-                    </input>
+                    </textarea>
                 </div>
 
                 <div id={handleFootprint(uid, "id")} className="edit-placeholder">
@@ -199,10 +199,10 @@ export default function CardEditor ({
                         <Icon icon="tag" size={16} />
                         <p>ID</p>
                     </label>
-                    <input type="text" className="editor-field"
+                    <textarea className="editor-field"
                         onChange={e => onPlaceholderChange(uid, "id", e.target.value)}
                         defaultValue={bufferContent[uid].id}>
-                    </input>
+                    </textarea>
                 </div>
 
                 <div id={handleFootprint(uid, "name")} className="edit-placeholder">
@@ -210,10 +210,10 @@ export default function CardEditor ({
                         <Icon icon="h1" size={16} />
                         <p>Title name</p>
                     </label>
-                    <input type="text" className="editor-field"
+                    <textarea className="editor-field"
                         onChange={e => onPlaceholderChange(uid, "name", e.target.value)}
                         defaultValue={bufferContent[uid].name}>
-                    </input>
+                    </textarea>
                 </div>
 
                 <div id={handleFootprint(uid, "description")} className="edit-placeholder">
@@ -221,10 +221,10 @@ export default function CardEditor ({
                         <Icon icon="font" size={16} />
                         <p>Description</p>
                     </label>
-                    <input type="text" className="editor-field"
+                    <textarea className="editor-field"
                         onChange={e => onPlaceholderChange(uid, "description", e.target.value)}
                         defaultValue={bufferContent[uid].description}>
-                    </input>
+                    </textarea>
                 </div>
 
                 <div id={handleFootprint(uid, "tag")} className="edit-placeholder">
@@ -232,10 +232,10 @@ export default function CardEditor ({
                         <Icon icon="tag" size={16} />
                         <p>Tag</p>
                     </label>
-                    <input type="text" className="editor-field"
+                    <textarea className="editor-field"
                         onChange={e => onPlaceholderChange(uid, "tag", e.target.value.split(","))}
                         defaultValue={bufferContent[uid].tag}>
-                    </input>
+                    </textarea>
                 </div>
             </div>
         </article>

@@ -46,7 +46,7 @@ export default function LogUpdate () {
                     key={uid + "2"}>{log.action.toLocaleUpperCase()}</td>
                 <td className="font-bold" key={uid + "3"}>{log.id}</td>
                 <td key={uid + "4"}>{log.name}</td>
-                <td key={uid + "4"}>{log.error}</td>
+                <td key={uid + "5"}>{log.error}</td>
             </tr>
         );
     });

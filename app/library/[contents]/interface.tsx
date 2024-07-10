@@ -43,7 +43,7 @@ export default function Interface ({
         return (
             <>
                 <ConfirmPopUp />
-                <div className="relative flex flex-col">
+                <main className="relative flex flex-col h-[100dvh] w-full">
                     {(contentInterfaceParams.pageSwitch == false) && 
                     <SettingInterface
                         libraryData={libraryData}
@@ -53,12 +53,8 @@ export default function Interface ({
                     <QuizInterface
                         libraryData={libraryData}
                         questionData={uidObjectToArray(questionData)} />}
-        
-                    <img className='fixed z-[-50] w-full h-full object-cover' src={(libraryData.image !== '') 
-                        ? libraryData.image 
-                        : DEFAULT_BG} alt=''></img>
                     <div className="glass-cover-spread"></div>
-                </div>
+                </main>
             </>
         );
     }

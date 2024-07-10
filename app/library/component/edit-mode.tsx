@@ -135,6 +135,15 @@ export default function CardEditor ({
     }));
   };
 
+  // toggle question mode ["singleChoice", "multipleChoice", "flashcard"]
+  const MODE: string[] = ["MCQ", "CARD", "MIXED"];
+  const toggleQuestionMode = (uid: string, currentMode: string): void => {
+      const currentIndex: number = MODE.indexOf(currentMode);
+      // change to next mode
+      onPlaceholderChange(uid, "mode", MODE[(currentIndex + 1) % MODE.length]);
+      return;
+  }
+
     // Filter by search key
     let filteredContent: {[key: string]: {[key: string]: any}} = {};
     for (let index = 0; index < Object.values(bufferContent).length; index++) {
@@ -192,10 +201,10 @@ export default function CardEditor ({
                         <Icon icon="image" size={16} />
                         <p>Image link</p>
                     </label>
-                    <input type="text" className="editor-field"
+                    <textarea className="editor-field"
                         onChange={e => onPlaceholderChange(uid, "image", e.target.value)}
                         defaultValue={bufferContent[uid].image}>
-                    </input>
+                    </textarea>
                 </div>
 
                 <div id={handleFootprint(uid, "id")} className="edit-placeholder">
@@ -203,10 +212,10 @@ export default function CardEditor ({
                         <Icon icon="tag" size={16} />
                         <p>ID</p>
                     </label>
-                    <input type="text" className="editor-field"
+                    <textarea className="editor-field"
                         onChange={e => onPlaceholderChange(uid, "id", e.target.value)}
                         defaultValue={bufferContent[uid].id}>
-                    </input>
+                    </textarea>
                 </div>
 
                 <div id={handleFootprint(uid, "name")} className="edit-placeholder">
@@ -214,10 +223,10 @@ export default function CardEditor ({
                         <Icon icon="h1" size={16} />
                         <p>Library name</p>
                     </label>
-                    <input type="text" className="editor-field"
+                    <textarea className="editor-field"
                         onChange={e => onPlaceholderChange(uid, "name", e.target.value)}
                         defaultValue={bufferContent[uid].name}>
-                    </input>
+                    </textarea>
                 </div>
 
                 <div id={handleFootprint(uid, "description")} className="edit-placeholder">
@@ -225,10 +234,10 @@ export default function CardEditor ({
                         <Icon icon="font" size={16} />
                         <p>Description</p>
                     </label>
-                    <input type="text" className="editor-field"
+                    <textarea className="editor-field"
                         onChange={e => onPlaceholderChange(uid, "description", e.target.value)}
                         defaultValue={bufferContent[uid].description}>
-                    </input>
+                    </textarea>
                 </div>
 
                 <div id={handleFootprint(uid, "mode")} className="edit-placeholder">
@@ -236,15 +245,15 @@ export default function CardEditor ({
                         <Icon icon="tag" size={16} />
                         <p>Mode</p>
                     </label>
-                    <input type="text" className="editor-field"
-                        onChange={e => onPlaceholderChange(uid, "mode", e.target.value)}
-                        defaultValue={bufferContent[uid].mode}>
-                    </input>
+                    <button className="toggle-field"
+                        onClick={() => toggleQuestionMode(uid, bufferContent[uid].mode)}>
+                        {bufferContent[uid].mode}
+                    </button>
                 </div>
 
                 <div id={handleFootprint(uid, "shuffleQuestion")} className="edit-placeholder">
                     <label className="flex flex-row justify-start items-center">
-                        <Icon icon="shuffleQuestion" size={16} />
+                        <Icon icon="shuffle" size={16} />
                         <p>Shuffle question</p>
                     </label>
                     <button className={`toggle-field ${bufferContent[uid].shuffleQuestion ? "toggleOn" : "toggleOff"}`}
@@ -255,7 +264,7 @@ export default function CardEditor ({
 
                 <div id={handleFootprint(uid, "shuffleChoice")} className="edit-placeholder">
                     <label className="flex flex-row justify-start items-center">
-                        <Icon icon="shuffleChoice" size={16} />
+                        <Icon icon="shuffle" size={16} />
                         <p>Shuffle choice</p>
                     </label>
                     <button className={`toggle-field ${bufferContent[uid].shuffleChoice ? "toggleOn" : "toggleOff"}`}

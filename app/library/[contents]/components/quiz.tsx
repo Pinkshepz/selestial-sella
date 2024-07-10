@@ -57,7 +57,7 @@ export default function QuizInterface ({
     // =========================================
 
     const handleChoiceInteract = (choice_index: number, mode: string) => {
-        if (mode == "CARD") {
+        if (mode == "flashcard") {
             setQuestionArray((prev) => ([
                 ...prev.slice(0, contentInterfaceParams.currentQuestion),
                 {
@@ -75,7 +75,7 @@ export default function QuizInterface ({
             ]));
         } else if (!questionArray[contentInterfaceParams.currentQuestion].graded) {
             switch (mode) {
-                case "MCQ":
+                case "singleChoice":
                     for (let index = 0; index < Object.keys(questionArray[contentInterfaceParams.currentQuestion].choices).length; index++) {
                         
                         // De-select all questions
@@ -114,7 +114,7 @@ export default function QuizInterface ({
     
                     break;
     
-                case "MAQ":
+                case "multipleChoice":
     
                     setQuestionArray((prev) => ([
                         ...prev.slice(0, contentInterfaceParams.currentQuestion),
@@ -160,12 +160,12 @@ export default function QuizInterface ({
             ]));
 
             // Record choice score
-            if ((questionArray[contentInterfaceParams.currentQuestion].mode == "MCQ") && questionArray[contentInterfaceParams.currentQuestion].choices[index].answer) {
+            if ((questionArray[contentInterfaceParams.currentQuestion].mode == "singleChoice") && questionArray[contentInterfaceParams.currentQuestion].choices[index].answer) {
                 if (questionArray[contentInterfaceParams.currentQuestion].choices[index].answer == questionArray[contentInterfaceParams.currentQuestion].choices[index].selected) {
                     questionArray[contentInterfaceParams.currentQuestion].choices[index].score = 1;
                     score_count += 1;
                 }
-            } else if (questionArray[contentInterfaceParams.currentQuestion].mode == "MAQ") {
+            } else if (questionArray[contentInterfaceParams.currentQuestion].mode == "multipleChoice") {
                 if (questionArray[contentInterfaceParams.currentQuestion].choices[index].answer == questionArray[contentInterfaceParams.currentQuestion].choices[index].selected) {
                     questionArray[contentInterfaceParams.currentQuestion].choices[index].score = 1;
                     score_count += 1;
@@ -197,9 +197,9 @@ export default function QuizInterface ({
                     <button 
                         onClick={() => handleChoiceInteract(index, questionArray[contentInterfaceParams.currentQuestion].mode)}
                         id={(_choice["selected"] 
-                            ? questionArray[contentInterfaceParams.currentQuestion].mode == 'CARD'
+                            ? questionArray[contentInterfaceParams.currentQuestion].mode == 'flashcard'
                                 ? 'card-quiz-ter'
-                                : questionArray[contentInterfaceParams.currentQuestion].mode == 'MCQ' 
+                                : questionArray[contentInterfaceParams.currentQuestion].mode == 'singleChoice' 
                                     ? 'card-quiz-pri'
                                     : 'card-quiz-sec'
                             : 'card-quiz')}
@@ -225,13 +225,13 @@ export default function QuizInterface ({
 
                         {/* Answer report */}
 
-                        {questionArray[contentInterfaceParams.currentQuestion].mode == 'CARD'
+                        {questionArray[contentInterfaceParams.currentQuestion].mode == 'flashcard'
                                 ? <span id='answer-type'>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-6 h-6">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
                                     </svg>
                                 </span>
-                                : questionArray[contentInterfaceParams.currentQuestion].mode == 'MCQ' 
+                                : questionArray[contentInterfaceParams.currentQuestion].mode == 'singleChoice' 
                                     ? <span id='answer-type'>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-6 h-6">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-9Z" />
@@ -249,10 +249,10 @@ export default function QuizInterface ({
         } else {
             ChoiceObject.push(
                 <div id='card-quiz-container' className='_graded h-full w-full rounded-xl' key={index}>
-                    <button id={(questionArray[contentInterfaceParams.currentQuestion].mode == "CARD")
-                        // In case of CARD
+                    <button id={(questionArray[contentInterfaceParams.currentQuestion].mode == "flashcard")
+                        // In case of flashcard
                         ? 'card-quiz-ter'
-                        // Incase of MCQ
+                        // Incase of singleChoice
                         : _choice["choiceAnswer"]
                             // Answer is True
                             ? (_choice["selected"] 
@@ -263,13 +263,13 @@ export default function QuizInterface ({
                                 ? 'card-quiz-red' // Answer is False but choosed -> INCORRECT
                                 : 'card-quiz') // Answer is False and unchoosed -> CORRECT
                         }
-                        className={'w-full h-full text-lg sm:text-xl ' + ((questionArray[contentInterfaceParams.currentQuestion].mode != "CARD") && 'cursor-default')}
+                        className={'w-full h-full text-lg sm:text-xl ' + ((questionArray[contentInterfaceParams.currentQuestion].mode != "flashcard") && 'cursor-default')}
                         onClick={() => handleChoiceInteract(index, questionArray[contentInterfaceParams.currentQuestion].mode)}
                         >
                             
                             {/* Choice front text */}
 
-                            {(questionArray[contentInterfaceParams.currentQuestion].mode != "CARD")
+                            {(questionArray[contentInterfaceParams.currentQuestion].mode != "flashcard")
                                 && <div id='choice-front-text' className={(_choice["choiceText"] ? "py-1" : "")}>
                                 {formatQuizText(_choice["choiceText"])}
                             </div>}
@@ -296,10 +296,10 @@ export default function QuizInterface ({
 
                             {/* Answer report */}
 
-                            {(questionArray[contentInterfaceParams.currentQuestion].mode == "CARD")
-                                // In case of CARD
+                            {(questionArray[contentInterfaceParams.currentQuestion].mode == "flashcard")
+                                // In case of flashcard
                                 ? null
-                                // Incase of MCQ
+                                // Incase of singleChoice
                                 : _choice["choiceAnswer"]
                                     // Answer is True
                                     ? (_choice["selected"] 
@@ -362,7 +362,7 @@ export default function QuizInterface ({
                 id={(contentInterfaceParams.currentQuestion == i)
                     ? 'card-nav-accent'
                     : (questionArray[i].graded)
-                        ? (questionArray[i].mode == "CARD")
+                        ? (questionArray[i].mode == "flashcard")
                             ? 'card-nav-ter'
                             : (questionArray[i].score == questionArray[i].score_max)
                                 ? 'card-nav-green'
@@ -427,7 +427,7 @@ export default function QuizInterface ({
                         </div>
                         <div className='flex items-center w-max px-1 py-1 rounded-xl'>
                             <h5 className='ml-2 mr-1'>
-                            {questionArray[contentInterfaceParams.currentQuestion].mode == 'CARD'
+                            {questionArray[contentInterfaceParams.currentQuestion].mode == 'flashcard'
                                 ? <span id="chip-quiz-neu" className='h-16'>
                                     <span id='answer-type'>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -436,7 +436,7 @@ export default function QuizInterface ({
                                 </span>
                                     {questionArray[contentInterfaceParams.currentQuestion].mode}
                                 </span>
-                                : questionArray[contentInterfaceParams.currentQuestion].mode == 'MCQ' 
+                                : questionArray[contentInterfaceParams.currentQuestion].mode == 'singleChoice' 
                                     ? <span id="chip-quiz-pri">
                                         {questionArray[contentInterfaceParams.currentQuestion].mode}</span>
                                     : <span id="chip-quiz-sec">{questionArray[contentInterfaceParams.currentQuestion].mode}</span>}
@@ -472,7 +472,7 @@ export default function QuizInterface ({
                     </div>
 
                     {/* 03 - Choice */}
-                    <div className={'-scroll-none relative h-full lg:h-full w-full flex flex-col lg:grid gap-4 ' + (questionArray[contentInterfaceParams.currentQuestion].mode == 'CARD'
+                    <div className={'-scroll-none relative h-full lg:h-full w-full flex flex-col lg:grid gap-4 ' + (questionArray[contentInterfaceParams.currentQuestion].mode == 'flashcard'
                         ? 'lg:grid-cols-1'
                         : Object.keys(questionArray[contentInterfaceParams.currentQuestion].choices).length == 1
                             ? 'lg:grid-cols-1'
@@ -497,7 +497,7 @@ export default function QuizInterface ({
                 </div>
 
                 { !((questionArray[contentInterfaceParams.currentQuestion].choices[0].graded) ||
-                    (questionArray[contentInterfaceParams.currentQuestion].mode == "CARD")) 
+                    (questionArray[contentInterfaceParams.currentQuestion].mode == "flashcard")) 
                     
                     ? <button className="text-xl h-16 w-full"
                         onClick={() => gradeAllChoices()}>

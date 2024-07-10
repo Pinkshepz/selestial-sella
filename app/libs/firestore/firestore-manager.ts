@@ -22,7 +22,8 @@ export default async function firestoreUpdate ({
             if (!editedData[euid].id || !editedData[euid].name) {
                 resultLog[euid] = {
                     action: "reject",
-                    id: editedData[euid].id,name: editedData[euid].name, 
+                    id: editedData[euid].id,
+                    name: editedData[euid].name, 
                     result: "", 
                     error: `${!editedData[euid].id && "id is not specified"} \n ${!editedData[euid].name && "name is not specified"}`
                 };
@@ -37,7 +38,8 @@ export default async function firestoreUpdate ({
                 !legitMode.includes(editedData[euid].mode as string)) {
                 resultLog[euid] = {
                     action: "reject",
-                    id: editedData[euid].id,name: editedData[euid].name, 
+                    id: editedData[euid].id,
+                    name: editedData[euid].name, 
                     result: "", 
                     error: `
                         ${!editedData[euid].id && "id is not specified\n"} 
@@ -54,7 +56,8 @@ export default async function firestoreUpdate ({
             const {result, error} = await firestoreWrite({collectionName: collectionName, id: euid, data: editedData[euid]});
             resultLog[euid] = {
                 action: "write",
-                id: editedData[euid].id,name: editedData[euid].name, 
+                id: editedData[euid].id,
+                name: editedData[euid].name, 
                 result: result, 
                 error: error
             };

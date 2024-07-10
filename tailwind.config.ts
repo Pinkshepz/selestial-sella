@@ -40,7 +40,7 @@ const config: Config = {
         },
         border: {
           DEFAULT: "#e2e8f0",
-          dark: "#828d9f"
+          dark: "#1f2937"
         }
       }
     }

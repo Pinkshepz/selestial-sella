@@ -49,8 +49,8 @@ html.dark {
   --border: rgba(31, 41, 55, 0.7);
   /* blue-400 #60a5fa /100 */
   --pri: rgba(96, 165, 250, 1.0);
-  /* blue-400 #60a5fa /20 */
-  --pri-accent: rgba(96, 165, 250, 0.2);
+  /* blue-400 #60a5fa /70 */
+  --pri-accent: rgba(96, 165, 250, 0.7);
   /* rose-400 #fb7185 /100 */
   --sec: rgba(251, 113, 133, 1.0);
   /* rose-400 #fb7185 /20 */
@@ -103,6 +103,7 @@ html {
   background-color: var(--base-inverse);
   -ms-overflow-style: none;  /* Internet Explorer 10+ */
   scrollbar-width: none;  /* Firefox */
+  transition: all ease-in-out 200ms;
 }
 
 html::-webkit-scrollbar { 
@@ -110,10 +111,13 @@ html::-webkit-scrollbar {
 }
 
 input:focus, input,
-select:focus,
+select:focus, textarea,
 textarea:focus {
-    outline: none;
-    background-color: rgba(0, 0, 0, 0);
+  outline: none;
+  background-color: rgba(0, 0, 0, 0);
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+  height: fit-content;
 }
 
 #brand {
@@ -180,7 +184,8 @@ nav {
   background-color: var(--highlight-strong);
   border-bottom: solid 1px var(--border);
   backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px)
+  -webkit-backdrop-filter: blur(16px);
+  transition: all ease-in-out 100ms;
 }
 
 footer {
@@ -360,6 +365,7 @@ footer {
   justify-content: center;
   gap: 8px;
   align-items: center;
+  height: min-content;
   padding: 8px 16px 8px 16px;
   border-radius: 12px;
   border: solid 2px var(--border);
