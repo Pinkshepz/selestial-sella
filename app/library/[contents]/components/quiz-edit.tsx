@@ -35,12 +35,37 @@ export default function EditorInterface ({
     // recent section of question
     const [recentlyUsedSection, setRecentlyUsedSection] = useState("");
 
+    // toggle reset id
+    const [toggleResetId, setToggleResetId] = useState(false);
+
+    // target uid to scroll to after id has been already reset
+    const [targetUidScroll, setTargetUidScroll] = useState("");
+
+    // track cursor position. Update when cursor position is changed
+    const [cursorPosY, setCursorPosY] = useState(0); // cursor position
+    const setCoordinate = (e: MouseEvent) => {
+        setCursorPosY(e.clientY);
+    };
+    
+    useEffect(() => {
+        window.addEventListener("mousemove", setCoordinate);
+    }, [setCoordinate]);
+
     // ref for elements
     const elementsRef: {[key: string]: any} = useRef({});
 
     // go to ref
-    const scrollToRef = (refKey: string) => {
-        elementsRef.current[refKey].scrollIntoView({ behavior: 'smooth'});
+    const scrollToRef = (refKey: string): void => {
+        try {
+            elementsRef.current[refKey].scrollIntoView({
+                block: "start",
+                behavior: "smooth"
+            });
+            return;
+        } catch (error) {
+            return;
+        }
+        setTargetUidScroll("");
     };
 
     // detect footprint of question and return id="changed"
@@ -62,27 +87,52 @@ export default function EditorInterface ({
         }
     };
 
+    // handle reset id toggle
+    useEffect(() => {
+        
+        if (toggleResetId) {
+            const processData = () => {
+                let processedData: typeof bufferQuestion = {};
+                // assign new question number and library uid
+                Object.keys(sortUidObjectByValue(bufferQuestion, "id", true)).map((uid, index) => {
+                    processedData[uid] = {
+                        ...bufferQuestion[uid],
+                        id: index + 1
+                    }
+                });
+                setToggleResetId(false);
+                scrollToRef(targetUidScroll);
+                return sortUidObjectByValue(processedData, "id", true);
+            }
+
+            setBufferQuestion(processData());
+        }
+    }, [toggleResetId]);
+
     // duplicate question
     const handleDuplicateQuestion = (uid: string): void => {
-    const newUid = makeid(length=20);
-    setBufferQuestion((prev) => ({
-        ...prev,
-        [newUid]: {
-            mode: bufferQuestion[uid].mode,
-            libraryFootprint: bufferQuestion[uid].libraryFootprint,
-            questionSection: bufferQuestion[uid].questionSection,
-            questionImage: bufferQuestion[uid].questionImage,
-            questionText: bufferQuestion[uid].questionText,
-            questionBackText: bufferQuestion[uid].questionBackText,
-            library: bufferQuestion[uid].library,
-            choices: bufferQuestion[uid].choices
-        }
-    }));
+        const newUid = makeid(length=20);
+        setBufferQuestion((prev) => ({
+            ...prev,
+            [newUid]: {
+                mode: bufferQuestion[uid].mode,
+                libraryFootprint: bufferQuestion[uid].libraryFootprint,
+                questionSection: bufferQuestion[uid].questionSection,
+                questionImage: bufferQuestion[uid].questionImage,
+                questionText: bufferQuestion[uid].questionText,
+                questionBackText: bufferQuestion[uid].questionBackText,
+                library: bufferQuestion[uid].library,
+                id: bufferQuestion[uid].id + 0.1,
+                aaa: 1,
+                choices: bufferQuestion[uid].choices
+            }
+        }));
+        setTargetUidScroll(newUid);
+        setToggleResetId(true);
     }
 
     // duplicate question choice
     const handleDuplicateQuestionChoice = (uid: string, targetIndex: number): void => {
-        const newUid = makeid(length=20);
         setBufferQuestion((prev) => ({
             ...prev,
             [uid]: {
@@ -124,28 +174,31 @@ export default function EditorInterface ({
 
     // handle add new question
     useEffect(() => {
-    if (contentInterfaceParams.addQuestionToggle) {
-        const newUid = makeid(length=20);
-        setBufferQuestion((prev) => ({
-            ...prev,
-            [newUid]: {
-                mode: recentlyUsedMode,
-                libraryFootprint: libraryData.id, // for recover deleted library
-                questionSection: recentlyUsedSection,
-                questionImage: "",
-                questionText: "",
-                questionBackText: "",
-                library: [libraryData.uid],
-                choices: [{
-                    choiceImage: "",
-                    choiceAnswer: false,
-                    choiceBackText: "",
-                    choiceText: ""
-                }] // may be have another parameter determining amount of choices added
-            }
-        }));
-    }
-    setContentInterfaceParams("addQuestionToggle", false)
+        if (contentInterfaceParams.addQuestionToggle) {
+            const newUid = makeid(length=20);
+            setBufferQuestion((prev) => ({
+                ...prev,
+                [newUid]: {
+                    mode: recentlyUsedMode,
+                    libraryFootprint: libraryData.id, // for recover deleted library
+                    questionSection: recentlyUsedSection,
+                    questionImage: "",
+                    questionText: "",
+                    questionBackText: "",
+                    library: [libraryData.uid],
+                    id: Object.keys(bufferQuestion).length + 1,
+                    choices: [{
+                        choiceImage: "",
+                        choiceAnswer: false,
+                        choiceBackText: "",
+                        choiceText: ""
+                    }] // may be have another parameter determining amount of choices added
+                }
+            }));
+            setTargetUidScroll(newUid);
+            setToggleResetId(true);
+        }
+        setContentInterfaceParams("addQuestionToggle", false)
     }, [contentInterfaceParams.addQuestionToggle]);
 
     // handle add new question choice
@@ -177,8 +230,14 @@ export default function EditorInterface ({
                 [targetKey]: targetValue
             }
         }));
+        // remember recent section
         if (targetKey == "questionSection") {
             setRecentlyUsedSection(targetValue);
+        }
+        // if id change -> reset id
+        if (targetKey == "id") {
+            setToggleResetId(true);
+            setTargetUidScroll(uid);
         }
     };
 
@@ -210,7 +269,6 @@ export default function EditorInterface ({
         return;
     };
 
-
     // discard all changes if toggle
     useEffect(() => {
         if (contentInterfaceParams.deleteAllChangesToggle && 
@@ -221,68 +279,68 @@ export default function EditorInterface ({
             setGlobalParams("popUpConfirm", false);
             setGlobalParams("popUpAction", "");
         }
-        }, [globalParams.popUpConfirm]);
-    
-        // discard all changes if toggle
-        useEffect(() => {
-        if (contentInterfaceParams.discardChangesToggle && 
+    }, [globalParams.popUpConfirm]);
+
+    // discard all changes if toggle
+    useEffect(() => {
+    if (contentInterfaceParams.discardChangesToggle && 
+        globalParams.popUpConfirm &&
+        (globalParams.popUpAction === "discardChangesToggle")) {
+        setBufferQuestion(questionData);
+        setContentInterfaceParams("discardChangesToggle", false);
+        setGlobalParams("popUpConfirm", false);
+        setGlobalParams("popUpAction", "");
+    }
+    }, [globalParams.popUpConfirm]);
+
+    // save all changes if toggle 
+    useEffect(() => {
+        if (contentInterfaceParams.saveChangesToggle &&
             globalParams.popUpConfirm &&
-            (globalParams.popUpAction === "discardChangesToggle")) {
-            setBufferQuestion(questionData);
-            setContentInterfaceParams("discardChangesToggle", false);
-            setGlobalParams("popUpConfirm", false);
-            setGlobalParams("popUpAction", "");
-        }
-        }, [globalParams.popUpConfirm]);
-    
-        // save all changes if toggle 
-        useEffect(() => {
-            if (contentInterfaceParams.saveChangesToggle &&
-                globalParams.popUpConfirm &&
-                (globalParams.popUpAction == "saveChangesToggle")) {
-                setGlobalParams("isLoading", true);
-                const libraryUid = libraryData.uid;
-                delete libraryData.uid;
+            (globalParams.popUpAction == "saveChangesToggle")) {
+            setGlobalParams("isLoading", true);
+            const libraryUid = libraryData.uid;
+            delete libraryData.uid;
 
-                const processData = (rawData: typeof bufferQuestion) => {
-                    let processedData: typeof bufferQuestion = {};
-                    // assign new question number and library uid
-                    Object.keys(rawData).map((uid, index) => {
-                        processedData[uid] = {
-                            ...bufferQuestion[uid],
-                            id: index + 1,
-                            library: libraryUid
-                        }
-                    });
-                    return sortUidObjectByValue(processedData, "id", true);
-                }
-
-                // update library data
-                firestoreUpdate({
-                    collectionName: "library",
-                    originalData: {[libraryUid]: libraryData}, 
-                    editedData: {[libraryUid]: {
-                        ...libraryData,
-                        totalQuestion: Object.keys(bufferQuestion).length
-                    }}
-                });
-
-                // update all question data
-                firestoreUpdate({
-                    collectionName: "content",
-                    originalData: questionData, 
-                    editedData: processData(bufferQuestion)
-                }).then(
-                    (data) => {
-                        setGlobalParams("popUpConfirm", false);
-                        setGlobalParams("popUpAction", "");
-                        setContentInterfaceParams("saveChangesToggle", false);
-                        setContentInterfaceParams("logUpdate", data);
-                        setContentInterfaceParams("editMode", false);
+            const processData = (rawData: typeof bufferQuestion) => {
+                let processedData: typeof bufferQuestion = {};
+                // assign new question number and library uid
+                Object.keys(sortUidObjectByValue(rawData, "id", true)).map((uid, index) => {
+                    processedData[uid] = {
+                        ...bufferQuestion[uid],
+                        id: index + 1,
+                        library: libraryUid
                     }
-                );
-            };
-        }, [globalParams.popUpConfirm]);
+                });
+                return sortUidObjectByValue(processedData, "id", true);
+            }
+
+            // update library data
+            firestoreUpdate({
+                collectionName: "library",
+                originalData: {[libraryUid]: libraryData}, 
+                editedData: {[libraryUid]: {
+                    ...libraryData,
+                    totalQuestion: Object.keys(bufferQuestion).length
+                }}
+            });
+
+            // update all question data
+            firestoreUpdate({
+                collectionName: "content",
+                originalData: questionData, 
+                editedData: processData(bufferQuestion)
+            }).then(
+                (data) => {
+                    setGlobalParams("popUpConfirm", false);
+                    setGlobalParams("popUpAction", "");
+                    setContentInterfaceParams("saveChangesToggle", false);
+                    setContentInterfaceParams("logUpdate", data);
+                    setContentInterfaceParams("editMode", false);
+                }
+            );
+        };
+    }, [globalParams.popUpConfirm]);
 
     // listen gg sheet import
     useEffect(() => {
@@ -318,14 +376,14 @@ export default function EditorInterface ({
     // Render questions and choices
     let elements: Array<React.ReactNode> = [];
 
-    Object.values(sortedFilteredQuestionData).map((content, index) => {
+    Object.values(sortedFilteredQuestionData).map((question, index) => {
         // get uid as object key
         const uid = Object.keys(sortedFilteredQuestionData)[index];
 
         // pre-render choices
         const choicesElements: React.ReactNode[] = [];
 
-        const questionChoices: {[key: string]: any}[] = sortedFilteredQuestionData[uid].choices;
+        const questionChoices: {[key: string]: any}[] = question.choices;
 
         questionChoices.map((choice, index) => {
             choicesElements.push(
@@ -389,7 +447,7 @@ export default function EditorInterface ({
                     </div>
                 </div>
             );
-        })
+        });
 
         choicesElements.push(
             <button
@@ -402,36 +460,34 @@ export default function EditorInterface ({
 
         elements.push(
             <section id={handleFootprintQuestion(uid, "")} className="card-edit" 
-                key={uid} ref={(element) => {elementsRef.current[uid] = element}}>
+                key={uid}>
+                <div aria-label="ref" className="absolute"
+                    ref={(element) => {elementsRef.current[uid] = element}}
+                    style={{top: `calc(-${cursorPosY}px + 80px)`}}></div>
                 <article aria-label="question-header" className="flex flex-wrap gap-4 p-4">
                     <div
                         className="flex flex-row justify-start items-center gap-2 font-bold">
-                        {/* <button
-                            onClick={() => toggleQuestionMode(uid, bufferQuestion[uid].mode)}
+                        <button
+                            onClick={() => {onPlaceholderQuestionChange(uid, "id", bufferQuestion[uid].id + 1.5)}}
                             className="edit-placeholder flex flex-row justify-start items-center gap-2 font-bold">
                             <label
                                 className='text-sm font-semibold rounded-full'>
                                 <Icon icon="down" size={18} />
                             </label>
-                        </button> */}
+                        </button>
                         <span
                             id='clear-chip'
                             className='text-2xl font-semibold'>
-                            Q{index + 1}
+                            {bufferQuestion[uid].id}
                         </span>
-                        {/* <button
-                            onClick={() => toggleQuestionMode(uid, bufferQuestion[uid].mode)}
+                        <button
+                            onClick={() => {onPlaceholderQuestionChange(uid, "id", bufferQuestion[uid].id - 1.5)}}
                             className="edit-placeholder flex flex-row justify-start items-center gap-2 font-bold">
                             <label
                                 className='text-sm font-semibold rounded-full'>
                                 <Icon icon="up" size={18} />
                             </label>
-                        </button> */}
-                    <span
-                        id='clear-chip'
-                        className='text-2xl font-semibold'>
-                        {bufferQuestion[uid].library}
-                    </span>
+                        </button>
                     </div>
                     <button
                         onClick={() => toggleQuestionMode(uid, bufferQuestion[uid].mode)}
@@ -521,17 +577,18 @@ export default function EditorInterface ({
     });
 
     // question nav
-    let current_topic: string = Object.values(sortedFilteredQuestionData)[0].questionSection;
-    let question_nav: React.ReactNode[] = [<h5 className="mb-4" key={current_topic + "0"}>{current_topic}</h5>];
     let same_topic_choice_nav: React.ReactNode[] = [];
-
-    if (Object.keys(bufferQuestion).length > 0) {
-        for (let i = 0; i < contentInterfaceParams.questionNumber; i++) {
+    let question_nav: React.ReactNode[] = [];
+    
+    if (Object.keys(sortedFilteredQuestionData).length > 0) {
+        let current_topic: string = Object.values(sortedFilteredQuestionData)[0].questionSection;
+        question_nav.push(<h5 className="mb-4" key={current_topic + "0"}>{current_topic}</h5>);
+        for (let i = 0; i < Object.keys(sortedFilteredQuestionData).length; i++) {
             // Check topic
             if (current_topic != Object.values(sortedFilteredQuestionData)[i].questionSection) {
                 // Push current topic questions
                 question_nav.push(
-                    <div key={current_topic + "nav"} className='pb-4 grid grid-cols-5 gap-2'>
+                    <div key={current_topic + "nav" + i} className='pb-4 grid grid-cols-5 gap-2'>
                         {same_topic_choice_nav}
                     </div>
                 );
@@ -569,7 +626,7 @@ export default function EditorInterface ({
 
     // Push current topic questions, lastly
     question_nav.push(
-        <div className='pb-4 grid grid-cols-5 gap-2'>
+        <div className='pb-4 grid grid-cols-5 gap-2' key="add-container">
             {same_topic_choice_nav}
         </div>
     );
@@ -580,19 +637,18 @@ export default function EditorInterface ({
 
                 <aside id="quiz-col-scroll-aside" className='-scroll-none relative pt-[90px]' key='interface-aside'>
                     <div className="border-t border-border dark:border-border-dark"></div>
-                    <section className='m-4' key='interface-aside-section-1'>
-                        <h3 className='my-4'>{libraryData.name}</h3>
-                    </section>
-
-                    <section className='mx-4 h-max overflow-y-scroll -scroll-none' key='interface-aside-section-2'>
+                    <section className='mx-4 pt-4 h-max overflow-y-scroll -scroll-none' key='interface-aside-section-2'>
                         {question_nav}
                     </section>
                 </aside>
 
                 <main id="quiz-col-scroll-main" className='-scroll-none' key='interface-main'>
-                    <div className="flex flex-col gap-8 mt-[90px] mx-4">
+                    <section className='mt-[90px] m-4' key='interface-aside-section-1'>
+                        <h3 className='my-4'>{libraryData.name}</h3>
+                    </section>
+                    <section className="flex flex-col gap-8 mx-4">
                         {elements}
-                    </div>
+                    </section>
                 </main>
             </div>
             <div className="glass-cover-spread"></div>

@@ -23,7 +23,7 @@ const Hero = (): React.ReactNode => {
 
             </section>
         </>
-    )
+    );
 }
 
 export default Hero

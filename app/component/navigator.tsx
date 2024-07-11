@@ -108,5 +108,5 @@ export default function GlobalNavigator (): React.ReactNode {
 
       </div>
     </nav>
-  )
+  );
 }
