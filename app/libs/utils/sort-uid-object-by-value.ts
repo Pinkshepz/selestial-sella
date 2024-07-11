@@ -13,7 +13,7 @@ export default function sortUidObjectByValue (
     let sortable = [];
 
     for (let uid in object) {
-        if (typeof object[uid] == "string") {
+        if (typeof object[uid][sortValue] == "string") {
             // turn string to ascii code -> sort both alphabet and number
             let ascii: number = 0;
             for (let index = 0; index < object[uid][sortValue].length; index++) {
