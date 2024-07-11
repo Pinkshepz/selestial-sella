@@ -522,7 +522,7 @@ export default function EditorInterface ({
 
     // question nav
     let current_topic: string = Object.values(sortedFilteredQuestionData)[0].questionSection;
-    let question_nav: React.ReactNode[] = [<h5 className="mb-4">{current_topic}</h5>];
+    let question_nav: React.ReactNode[] = [<h5 className="mb-4" key={current_topic + "0"}>{current_topic}</h5>];
     let same_topic_choice_nav: React.ReactNode[] = [];
 
     for (let i = 0; i < contentInterfaceParams.questionNumber; i++) {
@@ -530,7 +530,7 @@ export default function EditorInterface ({
         if (current_topic != Object.values(sortedFilteredQuestionData)[i].questionSection) {
             // Push current topic questions
             question_nav.push(
-                <div className='pb-4 grid grid-cols-5 gap-2'>
+                <div key={current_topic + "nav"} className='pb-4 grid grid-cols-5 gap-2'>
                     {same_topic_choice_nav}
                 </div>
             );
@@ -538,7 +538,7 @@ export default function EditorInterface ({
             // Set new topic
             current_topic = Object.values(sortedFilteredQuestionData)[i].questionSection;
             question_nav.push(
-                <h5 className="mb-4">{current_topic}</h5>
+                <h5 className="mb-4" key={current_topic + i}>{current_topic}</h5>
             );
             
             // Reset
