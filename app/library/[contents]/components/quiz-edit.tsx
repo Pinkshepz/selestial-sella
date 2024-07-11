@@ -525,36 +525,38 @@ export default function EditorInterface ({
     let question_nav: React.ReactNode[] = [<h5 className="mb-4" key={current_topic + "0"}>{current_topic}</h5>];
     let same_topic_choice_nav: React.ReactNode[] = [];
 
-    for (let i = 0; i < contentInterfaceParams.questionNumber; i++) {
-        // Check topic
-        if (current_topic != Object.values(sortedFilteredQuestionData)[i].questionSection) {
-            // Push current topic questions
-            question_nav.push(
-                <div key={current_topic + "nav"} className='pb-4 grid grid-cols-5 gap-2'>
-                    {same_topic_choice_nav}
-                </div>
+    if (Object.keys(bufferQuestion).length > 0) {
+        for (let i = 0; i < contentInterfaceParams.questionNumber; i++) {
+            // Check topic
+            if (current_topic != Object.values(sortedFilteredQuestionData)[i].questionSection) {
+                // Push current topic questions
+                question_nav.push(
+                    <div key={current_topic + "nav"} className='pb-4 grid grid-cols-5 gap-2'>
+                        {same_topic_choice_nav}
+                    </div>
+                );
+    
+                // Set new topic
+                current_topic = Object.values(sortedFilteredQuestionData)[i].questionSection;
+                question_nav.push(
+                    <h5 className="mb-4" key={current_topic + i}>{current_topic}</h5>
+                );
+                
+                // Reset
+                same_topic_choice_nav = [];
+            }
+    
+            same_topic_choice_nav.push(
+                <button
+                    id='card-nav-neu'
+                    key={i}
+                    onClick={() => scrollToRef(Object.keys(sortedFilteredQuestionData)[i])}>
+                    {i + 1}
+                </button>
             );
-
-            // Set new topic
-            current_topic = Object.values(sortedFilteredQuestionData)[i].questionSection;
-            question_nav.push(
-                <h5 className="mb-4" key={current_topic + i}>{current_topic}</h5>
-            );
-            
-            // Reset
-            same_topic_choice_nav = [];
         }
-
-        same_topic_choice_nav.push(
-            <button
-                id='card-nav-neu'
-                key={i}
-                onClick={() => scrollToRef(Object.keys(sortedFilteredQuestionData)[i])}>
-                {i + 1}
-            </button>
-        );
     }
-
+    
     same_topic_choice_nav.push(
         <button
             id='card-nav-neu'
