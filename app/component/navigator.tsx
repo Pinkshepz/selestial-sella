@@ -68,10 +68,14 @@ export default function GlobalNavigator (): React.ReactNode {
 
         {/* section links */}
         <div className="hidden md:flex flex-row justify-center items-center gap-8 pr-8 text-md border-r border-ter dark:border-ter-dark">
-          <Link href={"/course"} className="-button-line relative">
+          <Link 
+            onClick={() => setGlobalParams("isLoading", true)}
+            href={"/course"} className="-button-line">
             <h5>Course</h5>
           </Link>
-          <Link href={"/library"} className="-button-line relative">
+          <Link 
+            onClick={() => setGlobalParams("isLoading", true)}
+            href={"/library"} className="-button-line">
             <h5>Library</h5>
           </Link>
         </div>

@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+
 import { useGlobalContext } from "../provider";
 
 import ConfirmPopUp from "@/app/component/confirm-popup";
@@ -14,10 +16,14 @@ export default function Interface ({
     // connect to global context
     const {globalParams, setGlobalParams} = useGlobalContext();
 
+    useEffect(() => {
+        setGlobalParams("isLoading", false);
+    }, []);
+
     return (
         <>
             <ConfirmPopUp />
-            <main className="relative flex flex-col mt-36 pt-2 mb-16" aria-haspopup={true} aria-disabled={globalParams.popUp}>
+            <main className="relative flex flex-col mt-36 pt-2 mb-16">
                 <Controller />
                 <CourseDisplay contentData={contentData} />
             </main>

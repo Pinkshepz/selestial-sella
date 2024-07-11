@@ -8,6 +8,7 @@ import './styles/interface.css'
 import "./libs/firebase/fireclient"
 
 import GlobalNavigator from './component/navigator'
+import Loading from './component/loading'
 import ThemeProvider from './provider'
 import { GlobalProvider } from "./provider";
 
@@ -28,6 +29,7 @@ export default function RootLayout({
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem >
               {children}
               <GlobalNavigator />
+              <Loading />
             </ThemeProvider>
           </body>
         </html>

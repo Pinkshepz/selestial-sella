@@ -1,5 +1,7 @@
 "use client";
 
+import { use, useEffect } from "react";
+
 import { useGlobalContext } from "../provider";
 
 import ConfirmPopUp from "@/app/component/confirm-popup";
@@ -14,9 +16,9 @@ export default function Interface ({
     // connect to global context
     const {globalParams, setGlobalParams} = useGlobalContext();
 
-    if (globalParams.isLoading) {
+    useEffect(() => {
         setGlobalParams("isLoading", false);
-    }
+    }, []);
 
     return (
         <>

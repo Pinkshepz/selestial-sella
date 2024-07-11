@@ -5,8 +5,8 @@ import { usePathname } from "next/navigation";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { type ThemeProviderProps } from "next-themes/dist/types";
 
-import app from "./libs/firebase/fireclient";
 import { getAuth } from "firebase/auth";
+import app from "./libs/firebase/fireclient";
 
 // manage theme provider
 const ThemeProvider = ({ children, ...props }: ThemeProviderProps) => {
@@ -79,6 +79,10 @@ export function GlobalProvider({ children }: {children: React.ReactNode}) {
     });
     return () => unsubscribe();
   }, [path]);
+
+  useEffect(() => {
+    console.log(globalParams.isLoading);
+  }, [globalParams]);
 
   // set context value: we will get this value after calling useGlobalContext UseMemo optimization
   const globalValue = useMemo(() => ({globalParams, setGlobalParams}), [globalParams])

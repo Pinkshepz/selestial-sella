@@ -75,6 +75,7 @@ export default function EditorInterface ({
     if (contentInterfaceParams.saveChangesToggle &&
         globalParams.popUpConfirm &&
         (globalParams.popUpAction == "saveChangesToggle")) {
+        setGlobalParams("isLoading", true);
         firestoreUpdate({
             collectionName: "content",
             originalData: questionData, 
@@ -283,7 +284,9 @@ export default function EditorInterface ({
 
         questionChoices.map((choice, index) => {
             choicesElements.push(
-                <div className="edit-placeholder flex flex-col gap-2 bg-highlight dark:bg-highlight-dark">
+                <div 
+                    className="edit-placeholder flex flex-col gap-2 bg-highlight dark:bg-highlight-dark"
+                    key={uid + index}>
                     <div className="edit-placeholder">
                         <label className="flex flex-row justify-start items-center">
                             <Icon icon="font" size={16} />
@@ -346,7 +349,7 @@ export default function EditorInterface ({
         choicesElements.push(
             <button
                 onClick={() => handleAddQuestionChoice(uid, index)}
-                className="add-button px-12">
+                className="add-button px-12" key={uid + 999999999}>
                 <Icon icon="add" size={36} />
                 <p className="mt-4 text-lg font-bold">NEW CHOICE</p>
             </button>

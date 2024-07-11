@@ -1,13 +1,24 @@
 "use client";
 
 import Router from "next/router";
+import { useEffect } from "react";
+
+import { useGlobalContext } from "@/app/provider";
 import { useContentInterfaceContext } from "../content-provider";
+
 import Icon from "@/public/icon";
 
 export default function LogUpdate () {
 
+    // connect to global context
+    const {globalParams, setGlobalParams} = useGlobalContext();
+
     // connect to interface context
     const {contentInterfaceParams, setContentInterfaceParams} = useContentInterfaceContext();
+
+    useEffect(() => {
+        setGlobalParams("isLoading", false);
+    }, []);
 
     const log: {[key: string]: {[key: string]: any}} = contentInterfaceParams.logUpdate;
 
@@ -40,22 +51,20 @@ export default function LogUpdate () {
                 <td key={uid + "1"}>{uid}</td>
                 <td className={"font-bold " + actionMap[log.action.toLocaleUpperCase() as keyof typeof actionMap]}
                     key={uid + "2"}>{log.action.toLocaleUpperCase()}</td>
-                <td className="font-bold" key={uid + "3"}>{log.id}</td>
-                <td key={uid + "4"}>{log.questionText}</td>
+                <td className="font-bold text-center" key={uid + "3"}>{index}</td>
                 <td key={uid + "5"}>{log.error}</td>
             </tr>
         );
     });
 
     return (
-        <section className="flex flex-col justify-center items-center mt-36">
+        <section className="flex flex-col justify-center items-center mt-36 mb-16">
                 <h1>Server log summary</h1>
                 <table className="theme-table m-12">
                     <thead key={"head"}>
                         <tr>
                             <th>UID</th>
                             <th>Action</th>
-                            <th>ID</th>
                             <th>Question</th>
                             <th>Error</th>
                         </tr>

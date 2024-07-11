@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { useGlobalContext } from "@/app/provider";
+
 import stringToHex from "../../libs/utils/string-to-rgb";
 import Icon from "@/public/icon";
 
@@ -19,6 +21,9 @@ const DisplayRow = ({
     cardMode: string
 }) => {
 
+    // connect to global context
+    const {globalParams, setGlobalParams} = useGlobalContext();
+
     return (
         <tr key={cardUid}>
             <td className="font-bold" key={cardUid + "1"}>
@@ -32,6 +37,7 @@ const DisplayRow = ({
             <td className="font-bold" key={cardUid + "2"}>
                 <Link 
                     href={{ pathname: "./library/[courses]" }}
+                    onClick={() => setGlobalParams("isLoading", true)}
                     as={`library/${cardId}`}
                     className="underline hover:text-pri dark:hover:text-pri-dark ease-in-out duration-300"
                     key={"Link " + cardUid}>

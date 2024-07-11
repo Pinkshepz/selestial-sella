@@ -1,4 +1,8 @@
+"use client";
+
 import Link from "next/link";
+
+import { useGlobalContext } from "@/app/provider";
 
 import stringToHex from "../../libs/utils/string-to-rgb";
 import Icon from "@/public/icon";
@@ -55,14 +59,19 @@ export default function CardView ({
 }: {
     contentData: {[key: string]: {[key: string]: any}}
 }): React.ReactNode {
-  // Store all elements
-  let elements: Array<React.ReactNode> = [];
+    
+    // connect to global context
+    const {globalParams, setGlobalParams} = useGlobalContext();
 
-  // Map contentData into each card
-  Object.values(contentData).map((content, index) => {
+    // Store all elements
+    let elements: Array<React.ReactNode> = [];
+
+    // Map contentData into each card
+    Object.values(contentData).map((content, index) => {
     const uid = Object.keys(contentData)[index]
     elements.push(
         <Link 
+            onClick={() => setGlobalParams("isLoading", true)}
             href={{ pathname: "./library/[courses]" }}
             as={`library/${content.id}`}
             key={"Link " + uid}>
@@ -75,13 +84,13 @@ export default function CardView ({
                 cardMode={content.mode}
                 key={content.id}/>
         </Link>
-      );
-  });
+        );
+    });
 
-  return (
-    <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 px-6">
-        {elements}
-        <div className="glass-cover-spread"></div>
-    </section>
-  );
+    return (
+        <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 px-6">
+            {elements}
+            <div className="glass-cover-spread"></div>
+        </section>
+    );
 }
