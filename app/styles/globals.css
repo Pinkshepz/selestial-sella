@@ -372,10 +372,11 @@ footer {
   gap: 8px;
   align-items: center;
   height: min-content;
+  width: fit-content;
   padding: 8px 16px 8px 16px;
   border-radius: 12px;
   border: solid 2px var(--border);
-  background-color: transparent;
+  background-color: var(--base-inverse);
   font-weight: 800;
   transition: all 200ms ease-in-out;
 }
@@ -383,7 +384,6 @@ footer {
 #theme-button:hover {
   color: var(--pri);
   border: solid 2px var(--pri);
-  background-color: var(--pri-accent);
 }
 
 .-select-section-popup-hi--highlight {

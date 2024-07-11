@@ -4,16 +4,26 @@ export default function sortUidObjectByValue (
     sortValue: string,
     isAscending: boolean = true
 ): {[key: string]: {[key: string]: string}} {
+    // handle blank object
+    if (Object.keys(object).length == 0) {
+        return {};
+    }
+
     // sort by target value
     let sortable = [];
+
     for (let uid in object) {
-        // turn string to ascii code -> sort both alphabet and number
-        let ascii: number = 0;
-        for (let index = 0; index < object[uid][sortValue].length; index++) {
-            const char = object[uid][sortValue][index];
-            ascii += char.charCodeAt(0) * (100 ** (object[uid][sortValue].length - index - 1));
+        if (typeof object[uid] == "string") {
+            // turn string to ascii code -> sort both alphabet and number
+            let ascii: number = 0;
+            for (let index = 0; index < object[uid][sortValue].length; index++) {
+                const char = object[uid][sortValue][index];
+                ascii += char.charCodeAt(0) * (100 ** (object[uid][sortValue].length - index - 1));
+            }
+            sortable.push([ascii, uid]);
+        } else {
+            sortable.push([object[uid][sortValue], uid])
         }
-        sortable.push([ascii, uid]);
     }
 
     sortable.sort(function(a, b) {

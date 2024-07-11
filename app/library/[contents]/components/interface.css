@@ -57,6 +57,10 @@
   transition: all 200ms ease-in-out;
 }
 
+#card-nav-neu:hover {
+  background-color: var(--border);
+}
+
 #card-nav-accent {
   width: calc((var--aside-width)/ 6.2);
   height: 36px;

@@ -82,7 +82,7 @@ export default function SettingInterface ({
                 </div>
 
                 {/* Settings */}
-                {!(contentInterfaceParams.questionNumber < 1) && 
+                {(contentInterfaceParams.questionNumber > 0) && 
                     <div className="flex flex-col mt-8"> 
                         {/* Shuffle */}
                         <div className="flex flex-wrap gap-4">
@@ -143,7 +143,9 @@ export default function SettingInterface ({
                 {/* Action */}
                 <div className="flex flex-wrap lg:flex-row mt-8 gap-8">
                     <Link href={"./"} className="text-md">
-                        <button id="theme-button">
+                        <button
+                            onClick={() => setGlobalParams("isLoading", true)}
+                            id="theme-button">
                             Go back
                         </button>
                     </Link>

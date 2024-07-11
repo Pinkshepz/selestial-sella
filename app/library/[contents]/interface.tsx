@@ -12,6 +12,7 @@ import EditorInterface from "./components/quiz-edit";
 import ContentController from "./components/controller";
 import LogUpdate from "./components/log-update";
 import ErrorMessage from "@/app/component/error";
+import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
 
 import uidObjectToArray from "@/app/libs/utils/uid-object-to-array";
 
@@ -69,7 +70,9 @@ export default function Interface ({
                     {(contentInterfaceParams.pageSwitch == true) && 
                     <QuizInterface
                         libraryData={libraryData}
-                        questionData={uidObjectToArray(questionData)} />}
+                        questionData={uidObjectToArray(sortUidObjectByValue(
+                            questionData, "id", true
+                        ))} />}
                     <div className="glass-cover-spread"></div>
                 </main>
             </>

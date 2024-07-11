@@ -7,20 +7,20 @@ import { quizDataFetcher } from "@/app/libs/ggsheet/data-fetch";
 // Dynamic routing <cardsets>
 export default async function Quizset ({ params }: { params: {contents: string} }) {
    
-    // Fetch content / question data for this dynamic route
-    const questionData = await firestoreReadQuery({
-        collectionName: "content",
-        queryKey: "library",
-        queryComparator: "array-contains",
-        queryValue: params.contents
-    });
-
     // Fetch library data for this dynamic route
     const libraryData = await firestoreReadQuery({
         collectionName: "library",
         queryKey: "id",
         queryComparator: "==",
         queryValue: params.contents
+    });
+
+    // Fetch content / question data for this dynamic route
+    const questionData = await firestoreReadQuery({
+        collectionName: "content",
+        queryKey: "library",
+        queryComparator: "==",
+        queryValue: Object.keys(libraryData)[0] // uid of library
     });
 
     // fetch ggsheet data

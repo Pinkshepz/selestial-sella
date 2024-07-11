@@ -98,8 +98,9 @@ export async function quizDataFetcher({ content }: { content: string }) {
         "Multiple Answer": "multipleChoice",
     }
 
-    Object.values(questionData).map((question) => {
+    Object.values(questionData).map((question, index) => {
         connector[makeid(20)] = {
+            id: index + 1,
             mode: modeMap[question.Mode as keyof typeof modeMap],
             libraryFootprint: [content],
             questionSection: question.Topic,
@@ -107,7 +108,6 @@ export async function quizDataFetcher({ content }: { content: string }) {
             questionText: question.Question,
             questionBackText: question.QuestionBackText,
             library: [content],
-            tag: [""],
             choices: question.choices
         }
     })

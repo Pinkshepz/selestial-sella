@@ -1,10 +1,14 @@
 "use client";
 
+import { useGlobalContext } from "@/app/provider";
 import { useInterfaceContext } from "../library-provider";
 import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
 import Icon from "@/public/icon";
 
 export default function LogUpdate () {
+
+    // connect to global context
+    const {globalParams, setGlobalParams} = useGlobalContext();
 
     // connect to interface context
     const {interfaceParams, setInterfaceParams} = useInterfaceContext();
@@ -33,8 +37,9 @@ export default function LogUpdate () {
 
     const actionMap = {
         WRITE: "text-pri dark:text-pri-dark",
+        EDIT: "text-amber dark:text-pri-amber",
         DELETE: "text-sec dark:text-sec-dark",
-        REMAIN: "text-amber dark:text-amber-dark"
+        REMAIN: "text-ter dark:text-amber-ter"
     };
 
     Object.values(sortedFilteredContentData).map((log, index) => {
@@ -71,7 +76,12 @@ export default function LogUpdate () {
             <button
                 onClick={() => {
                     setInterfaceParams("logUpdate", {});
+                    setGlobalParams("isLoading", true);
+                    if (window !== undefined) {
+                        window.location.reload();
+                    }
                 }}
+                className="fixed bottom-16 left-0 right-0 mx-auto"
                 id="theme-button">
                 <Icon icon="out" size={24}></Icon>
                 Back to course

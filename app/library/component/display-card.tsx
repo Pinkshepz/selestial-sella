@@ -13,14 +13,16 @@ const DisplayCard = ({
     cardImageLink,
     cardName,
     cardDescription,
-    cardMode
+    cardMode,
+    cardTotalQuestion,
 }: {
     cardUid: string,
     cardId: string,
     cardImageLink: string,
     cardName: string,
     cardDescription: string,
-    cardMode?: string[]
+    cardMode?: string[],
+    cardTotalQuestion?: number
 }) => {
 
     return (
@@ -44,6 +46,7 @@ const DisplayCard = ({
                             {cardMode}
                         </span>
                         <p className="text-md font-bold">{cardId}</p>
+                        {(cardTotalQuestion !== undefined) && <p className="ml-auto text-md font-bold">{cardTotalQuestion} Q</p>}
                     </div>
                 </div>
             </div>
@@ -82,13 +85,14 @@ export default function CardView ({
                 cardName={content.name}
                 cardDescription={content.description}
                 cardMode={content.mode}
+                cardTotalQuestion={content.totalQuestion}
                 key={content.id}/>
         </Link>
         );
     });
 
     return (
-        <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 px-6">
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 px-6">
             {elements}
             <div className="glass-cover-spread"></div>
         </section>

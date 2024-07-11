@@ -11,14 +11,16 @@ const DisplayRow = ({
     cardImageLink,
     cardName,
     cardDescription,
-    cardMode
+    cardMode,
+    cardTotalQuestion
 }: {
     cardUid: string,
     cardId: string,
     cardImageLink: string,
     cardName: string,
     cardDescription: string,
-    cardMode: string
+    cardMode: string,
+    cardTotalQuestion?: number
 }) => {
 
     // connect to global context
@@ -57,7 +59,10 @@ const DisplayRow = ({
                     </span>
                 </div>
             </td>
-            <td className="hidden lg:table-cell" key={cardUid + "4"}>
+            <td className="hidden md:table-cell text-center" key={cardUid + "4"}>
+                {cardTotalQuestion}
+            </td>
+            <td className="hidden lg:table-cell" key={cardUid + "5"}>
                 {cardDescription}
             </td>
         </tr>
@@ -83,6 +88,7 @@ export default function TableView ({
             cardName={content.name}
             cardDescription={content.description}
             cardMode={content.mode}
+            cardTotalQuestion={content.totalQuestion}
             key={content.id}/>
       );
   });
@@ -95,6 +101,7 @@ export default function TableView ({
                         <th>Library ID</th>
                         <th>Library name</th>
                         <th className="hidden md:table-cell">Mode</th>
+                        <th className="hidden md:table-cell">Questions</th>
                         <th className="hidden lg:table-cell">Description</th>
                     </tr>
                 </thead>

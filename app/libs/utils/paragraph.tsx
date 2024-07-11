@@ -1,7 +1,6 @@
 export function paragraph(text: string) {
     if (typeof text === "string") {
         const parsed_text = text.split('\\n');
-        console.log(parsed_text)
         let paragraphs: React.ReactNode[] = [];
 
         paragraphs.push(<div>{parsed_text.shift()}</div>);

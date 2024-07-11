@@ -12,9 +12,11 @@ interface ContentInterfaceStructure {
   searchKey: string,
   addQuestionToggle: boolean,
   discardChangesToggle: boolean,
+  deleteAllChangesToggle: boolean,
   saveChangesToggle: boolean,
   logUpdate: {},
-  importSheetToggle: boolean
+  importSheetToggle: boolean,
+  sortAscending: boolean
 }
 
 const contentInterfaceInitialValue = {
@@ -27,9 +29,11 @@ const contentInterfaceInitialValue = {
   searchKey: "",
   addQuestionToggle: false,
   discardChangesToggle: false,
+  deleteAllChangesToggle: false,
   saveChangesToggle: false,
   logUpdate: {},
-  importSheetToggle: false
+  importSheetToggle: false,
+  sortAscending: true
 };
 
 const ContentInterfaceContext = createContext<any>({});

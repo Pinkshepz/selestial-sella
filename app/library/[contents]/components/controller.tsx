@@ -39,10 +39,34 @@ export default function ContentController () {
                 </button>
 
                 <button
-                    onClick={() => {}}
+                    onClick={() => {
+                        setContentInterfaceParams("deleteAllChangesToggle", !contentInterfaceParams.deleteAllChangesToggle);
+                        setGlobalParams("popUp", true);
+                        setGlobalParams("popUpAction", "deleteAllChangesToggle");
+                        setGlobalParams("popUpText", "DANGER ZONE: Delete all question data");
+                    }}
                     className="controller-menu">
-                    <Icon icon="card" size={16} />
-                    <p>CARD VIEW</p>
+                    <Icon icon="trash" size={16} />
+                    <p>DELETE ALL QUESTIONS</p>
+                </button>
+
+                <button
+                    onClick={() => {
+                        setContentInterfaceParams("discardChangesToggle", !contentInterfaceParams.discardChangesToggle);
+                        setGlobalParams("popUp", true);
+                        setGlobalParams("popUpAction", "discardChangesToggle");
+                        setGlobalParams("popUpText", "Discard all changes, your question data will be recovered to the original one");
+                    }}
+                    className="controller-menu">
+                    <Icon icon="trash" size={16} />
+                    <p>DISCARD CHANGES</p>
+                </button>
+
+                <button
+                    onClick={() => setContentInterfaceParams("sortAscending", !contentInterfaceParams.sortAscending)}
+                    className="controller-menu">
+                    <Icon icon="sort" size={16} />
+                    <p>{contentInterfaceParams.sortAscending ? "0 - 9" : "9 - 0"}</p>
                 </button>
 
                 <div className="controller-menu">
@@ -59,18 +83,6 @@ export default function ContentController () {
                     className="controller-menu">
                     <Icon icon="add" size={16} />
                     <p>ADD NEW QUESTION</p>
-                </button>
-
-                <button
-                    onClick={() => {
-                        setContentInterfaceParams("discardChangesToggle", !contentInterfaceParams.discardChangesToggle);
-                        setGlobalParams("popUp", true);
-                        setGlobalParams("popUpAction", "discardChangesToggle");
-                        setGlobalParams("popUpText", "Discard all changes, your course data will be recovered to the original one");
-                    }}
-                    className="controller-menu">
-                    <Icon icon="trash" size={16} />
-                    <p>DISCARD CHANGES</p>
                 </button>
 
                 <button

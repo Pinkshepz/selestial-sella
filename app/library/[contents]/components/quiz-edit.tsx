@@ -6,6 +6,7 @@ import makeid from "@/app/libs/utils/make-id";
 import firestoreUpdate from "../../../libs/firestore/firestore-manager";
 import Icon from "@/public/icon";
 import stringToHex from "@/app/libs/utils/string-to-rgb";
+import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
 import { useContentInterfaceContext } from "../content-provider";
 import { useGlobalContext } from "@/app/provider";
 
@@ -31,13 +32,16 @@ export default function EditorInterface ({
     // recent mode of question
     const [recentlyUsedMode, setRecentlyUsedMode] = useState("flashcard");
 
+    // recent section of question
+    const [recentlyUsedSection, setRecentlyUsedSection] = useState("");
+
     // ref for elements
     const elementsRef: {[key: string]: any} = useRef({});
 
     // go to ref
     const scrollToRef = (refKey: string) => {
         elementsRef.current[refKey].scrollIntoView({ behavior: 'smooth'});
-    }
+    };
 
     // detect footprint of question and return id="changed"
     const handleFootprintQuestion = (uid: string, footprint: string) => {
@@ -56,40 +60,7 @@ export default function EditorInterface ({
         } catch (error) {
             return "changed-all"
         }
-    }
-
-    // discard all changes if toggle
-    useEffect(() => {
-    if (contentInterfaceParams.discardChangesToggle && 
-        globalParams.popUpConfirm &&
-        (globalParams.popUpAction === "discardChangesToggle")) {
-        setBufferQuestion(questionData);
-        setContentInterfaceParams("discardChangesToggle", false);
-        setGlobalParams("popUpConfirm", false);
-        setGlobalParams("popUpAction", "");
-    }
-    }, [globalParams]);
-
-    // save all changes if toggle 
-    useEffect(() => {
-    if (contentInterfaceParams.saveChangesToggle &&
-        globalParams.popUpConfirm &&
-        (globalParams.popUpAction == "saveChangesToggle")) {
-        setGlobalParams("isLoading", true);
-        firestoreUpdate({
-            collectionName: "content",
-            originalData: questionData, 
-            editedData: bufferQuestion
-        }).then(
-            (data) => {
-                setGlobalParams("popUpConfirm", false);
-                setGlobalParams("popUpAction", "");
-                setContentInterfaceParams("saveChangesToggle", false);
-                setContentInterfaceParams("logUpdate", data);
-                setContentInterfaceParams("editMode", false);
-            }
-        )}
-    }, [globalParams]);
+    };
 
     // duplicate question
     const handleDuplicateQuestion = (uid: string): void => {
@@ -104,7 +75,6 @@ export default function EditorInterface ({
             questionText: bufferQuestion[uid].questionText,
             questionBackText: bufferQuestion[uid].questionBackText,
             library: bufferQuestion[uid].library,
-            tag: bufferQuestion[uid].tag,
             choices: bufferQuestion[uid].choices
         }
     }));
@@ -160,19 +130,13 @@ export default function EditorInterface ({
             ...prev,
             [newUid]: {
                 mode: recentlyUsedMode,
-                libraryFootprint: [libraryData.id],
-                questionSection: "",
+                libraryFootprint: libraryData.id, // for recover deleted library
+                questionSection: recentlyUsedSection,
                 questionImage: "",
                 questionText: "",
                 questionBackText: "",
-                library: [libraryData.id],
-                tag: [""],
+                library: [libraryData.uid],
                 choices: [{
-                    choiceImage: "",
-                    choiceAnswer: false,
-                    choiceBackText: "",
-                    choiceText: ""
-                }, {
                     choiceImage: "",
                     choiceAnswer: false,
                     choiceBackText: "",
@@ -182,37 +146,40 @@ export default function EditorInterface ({
         }));
     }
     setContentInterfaceParams("addQuestionToggle", false)
-    }, [contentInterfaceParams.addQuestionToggle])
+    }, [contentInterfaceParams.addQuestionToggle]);
 
     // handle add new question choice
     const handleAddQuestionChoice = (uid: string, insertIndex: number): void => {
-    setBufferQuestion((prev) => ({
-        ...prev,
-        [uid]: {
-            ...prev[uid],
-            choices: [
-                ...prev[uid].choices.slice(0, insertIndex),
-                {
-                    choiceImage: "",
-                    choiceAnswer: false,
-                    choiceBackText: "",
-                    choiceText: ""
-                },
-                ...prev[uid].choices.slice(insertIndex, prev[uid].choices.length)
-            ]
-        }
-    }));
+        setBufferQuestion((prev) => ({
+            ...prev,
+            [uid]: {
+                ...prev[uid],
+                choices: [
+                    ...prev[uid].choices.slice(0, insertIndex),
+                    {
+                        choiceImage: "",
+                        choiceAnswer: false,
+                        choiceBackText: "",
+                        choiceText: ""
+                    },
+                    ...prev[uid].choices.slice(insertIndex, prev[uid].choices.length)
+                ]
+            }
+        }));
     }
 
     // update question data on placeholder change
     const onPlaceholderQuestionChange = (uid: string, targetKey: string, targetValue: any): void => {
-    setBufferQuestion((prev) => ({
-        ...prev,
-        [uid]: {
-            ...prev[uid],
-            [targetKey]: targetValue
+        setBufferQuestion((prev) => ({
+            ...prev,
+            [uid]: {
+                ...prev[uid],
+                [targetKey]: targetValue
+            }
+        }));
+        if (targetKey == "questionSection") {
+            setRecentlyUsedSection(targetValue);
         }
-    }));
     };
 
     // update question choice data on placeholder change
@@ -241,7 +208,81 @@ export default function EditorInterface ({
         onPlaceholderQuestionChange(uid, "mode", MODE[(currentIndex + 1) % MODE.length]);
         setRecentlyUsedMode(MODE[(currentIndex + 1) % MODE.length]);
         return;
-    }
+    };
+
+
+    // discard all changes if toggle
+    useEffect(() => {
+        if (contentInterfaceParams.deleteAllChangesToggle && 
+            globalParams.popUpConfirm &&
+            (globalParams.popUpAction === "deleteAllChangesToggle")) {
+            setBufferQuestion({});
+            setContentInterfaceParams("deleteAllChangesToggle", false);
+            setGlobalParams("popUpConfirm", false);
+            setGlobalParams("popUpAction", "");
+        }
+        }, [globalParams.popUpConfirm]);
+    
+        // discard all changes if toggle
+        useEffect(() => {
+        if (contentInterfaceParams.discardChangesToggle && 
+            globalParams.popUpConfirm &&
+            (globalParams.popUpAction === "discardChangesToggle")) {
+            setBufferQuestion(questionData);
+            setContentInterfaceParams("discardChangesToggle", false);
+            setGlobalParams("popUpConfirm", false);
+            setGlobalParams("popUpAction", "");
+        }
+        }, [globalParams.popUpConfirm]);
+    
+        // save all changes if toggle 
+        useEffect(() => {
+            if (contentInterfaceParams.saveChangesToggle &&
+                globalParams.popUpConfirm &&
+                (globalParams.popUpAction == "saveChangesToggle")) {
+                setGlobalParams("isLoading", true);
+                const libraryUid = libraryData.uid;
+                delete libraryData.uid;
+
+                const processData = (rawData: typeof bufferQuestion) => {
+                    let processedData: typeof bufferQuestion = {};
+                    // assign new question number and library uid
+                    Object.keys(rawData).map((uid, index) => {
+                        processedData[uid] = {
+                            ...bufferQuestion[uid],
+                            id: index + 1,
+                            library: libraryUid
+                        }
+                    });
+                    return sortUidObjectByValue(processedData, "id", true);
+                }
+
+                // update library data
+                firestoreUpdate({
+                    collectionName: "library",
+                    originalData: {[libraryUid]: libraryData}, 
+                    editedData: {[libraryUid]: {
+                        ...libraryData,
+                        totalQuestion: Object.keys(bufferQuestion).length
+                    }}
+                });
+
+                // update all question data
+                firestoreUpdate({
+                    collectionName: "content",
+                    originalData: questionData, 
+                    editedData: processData(bufferQuestion)
+                }).then(
+                    (data) => {
+                        setGlobalParams("popUpConfirm", false);
+                        setGlobalParams("popUpAction", "");
+                        setContentInterfaceParams("saveChangesToggle", false);
+                        setContentInterfaceParams("logUpdate", data);
+                        setContentInterfaceParams("editMode", false);
+                    }
+                );
+            };
+        }, [globalParams.popUpConfirm]);
 
     // listen gg sheet import
     useEffect(() => {
@@ -254,7 +295,7 @@ export default function EditorInterface ({
             }
         }
         setContentInterfaceParams("importSheetToggle", false);
-    }, [contentInterfaceParams.importSheetToggle])
+    }, [contentInterfaceParams.importSheetToggle]);
 
     // Filter by search key
     let filteredQuestion: {[key: string]: {[key: string]: any}} = {};
@@ -262,7 +303,7 @@ export default function EditorInterface ({
         // Each content data
         const question: {[key: string]: any} = Object.values(bufferQuestion)[index];
         // Create combination of all content information for search target
-        const search_target = question["id"] + " " + question["title"] + " " + question["tag"];
+        const search_target = JSON.stringify(question);
 
         // Check if data matches to searchkey
         if (search_target.toLowerCase().includes(contentInterfaceParams.searchKey.toLowerCase())) {
@@ -270,17 +311,21 @@ export default function EditorInterface ({
         }
     }
 
+    const sortedFilteredQuestionData: {[key: string]: {[key: string]: any}} = sortUidObjectByValue(
+        filteredQuestion, "id", contentInterfaceParams.sortAscending
+    );
+
     // Render questions and choices
     let elements: Array<React.ReactNode> = [];
 
-    Object.values(filteredQuestion).map((content, index) => {
+    Object.values(sortedFilteredQuestionData).map((content, index) => {
         // get uid as object key
-        const uid = Object.keys(filteredQuestion)[index];
+        const uid = Object.keys(sortedFilteredQuestionData)[index];
 
         // pre-render choices
         const choicesElements: React.ReactNode[] = [];
 
-        const questionChoices: {[key: string]: any}[] = filteredQuestion[uid].choices;
+        const questionChoices: {[key: string]: any}[] = sortedFilteredQuestionData[uid].choices;
 
         questionChoices.map((choice, index) => {
             choicesElements.push(
@@ -349,7 +394,7 @@ export default function EditorInterface ({
         choicesElements.push(
             <button
                 onClick={() => handleAddQuestionChoice(uid, index)}
-                className="add-button px-12" key={uid + 999999999}>
+                className="add-button p-12" key={uid + 999999999}>
                 <Icon icon="add" size={36} />
                 <p className="mt-4 text-lg font-bold">NEW CHOICE</p>
             </button>
@@ -476,20 +521,41 @@ export default function EditorInterface ({
     });
 
     // question nav
-    let question_nav: React.ReactNode[] = [];
+    let current_topic: string = Object.values(sortedFilteredQuestionData)[0].questionSection;
+    let question_nav: React.ReactNode[] = [<h5 className="mb-4">{current_topic}</h5>];
+    let same_topic_choice_nav: React.ReactNode[] = [];
 
-    for (let i = 0; i < Object.keys(bufferQuestion).length; i++) {
-        question_nav.push(
+    for (let i = 0; i < contentInterfaceParams.questionNumber; i++) {
+        // Check topic
+        if (current_topic != Object.values(sortedFilteredQuestionData)[i].questionSection) {
+            // Push current topic questions
+            question_nav.push(
+                <div className='pb-4 grid grid-cols-5 gap-2'>
+                    {same_topic_choice_nav}
+                </div>
+            );
+
+            // Set new topic
+            current_topic = Object.values(sortedFilteredQuestionData)[i].questionSection;
+            question_nav.push(
+                <h5 className="mb-4">{current_topic}</h5>
+            );
+            
+            // Reset
+            same_topic_choice_nav = [];
+        }
+
+        same_topic_choice_nav.push(
             <button
                 id='card-nav-neu'
                 key={i}
-                onClick={() => scrollToRef(Object.keys(bufferQuestion)[i])}>
+                onClick={() => scrollToRef(Object.keys(sortedFilteredQuestionData)[i])}>
                 {i + 1}
             </button>
         );
     }
 
-    question_nav.push(
+    same_topic_choice_nav.push(
         <button
             id='card-nav-neu'
             className="flex items-center justify-center"
@@ -499,6 +565,13 @@ export default function EditorInterface ({
         </button>
     );
 
+    // Push current topic questions, lastly
+    question_nav.push(
+        <div className='pb-4 grid grid-cols-5 gap-2'>
+            {same_topic_choice_nav}
+        </div>
+    );
+
     return (
         <div className='flex flex-col'>
             <div id='editor-two-cols-fixed' key='interface'>
@@ -506,16 +579,11 @@ export default function EditorInterface ({
                 <aside id="quiz-col-scroll-aside" className='-scroll-none relative pt-[90px]' key='interface-aside'>
                     <div className="border-t border-border dark:border-border-dark"></div>
                     <section className='m-4' key='interface-aside-section-1'>
-                        <span id='pri-chip' className="text-sm font-bold w-fit">{libraryData.id}</span>
-                        <h3 className='mt-4'>{libraryData.name}</h3>
-                        <p className='mt-8'>{libraryData.description}</p>
-                        <h4 className='mt-6'>Questions</h4>
+                        <h3 className='my-4'>{libraryData.name}</h3>
                     </section>
 
                     <section className='mx-4 h-max overflow-y-scroll -scroll-none' key='interface-aside-section-2'>
-                        <div className='pb-4 grid grid-cols-5 gap-2'>
-                            {question_nav}
-                        </div>
+                        {question_nav}
                     </section>
                 </aside>
 

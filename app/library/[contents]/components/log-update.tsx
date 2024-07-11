@@ -1,6 +1,5 @@
 "use client";
 
-import Router from "next/router";
 import { useEffect } from "react";
 
 import { useGlobalContext } from "@/app/provider";
@@ -40,8 +39,9 @@ export default function LogUpdate () {
 
     const actionMap = {
         WRITE: "text-pri dark:text-pri-dark",
+        EDIT: "text-amber dark:text-pri-amber",
         DELETE: "text-sec dark:text-sec-dark",
-        REMAIN: "text-amber dark:text-amber-dark"
+        REMAIN: "text-ter dark:text-amber-ter"
     };
 
     Object.values(filteredContent).map((log, index) => {
@@ -51,14 +51,14 @@ export default function LogUpdate () {
                 <td key={uid + "1"}>{uid}</td>
                 <td className={"font-bold " + actionMap[log.action.toLocaleUpperCase() as keyof typeof actionMap]}
                     key={uid + "2"}>{log.action.toLocaleUpperCase()}</td>
-                <td className="font-bold text-center" key={uid + "3"}>{index}</td>
+                <td className="font-bold text-center" key={uid + "3"}>{log.id}</td>
                 <td key={uid + "5"}>{log.error}</td>
             </tr>
         );
     });
 
     return (
-        <section className="flex flex-col justify-center items-center mt-36 mb-16">
+        <section className="flex flex-col justify-center items-center mt-44 mb-16">
                 <h1>Server log summary</h1>
                 <table className="theme-table m-12">
                     <thead key={"head"}>
@@ -76,7 +76,12 @@ export default function LogUpdate () {
             <button
                 onClick={() => {
                     setContentInterfaceParams("logUpdate", {});
+                    setGlobalParams("isLoading", true);
+                    if (window !== undefined) {
+                        window.location.reload();
+                    }
                 }}
+                className="fixed bottom-16 left-0 right-0 mx-auto"
                 id="theme-button">
                 <Icon icon="out" size={24}></Icon>
                 Back to course

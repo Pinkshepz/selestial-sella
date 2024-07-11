@@ -31,11 +31,6 @@ export default function GlobalNavigator (): React.ReactNode {
   // access theme
   const { theme, setTheme } = useTheme();
 
-  //set your theme here after component mounts
-  useEffect(() => {
-    setTheme('system');
-  }, []);
-
   // switch among 3 themes options
   const handleThemeToggle = () => {
     setThemeToggle((prev) => (prev + 1) % 3)
@@ -81,12 +76,12 @@ export default function GlobalNavigator (): React.ReactNode {
         </div>
 
         {/* theme toggle */}
-        {isClient &&
+        {isClient && theme &&
           <button
             className="flex felx-row justify-center items-center ml-6 mr-2"
             onClick={() => handleThemeToggle()}>
-            <Icon icon={theme ?? "system"} size={20} />
-            <h5 className="hidden lg:inline ml-2">{theme && theme.charAt(0).toLocaleUpperCase() + theme.slice(1)}</h5>
+            <Icon icon={theme} size={20} />
+            <h5 className="hidden lg:inline ml-2">{theme.charAt(0).toLocaleUpperCase() + theme.slice(1)}</h5>
         </button>}
 
         {/* user profile */}

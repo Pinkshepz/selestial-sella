@@ -13,6 +13,16 @@ export default async function firestoreUpdate ({
     let resultLog: {[key: string]: {[key: string]: any}} = {}; // record each doc writing result
     const uidOriginal: string[] = Object.keys(originalData); // all uids of original data
     const uidEdited: string[] = Object.keys(editedData); // all uids of edited data
+    
+    if ((uidOriginal.length === 0) && (uidEdited.length === 0)){
+        return {0: {
+            action: "reject",
+            id: -1,
+            name: "", 
+            result: "", 
+            error: "both original and edited data have no value"
+        }};
+    }
 
     for (let index = 0; index < uidEdited.length; index++) {
         const euid = uidEdited[index];
@@ -75,7 +85,7 @@ export default async function firestoreUpdate ({
             } else {
                 const {result, error} = await firestoreWrite({collectionName: collectionName, id: euid, data: editedData[euid]});
                 resultLog[euid] = {
-                    action: "write",
+                    action: "edit",
                     id: editedData[euid].id,
                     name: editedData[euid].name, 
                     result: result, 

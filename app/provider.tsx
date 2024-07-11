@@ -80,10 +80,6 @@ export function GlobalProvider({ children }: {children: React.ReactNode}) {
     return () => unsubscribe();
   }, [path]);
 
-  useEffect(() => {
-    console.log(globalParams.isLoading);
-  }, [globalParams]);
-
   // set context value: we will get this value after calling useGlobalContext UseMemo optimization
   const globalValue = useMemo(() => ({globalParams, setGlobalParams}), [globalParams])
 
