@@ -19,6 +19,7 @@ export default function EditorInterface ({
     questionData: {[key: string]: {[key: string]: any}}, // {uid: {each question}}
     ggSheetImport: {[key: string]: {[key: string]: any}} | undefined // {uid: {each question}}
 }): React.ReactNode {
+    // supplement wallpaper
     const BG = "https://media.suara.com/pictures/653x366/2019/12/19/95933-aurora.jpg"
     // connect to global context
     const {globalParams, setGlobalParams} = useGlobalContext();
@@ -61,11 +62,11 @@ export default function EditorInterface ({
                 block: "start",
                 behavior: "smooth"
             });
+            setTargetUidScroll("");
             return;
         } catch (error) {
             return;
         }
-        setTargetUidScroll("");
     };
 
     // detect footprint of question and return id="changed"
@@ -243,20 +244,20 @@ export default function EditorInterface ({
 
     // update question choice data on placeholder change
     const onPlaceholderQuestionChoiceChange = (uid: string, targetIndex: number, targetKey: string, targetValue: any): void => {
-    setBufferQuestion((prev) => ({
-        ...prev,
-        [uid]: {
-            ...prev[uid],
-            choices: [
-                ...prev[uid].choices.slice(0, targetIndex),
-                {
-                    ...prev[uid].choices[targetIndex],
-                    [targetKey]: targetValue
-                },
-                ...prev[uid].choices.slice(targetIndex + 1, prev[uid].choices.length)
-            ]
-        }
-    }));
+        setBufferQuestion((prev) => ({
+            ...prev,
+            [uid]: {
+                ...prev[uid],
+                choices: [
+                    ...prev[uid].choices.slice(0, targetIndex),
+                    {
+                        ...prev[uid].choices[targetIndex],
+                        [targetKey]: targetValue
+                    },
+                    ...prev[uid].choices.slice(targetIndex + 1, prev[uid].choices.length)
+                ]
+            }
+        }));
     };
 
     // toggle question mode ["singleChoice", "multipleChoice", "flashcard"]
@@ -307,7 +308,7 @@ export default function EditorInterface ({
                 // assign new question number and library uid
                 Object.keys(sortUidObjectByValue(rawData, "id", true)).map((uid, index) => {
                     processedData[uid] = {
-                        ...bufferQuestion[uid],
+                        ...rawData[uid],
                         id: index + 1,
                         library: libraryUid
                     }

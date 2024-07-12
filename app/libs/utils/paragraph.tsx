@@ -3,15 +3,13 @@ export function paragraph(text: string) {
         const parsed_text = text.split('\\n');
         let paragraphs: React.ReactNode[] = [];
 
-        paragraphs.push(<div>{parsed_text.shift()}</div>);
-
-        parsed_text.map(fragment => {
-            paragraphs.push(<div className="pt-4">{fragment}</div>);
+        parsed_text.map((fragment, index) => {
+            paragraphs.push(<div key={index}>{fragment}</div>);
         });
 
-        return (<>{paragraphs}</>)
+        return (<div className="flex flex-col gap-4">{paragraphs}</div>);
     } else {
-        return text
+        (<div>{text}</div>);
     }
 }
 
@@ -19,13 +17,13 @@ export default function formatQuizText(text: any) {
     if (typeof text === "string") {
         if ((text[0] == "[") && (text[text.length - 1] == "]")) {
             const parsed_text = text.slice(1, -1).split(", ");
-            let chips: Array<React.ReactNode> = []
+            let chips: Array<React.ReactNode> = [];
             parsed_text.map((_text) => {
                 chips.push(
                     <div className="px-2" key={_text}>
                         {_text}
                     </div>
-                )
+                );
             })
             return chips;
         } else {

@@ -37,6 +37,24 @@ export default function Interface ({
         setGlobalParams("isLoading", false);
     }, []);
 
+    const processData = (rawData: typeof questionData) => {
+        let processedData: typeof questionData = {};
+        // assign new question number and library uid
+        Object.keys(sortUidObjectByValue(rawData, "id", true)).map((uid, index) => {
+            processedData[uid] = {
+                ...rawData[uid],
+                choices: []
+            };
+            (rawData[uid].choices as {}[]).map((choice, index) => {
+                processedData[uid].choices.push({
+                    ...choice,
+                    "selected": false
+                });
+            });
+        });
+        return uidObjectToArray(processedData);
+    }
+
     if (Object.keys(contentInterfaceParams.logUpdate).length !== 0) {
         return (
             <>
@@ -70,9 +88,7 @@ export default function Interface ({
                     {(contentInterfaceParams.pageSwitch == true) && 
                     <QuizInterface
                         libraryData={libraryData}
-                        questionData={uidObjectToArray(sortUidObjectByValue(
-                            questionData, "id", true
-                        ))} />}
+                        questionData={processData(questionData)} />}
                     <div className="glass-cover-spread"></div>
                 </main>
             </>

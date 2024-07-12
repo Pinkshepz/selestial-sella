@@ -55,6 +55,7 @@
   border-radius: 8px;
   overflow: hidden;
   transition: all 200ms ease-in-out;
+  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-nav-neu:hover {
@@ -64,25 +65,27 @@
 #card-nav-accent {
   width: calc((var--aside-width)/ 6.2);
   height: 36px;
-  color: var(--baseinverse);
+  color: var(--base-inverse);
   font-weight: 700;
-  background-color: var(--ter);
+  background-color: var(--pri);
   border: solid 1px var(--border);
   border-radius: 8px;
   overflow: hidden;
   transition: all 200ms ease-in-out;
+  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-nav-ter {
   width: calc((var--aside-width)/ 6.2);
   height: 36px;
   font-weight: 700;
-  color: var(--baseinverse);
+  color: var(--base-inverse);
   background-color: var(--ter);
   border: solid 1px var(--ter);
   border-radius: 8px;
   overflow: hidden;
   transition: all 200ms ease-in-out;
+  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-nav-green {
@@ -95,6 +98,7 @@
   border-radius: 8px;
   overflow: hidden;
   transition: all 200ms ease-in-out;
+  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-nav-red {
@@ -107,6 +111,7 @@
   border-radius: 8px;
   overflow: hidden;
   transition: all 200ms ease-in-out;
+  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-nav-amber {
@@ -119,11 +124,13 @@
   border-radius: 8px;
   overflow: hidden;
   transition: all 200ms ease-in-out;
+  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-quiz-container {
   position: relative;
   transition: all 200ms ease-in-out;
+  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-quiz-container > button {
@@ -133,10 +140,11 @@
 
 #card-quiz {
   background-color: var(--highlight);
-  border: solid 2px var(--border);
+  border: solid 1px var(--border);
   border-radius: 12px;
   overflow: hidden;
   transition: all 200ms ease-in-out;
+  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-quiz> #answer-type {
@@ -145,38 +153,25 @@
 
 #card-quiz-pri {
   background-color: var(--highlight);
-  border: solid 2px var(--pri);
+  border: solid 1px var(--pri);
   border-radius: 12px;
-  box-shadow: 0 0 var(--shadow-radius) calc(var(--shadow-radius)/2) var(--pri);
   overflow: hidden;
   transition: all 200ms ease-in-out;
+  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-quiz-pri > #answer-type {
   color: var(--pri);
 }
 
-#card-quiz-sec {
-  background-color: var(--highlight);
-  border: solid 2px var(--sec);
-  border-radius: 12px;
-  box-shadow: 0 0 var(--shadow-radius) calc(var(--shadow-radius)/2) var(--sec);
-  overflow: hidden;
-  transition: all 200ms ease-in-out;
-}
-
-#card-quiz-sec > #answer-type {
-  color: var(--sec);
-}
-
 #card-quiz-ter {
   background-color: var(--highlight);
   background-color: var(--highlight);
-  border: solid 2px var(--ter);
+  border: solid 1px var(--ter);
   border-radius: 12px;
-  box-shadow: 0 0 var(--shadow-radius) calc(var(--shadow-radius)/2) var(--ter);
   overflow: hidden;
   transition: all 200ms ease-in-out;
+  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-quiz-ter > #answer-type {
@@ -185,11 +180,12 @@
 
 #card-quiz-green {
   background-color: var(--highlight);
-  border: solid 2px var(--teal);
+  border: solid 1px var(--teal);
   box-shadow: 0 0 var(--shadow-radius) calc(var(--shadow-radius)/2) var(--teal);
   border-radius: 12px;
   overflow: hidden;
   transition: all 200ms ease-in-out;
+  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-quiz-green > #answer-report {
@@ -198,11 +194,12 @@
 
 #card-quiz-red {
   background-color: var(--highlight);
-  border: solid 2px var(--red);
+  border: solid 1px var(--red);
   border-radius: 12px;
   box-shadow: 0 0 var(--shadow-radius) calc(var(--shadow-radius)/2) var(--red);
   overflow: hidden;
   transition: all 200ms ease-in-out;
+  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-quiz-red > #answer-report {
@@ -211,11 +208,12 @@
 
 #card-quiz-amber {
   background-color: var(--highlight);
-  border: solid 2px var(--amber);
+  border: solid 1px var(--amber);
   border-radius: 12px;
   box-shadow: 0 0 var(--shadow-radius) calc(var(--shadow-radius)/2) var(--amber);
   overflow: hidden;
   transition: all 200ms ease-in-out;
+  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-quiz-amber > #answer-report {
@@ -263,7 +261,7 @@
   padding-right: 8px;
   gap: 8px;
   text-align: center;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 #choice-back-text {
@@ -275,6 +273,6 @@
   padding-right: 8px;
   gap: 8px;
   text-align: center;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 18px;
 }
