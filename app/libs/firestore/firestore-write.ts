@@ -16,7 +16,7 @@ export default async function firestoreWrite({
     let result = null;
     let error = null;
 
-    console.log("writing", data);
+    console.log("start writing", data);
     
     try {
         result = await setDoc(doc(db, collectionName, id), {
@@ -24,11 +24,12 @@ export default async function firestoreWrite({
             latestUpdated: Timestamp.now()
         }, {
             merge: true
-        }
-    );
+        });
     } catch (e) {
         error = e;  
     }
+
+    console.log("finish writing", result, error);
     
     return { result, error };
 }
