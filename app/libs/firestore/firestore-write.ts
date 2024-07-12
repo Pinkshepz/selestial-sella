@@ -15,6 +15,8 @@ export default async function firestoreWrite({
 }) {
     let result = null;
     let error = null;
+
+    console.log("writing", data);
     
     try {
         result = await setDoc(doc(db, collectionName, id), {
