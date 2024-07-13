@@ -66,7 +66,7 @@ export default function GlobalNavigator (): React.ReactNode {
           <Link 
             onClick={() => {
               setGlobalParams("isLoading", true);
-              if (window !== undefined) {
+              if ((window !== undefined) && (usePathname() == "/course")) {
                 window.location.reload();
               }
             }}
@@ -76,7 +76,7 @@ export default function GlobalNavigator (): React.ReactNode {
           <Link 
             onClick={() => {
               setGlobalParams("isLoading", true);
-              if (window !== undefined) {
+              if ((window !== undefined) && (usePathname() == "/library")) {
                 window.location.reload();
               }
             }}

@@ -84,24 +84,22 @@ export default function QuizInterface ({
             switch (mode) {
                 case "singleChoice":
                     for (let index = 0; index < Object.keys(questionArray[contentInterfaceParams.currentQuestion].choices).length; index++) {
-                        
                         // De-select all questions
                         setQuestionArray((prev) => ([
                             ...prev.slice(0, contentInterfaceParams.currentQuestion),
                             {
                                 ...prev[contentInterfaceParams.currentQuestion],
                                 choices: [
-                                    ...prev[contentInterfaceParams.currentQuestion].choices.slice(0, choiceIndex),
+                                    ...prev[contentInterfaceParams.currentQuestion].choices.slice(0, index),
                                     {
                                         ...prev[contentInterfaceParams.currentQuestion].choices[index],
                                         selected: false
                                     },
-                                    ...prev[contentInterfaceParams.currentQuestion].choices.slice(choiceIndex + 1, prev[contentInterfaceParams.currentQuestion].choices.length)
+                                    ...prev[contentInterfaceParams.currentQuestion].choices.slice(index + 1, prev[contentInterfaceParams.currentQuestion].choices.length)
                                 ]
                             },
                             ...prev.slice(contentInterfaceParams.currentQuestion + 1, contentInterfaceParams.questionNumber)
                         ]));
-    
                     }
     
                     // Select selected question
@@ -173,12 +171,12 @@ export default function QuizInterface ({
             // Record choice score
             if ((questionArray[contentInterfaceParams.currentQuestion].mode == "singleChoice") && questionArray[contentInterfaceParams.currentQuestion].choices[choiceIndex].choiceAnswer) {
                 if (questionArray[contentInterfaceParams.currentQuestion].choices[choiceIndex].choiceAnswer == questionArray[contentInterfaceParams.currentQuestion].choices[choiceIndex].selected) {
-                    // questionArray[contentInterfaceParams.currentQuestion].choices[choiceIndex].score = 1;
+                    questionArray[contentInterfaceParams.currentQuestion].maxScore = 1;
                     score_count += 1;
                 }
             } else if (questionArray[contentInterfaceParams.currentQuestion].mode == "multipleChoice") {
                 if (questionArray[contentInterfaceParams.currentQuestion].choices[choiceIndex].choiceAnswer == questionArray[contentInterfaceParams.currentQuestion].choices[choiceIndex].selected) {
-                    // questionArray[contentInterfaceParams.currentQuestion].choices[choiceIndex].score = 1;
+                    questionArray[contentInterfaceParams.currentQuestion].maxScore = questionArray[contentInterfaceParams.currentQuestion].choices.length;
                     score_count += 1;
                 }
             }
@@ -373,7 +371,7 @@ export default function QuizInterface ({
                     : (questionArray[i].graded)
                         ? (questionArray[i].mode == "flashcard")
                             ? 'card-nav-ter'
-                            : (questionArray[i].score == questionArray[i].choices.length)
+                            : (questionArray[i].score == questionArray[i].maxScore)
                                 ? 'card-nav-green'
                                 : (questionArray[i].score == 0)
                                     ? 'card-nav-red'
