@@ -27,14 +27,14 @@ export default function ConfirmPopUp (): React.ReactNode {
                                 setGlobalParams("popUpText", "");
                             }}
                             id="theme-button">Go back</button>
-                        {globalParams.user && <button
+                        <button
                             onClick={() => {
                                 setGlobalParams("popUp", false);
                                 setGlobalParams("popUpConfirm", true);
                                 setGlobalParams("popUpText", "");
                             }}
                             className="text-pri dark:text-pri"
-                            id="theme-button">Confirm</button>}
+                            id="theme-button">Confirm</button>
                     </div>
                 </section>
             </>
