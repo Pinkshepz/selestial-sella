@@ -19,8 +19,8 @@ export default function HomeStats ({
     return (
         <section className="relative h-[100dvh]">
             <article className="flex flex-col gap-8 w-full px-8 py-8">
-                <h1 className="mx-auto mt-12 text-4xl text-center">Place where all stars and planets align.</h1>
-                <p className="mx-24 text-center text-lg color-slate">Explore tons of learning materials. Discover collection of documents, external materials and array of practices in each course. Also, all avaliable recall or practice question set are readily accessed in library. Let's make hard topics easy to learn and memorize :D</p>
+                <h1 className="mx-auto mt-12 text-4xl text-center">{"Place where all stars and planets align."}</h1>
+                <p className="mx-24 text-center text-lg color-slate">{"Explore tons of learning materials. Discover collection of documents, external materials and array of practices in each course. Also, all avaliable recall or practice question set are readily accessed in library. Let's make hard topics easy to learn and memorize :D"}</p>
                 <div className="flex flex-col sm:flex-row justify-evenly items-center gap-8 my-12">
                     <div className="flex flex-col justify-center items-center gap-4">
                         <h1 className="pixellet text-5xl">{courseCount}</h1>
@@ -36,8 +36,8 @@ export default function HomeStats ({
                     </div>
                 </div>
             </article>
-            <article className="flex flex-col gap-8 w-full px-8 py-8">
-                <h1 className="mx-auto mt-12 text-4xl text-center">Explore more deeply.</h1>
+            <article className="flex flex-col gap-8 w-full px-8 py-8 overflow-hidden">
+                <h1 className="mx-auto mt-12 text-4xl text-center">{"Explore more deeply."}</h1>
                 <div className="flex flex-col sm:flex-row justify-evenly items-center gap-8 my-12">
                     <div className="relative">
                         <div className="card-2-main">
