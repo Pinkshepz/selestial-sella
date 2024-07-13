@@ -216,7 +216,7 @@ export default function EditorInterface ({
                         choiceBackText: "",
                         choiceText: ""
                     },
-                    ...prev[uid].choices.slice(insertIndex, prev[uid].choices.length)
+                    ...prev[uid].choices.slice(insertIndex + 1, prev[uid].choices.length)
                 ]
             }
         }));
