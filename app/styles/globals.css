@@ -102,8 +102,6 @@ html {
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
-  color: var(--base);
   background-color: var(--base-inverse);
   -ms-overflow-style: none;  /* Internet Explorer 10+ */
   scrollbar-width: none;  /* Firefox */
@@ -209,6 +207,10 @@ footer {
   color: var(--sec);
 }
 
+.color-slate {
+  color: var(--text-slate);
+}
+
 .-scroll-none {
   -ms-overflow-style: none;  /* Internet Explorer 10+ */
   scrollbar-width: none;  /* Firefox */
@@ -273,12 +275,23 @@ footer {
   -webkit-backdrop-filter: blur(24px);
 }
 
+.glass-cover-row {
+  position: absolute;
+  top: -128px;
+  left: -100dvw;
+  height: calc(100% + 256px);
+  width: calc(200dvw);
+  z-index: -10;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
 .panel {
   border: solid 1px var(--border);
   border-radius: 12px;
   background-color: var(--highlight-strong);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(36px);
+  -webkit-backdrop-filter: blur(36px);
   transform: scale3d(1.1);
   animation: smooth-appear 400ms ease forwards;
 }

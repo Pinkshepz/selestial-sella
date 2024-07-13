@@ -5,7 +5,7 @@ import { LibraryInterfaceProvider } from "./library-provider";
 import Interface from "./interface";
 import ErrorMessage from "../component/error";
 
-export default async function HomePage() {
+export default async function Library() {
   const contentData = await firestoreRead("library");
 
   try {

@@ -449,10 +449,10 @@ export default function EditorInterface ({
                             <Icon icon="font" size={16} />
                             <p>Choice text</p>
                         </label>
-                        <input type="text" className="editor-field" key={1 + choiceIndex * questionChoices.length + choiceKeyToggle}
+                        <textarea className="editor-field" key={1 + choiceIndex * questionChoices.length + choiceKeyToggle}
                             onChange={e => onPlaceholderQuestionChoiceChange(uid, choiceIndex, "choiceText", e.target.value)}
                             defaultValue={choice.choiceText}>
-                        </input>
+                        </textarea>
                     </div>
                     {(bufferQuestion[uid].mode !== "flashcard") && <div className="edit-placeholder">
                         <label className="flex flex-row justify-start items-center">
@@ -470,10 +470,10 @@ export default function EditorInterface ({
                             <Icon icon="font" size={16} />
                             <p>Choice back text</p>
                         </label>
-                        <input type="text" className="editor-field" key={1 + choiceIndex * questionChoices.length + choiceKeyToggle}
+                        <textarea className="editor-field" key={1 + choiceIndex * questionChoices.length + choiceKeyToggle}
                             onChange={e => onPlaceholderQuestionChoiceChange(uid, choiceIndex, "choiceBackText", e.target.value)}
                             defaultValue={choice.choiceBackText}>
-                        </input>
+                        </textarea>
                     </div>
                     <div className="edit-placeholder">
                         <label className="flex flex-row justify-start items-center">

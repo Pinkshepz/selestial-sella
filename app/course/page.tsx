@@ -5,7 +5,7 @@ import { CourseInterfaceProvider } from "./course-provider";
 import Interface from "./interface";
 import ErrorMessage from "../component/error";
 
-export default async function HomePage() {
+export default async function Course() {
   const contentData = await firestoreRead("course");
 
   try {

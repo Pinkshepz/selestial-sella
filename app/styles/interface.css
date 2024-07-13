@@ -99,6 +99,16 @@
     transition: all ease-in-out 400ms;
 }
 
+.card-2-main-flow {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    transition: all ease-in-out 300ms;
+    border-radius: 12px;
+    animation: smooth-appear 400ms ease forwards;
+}
+
 .card-2-main {
     position: relative;
     display: flex;
