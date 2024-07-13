@@ -31,6 +31,9 @@ export default function GlobalNavigator (): React.ReactNode {
   // access theme
   const { theme, setTheme } = useTheme();
 
+  // access path
+  const currentPath = usePathname();
+
   // switch among 3 themes options
   const handleThemeToggle = () => {
     setThemeToggle((prev) => (prev + 1) % 3)
@@ -40,7 +43,7 @@ export default function GlobalNavigator (): React.ReactNode {
   // if route is changed -> reset global.access status
   useEffect(() => {
     setGlobalParams("popUp", false);
-  }, [usePathname()]);
+  }, [currentPath]);
 
   return (
     <nav className="fixed left-0 top-0 flex w-full h-16 z-100 px-4
@@ -66,7 +69,7 @@ export default function GlobalNavigator (): React.ReactNode {
           <Link 
             onClick={() => {
               setGlobalParams("isLoading", true);
-              if ((window !== undefined) && (usePathname() == "/course")) {
+              if ((window !== undefined) && (currentPath == "/course")) {
                 window.location.reload();
               }
             }}
@@ -76,7 +79,7 @@ export default function GlobalNavigator (): React.ReactNode {
           <Link 
             onClick={() => {
               setGlobalParams("isLoading", true);
-              if ((window !== undefined) && (usePathname() == "/library")) {
+              if ((window !== undefined) && (currentPath == "/library")) {
                 window.location.reload();
               }
             }}
