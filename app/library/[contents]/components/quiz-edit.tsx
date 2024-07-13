@@ -45,7 +45,11 @@ export default function EditorInterface ({
     // track cursor position. Update when cursor position is changed
     const [cursorPosY, setCursorPosY] = useState(0); // cursor position
     const setCoordinate = (e: MouseEvent) => {
-        setCursorPosY(e.clientY);
+        if ((window !== undefined) && (e.clientY > (window.innerHeight * 0.5))) {
+            setCursorPosY(window.innerHeight * 0.5);
+        } else {
+            setCursorPosY(e.clientY);
+        }
     };
     
     useEffect(() => {
@@ -90,7 +94,6 @@ export default function EditorInterface ({
 
     // handle reset id toggle
     useEffect(() => {
-        
         if (toggleResetId) {
             const processData = () => {
                 let processedData: typeof bufferQuestion = {};
@@ -105,7 +108,6 @@ export default function EditorInterface ({
                 scrollToRef(targetUidScroll);
                 return sortUidObjectByValue(processedData, "id", true);
             }
-
             setBufferQuestion(processData());
         }
     }, [toggleResetId]);
@@ -124,7 +126,6 @@ export default function EditorInterface ({
                 questionBackText: bufferQuestion[uid].questionBackText,
                 library: bufferQuestion[uid].library,
                 id: bufferQuestion[uid].id + 0.1,
-                aaa: 1,
                 choices: bufferQuestion[uid].choices
             }
         }));
@@ -141,7 +142,7 @@ export default function EditorInterface ({
                 choices: [
                     ...prev[uid].choices.slice(0, targetIndex),
                     prev[uid].choices[targetIndex],
-                    ...prev[uid].choices.slice(targetIndex, prev[uid].choices.length)
+                    ...prev[uid].choices.slice(targetIndex + 1, prev[uid].choices.length)
                 ]
             }
         }));
@@ -167,7 +168,7 @@ export default function EditorInterface ({
             ...prev[uid],
             choices: [
                 ...prev[uid].choices.slice(0, deleteIndex),
-                ...prev[uid].choices.slice(deleteIndex + 1, -1)
+                ...prev[uid].choices.slice(deleteIndex + 1, prev[uid].choices.legth)
             ]
         }
     }));
