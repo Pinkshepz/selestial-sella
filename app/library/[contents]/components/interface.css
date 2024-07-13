@@ -62,7 +62,7 @@
   background-color: var(--border);
 }
 
-#card-nav-accent {
+#card-nav-pri {
   width: calc((var--aside-width)/ 6.2);
   height: 36px;
   color: var(--base-inverse);

@@ -15,8 +15,6 @@ export default async function firestoreWrite({
 }) {
     let result = null;
     let error = null;
-
-    console.log("start writing", data);
     
     try {
         result = await setDoc(doc(db, collectionName, id), {
@@ -28,8 +26,6 @@ export default async function firestoreWrite({
     } catch (e) {
         error = e;  
     }
-
-    console.log("finish writing", result, error);
     
     return { result, error };
 }

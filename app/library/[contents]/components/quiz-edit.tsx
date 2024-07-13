@@ -20,7 +20,7 @@ export default function EditorInterface ({
     ggSheetImport: {[key: string]: {[key: string]: any}} | undefined // {uid: {each question}}
 }): React.ReactNode {
     // supplement wallpaper
-    const BG = "https://media.suara.com/pictures/653x366/2019/12/19/95933-aurora.jpg"
+    const BG = "https://media.suara.com/pictures/653x366/2019/12/19/95933-aurora.jpg";
     // connect to global context
     const {globalParams, setGlobalParams} = useGlobalContext();
 
@@ -327,11 +327,12 @@ export default function EditorInterface ({
         if (contentInterfaceParams.deleteAllChangesToggle && 
             globalParams.popUpConfirm &&
             (globalParams.popUpAction === "deleteAllChangesToggle")) {
-            setBufferQuestion({});
+            setBufferQuestion(questionData);
             setContentInterfaceParams("deleteAllChangesToggle", false);
             setGlobalParams("popUpConfirm", false);
             setGlobalParams("popUpAction", "");
         }
+        setChoiceKeyToggle((prev) => (prev + 1));
     }, [globalParams.popUpConfirm]);
 
     // discard all changes if toggle

@@ -21,9 +21,7 @@ export default function QuizInterface ({
     questionData: {[key: string]: any}[] // {question data}[]
 }) {
     // supplement wallpaper
-    const BG = "https://media.suara.com/pictures/653x366/2019/12/19/95933-aurora.jpg"
-    // ===== SECTION I: PARAMETERS ======
-    // ==================================
+    const BG = "https://media.suara.com/pictures/653x366/2019/12/19/95933-aurora.jpg";
 
     // Connect to interfaceContext
     const {contentInterfaceParams, setContentInterfaceParams} = useContentInterfaceContext();
@@ -31,36 +29,27 @@ export default function QuizInterface ({
     // Create question pool
     const [questionArray, setQuestionArray] = useState(questionData);
 
-    // ===== SECTION II: RANDOM Qs ======
-    // ==================================
-
-    // Random question
+    // Random question on load
     useEffect(() => {
         if (contentInterfaceParams.shuffleQuestion === true) {
             setQuestionArray((prev) => shuffle(prev))}
     }, []);
     
-    // // Random choice
-    // if (contentInterfaceParams.shuffleChoice === true) {
-
-    //     questionArray.map((_question, index) => {
-    //         console.log(_question, index);
-            
-
-    //         useEffect(() => setQuestionArray((prev) => ([
-    //             ...prev.slice(0, index),
-    //             {
-    //                 ...prev[index],
-    //                 choices: shuffle(_question.choices)
-    //             },
-    //             ...prev.slice(index + 1, contentInterfaceParams.questionNumber)
-    //         ])), [])
-
-    //     });
-    // }
-    
-    // ===== SECTION III: Handle Function ======
-    // =========================================
+    // Random choice on load
+    useEffect(() => {
+        if (contentInterfaceParams.shuffleChoice === true) {
+            questionArray.map((_question, index) => {
+                setQuestionArray((prev) => ([
+                    ...prev.slice(0, index),
+                    {
+                        ...prev[index],
+                        choices: shuffle(_question.choices)
+                    },
+                    ...prev.slice(index + 1, contentInterfaceParams.questionNumber)
+                ]))
+            });
+        }
+    }, []);
 
     const handleChoiceInteract = (choiceIndex: number, mode: string) => {
         if (mode == "flashcard") {
@@ -202,7 +191,7 @@ export default function QuizInterface ({
         const _choice = questionArray[contentInterfaceParams.currentQuestion].choices[index];
         if (!_choice.graded) {
             ChoiceObject.push(
-                <div id='card-quiz-container' className={'h-full w-full rounded-xl'} key={Math.random()}>
+                <div id='card-quiz-container' className={'h-full w-full rounded-xl'} key={contentInterfaceParams.currentQuestion + index}>
                     <button 
                         onClick={() => handleChoiceInteract(index, questionArray[contentInterfaceParams.currentQuestion].mode)}
                         id={(_choice["selected"] 
@@ -212,15 +201,9 @@ export default function QuizInterface ({
                             : 'card-quiz')}
                         className='relative p-1 w-full h-full font-bold text-lg sm:text-xl flex flex-col text-center items-center justify-center rounded-xl'>
                         
-
-                        {/* Front text */}
-
                         <div id='choice-front-text' className={"flex flex-wrap items-center justify-center px-2 gap-2 text-center " + (_choice["choiceText"] ? "py-1" : "")}>
                             {formatQuizText(_choice["choiceText"])}
                         </div>
-
-
-                        {/* Choice image */}
 
                         {_choice["choiceImage"] ? 
                             <div className='flex h-full max-h-[35vh] p-1'>
@@ -228,9 +211,6 @@ export default function QuizInterface ({
                                     className='h-full max-h-[40vh] xl:max-h-full w-full rounded-lg object-cover' />
                             </div> : null
                         }
-
-
-                        {/* Answer report */}
 
                         {questionArray[contentInterfaceParams.currentQuestion].mode == 'flashcard'
                             ? <span id='answer-type'>
@@ -255,7 +235,7 @@ export default function QuizInterface ({
             );
         } else {
             ChoiceObject.push(
-                <div id='card-quiz-container' className='_graded h-full w-full rounded-xl' key={Math.random()}>
+                <div id='card-quiz-container' className='_graded h-full w-full rounded-xl' key={contentInterfaceParams.currentQuestion + index}>
                     <button id={(questionArray[contentInterfaceParams.currentQuestion].mode == "flashcard")
                         // In case of flashcard
                         ? 'card-quiz-ter'
@@ -271,27 +251,18 @@ export default function QuizInterface ({
                                 : 'card-quiz') // Answer is False and unchoosed -> CORRECT
                         }
                         className={'w-full h-full text-lg sm:text-xl ' + ((questionArray[contentInterfaceParams.currentQuestion].mode != "flashcard") && 'cursor-default')}
-                        onClick={() => handleChoiceInteract(index, questionArray[contentInterfaceParams.currentQuestion].mode)}
-                        >
-                            
-                            {/* Choice front text */}
+                        onClick={() => handleChoiceInteract(index, questionArray[contentInterfaceParams.currentQuestion].mode)}>
 
                             {(questionArray[contentInterfaceParams.currentQuestion].mode != "flashcard")
                                 && <div id='choice-front-text' className={(_choice["choiceText"] ? "py-1" : "")}>
                                 {formatQuizText(_choice["choiceText"])}
                             </div>}
 
-
-                            {/* Choice back text */}
-
                             {_choice["choiceBackText"] 
                                 && <div id='choice-back-text' className={"flex flex-col text-start " + (_choice["choiceText"] ? "py-1" : "")}>
                                     {formatQuizText(_choice["choiceBackText"])}
                                 </div>
                             }
-
-
-                            {/* Choice image */}
 
                             {_choice["choiceImage"] 
                                 ? <div id='choice-image' className='flex h-full max-h-[35vh] p-1'>
@@ -300,8 +271,6 @@ export default function QuizInterface ({
                                 </div>
                                 : null
                             }
-
-                            {/* Answer report */}
 
                             {(questionArray[contentInterfaceParams.currentQuestion].mode == "flashcard")
                                 // In case of flashcard
@@ -335,9 +304,6 @@ export default function QuizInterface ({
         }
     }
 
-    // ===== SECTION III: ASIDE FX ======
-    // ==================================
-
     let current_topic: string = questionArray[0].questionSection;
     let question_nav: React.ReactNode[] = [
         !contentInterfaceParams.shuffleQuestion && <h5>{current_topic}</h5>
@@ -356,9 +322,7 @@ export default function QuizInterface ({
 
             // Set new topic
             current_topic = questionArray[i].questionSection;
-            question_nav.push(
-                <h5>{current_topic}</h5>
-            );
+            question_nav.push(<h5>{current_topic}</h5>);
             
             // Reset
             same_topic_choice_nav = [];
@@ -367,7 +331,7 @@ export default function QuizInterface ({
         same_topic_choice_nav.push(
             <button
                 id={(contentInterfaceParams.currentQuestion == i)
-                    ? 'card-nav-accent'
+                    ? 'card-nav-pri'
                     : (questionArray[i].graded)
                         ? (questionArray[i].mode == "flashcard")
                             ? 'card-nav-ter'
@@ -475,8 +439,6 @@ export default function QuizInterface ({
                             : 'lg:grid-cols-2')}>
                         {ChoiceObject}
                     </div>
-
-
                 </main>
             </div>
 
