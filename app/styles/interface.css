@@ -204,10 +204,11 @@ article#changed-all {
 
 .edit-placeholder > .editor-field {
     width: 100%;
+    padding-bottom: 4px;
     margin-top: 16px;
     outline: none;
     word-break: normal;
-    border-bottom: solid 1px var(--border);
+    border-bottom: dashed 1px var(--border);
 }
 
 .edit-placeholder > .toggle-field {

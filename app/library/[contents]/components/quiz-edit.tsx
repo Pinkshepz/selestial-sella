@@ -42,8 +42,12 @@ export default function EditorInterface ({
     // target uid to scroll to after id has been already reset
     const [targetUidScroll, setTargetUidScroll] = useState("");
 
+    // choice key toggle
+    const [choiceKeyToggle, setChoiceKeyToggle] = useState(1);
+
     // track cursor position. Update when cursor position is changed
     const [cursorPosY, setCursorPosY] = useState(0); // cursor position
+
     const setCoordinate = (e: MouseEvent) => {
         if ((window !== undefined) && (e.clientY > (window.innerHeight * 0.5))) {
             setCursorPosY(window.innerHeight * 0.5);
@@ -140,7 +144,7 @@ export default function EditorInterface ({
             [uid]: {
                 ...prev[uid],
                 choices: [
-                    ...prev[uid].choices.slice(0, targetIndex),
+                    ...prev[uid].choices.slice(0, targetIndex + 1),
                     prev[uid].choices[targetIndex],
                     ...prev[uid].choices.slice(targetIndex + 1, prev[uid].choices.length)
                 ]
@@ -162,16 +166,16 @@ export default function EditorInterface ({
 
     // handle delete choice
     const handleDeleteQuestionChoice = (uid: string, deleteIndex: number): void => {
-    setBufferQuestion((prev) => ({
-        ...prev,
-        [uid]: {
-            ...prev[uid],
-            choices: [
-                ...prev[uid].choices.slice(0, deleteIndex),
-                ...prev[uid].choices.slice(deleteIndex + 1, prev[uid].choices.legth)
-            ]
-        }
-    }));
+        setBufferQuestion((prev) => ({
+            ...prev,
+            [uid]: {
+                ...prev[uid],
+                choices: [
+                    ...prev[uid].choices.slice(0, deleteIndex),
+                    ...prev[uid].choices.slice(deleteIndex + 1, prev[uid].choices.legth)
+                ]
+            }
+        }));
     }
 
     // handle add new question
@@ -260,6 +264,53 @@ export default function EditorInterface ({
             }
         }));
     };
+
+    // change choice position
+    const handleChoicePositionBackward = (uid: string, choiceIndex: number): void => {
+        if (choiceIndex > 0) {
+            setBufferQuestion((prev) => ({
+                ...prev,
+                [uid]: {
+                    ...prev[uid],
+                    choices: [
+                        ...prev[uid].choices.slice(0, choiceIndex - 1),
+                        {
+                            ...prev[uid].choices[choiceIndex]
+                        },
+                        ...prev[uid].choices.slice(choiceIndex - 1, choiceIndex),
+                        ...prev[uid].choices.slice(choiceIndex + 1, prev[uid].choices.length)
+                    ]
+                }
+            }));
+            setChoiceKeyToggle((prev) => (prev + 1));
+            return;
+        } else {
+            return;
+        }
+    }
+
+    const handleChoicePositionForward = (uid: string, choiceIndex: number): void => {
+        if (choiceIndex < bufferQuestion[uid].choices.length) {
+                setBufferQuestion((prev) => ({
+                ...prev,
+                [uid]: {
+                    ...prev[uid],
+                    choices: [
+                        ...prev[uid].choices.slice(0, choiceIndex),
+                        ...prev[uid].choices.slice(choiceIndex + 1, choiceIndex + 2),
+                        {
+                            ...prev[uid].choices[choiceIndex]
+                        },
+                        ...prev[uid].choices.slice(choiceIndex + 2, prev[uid].choices.length)
+                    ]
+                }
+            }));
+            setChoiceKeyToggle((prev) => (prev + 1));
+            return;
+        } else {
+            return;
+        }
+    }
 
     // toggle question mode ["singleChoice", "multipleChoice", "flashcard"]
     const MODE: string[] = ["singleChoice", "multipleChoice", "flashcard"];
@@ -386,65 +437,81 @@ export default function EditorInterface ({
         const choicesElements: React.ReactNode[] = [];
 
         const questionChoices: {[key: string]: any}[] = question.choices;
-
-        questionChoices.map((choice, index) => {
+        
+        questionChoices.map((choice, choiceIndex) => {
             choicesElements.push(
                 <div 
-                    className="edit-placeholder flex flex-col gap-2 bg-highlight dark:bg-highlight-dark"
-                    key={uid + index}>
+                    className="edit-placeholder flex flex-col gap-4 bg-highlight dark:bg-highlight-dark"
+                    key={uid + choiceIndex}>
                     <div className="edit-placeholder">
                         <label className="flex flex-row justify-start items-center">
                             <Icon icon="font" size={16} />
-                            <p>Choice {index + 1} text</p>
+                            <p>Choice text</p>
                         </label>
-                        <textarea className="editor-field"
-                            onChange={e => onPlaceholderQuestionChoiceChange(uid, index, "choiceText", e.target.value)}
+                        <input type="text" className="editor-field" key={1 + choiceIndex * questionChoices.length + choiceKeyToggle}
+                            onChange={e => onPlaceholderQuestionChoiceChange(uid, choiceIndex, "choiceText", e.target.value)}
                             defaultValue={choice.choiceText}>
-                        </textarea>
+                        </input>
                     </div>
                     {(bufferQuestion[uid].mode !== "flashcard") && <div className="edit-placeholder">
                         <label className="flex flex-row justify-start items-center">
                             <Icon icon="mcq" size={16} />
-                            <p>Choice {index + 1} answer</p>
+                            <p>Choice answer</p>
                         </label>
-                        <button className={`toggle-field ${bufferQuestion[uid].choices[index].choiceAnswer ? "toggleOn" : "toggleOff"}`}
-                            onClick={() => onPlaceholderQuestionChoiceChange(uid, index, "choiceAnswer", !bufferQuestion[uid].choices[index].choiceAnswer)}
-                            defaultValue={bufferQuestion[uid].choices[index].choiceAnswer}>
-                            {bufferQuestion[uid].choices[index].choiceAnswer ? "TRUE" : "FALSE"}
+                        <button className={`toggle-field ${choice.choiceAnswer ? "toggleOn" : "toggleOff"}`}
+                            onClick={() => onPlaceholderQuestionChoiceChange(uid, choiceIndex, "choiceAnswer", !choice.choiceAnswer)}
+                            defaultValue={choice.choiceAnswer}>
+                            {choice.choiceAnswer ? "TRUE" : "FALSE"}
                         </button>
                     </div>}
                     <div className="edit-placeholder">
                         <label className="flex flex-row justify-start items-center">
                             <Icon icon="font" size={16} />
-                            <p>Choice {index + 1} back text</p>
+                            <p>Choice back text</p>
                         </label>
-                        <textarea className="editor-field"
-                            onChange={e => onPlaceholderQuestionChoiceChange(uid, index, "choiceBackText", e.target.value)}
+                        <input type="text" className="editor-field" key={1 + choiceIndex * questionChoices.length + choiceKeyToggle}
+                            onChange={e => onPlaceholderQuestionChoiceChange(uid, choiceIndex, "choiceBackText", e.target.value)}
                             defaultValue={choice.choiceBackText}>
-                        </textarea>
+                        </input>
                     </div>
                     <div className="edit-placeholder">
                         <label className="flex flex-row justify-start items-center">
                             <Icon icon="image" size={16} />
-                            <p>Choice {index + 1} image URL</p>
+                            <p>Choice image URL</p>
                         </label>
-                        <input type="text" className="editor-field"
-                            onChange={e => onPlaceholderQuestionChoiceChange(uid, index, "choiceImage", e.target.value)}
+                        <input type="text" className="editor-field" key={1 + choiceIndex * questionChoices.length + choiceKeyToggle}
+                            onChange={e => onPlaceholderQuestionChoiceChange(uid, choiceIndex, "choiceImage", e.target.value)}
                             defaultValue={choice.choiceImage}>
                         </input>
                     </div>
-                    <div className="flex flex-row gap-4 w-full">
+                    {choice.choiceImage &&
+                        <div className="flex flex-col gap-4 pr-4 py-4">
+                        <img src={choice.choiceImage} alt="" className="rounded-xl" />
+                    </div>}
+                    <div className="flex flex-row items-center gap-2 w-full mt-2">
                         <button
-                            onClick={() => {handleDuplicateQuestionChoice(uid, index)}}
-                            className="flex flex-row justify-center items-center gap-2 px-2 py-1 rounded-[8px] border border-border dark:border-border-dark hover:text-amber hover:border-amber dark:hover:text-amber-dark dark:hover:border-amber-dark font-bold">
+                            onClick={() => {handleDuplicateQuestionChoice(uid, choiceIndex)}}
+                            className="flex flex-row justify-center items-center gap-2 px-2 py-2 rounded-[8px] border border-highlight dark:border-highlight-dark hover:text-amber hover:border-amber dark:hover:text-amber-dark dark:hover:border-amber-dark font-bold">
                             <Icon icon="copy" size={16} />
-                            DUPLICATE
                         </button>
                         <button
-                            onClick={() => {handleDeleteQuestionChoice(uid, index)}}
-                            className="flex flex-row justify-center items-center gap-2 px-2 py-1 rounded-[8px] border border-border dark:border-border-dark hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
+                            onClick={() => {handleDeleteQuestionChoice(uid, choiceIndex)}}
+                            className="flex flex-row justify-center items-center gap-2 px-2 py-2 rounded-[8px] border border-highlight dark:border-highlight-dark hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
                             <Icon icon="trash" size={16} />
-                            DELETE
+                        </button>
+                        <div className="h-full mx-2 border-r border-border"></div>
+                        <button
+                            onClick={() => {handleChoicePositionBackward(uid, choiceIndex)}}
+                            className="flex flex-row justify-center items-center gap-2 px-2 py-2 rounded-[8px] border border-highlight dark:border-highlight-dark hover:text-pri hover:border-pri dark:hover:text-pri-dark dark:hover:border-pri-dark font-bold">
+                            <Icon icon="left" size={16} />
+                        </button>
+                        <div className="font-bold">
+                            {choiceIndex + 1}
+                        </div>
+                        <button
+                            onClick={() => {handleChoicePositionForward(uid, choiceIndex)}}
+                            className="flex flex-row justify-center items-center gap-2 px-2 py-2 rounded-[8px] border border-highlight dark:border-highlight-dark hover:text-pri hover:border-pri dark:hover:text-pri-dark dark:hover:border-pri-dark font-bold">
+                            <Icon icon="right" size={16} />
                         </button>
                     </div>
                 </div>
@@ -453,7 +520,7 @@ export default function EditorInterface ({
 
         choicesElements.push(
             <button
-                onClick={() => handleAddQuestionChoice(uid, index)}
+                onClick={() => handleAddQuestionChoice(uid, bufferQuestion[uid].choices.length)}
                 className="add-button p-12" key={uid + 999999999}>
                 <Icon icon="add" size={36} />
                 <p className="mt-4 text-lg font-bold">NEW CHOICE</p>
@@ -571,7 +638,7 @@ export default function EditorInterface ({
                             <img src={bufferQuestion[uid].questionImage} alt="" className="rounded-xl" />
                         </div>}
                 </article>
-                <article aria-label="question-choice" className="-scroll-none flex flex-row gap-4 overflow-x-scroll w-full p-4">
+                <article aria-label="question-choice" className="-scroll-none flex flex-row gap-4 overflow-x-scroll w-full p-4 border-t border-border dark:border-border-dark">
                     {choicesElements}
                 </article>
             </section>

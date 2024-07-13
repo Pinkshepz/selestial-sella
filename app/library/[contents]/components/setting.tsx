@@ -164,7 +164,7 @@ export default function SettingInterface ({
                                 setGlobalParams("popUpAction", contentInterfaceParams.editMode ? "turnEditModeOff" : "turnEditModeOn");
                                 setGlobalParams("popUpText", contentInterfaceParams.editMode ? 
                                     "Turn editing mode off. All unsaved changes will be ignored" : 
-                                    `Turn editing mode on as ${globalParams.user.displayName}`);
+                                    `Turn editing mode on`);
                             }}
                             id="theme-button"
                             className="lg:ml-auto text-md">

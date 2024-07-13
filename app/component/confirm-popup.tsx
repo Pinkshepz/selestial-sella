@@ -12,12 +12,26 @@ export default function ConfirmPopUp (): React.ReactNode {
             <>
                 <div className="glass-cover"></div>
                 <section className="main-popup">
-                    <h1>Confirmation</h1>
-                    <span id="pri-chip">
-                        <Icon icon="code" size={16} />
-                        {globalParams.popUpAction.split("Toggle")[0]}
-                    </span>
-                    <h4>{globalParams.popUpText}</h4>
+                    {globalParams.user ? (
+                        <>
+                            <h1>Confirmation</h1>
+                            <span id="pri-chip">
+                                <Icon icon="code" size={16} />
+                                {globalParams.popUpAction.split("Toggle")[0]}
+                            </span>
+                            <h4>{globalParams.popUpText}</h4>
+                        </>
+                    ) : (
+                        <>
+                            <h1>Authentication required</h1>
+                            <span id="pri-chip">
+                                <Icon icon="code" size={16} />
+                                {"userNotFound"}
+                            </span>
+                            <h4>{"Please login with authorized account"}</h4>
+                        </>
+                    )
+                    }
                     <div className="flex flex-row justify-center items-center gap-8 font-bold">
                         <button 
                             onClick={() => {
@@ -27,14 +41,14 @@ export default function ConfirmPopUp (): React.ReactNode {
                                 setGlobalParams("popUpText", "");
                             }}
                             id="theme-button">Go back</button>
-                        <button
+                        {globalParams.user && <button
                             onClick={() => {
                                 setGlobalParams("popUp", false);
                                 setGlobalParams("popUpConfirm", true);
                                 setGlobalParams("popUpText", "");
                             }}
                             className="text-pri dark:text-pri"
-                            id="theme-button">Confirm</button>
+                            id="theme-button">Confirm</button>}
                     </div>
                 </section>
             </>

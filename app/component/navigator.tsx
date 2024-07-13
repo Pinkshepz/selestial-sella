@@ -102,7 +102,7 @@ export default function GlobalNavigator (): React.ReactNode {
           <div className="m-4">
           {(globalParams.user != null) ? (
             // user is already logged in, render user profie
-            <Link href={"./login"} className="flex flex-row justify-center items-center gap-3">
+            <Link href={"/login"} className="flex flex-row justify-center items-center gap-3">
               <div id="frame" className="overflow-hidden bg-cover h-6 w-6 rounded-full border-pri">
                 <img className="h-full w-full" src={globalParams.user.photoURL} alt="" />
               </div>
@@ -110,7 +110,7 @@ export default function GlobalNavigator (): React.ReactNode {
             </Link>
           ) : (
             // user is already logged in, render guest profile
-            <Link href={"./login"} className="flex flex-row justify-center items-center gap-3">
+            <Link href={"/login"} className="flex flex-row justify-center items-center gap-3">
               <div id="frame" className="overflow-hidden bg-cover h-6 w-6 rounded-full border-pri">
                 <img className="h-full w-full" src={GUEST_PROFILE} alt="" />
               </div>

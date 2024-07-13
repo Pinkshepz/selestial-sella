@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import app from "../libs/firebase/fireclient";
@@ -20,6 +20,10 @@ const Login = (): React.ReactNode => {
 
     // access global data
     const {globalParams, setGlobalParams} = useGlobalContext();
+
+    useEffect(() => {
+        setGlobalParams("isLoading", false);
+    }, []);
 
     // render pop-up window for sign in Google account
     const signInWithGoogle = async () => {

@@ -202,7 +202,7 @@ export default function QuizInterface ({
         const _choice = questionArray[contentInterfaceParams.currentQuestion].choices[index];
         if (!_choice.graded) {
             ChoiceObject.push(
-                <div id='card-quiz-container' className={'h-full w-full rounded-xl'} key={index}>
+                <div id='card-quiz-container' className={'h-full w-full rounded-xl'} key={Math.random()}>
                     <button 
                         onClick={() => handleChoiceInteract(index, questionArray[contentInterfaceParams.currentQuestion].mode)}
                         id={(_choice["selected"] 
@@ -255,7 +255,7 @@ export default function QuizInterface ({
             );
         } else {
             ChoiceObject.push(
-                <div id='card-quiz-container' className='_graded h-full w-full rounded-xl' key={index}>
+                <div id='card-quiz-container' className='_graded h-full w-full rounded-xl' key={Math.random()}>
                     <button id={(questionArray[contentInterfaceParams.currentQuestion].mode == "flashcard")
                         // In case of flashcard
                         ? 'card-quiz-ter'
