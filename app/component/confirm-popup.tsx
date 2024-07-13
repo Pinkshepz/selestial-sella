@@ -12,26 +12,12 @@ export default function ConfirmPopUp (): React.ReactNode {
             <>
                 <div className="glass-cover"></div>
                 <section className="main-popup">
-                    {globalParams.user ? (
-                        <>
-                            <h1>Confirmation</h1>
-                            <span id="pri-chip">
-                                <Icon icon="code" size={16} />
-                                {globalParams.popUpAction.split("Toggle")[0]}
-                            </span>
-                            <h4>{globalParams.popUpText}</h4>
-                        </>
-                    ) : (
-                        <>
-                            <h1>Authentication required</h1>
-                            <span id="pri-chip">
-                                <Icon icon="code" size={16} />
-                                {"userNotFound"}
-                            </span>
-                            <h4>{"Please login with authorized account"}</h4>
-                        </>
-                    )
-                    }
+                    <h1>Confirmation</h1>
+                    <span id="pri-chip">
+                        <Icon icon="code" size={16} />
+                        {globalParams.popUpAction.split("Toggle")[0]}
+                    </span>
+                    <h4>{globalParams.popUpText}</h4>
                     <div className="flex flex-row justify-center items-center gap-8 font-bold">
                         <button 
                             onClick={() => {

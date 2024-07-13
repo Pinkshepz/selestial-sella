@@ -16,7 +16,6 @@ const Login = (): React.ReactNode => {
     const router = useRouter();
 
     const auth = getAuth(app);
-    console.log((auth.currentUser))
 
     // access global data
     const {globalParams, setGlobalParams} = useGlobalContext();
