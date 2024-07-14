@@ -4,6 +4,7 @@ import { useGlobalContext } from "@/app/provider";
 import { useInterfaceContext } from "../library-provider";
 import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
 import Icon from "@/public/icon";
+import { useEffect } from "react";
 
 export default function LogUpdate () {
 
@@ -12,6 +13,10 @@ export default function LogUpdate () {
 
     // connect to interface context
     const {interfaceParams, setInterfaceParams} = useInterfaceContext();
+
+    useEffect(() => {
+        setGlobalParams("isLoading", false);
+    }, []);
 
     const log: {[key: string]: {[key: string]: any}} = interfaceParams.logUpdate;
 

@@ -24,6 +24,8 @@ const DisplayCard = ({
     cardMode?: string[],
     cardTotalQuestion?: number
 }) => {
+    // default background image if image link is not provided
+    const BG = "https://media.suara.com/pictures/653x366/2019/12/19/95933-aurora.jpg";
 
     return (
         // card template
@@ -51,7 +53,7 @@ const DisplayCard = ({
                 </div>
             </div>
             <div className="card-2-glow-image">
-                {cardImageLink && <img src={cardImageLink} alt="" className='h-full' height={1000} width={1000} />}
+                <img src={cardImageLink ? cardImageLink : BG} alt="" className='h-full' height={1000} width={1000} />
             </div>
         </article>
     );

@@ -29,7 +29,7 @@ const DisplayRow = ({
     return (
         <tr key={cardUid}>
             <td className="font-bold" key={cardUid + "1"}>
-                <div className="flex flex-row items-center gap-2">
+                <div className="flex flex-row items-center gap-2 whitespace-nowrap">
                     <div id="frame" className="flex justify-center items-center overflow-hidden bg-cover h-6 w-6 rounded-full border-pri">
                         <img className="h-full" src={cardImageLink} alt="" />
                     </div>

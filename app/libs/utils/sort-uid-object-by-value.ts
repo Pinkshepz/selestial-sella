@@ -15,11 +15,14 @@ export default function sortUidObjectByValue (
     for (let uid in object) {
         if (typeof object[uid][sortValue] == "string") {
             // turn string to ascii code -> sort both alphabet and number
+            // SIID999-A1 > SIID999-AAA
+            const asciiStandardLength = 12
             let ascii: number = 0;
             for (let index = 0; index < object[uid][sortValue].length; index++) {
                 const char = object[uid][sortValue][index];
-                ascii += char.charCodeAt(0) * (100 ** (object[uid][sortValue].length - index - 1));
+                ascii += char.charCodeAt(0) * (10 ** (asciiStandardLength - index - 1));
             }
+            console.log(ascii, object[uid].id);
             sortable.push([ascii, uid]);
         } else {
             sortable.push([object[uid][sortValue], uid])
@@ -39,7 +42,6 @@ export default function sortUidObjectByValue (
 
     for (let index = 0; index < sortable.length; index++) {
         const eachObject = sortable[index];
-
         reassembledObject[eachObject[1]] = object[eachObject[1]];
     }
 

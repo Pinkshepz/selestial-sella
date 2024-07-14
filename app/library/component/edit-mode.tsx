@@ -59,6 +59,7 @@ export default function CardEditor ({
     if (interfaceParams.saveChangesToggle &&
         globalParams.popUpConfirm &&
         (globalParams.popUpAction == "saveChangesToggle")) {
+        setGlobalParams("isLoading", true);
         firestoreUpdate({
             collectionName: "library",
             originalData: contentData, 

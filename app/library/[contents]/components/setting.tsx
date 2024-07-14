@@ -16,7 +16,9 @@ export default function SettingInterface ({
     libraryData: {[key: string]: string}, // {uid: {library data}}
     questionData: {[key: string]: any}[] // {uid: {each question}}
 }) {
-
+    // supplement wallpaper
+    const BG = "https://media.suara.com/pictures/653x366/2019/12/19/95933-aurora.jpg";
+    
     // connect to global context
     const {globalParams, setGlobalParams} = useGlobalContext();
 
@@ -175,7 +177,7 @@ export default function SettingInterface ({
                 </div>
             </article>
             <div className="card-2-glow-image">
-                {libraryData.image  && <img src={libraryData.image } alt="" height={1000} width={1000} className='h-full'/>}
+                <img src={libraryData.image ? libraryData.image : BG } alt="" height={1000} width={1000} className='h-full'/>
             </div>
         </section>
     );
