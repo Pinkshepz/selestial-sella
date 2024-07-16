@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
+import useEventListener from "../../../libs/hooks/useEventListener";
 
 import './interface.css';
 
@@ -26,6 +26,54 @@ export default function QuizInterface ({
 
     // Create question pool
     const [questionArray, setQuestionArray] = useState(questionData);
+
+    const ESCAPE_KEYS = ['Escape'];
+    const ENTER_KEYS = ['Enter'];
+    const NUMBER_KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+    const ARROWUP_KEYS = ["ArrowUp"];
+    const ARROWDOWN_KEYS = ["ArrowDown"];
+    const ARROWLEFT_KEYS = ["ArrowLeft"];
+    const ARROWRIGHT_KEYS = ["ArrowRight"];
+
+    // 
+    function handler({ key }: {key: string}):void {
+        // escape key = quit
+        if (ESCAPE_KEYS.includes(String(key))) {
+            setContentInterfaceParams("pageSwitch", false);
+            return;
+        }
+        // number keys for choice selection
+        if (NUMBER_KEYS.includes(String(key))) {
+            handleChoiceInteract(
+                ((Number(key) - 1) % questionArray[contentInterfaceParams.currentQuestion].choices.length), 
+                questionArray[contentInterfaceParams.currentQuestion].mode);
+            return;
+        }
+        // enter for submit and move to next question
+        if (ENTER_KEYS.includes(String(key))) {
+            !((questionArray[contentInterfaceParams.currentQuestion].choices[0].graded) ||
+            (questionArray[contentInterfaceParams.currentQuestion].mode == "flashcard")) 
+            ? gradeAllChoices()
+            : (contentInterfaceParams.currentQuestion < contentInterfaceParams.questionNumber - 1)
+                ? changeQuestion(contentInterfaceParams.currentQuestion + 1)
+                : setContentInterfaceParams("pageSwitch", false);
+            return;
+        }
+        // arrow left to go to previous question
+        if (ARROWLEFT_KEYS.includes(String(key))) {
+            (contentInterfaceParams.currentQuestion > 0) && 
+                changeQuestion(contentInterfaceParams.currentQuestion - 1);
+            return;
+        }
+        // arrow right to go to previous question
+        if (ARROWRIGHT_KEYS.includes(String(key))) {
+            (contentInterfaceParams.currentQuestion < contentInterfaceParams.questionNumber - 1) && 
+                changeQuestion(contentInterfaceParams.currentQuestion + 1);
+            return;
+        }
+      }
+    
+    useEventListener('keydown', handler);
 
     // Random question on load
     useEffect(() => {
@@ -304,7 +352,7 @@ export default function QuizInterface ({
 
     let current_topic: string = questionArray[0].questionSection;
     let question_nav: React.ReactNode[] = [
-        !contentInterfaceParams.shuffleQuestion && <h5>{current_topic}</h5>
+        !contentInterfaceParams.shuffleQuestion && <h5 key={current_topic + "0"}>{current_topic}</h5>
     ];
     let same_topic_choice_nav: React.ReactNode[] = [];
 
@@ -313,14 +361,14 @@ export default function QuizInterface ({
         if ((current_topic != questionArray[i].questionSection) && (!contentInterfaceParams.shuffleQuestion)) {
             // Push current topic questions
             question_nav.push(
-                <div className='pb-4 grid grid-cols-5 gap-2'>
+                <div className='pb-4 grid grid-cols-5 gap-2' key={"nav group" + i}>
                     {same_topic_choice_nav}
                 </div>
             );
 
             // Set new topic
             current_topic = questionArray[i].questionSection;
-            question_nav.push(<h5>{current_topic}</h5>);
+            question_nav.push(<h5 key={current_topic + i}>{current_topic}</h5>);
             
             // Reset
             same_topic_choice_nav = [];
@@ -348,7 +396,7 @@ export default function QuizInterface ({
 
     // Push current topic questions, lastly
     question_nav.push(
-        <div className='pb-4 grid grid-cols-5 gap-2'>
+        <div className='pb-4 grid grid-cols-5 gap-2' key={"nav group last"}>
             {same_topic_choice_nav}
         </div>
     );
@@ -478,10 +526,10 @@ export default function QuizInterface ({
                                 </button>
                             </a>
                         </div>
-                        : <Link href={"./"}
+                        : <button onClick={() => setContentInterfaceParams("pageSwitch", false)}
                             className="flex flex-col font-bold text-xl w-full h-16 px-4 items-center justify-center text-center">
                             Finish
-                        </Link>
+                        </button>
                 }
 
                 { (contentInterfaceParams.currentQuestion > 0) ?
