@@ -42,9 +42,9 @@ export default function LogUpdate () {
 
     const actionMap = {
         WRITE: "text-pri dark:text-pri-dark",
-        EDIT: "text-amber dark:text-pri-amber",
+        EDIT: "text-amber dark:text-amber-dark",
         DELETE: "text-sec dark:text-sec-dark",
-        REMAIN: "text-ter dark:text-amber-ter"
+        REMAIN: "text-ter dark:text-ter-dark"
     };
 
     Object.values(sortedFilteredContentData).map((log, index) => {

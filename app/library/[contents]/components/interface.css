@@ -79,7 +79,7 @@
   width: calc((var--aside-width)/ 6.2);
   height: 36px;
   font-weight: 700;
-  color: var(--base-inverse);
+  color: var(--base);
   background-color: var(--ter);
   border: solid 1px var(--ter);
   border-radius: 8px;
