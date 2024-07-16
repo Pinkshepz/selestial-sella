@@ -10,8 +10,6 @@ import formatQuizText from '@/app/libs/utils/paragraph';
 import { useContentInterfaceContext } from '../content-provider';
 import Icon from '@/public/icon';
 import stringToHex from '@/app/libs/utils/string-to-rgb';
-import sortUidObjectByValue from '@/app/libs/utils/sort-uid-object-by-value';
-import uidObjectToArray from '@/app/libs/utils/uid-object-to-array';
 
 export default function QuizInterface ({
     libraryData,
@@ -38,16 +36,16 @@ export default function QuizInterface ({
     // Random choice on load
     useEffect(() => {
         if (contentInterfaceParams.shuffleChoice === true) {
-            questionArray.map((_question, index) => {
-                setQuestionArray((prev) => ([
-                    ...prev.slice(0, index),
+            let newQuestionArray: {}[] = [];
+            questionArray.map((_question) => {
+                newQuestionArray.push(
                     {
-                        ...prev[index],
+                        ..._question,
                         choices: shuffle(_question.choices)
-                    },
-                    ...prev.slice(index + 1, contentInterfaceParams.questionNumber)
-                ]))
+                    }
+                );
             });
+            setQuestionArray(newQuestionArray);
         }
     }, []);
 

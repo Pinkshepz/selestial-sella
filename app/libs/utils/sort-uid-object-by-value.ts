@@ -22,7 +22,6 @@ export default function sortUidObjectByValue (
                 const char = object[uid][sortValue][index];
                 ascii += char.charCodeAt(0) * (10 ** (asciiStandardLength - index - 1));
             }
-            console.log(ascii, object[uid].id);
             sortable.push([ascii, uid]);
         } else {
             sortable.push([object[uid][sortValue], uid])
