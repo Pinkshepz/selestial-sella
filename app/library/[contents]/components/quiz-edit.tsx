@@ -322,15 +322,16 @@ export default function EditorInterface ({
         return;
     };
 
-    // discard all changes if toggle
+    // delete all changes if toggle
     useEffect(() => {
         if (contentInterfaceParams.deleteAllChangesToggle && 
             globalParams.popUpConfirm &&
             (globalParams.popUpAction === "deleteAllChangesToggle")) {
-            setBufferQuestion(questionData);
+            setBufferQuestion({});
             setContentInterfaceParams("deleteAllChangesToggle", false);
             setGlobalParams("popUpConfirm", false);
             setGlobalParams("popUpAction", "");
+            setContentInterfaceParams("autoSaveClock", 1000);
         }
         setChoiceKeyToggle((prev) => (prev + 1));
     }, [globalParams.popUpConfirm]);
@@ -346,15 +347,25 @@ export default function EditorInterface ({
         setGlobalParams("popUpAction", "");
     }
     }, [globalParams.popUpConfirm]);
-
-    // save all changes if toggle 
+    
+    // autosave clock every 5 mins
+    const [time, setTime] = useState(Date.now());
+    
     useEffect(() => {
-        if (contentInterfaceParams.saveChangesToggle &&
-            globalParams.popUpConfirm &&
-            (globalParams.popUpAction == "saveChangesToggle")) {
+        const interval = setInterval(() => setTime(Date.now()), 1000);
+        setContentInterfaceParams("autoSaveClock", contentInterfaceParams.autoSaveClock - 1);
+        return () => {
+            clearInterval(interval);
+        };
+    }, [time]);
+    
+    // run autosave
+    useEffect(() => {
+        if ((contentInterfaceParams.autoSaveToggle) && (contentInterfaceParams.autoSaveClock == 0)) {
             setGlobalParams("isLoading", true);
-            const libraryUid = libraryData.uid;
-            delete libraryData.uid;
+            const cloneLibraryData = libraryData;
+            const libraryUid = cloneLibraryData.uid;
+            delete cloneLibraryData.uid;
 
             const processData = (rawData: typeof bufferQuestion) => {
                 let processedData: typeof bufferQuestion = {};
@@ -372,9 +383,56 @@ export default function EditorInterface ({
             // update library data
             firestoreUpdate({
                 collectionName: "library",
-                originalData: {[libraryUid]: libraryData}, 
+                originalData: {[libraryUid]: cloneLibraryData}, 
                 editedData: {[libraryUid]: {
-                    ...libraryData,
+                    ...cloneLibraryData,
+                    totalQuestion: Object.keys(bufferQuestion).length
+                }}
+            });
+
+            // update all question data
+            firestoreUpdate({
+                collectionName: "content",
+                originalData: questionData, 
+                editedData: processData(bufferQuestion)
+            }).then(
+                () => {
+                    setGlobalParams("isLoading", false);
+                    setContentInterfaceParams("autoSaveClock", 300);
+                }
+            );
+        }
+    }, [time]);
+
+    // save all changes if toggle 
+    useEffect(() => {
+        if (contentInterfaceParams.saveChangesToggle &&
+            globalParams.popUpConfirm &&
+            (globalParams.popUpAction == "saveChangesToggle")) {
+            setGlobalParams("isLoading", true);
+            const cloneLibraryData = libraryData;
+            const libraryUid = cloneLibraryData.uid;
+            delete cloneLibraryData.uid;
+
+            const processData = (rawData: typeof bufferQuestion) => {
+                let processedData: typeof bufferQuestion = {};
+                // assign new question number and library uid
+                Object.keys(sortUidObjectByValue(rawData, "id", true)).map((uid, index) => {
+                    processedData[uid] = {
+                        ...rawData[uid],
+                        id: index + 1,
+                        library: libraryUid
+                    }
+                });
+                return sortUidObjectByValue(processedData, "id", true);
+            }
+
+            // update library data
+            firestoreUpdate({
+                collectionName: "library",
+                originalData: {[libraryUid]: cloneLibraryData}, 
+                editedData: {[libraryUid]: {
+                    ...cloneLibraryData,
                     totalQuestion: Object.keys(bufferQuestion).length
                 }}
             });
@@ -395,6 +453,18 @@ export default function EditorInterface ({
             );
         };
     }, [globalParams.popUpConfirm]);
+
+    // warn if autosave is off and question numbers added exceed 25
+    useEffect(() => {
+        if (!contentInterfaceParams.autoSaveToggle) {
+            if (Object.keys(bufferQuestion).length - Object.keys(questionData).length > 10) {
+                setContentInterfaceParams("autoSaveToggle", !contentInterfaceParams.autoSaveToggle);
+                setGlobalParams("popUp", true);
+                setGlobalParams("popUpAction", "saveChangesToggle");
+                setGlobalParams("popUpText", "We recommend to save all changes to prevent data loss")
+            }
+        }
+    }, [targetUidScroll]);
 
     // listen gg sheet import
     useEffect(() => {

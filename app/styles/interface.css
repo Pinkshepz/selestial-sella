@@ -33,6 +33,10 @@
     scrollbar-width: none;  /* Firefox */
 }
 
+.controller-island::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+
 .-scroll-none::-webkit-scrollbar { 
     display: none;  /* Safari and Chrome */
 }

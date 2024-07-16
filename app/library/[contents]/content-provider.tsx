@@ -14,6 +14,8 @@ interface ContentInterfaceStructure {
   discardChangesToggle: boolean,
   deleteAllChangesToggle: boolean,
   saveChangesToggle: boolean,
+  autoSaveToggle: boolean,
+  autoSaveClock: number,
   logUpdate: {},
   importSheetToggle: boolean,
   sortAscending: boolean
@@ -31,6 +33,8 @@ const contentInterfaceInitialValue = {
   discardChangesToggle: false,
   deleteAllChangesToggle: false,
   saveChangesToggle: false,
+  autoSaveToggle: true,
+  autoSaveClock: 0,
   logUpdate: {},
   importSheetToggle: false,
   sortAscending: true

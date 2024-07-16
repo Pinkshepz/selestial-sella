@@ -90,7 +90,7 @@ export default function ContentController () {
                         setContentInterfaceParams("saveChangesToggle", !contentInterfaceParams.saveChangesToggle)
                         setGlobalParams("popUp", true);
                         setGlobalParams("popUpAction", "saveChangesToggle");
-                        setGlobalParams("popUpText", "Save all recent changes. All data will be permanently updated")
+                        setGlobalParams("popUpText", "Save all recent changes. All data will be permanently updated");
                     }}
                     className="controller-menu">
                     <Icon icon="save" size={16} />
@@ -108,6 +108,16 @@ export default function ContentController () {
                     className="controller-menu">
                     <Icon icon={contentInterfaceParams.editMode ? "edit" : "map"} size={16} />
                     <p>{contentInterfaceParams.editMode ? "EXIT EDIT MODE" : "ENTER EDIT MODE"}</p>
+                </button>
+
+                <button
+                    onClick={() => {
+                        setContentInterfaceParams("autoSaveToggle", !contentInterfaceParams.autoSaveToggle);
+                        setContentInterfaceParams("autoSaveClock", 300);
+                    }}
+                    className="controller-menu">
+                    <Icon icon="mcq" size={16} />
+                    <p>{contentInterfaceParams.autoSaveToggle ? `AUTOSAVE IN ${contentInterfaceParams.autoSaveClock}` : "AUTOSAVE OFF"}</p>
                 </button>
 
             </div>
