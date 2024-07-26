@@ -28,6 +28,7 @@ const Login = (): React.ReactNode => {
     const signInWithGoogle = async () => {
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
+        provider.addScope('https://www.googleapis.com/auth/cloud-platform');
         try {
             await signInWithPopup(auth, provider);
         } catch (error: any) {

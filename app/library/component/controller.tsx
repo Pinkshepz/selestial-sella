@@ -102,7 +102,7 @@ export default function Controller () {
                             setGlobalParams("popUpAction", interfaceParams.editMode ? "turnEditModeOff" : "turnEditModeOn");
                             setGlobalParams("popUpText", interfaceParams.editMode ? 
                                 "Turn editing mode off. All unsaved changes will be ignored" : 
-                                `Turn editing mode on as ${globalParams.user.displayName}`)
+                                `Turn editing mode on`)
                         }}
                         className="controller-menu">
                         <Icon icon={interfaceParams.editMode ? "edit" : "map"} size={16} />

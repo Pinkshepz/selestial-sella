@@ -175,7 +175,7 @@ article#changed-all {
     background-color: var(--highlight);
     border: solid 1px var(--border);
     border-radius: 12px;
-    box-shadow: 0 4px 8px 0 var(--shadow), 0 6px 20px 0 var(--shadow);
+    /* box-shadow: 0 4px 8px 0 var(--shadow), 0 6px 20px 0 var(--shadow); */
     overflow: hidden;
     transition: all ease-in-out 300ms;
     animation: smooth-appear 400ms ease forwards;

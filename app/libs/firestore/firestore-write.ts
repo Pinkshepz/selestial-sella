@@ -24,7 +24,7 @@ export default async function firestoreWrite({
             merge: true
         });
     } catch (e) {
-        error = e;  
+        error = e;
     }
     
     return { result, error };

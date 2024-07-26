@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect, useRef, use } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import makeid from "@/app/libs/utils/make-id";
 import firestoreUpdate from "../../../libs/firestore/firestore-manager";
+import firestoreUpdateQuiz from "@/app/libs/firestore/firestore-manager-quiz";
 import Icon from "@/public/icon";
 import stringToHex from "@/app/libs/utils/string-to-rgb";
 import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
@@ -59,6 +60,35 @@ export default function EditorInterface ({
     useEffect(() => {
         window.addEventListener("mousemove", setCoordinate);
     }, [setCoordinate]);
+
+    // autosave toggle and clock
+    const [autoSaveToggle, setAutoSaveToggle] = useState(true);
+    const CLOCK: number[] = [10, 30, 60, 120, 300, 600];
+    const [defaultAutosaveTime, setDefaultAutosaveTime] = useState(CLOCK[2]);
+    const [autoSaveClock, setAutoSaveClock] = useState(defaultAutosaveTime);
+
+    // toggle autosave clock default time [30, 60, 300, 600]
+    const toggleAutosaveClock = (): void => {
+        const currentIndex: number = CLOCK.indexOf(defaultAutosaveTime);
+        // change to next clock option
+        setDefaultAutosaveTime(CLOCK[(currentIndex + 1) % CLOCK.length]);
+        setAutoSaveClock(CLOCK[(currentIndex + 1) % CLOCK.length]);
+        return;
+    };
+
+    // autosave clock countdown
+    const [time, setTime] = useState(Date.now());
+
+    // run autosave clock
+    useEffect(() => {
+        if (autoSaveToggle) {
+            const interval = setInterval(() => setTime(Date.now()), 1000);
+            setAutoSaveClock(autoSaveClock - 1);
+            return () => {
+                clearInterval(interval);
+            };
+        }
+    }, [time, autoSaveToggle]);
 
     // ref for elements
     const elementsRef: {[key: string]: any} = useRef({});
@@ -331,7 +361,7 @@ export default function EditorInterface ({
             setContentInterfaceParams("deleteAllChangesToggle", false);
             setGlobalParams("popUpConfirm", false);
             setGlobalParams("popUpAction", "");
-            setContentInterfaceParams("autoSaveClock", 1000);
+            setAutoSaveClock(defaultAutosaveTime);
         }
         setChoiceKeyToggle((prev) => (prev + 1));
     }, [globalParams.popUpConfirm]);
@@ -348,22 +378,11 @@ export default function EditorInterface ({
     }
     }, [globalParams.popUpConfirm]);
     
-    // autosave clock every 5 mins
-    const [time, setTime] = useState(Date.now());
-    
-    useEffect(() => {
-        const interval = setInterval(() => setTime(Date.now()), 1000);
-        setContentInterfaceParams("autoSaveClock", contentInterfaceParams.autoSaveClock - 1);
-        return () => {
-            clearInterval(interval);
-        };
-    }, [time]);
-    
     // run autosave
     useEffect(() => {
-        if ((contentInterfaceParams.autoSaveToggle) && (contentInterfaceParams.autoSaveClock == 0)) {
+        if ((autoSaveToggle) && (autoSaveClock == 1)) {
             setGlobalParams("isLoading", true);
-            const cloneLibraryData = libraryData;
+            const cloneLibraryData = structuredClone(libraryData);
             const libraryUid = cloneLibraryData.uid;
             delete cloneLibraryData.uid;
 
@@ -391,14 +410,13 @@ export default function EditorInterface ({
             });
 
             // update all question data
-            firestoreUpdate({
-                collectionName: "content",
+            firestoreUpdateQuiz({
                 originalData: questionData, 
                 editedData: processData(bufferQuestion)
             }).then(
                 () => {
                     setGlobalParams("isLoading", false);
-                    setContentInterfaceParams("autoSaveClock", 300);
+                    setAutoSaveClock(defaultAutosaveTime);
                 }
             );
         }
@@ -410,11 +428,12 @@ export default function EditorInterface ({
             globalParams.popUpConfirm &&
             (globalParams.popUpAction == "saveChangesToggle")) {
             setGlobalParams("isLoading", true);
-            const cloneLibraryData = libraryData;
+            const cloneLibraryData = structuredClone(libraryData);
             const libraryUid = cloneLibraryData.uid;
             delete cloneLibraryData.uid;
 
             const processData = (rawData: typeof bufferQuestion) => {
+                console.log(libraryUid)
                 let processedData: typeof bufferQuestion = {};
                 // assign new question number and library uid
                 Object.keys(sortUidObjectByValue(rawData, "id", true)).map((uid, index) => {
@@ -426,7 +445,7 @@ export default function EditorInterface ({
                 });
                 return sortUidObjectByValue(processedData, "id", true);
             }
-
+            
             // update library data
             firestoreUpdate({
                 collectionName: "library",
@@ -436,10 +455,9 @@ export default function EditorInterface ({
                     totalQuestion: Object.keys(bufferQuestion).length
                 }}
             });
-
+            
             // update all question data
-            firestoreUpdate({
-                collectionName: "content",
+            firestoreUpdateQuiz({
                 originalData: questionData, 
                 editedData: processData(bufferQuestion)
             }).then(
@@ -456,9 +474,9 @@ export default function EditorInterface ({
 
     // warn if autosave is off and question numbers added exceed 25
     useEffect(() => {
-        if (!contentInterfaceParams.autoSaveToggle) {
+        if (!autoSaveToggle) {
             if (Object.keys(bufferQuestion).length - Object.keys(questionData).length > 10) {
-                setContentInterfaceParams("autoSaveToggle", !contentInterfaceParams.autoSaveToggle);
+                setContentInterfaceParams("autoSaveToggle", !autoSaveToggle);
                 setGlobalParams("popUp", true);
                 setGlobalParams("popUpAction", "saveChangesToggle");
                 setGlobalParams("popUpText", "We recommend to save all changes to prevent data loss")
@@ -722,13 +740,18 @@ export default function EditorInterface ({
     
     if (Object.keys(sortedFilteredQuestionData).length > 0) {
         let current_topic: string = Object.values(sortedFilteredQuestionData)[0].questionSection;
-        question_nav.push(<h5 className="mb-4" key={current_topic + "0"}>{current_topic}</h5>);
+        // push the first topic
+        question_nav.push(<h5 className="mb-4 px-4" key={current_topic + "0"}>{current_topic ? current_topic : "No section"}</h5>);
+
         for (let i = 0; i < Object.keys(sortedFilteredQuestionData).length; i++) {
+            // get uid
+            const uid = Object.keys(sortedFilteredQuestionData)[i];
+
             // Check topic
             if (current_topic != Object.values(sortedFilteredQuestionData)[i].questionSection) {
                 // Push current topic questions
                 question_nav.push(
-                    <div key={current_topic + "nav" + i} className='pb-4 grid grid-cols-5 gap-2'>
+                    <div key={current_topic + "nav" + i} className='pb-4 flex flex-col'>
                         {same_topic_choice_nav}
                     </div>
                 );
@@ -736,7 +759,7 @@ export default function EditorInterface ({
                 // Set new topic
                 current_topic = Object.values(sortedFilteredQuestionData)[i].questionSection;
                 question_nav.push(
-                    <h5 className="mb-4" key={current_topic + i}>{current_topic}</h5>
+                    <h5 className="mb-4 px-4" key={current_topic + i}>{current_topic ? current_topic : "No section"}</h5>
                 );
                 
                 // Reset
@@ -745,10 +768,19 @@ export default function EditorInterface ({
     
             same_topic_choice_nav.push(
                 <button
-                    id='card-nav-neu'
+                    className="flex flex-row items-center px-4 py-2 border-t border-border dark:border-border-dark hover:bg-black/10 dark:hover:bg-white/10 ease-in-out duration-200"
                     key={i}
-                    onClick={() => scrollToRef(Object.keys(sortedFilteredQuestionData)[i])}>
-                    {i + 1}
+                    onClick={() => scrollToRef(uid)}>
+                    <p className="font-bold">{i + 1}</p>
+                    <span
+                        className="ml-1 font-bold"
+                        style={{color: `rgba(${stringToHex(bufferQuestion[uid].mode).r}, ${stringToHex(bufferQuestion[uid].mode).g}, ${stringToHex(bufferQuestion[uid].mode).b}, 1.0)`}}>
+                        {bufferQuestion[uid].mode.toLocaleUpperCase()[0]}
+                    </span>
+
+                    <p className="ml-2 text-xs whitespace-nowrap overflow-hidden">
+                        {bufferQuestion[uid].questionText}
+                    </p>
                 </button>
             );
         }
@@ -757,16 +789,17 @@ export default function EditorInterface ({
     same_topic_choice_nav.push(
         <button
             id='card-nav-neu'
-            className="flex items-center justify-center"
+            className="flex flex-row items-center justify-center gap-2 m-2"
             key={"add"}
             onClick={() => setContentInterfaceParams("addQuestionToggle", !contentInterfaceParams.addQuestionToggle)}>
             <Icon icon="add" size={16} />
+            Add new question
         </button>
     );
 
     // Push current topic questions, lastly
     question_nav.push(
-        <div className='pb-4 grid grid-cols-5 gap-2' key="add-container">
+        <div className='pb-4 flex flex-col' key="add-container">
             {same_topic_choice_nav}
         </div>
     );
@@ -777,7 +810,20 @@ export default function EditorInterface ({
 
                 <aside id="quiz-col-scroll-aside" className='-scroll-none relative pt-[90px]' key='interface-aside'>
                     <div className="border-t border-border dark:border-border-dark"></div>
-                    <section className='mx-4 pt-4 h-max overflow-y-scroll -scroll-none' key='interface-aside-section-2'>
+                    <section className="px-2 py-4 flex flex-row items-center">
+                        <button 
+                            onClick={() => setAutoSaveToggle((prev) => (!prev))}
+                            className="controller-menu text-sm">
+                            <Icon icon="save" size={16} />
+                            AUTOSAVE {autoSaveToggle ? "ON " + autoSaveClock : "OFF"}
+                        </button>
+                        {autoSaveToggle && <button 
+                            onClick={() => toggleAutosaveClock()}
+                            className="controller-menu ml-auto text-sm">
+                            DEFAULT {defaultAutosaveTime}
+                        </button>}
+                    </section>
+                    <section className='pt-4 h-max overflow-y-scroll -scroll-none' key='interface-aside-section-2'>
                         {question_nav}
                     </section>
                 </aside>
@@ -792,7 +838,7 @@ export default function EditorInterface ({
                 </main>
             </div>
             <div className="glass-cover-spread"></div>
-            <img src={libraryData.image ? libraryData.image : BG} alt="" height={1000} width={1000} className="fixed z-[-50] w-full h-full object-cover hidden dark:inline dark:brightness-150"/>
+            <img src={libraryData.image ? libraryData.image : BG} alt="" height={1000} width={1000} className="fixed z-[-50] w-full h-full object-cover hidden dark:inline dark:brightness-50"/>
         </div>
     );
 }

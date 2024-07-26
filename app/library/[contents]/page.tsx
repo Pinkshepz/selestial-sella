@@ -23,8 +23,10 @@ export default async function Quizset ({ params }: { params: {contents: string} 
         queryValue: Object.keys(libraryData)[0] // uid of library
     });
 
-    // fetch ggsheet data
-    const ggSheetImport = await quizDataFetcher({content: params.contents});
+    // fetch ggsheet data if library data is blank
+    const ggSheetImport = (Object.keys(libraryData).length == 0) ?
+        await quizDataFetcher({content: params.contents}) :
+        {}
 
     return (
         <ContentInterfaceProvider>

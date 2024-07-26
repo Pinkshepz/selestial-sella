@@ -23,7 +23,7 @@ export default function Interface ({
     questionData,
     ggSheetImport
 }: {
-    libraryData: {[key: string]: string}, // {uid: {library data}}
+    libraryData: {[key: string]: string}, // {library data}
     questionData: {[key: string]: {[key: string]: any}} // {uid: {each question}}
     ggSheetImport: {[key: string]: {[key: string]: any}} | undefined // {uid: {each question}}
 }) {

@@ -31,14 +31,17 @@ export default function ContentController () {
         <section className="controller-area">
             <div className="controller-island">
 
-                <button
-                    onClick={() => setContentInterfaceParams("importSheetToggle", !contentInterfaceParams.importSheetToggle)}
+                {contentInterfaceParams.editMode && <button
+                    onClick={() => setContentInterfaceParams(
+                        "importSheetToggle",
+                        !contentInterfaceParams.importSheetToggle
+                    )}
                     className="controller-menu">
                     <Icon icon="table" size={16} />
                     <p>IMPORT GGSHEET</p>
-                </button>
+                </button>}
 
-                <button
+                {contentInterfaceParams.editMode && <button
                     onClick={() => {
                         setContentInterfaceParams("deleteAllChangesToggle", !contentInterfaceParams.deleteAllChangesToggle);
                         setGlobalParams("popUp", true);
@@ -48,9 +51,9 @@ export default function ContentController () {
                     className="controller-menu">
                     <Icon icon="trash" size={16} />
                     <p>DELETE ALL QUESTIONS</p>
-                </button>
+                </button>}
 
-                <button
+                {contentInterfaceParams.editMode && <button
                     onClick={() => {
                         setContentInterfaceParams("discardChangesToggle", !contentInterfaceParams.discardChangesToggle);
                         setGlobalParams("popUp", true);
@@ -60,14 +63,14 @@ export default function ContentController () {
                     className="controller-menu">
                     <Icon icon="trash" size={16} />
                     <p>DISCARD CHANGES</p>
-                </button>
+                </button>}
 
-                <button
+                {contentInterfaceParams.editMode && <button
                     onClick={() => setContentInterfaceParams("sortAscending", !contentInterfaceParams.sortAscending)}
                     className="controller-menu">
                     <Icon icon="sort" size={16} />
                     <p>{contentInterfaceParams.sortAscending ? "0 - 9" : "9 - 0"}</p>
-                </button>
+                </button>}
 
                 <div className="controller-menu">
                     <Icon icon="search" size={16} />
@@ -78,14 +81,14 @@ export default function ContentController () {
                     {!contentInterfaceParams.searchKey && <span className="absolute left-[34px] z-[-10] text-sm">SEARCH</span>}
                 </div>
 
-                <button
+                {contentInterfaceParams.editMode && <button
                     onClick={() => setContentInterfaceParams("addQuestionToggle", !contentInterfaceParams.addQuestionToggle)}
                     className="controller-menu">
                     <Icon icon="add" size={16} />
                     <p>ADD NEW QUESTION</p>
-                </button>
+                </button>}
 
-                <button
+                {contentInterfaceParams.editMode && <button
                     onClick={() => {
                         setContentInterfaceParams("saveChangesToggle", !contentInterfaceParams.saveChangesToggle)
                         setGlobalParams("popUp", true);
@@ -95,9 +98,9 @@ export default function ContentController () {
                     className="controller-menu">
                     <Icon icon="save" size={16} />
                     <p>SAVE CHANGES</p>
-                </button>
+                </button>}
 
-                <button
+                {contentInterfaceParams.editMode && <button
                     onClick={() => {
                         setGlobalParams("popUp", true);
                         setGlobalParams("popUpAction", contentInterfaceParams.editMode ? "turnEditModeOff" : "turnEditModeOn");
@@ -108,18 +111,7 @@ export default function ContentController () {
                     className="controller-menu">
                     <Icon icon={contentInterfaceParams.editMode ? "edit" : "map"} size={16} />
                     <p>{contentInterfaceParams.editMode ? "EXIT EDIT MODE" : "ENTER EDIT MODE"}</p>
-                </button>
-
-                <button
-                    onClick={() => {
-                        setContentInterfaceParams("autoSaveToggle", !contentInterfaceParams.autoSaveToggle);
-                        setContentInterfaceParams("autoSaveClock", 300);
-                    }}
-                    className="controller-menu">
-                    <Icon icon="mcq" size={16} />
-                    <p>{contentInterfaceParams.autoSaveToggle ? `AUTOSAVE IN ${contentInterfaceParams.autoSaveClock}` : "AUTOSAVE OFF"}</p>
-                </button>
-
+                </button>}
             </div>
         </section>
     );

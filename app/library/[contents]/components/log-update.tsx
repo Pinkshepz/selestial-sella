@@ -52,6 +52,7 @@ export default function LogUpdate () {
                 <td className={"font-bold " + actionMap[log.action.toLocaleUpperCase() as keyof typeof actionMap]}
                     key={uid + "2"}>{log.action.toLocaleUpperCase()}</td>
                 <td className="font-bold text-center" key={uid + "3"}>{log.id}</td>
+                <td className="font-bold" key={uid + "4"}>{log.name}</td>
                 <td key={uid + "5"}>{log.error}</td>
             </tr>
         );
@@ -59,20 +60,21 @@ export default function LogUpdate () {
 
     return (
         <section className="flex flex-col justify-center items-center mt-44 mb-16">
-                <h1>Server log summary</h1>
-                <table className="theme-table m-12">
-                    <thead key={"head"}>
-                        <tr>
-                            <th>UID</th>
-                            <th>Action</th>
-                            <th>Question</th>
-                            <th>Error</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {tableContent}
-                    </tbody>
-                </table>
+            <h1>Server log summary</h1>
+            <table className="theme-table m-12">
+                <thead key={"head"}>
+                    <tr>
+                        <th>UID</th>
+                        <th>Action</th>
+                        <th>NO.</th>
+                        <th>Question</th>
+                        <th>Error</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {tableContent}
+                </tbody>
+            </table>
             <button
                 onClick={() => {
                     setContentInterfaceParams("logUpdate", {});
