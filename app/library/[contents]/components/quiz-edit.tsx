@@ -129,7 +129,7 @@ export default function EditorInterface ({
     // handle reset id toggle
     useEffect(() => {
         if (toggleResetId) {
-            const processData = () => {
+            const processData = (): typeof bufferQuestion => {
                 let processedData: typeof bufferQuestion = {};
                 // assign new question number and library uid
                 Object.keys(sortUidObjectByValue(bufferQuestion, "id", true)).map((uid, index) => {
@@ -386,7 +386,7 @@ export default function EditorInterface ({
             const libraryUid = cloneLibraryData.uid;
             delete cloneLibraryData.uid;
 
-            const processData = (rawData: typeof bufferQuestion) => {
+            const processData = (rawData: typeof bufferQuestion): typeof bufferQuestion => {
                 let processedData: typeof bufferQuestion = {};
                 // assign new question number and library uid
                 Object.keys(sortUidObjectByValue(rawData, "id", true)).map((uid, index) => {
@@ -459,7 +459,7 @@ export default function EditorInterface ({
             // update all question data
             firestoreUpdateQuiz({
                 originalData: questionData, 
-                editedData: processData(bufferQuestion)
+                editedData: processData(bufferQuestion) as typeof bufferQuestion
             }).then(
                 (data) => {
                     setGlobalParams("popUpConfirm", false);

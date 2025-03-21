@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import {stringToHex} from "../libs/utils/string-to-rgb";
+import stringToHex from "../libs/utils/string-to-rgb";
 
 export default function Particles (): React.ReactNode {
 

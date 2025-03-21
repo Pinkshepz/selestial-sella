@@ -1,7 +1,7 @@
 import hexToRgb from "./hex-to-rgb";
 import hslToHex from "./hsl-to-hex";
 
-export function stringToHex (text) {
+export default function stringToHex (text) {
     // turn string to ascii code -> sort both alphabet and number
     let ascii = 0;
     for (let index = 0; index < text.length; index++) {
