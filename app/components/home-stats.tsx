@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useGlobalContext } from "../global-provider";
-import Icon from "@/app/libs/material/icon";
+import Icon from "@/public/icon";
 
 export default function HomeStats ({
     courseCount,

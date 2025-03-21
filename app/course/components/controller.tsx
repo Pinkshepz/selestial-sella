@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect } from "react";
 
-import Icon from "@/app/libs/material/icon";
+import Icon from "@/public/icon";
 import { useGlobalContext } from "../../global-provider"
 import { useInterfaceContext } from "../course-provider";
 

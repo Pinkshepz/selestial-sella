@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import makeid from "@/app/libs/utils/make-id";
 import firestoreUpdate from "../../../libs/firestore/firestore-manager";
 import firestoreUpdateQuiz from "@/app/libs/firestore/firestore-manager-quiz";
-import Icon from "@/app/libs/material/icon";
+import Icon from "@/public/icon";
 import { ChipTextColor, TextColor } from "@/app/libs/material/chip";
 import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
 import { useContentInterfaceContext } from "../content-provider";

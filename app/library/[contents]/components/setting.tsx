@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useGlobalContext } from '@/app/global-provider';
 import { useContentInterfaceContext } from '../content-provider';
 import { ChipTextColor } from '@/app/libs/material/chip';
-import Icon from "@/app/libs/material/icon";
+import Icon from "@/public/icon";
 
 export default function SettingInterface ({
     libraryData,

@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-import Icon from "@/app/libs/material/icon";
+import Icon from "@/public/icon";
 import { useContentInterfaceContext } from "../content-provider";
 import { useGlobalContext } from "../../../global-provider"
 

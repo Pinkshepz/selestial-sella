@@ -6,7 +6,7 @@ import useEventListener from "../../../libs/hooks/useEventListener";
 import shuffle from '@/app/libs/utils/shuffle';
 import formatQuizText from '@/app/libs/utils/paragraph';
 import { useContentInterfaceContext } from '../content-provider';
-import Icon from '@/app/libs/material/icon';
+import Icon from '@/public/icon';
 import { ChipTextColor } from '@/app/libs/material/chip';
 
 export default function QuizInterface ({

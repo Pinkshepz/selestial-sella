@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useGlobalContext } from "@/app/global-provider";
 
 import { ChipTextColor } from "@/app/libs/material/chip";
-import Icon from "@/app/libs/material/icon";
+import Icon from "@/public/icon";
 
 const DisplayRow = ({
     cardUid,

@@ -7,7 +7,7 @@ import React, { useState, useEffect } from "react";
 
 import { useGlobalContext } from "../global-provider"
 import NavPathName from "./navpathname";
-import Icon from "@/app/libs/material/icon";
+import Icon from "@/public/icon";
 
 const GUEST_PROFILE = "https://yt3.googleusercontent.com/Ux21viBcv03vV1Vj8QIQA0vq9AqwC_RmtDmoKZ2S77Kt7DLGgJvNAbC-v2KGzIFKoHKQ_AcNby8=s900-c-k-c0x00ffffff-no-rj";
 

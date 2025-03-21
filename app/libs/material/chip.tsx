@@ -1,4 +1,4 @@
-import Icon from "@/app/libs/material/icon";
+import Icon from "@/public/icon";
 import { stringToRgb } from "../utils/string-to-rgb";
 
 export function Chip ({

@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useGlobalContext } from "@/app/global-provider";
 import { useTopicInterfaceContext } from "./topic-provider";
 
-import Icon from "@/app/libs/material/icon";
+import Icon from "@/public/icon";
 import Controller from "./components/controller";
 import ConfirmPopUp from "@/app/libs/material/confirm-popup";
 

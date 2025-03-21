@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation'
 
 import { useGlobalContext } from '../global-provider';
-import Icon from '@/app/libs/material/icon';
+import Icon from '@/public/icon';
 
 export default function NavPathName (): React.ReactNode {
     // Provide interactive path displaying on nav. like we use in folder UI

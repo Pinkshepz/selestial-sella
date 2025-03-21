@@ -6,7 +6,7 @@ import makeid from "../../libs/utils/make-id";
 import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
 import { ChipTextColor, TextColor } from "@/app/libs/material/chip";
 import firestoreUpdate from "../../libs/firestore/firestore-manager";
-import Icon from "../../libs/material/icon";
+import Icon from "../../../public/icon";
 import { useGlobalContext } from "../../global-provider";
 import { useInterfaceContext } from "../course-provider";
 import { stringify } from "querystring";
