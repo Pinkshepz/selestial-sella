@@ -5,8 +5,8 @@ import { useEffect } from "react";
 import { useGlobalContext } from "../global-provider";
 
 import ConfirmPopUp from "@/app/libs/material/confirm-popup";
-import Controller from "./component/controller";
-import CourseDisplay from "./component/course-display";
+import Controller from "./components/controller";
+import CourseDisplay from "./components/course-display";
 
 export default function Interface ({
     contentData

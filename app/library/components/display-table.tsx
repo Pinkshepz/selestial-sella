@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { useGlobalContext } from "@/app/global-provider";
 
-import stringToHex from "../../libs/utils/string-to-rgb";
+import { ChipTextColor } from "@/app/libs/material/chip";
 import Icon from "@/app/libs/material/icon";
 
 const DisplayRow = ({
@@ -47,17 +47,7 @@ const DisplayRow = ({
                 </Link>
             </td>
             <td className="hidden md:table-cell" key={cardUid + "3"}>
-                <div className="flex flex-wrap gap-2">
-                    <span
-                        className="flex justify-center items-center gap-1 h-min px-1 text-sm font-semibold rounded-full"
-                        style={{
-                            backgroundColor: `rgba(${stringToHex(cardMode).r}, ${stringToHex(cardMode).g}, ${stringToHex(cardMode).b}, 0.4)`,
-                            border: `solid 1px rgba(${stringToHex(cardMode).r}, ${stringToHex(cardMode).g}, ${stringToHex(cardMode).b}, 0.7)`
-                            }}>
-                        <Icon icon={cardMode ? cardMode.toString().toLocaleLowerCase() : "mcq"} size={12} />
-                        {cardMode}
-                    </span>
-                </div>
+                <ChipTextColor chipText={cardMode} chipIcon={cardMode ? cardMode.toString().toLocaleLowerCase() : "mcq"} chipBackgroungOpacity={0.4} />
             </td>
             <td className="hidden md:table-cell text-center" key={cardUid + "4"}>
                 {cardTotalQuestion}
