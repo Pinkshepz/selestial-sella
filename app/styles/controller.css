@@ -1,12 +1,12 @@
 .controller-area {
     display: flex;
     justify-content: center;
-    align-items: start;
+    align-items: center;
     position: fixed;
     left: 0;
     right: 0;
-    top: 72px;
-    height: 90px;
+    top: 64px;
+    height: 72px;
     width: auto;
     margin-left: auto;
     margin-right: auto;
@@ -21,7 +21,7 @@
     align-items: center;
     gap: 8px;
     padding: 4px;
-    margin: 16px;
+    margin: 12px;
     border-radius: 12px;
     border: solid 1px var(--border);
     background-color: var(--highlight);
@@ -81,10 +81,9 @@
     position: relative;
     display: flex;
     flex-direction: row;
+    padding: 8px;
     align-items: start;
     min-height: 222px;
-    background-color: var(--highlight);
-    border: solid 1px var(--border);
     overflow: hidden;
     transition: all ease-in-out 300ms;
     color: white;
@@ -94,13 +93,7 @@
 .card-main > div > img {
     position: absolute;
     z-index: -10;
-    transition: all ease-in-out 400ms;
     object-fit: cover;
-}
-
-.card-main:hover > div > img {
-    transform: scale(1.02);
-    transition: all ease-in-out 400ms;
 }
 
 .card-2-main-flow {
@@ -159,23 +152,14 @@
     -webkit-filter: brightness(1.5);
 }
 
-article#changed-all {
-    border: dashed 1px var(--pri);
-}
-
-#changed {
-    border: dashed 1px var(--pri);
-}
-
 .card-edit {
     position: relative;
     display: flex;
     flex-direction: column;
     height: max-content;
-    background-color: var(--highlight);
+    /* background-color: var(--highlight); */
     border: solid 1px var(--border);
     border-radius: 12px;
-    /* box-shadow: 0 4px 8px 0 var(--shadow), 0 6px 20px 0 var(--shadow); */
     overflow: hidden;
     transition: all ease-in-out 300ms;
     animation: smooth-appear 400ms ease forwards;
@@ -196,12 +180,8 @@ article#changed-all {
     padding: 8px;
     border-radius: 8px;
     /* border: solid 1px var(--border); */
-    font-size: 0.875rem;
+    font-size: 1rem;
     text-wrap: wrap;
-}
-
-.edit-placeholder:hover {
-    outline: solid 1px var(--border);
 }
 
 .edit-placeholder:hover > label{
@@ -212,7 +192,6 @@ article#changed-all {
     display: flex;
     flex-direction: row;
     gap: 8px;
-    color: var(--text-slate);
     font-weight: 800;
 }
 

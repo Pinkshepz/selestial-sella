@@ -1,27 +1,28 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 
 import Icon from "@/app/libs/material/icon";
-import { useGlobalContext } from "../../global-provider"
-import { useInterfaceContext } from "../library-provider";
+import { useGlobalContext } from "../../../global-provider"
+import { useTopicInterfaceContext } from "./../topic-provider";
 
 export default function Controller () {
     // connect to global context
     const {globalParams, setGlobalParams} = useGlobalContext();
 
     // connect to interface context
-    const {interfaceParams, setInterfaceParams} = useInterfaceContext();
+    const {topicInterfaceParams, setTopicInterfaceParams} = useTopicInterfaceContext();
 
     const handleSearchKeyChange = (searchKey: string) => {
-        setInterfaceParams("searchKey", searchKey);
+        setTopicInterfaceParams("searchKey", searchKey);
     }
 
     // manage editing mode on and off
     useEffect(() => {
         if (globalParams.popUpConfirm &&
             (globalParams.popUpAction.toString().includes("turnEditMode"))) {
-            setInterfaceParams("editMode", !interfaceParams.editMode)
+            setTopicInterfaceParams("editMode", !topicInterfaceParams.editMode)
             setGlobalParams("popUpConfirm", false);
             setGlobalParams("popUpAction", "");
         }
@@ -31,21 +32,31 @@ export default function Controller () {
         <section className="controller-area">
             <div className="controller-island">
 
-                {!interfaceParams.editMode && (Object.keys(interfaceParams.logUpdate).length === 0) &&
-                    <button
-                        onClick={() => setInterfaceParams("displayToggle", !interfaceParams.displayToggle)}
+                {!topicInterfaceParams.editMode &&
+                    <Link
+                        href={"/course"} 
+                        onClick={() => setGlobalParams("isLoading", true)}
                         className="controller-menu">
-                        <Icon icon={interfaceParams.displayToggle ? "table" : "card"} size={16} />
-                        <p>{interfaceParams.displayToggle ? "TABLE" : "CARD"}</p>
+                        <Icon icon="left" size={16} />
+                        <p>BACK TO COURSES</p>
+                    </Link>
+                }
+
+                {!topicInterfaceParams.editMode && (Object.keys(topicInterfaceParams.logUpdate).length === 0) &&
+                    <button
+                        onClick={() => setTopicInterfaceParams("displayToggle", !topicInterfaceParams.displayToggle)}
+                        className="controller-menu">
+                        <Icon icon={topicInterfaceParams.displayToggle ? "table" : "image"} size={16} />
+                        <p>{topicInterfaceParams.displayToggle ? "TABLE" : "GALLERY"}</p>
                     </button>
                 }
 
-                {!interfaceParams.editMode &&
+                {!topicInterfaceParams.editMode &&
                     <button
-                        onClick={() => setInterfaceParams("sortAscending", !interfaceParams.sortAscending)}
+                        onClick={() => setTopicInterfaceParams("sortAscending", !topicInterfaceParams.sortAscending)}
                         className="controller-menu">
                         <Icon icon="sort" size={16} />
-                        <p>{interfaceParams.sortAscending ? "0 - 9" : "9 - 0"}</p>
+                        <p>{topicInterfaceParams.sortAscending ? "0 - 9" : "9 - 0"}</p>
                     </button>
                 }
 
@@ -55,22 +66,22 @@ export default function Controller () {
                         contentEditable={true} suppressContentEditableWarning={true}
                         onInput={e => handleSearchKeyChange(e.currentTarget.textContent!)}>
                     </span>
-                    {!interfaceParams.searchKey && <span className="absolute left-[34px] z-[-10] text-sm">SEARCH</span>}
+                    {!topicInterfaceParams.searchKey && <span className="absolute left-[34px] z-[-10] text-sm">SEARCH</span>}
                 </div>
 
-                {interfaceParams.editMode && 
+                {topicInterfaceParams.editMode && 
                     <button
-                        onClick={() => setInterfaceParams("addLibraryToggle", !interfaceParams.addLibraryToggle)}
+                        onClick={() => setTopicInterfaceParams("addCourseToggle", !topicInterfaceParams.addCourseToggle)}
                         className="controller-menu">
                         <Icon icon="add" size={16} />
-                        <p>ADD NEW LIBRARY</p>
+                        <p>ADD NEW COURSE</p>
                     </button>
                 }
 
-                {interfaceParams.editMode && 
+                {topicInterfaceParams.editMode && 
                     <button
                         onClick={() => {
-                            setInterfaceParams("discardChangesToggle", !interfaceParams.discardChangesToggle);
+                            setTopicInterfaceParams("discardChangesToggle", !topicInterfaceParams.discardChangesToggle);
                             setGlobalParams("popUp", true);
                             setGlobalParams("popUpAction", "discardChangesToggle");
                             setGlobalParams("popUpText", "Discard all changes, your course data will be recovered to the original one");
@@ -81,10 +92,10 @@ export default function Controller () {
                     </button>
                 }
 
-                {interfaceParams.editMode && 
+                {topicInterfaceParams.editMode && 
                     <button
                         onClick={() => {
-                            setInterfaceParams("saveChangesToggle", !interfaceParams.saveChangesToggle)
+                            setTopicInterfaceParams("saveChangesToggle", !topicInterfaceParams.saveChangesToggle)
                             setGlobalParams("popUp", true);
                             setGlobalParams("popUpAction", "saveChangesToggle");
                             setGlobalParams("popUpText", "Save all recent changes. All data will be permanently updated")
@@ -95,18 +106,18 @@ export default function Controller () {
                     </button>
                 }
 
-                {(Object.keys(interfaceParams.logUpdate).length === 0) &&
+                {(Object.keys(topicInterfaceParams.logUpdate).length === 0) &&
                     <button
                         onClick={() => {
                             setGlobalParams("popUp", true);
-                            setGlobalParams("popUpAction", interfaceParams.editMode ? "turnEditModeOff" : "turnEditModeOn");
-                            setGlobalParams("popUpText", interfaceParams.editMode ? 
+                            setGlobalParams("popUpAction", topicInterfaceParams.editMode ? "turnEditModeOff" : "turnEditModeOn");
+                            setGlobalParams("popUpText", topicInterfaceParams.editMode ? 
                                 "Turn editing mode off. All unsaved changes will be ignored" : 
                                 `Turn editing mode on`)
                         }}
                         className="controller-menu">
-                        <Icon icon={interfaceParams.editMode ? "edit" : "map"} size={16} />
-                        <p>{interfaceParams.editMode ? "EXIT EDIT MODE" : "ENTER EDIT MODE"}</p>
+                        <Icon icon={topicInterfaceParams.editMode ? "edit" : "map"} size={16} />
+                        <p>{topicInterfaceParams.editMode ? "EXIT EDIT MODE" : "ENTER EDIT MODE"}</p>
                     </button>}
 
             </div>

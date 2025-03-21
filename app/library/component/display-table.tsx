@@ -1,9 +1,9 @@
 import Link from "next/link";
 
-import { useGlobalContext } from "@/app/provider";
+import { useGlobalContext } from "@/app/global-provider";
 
 import stringToHex from "../../libs/utils/string-to-rgb";
-import Icon from "@/public/icon";
+import Icon from "@/app/libs/material/icon";
 
 const DisplayRow = ({
     cardUid,

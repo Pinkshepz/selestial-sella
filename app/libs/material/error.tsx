@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import React from "react";
-import Icon from "@/public/icon";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import Icon from "@/app/libs/material/icon";
 
 const ErrorMessage = ({
     errorMessage, 

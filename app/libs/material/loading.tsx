@@ -1,8 +1,8 @@
 "use client";
 
-import "./loading.css";
+import "@/app/styles/loading.css";
 
-import { useGlobalContext } from "../provider";
+import { useGlobalContext } from "../../global-provider";
 
 export default function Loading (): React.ReactNode {
     // access global data
@@ -12,7 +12,7 @@ export default function Loading (): React.ReactNode {
         return (
             <section aria-label="loading" className="fixed top-0 left-0 z-[1000] glass-cover-screen flex flex-col justify-center items-center">
                 <div className="loader"></div>
-                <h1 className="mt-8 text-black dark:text-white">Please wait...</h1>
+                <h1 className="mt-8 text-black dark:text-white">Loading</h1>
             </section>
         );
     }

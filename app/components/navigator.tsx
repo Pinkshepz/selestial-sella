@@ -5,9 +5,9 @@ import { useTheme } from "next-themes";
 import { usePathname } from 'next/navigation'
 import React, { useState, useEffect } from "react";
 
-import { useGlobalContext } from "../provider"
+import { useGlobalContext } from "../global-provider"
 import NavPathName from "./navpathname";
-import Icon from "@/public/icon";
+import Icon from "@/app/libs/material/icon";
 
 const GUEST_PROFILE = "https://yt3.googleusercontent.com/Ux21viBcv03vV1Vj8QIQA0vq9AqwC_RmtDmoKZ2S77Kt7DLGgJvNAbC-v2KGzIFKoHKQ_AcNby8=s900-c-k-c0x00ffffff-no-rj";
 
@@ -45,56 +45,52 @@ export default function GlobalNavigator (): React.ReactNode {
     setGlobalParams("popUp", false);
   }, [currentPath]);
 
+  // Link elements
+  const NavigatorLink = ({route}: {route: string}): React.ReactNode => {
+    const handleLink = () => {
+      setGlobalParams("isLoading", true);
+      // if link to route A is clicked while it is already on the route A -> reload
+      if ((window !== undefined) && (currentPath == "/course")) {
+        window.location.reload();
+      }
+    }
+
+    return (
+      <Link 
+        onClick={handleLink}
+        href={`/${route}`} className="-button-line">
+        <h5>{route.toLocaleUpperCase()}</h5>
+      </Link>
+    );
+  }
+
   return (
-    <nav className="fixed left-0 top-0 flex w-full h-16 z-100 px-4
-    justify-between backdrop-blur-xl">
+    <nav className="fixed left-0 top-0 flex flex-row justify-between items-center gap-8 w-full z-100 px-4 backdrop-blur-xl">
+
       {/* Left portion */}
       <div className='flex flex-row items-center justify-center'>
-        <Link href={'/'} id="brand" className="-button-line relative mr-2">
-          Selestial Sella
+        <Link href={'/'} className="-button-line font-bold text-xl relative mr-2">
+          AURICLE
         </Link>
-        <div className="hidden lg:inline">
-          <span id="pri-chip" className="lg:inline mx-2 text-xs font-semibold">
-              Beta 2.0
-          </span>
-        </div>
         <NavPathName />
       </div>
 
       {/* Right portion */}
       <div className="flex justify-center items-center">
 
-        {/* section links */}
-        <div className="hidden md:flex flex-row justify-center items-center gap-8 pr-8 text-md border-r border-ter dark:border-ter-dark">
-          <Link 
-            onClick={() => {
-              setGlobalParams("isLoading", true);
-              if ((window !== undefined) && (currentPath == "/course")) {
-                window.location.reload();
-              }
-            }}
-            href={"/course"} className="-button-line">
-            <h5>Course</h5>
-          </Link>
-          <Link 
-            onClick={() => {
-              setGlobalParams("isLoading", true);
-              if ((window !== undefined) && (currentPath == "/library")) {
-                window.location.reload();
-              }
-            }}
-            href={"/library"} className="-button-line">
-            <h5>Library</h5>
-          </Link>
+        <div className="flex flex-row justify-center items-center gap-8 h-full mr-4 text-md overflow-x-scroll overflow-y-hidden -scroll-none">
+          <NavigatorLink route="course" />
+          <NavigatorLink route="library" />
+          <NavigatorLink route="script" />
         </div>
 
         {/* theme toggle */}
         {isClient && theme &&
           <button
-            className="flex felx-row justify-center items-center ml-6 mr-2"
+            className="flex felx-row justify-center items-center ml-6 mr-4"
             onClick={() => handleThemeToggle()}>
             <Icon icon={theme} size={20} />
-            <h5 className="hidden lg:inline ml-2">{theme.charAt(0).toLocaleUpperCase() + theme.slice(1)}</h5>
+            <h5 className="hidden lg:inline ml-2">{theme.toLocaleUpperCase()}</h5>
         </button>}
 
         {/* user profile */}
@@ -106,7 +102,7 @@ export default function GlobalNavigator (): React.ReactNode {
               <div id="frame" className="overflow-hidden bg-cover h-6 w-6 rounded-full border-pri">
                 <img className="h-full w-full" src={globalParams.user.photoURL} alt="" />
               </div>
-              <h5 className="hidden lg:inline">Member</h5>
+              <h5 className="hidden lg:inline">MEMBER</h5>
             </Link>
           ) : (
             // user is already logged in, render guest profile
@@ -114,7 +110,7 @@ export default function GlobalNavigator (): React.ReactNode {
               <div id="frame" className="overflow-hidden bg-cover h-6 w-6 rounded-full border-pri">
                 <img className="h-full w-full" src={GUEST_PROFILE} alt="" />
               </div>
-              <h5 className="hidden lg:inline">Guest</h5>
+              <h5 className="hidden lg:inline">GUEST</h5>
             </Link>
           )}
         </div>}

@@ -2,10 +2,10 @@
 
 import { useEffect } from "react";
 
-import { useGlobalContext } from "@/app/provider";
+import { useGlobalContext } from "@/app/global-provider";
 import { useContentInterfaceContext } from "../content-provider";
 
-import Icon from "@/public/icon";
+import Icon from "@/app/libs/material/icon";
 
 export default function LogUpdate () {
 

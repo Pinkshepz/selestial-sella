@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 
-import { useGlobalContext } from "@/app/provider";
+import { useGlobalContext } from "@/app/global-provider";
 
-import stringToHex from "../../libs/utils/string-to-rgb";
-import Icon from "@/public/icon";
+import { ChipTextColor } from "@/app/libs/material/chip";
+import Icon from "@/app/libs/material/icon";
 
 const DisplayCard = ({
     cardUid,
@@ -21,7 +21,7 @@ const DisplayCard = ({
     cardImageLink: string,
     cardName: string,
     cardDescription: string,
-    cardMode?: string[],
+    cardMode?: string,
     cardTotalQuestion?: number
 }) => {
     // default background image if image link is not provided
@@ -38,15 +38,7 @@ const DisplayCard = ({
                     <h4 className="text-md font-bold">{cardName}</h4>
                     <p className="mt-6">{cardDescription}</p>
                     <div className="flex flex-wrap justify-start items-center gap-2 mt-4">
-                        <span
-                            className="flex justify-center items-center gap-1 h-min px-1 text-sm font-semibold rounded-full"
-                            style={{
-                                backgroundColor: `rgba(${stringToHex(cardMode).r}, ${stringToHex(cardMode).g}, ${stringToHex(cardMode).b}, 0.4)`,
-                                border: `solid 1px rgba(${stringToHex(cardMode).r}, ${stringToHex(cardMode).g}, ${stringToHex(cardMode).b}, 0.7)`
-                                }}>
-                            <Icon icon={cardMode ? cardMode.toString().toLocaleLowerCase() : "mcq"} size={12} />
-                            {cardMode}
-                        </span>
+                        {cardMode && <ChipTextColor chipText={cardMode} chipIcon={cardMode ? cardMode.toString().toLocaleLowerCase() : "mcq"}/>}
                         <p className="text-md font-bold">{cardId}</p>
                         {(cardTotalQuestion !== undefined) && <p className="ml-auto text-md font-bold">{cardTotalQuestion} Q</p>}
                     </div>

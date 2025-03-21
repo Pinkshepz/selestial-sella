@@ -2,15 +2,19 @@ import React from 'react'
 import type { Metadata } from 'next'
 
 import './styles/globals.css'
+import './styles/brand.css'
 import './styles/fontface.css'
-import './styles/interface.css'
+import './styles/controller.css'
+import './styles/two-columns.css'
+import './styles/quiz-interface.css'
+import './styles/slider.css'
 
 import "./libs/firebase/fireclient"
 
-import GlobalNavigator from './component/navigator'
-import Loading from './component/loading'
-import ThemeProvider from './provider'
-import { GlobalProvider } from "./provider";
+import GlobalNavigator from './components/navigator'
+import Loading from './libs/material/loading'
+import ThemeProvider from './global-provider'
+import { GlobalProvider } from "./global-provider";
 
 export const metadata: Metadata = {
   title: 'Selestial Stella',

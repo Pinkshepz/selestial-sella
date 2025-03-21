@@ -23,7 +23,7 @@ export default function CourseDisplay({
     // Each content data
     const content: {[key: string]: string} = Object.values(contentData)[index];
     // Create combination of all content information for search target
-    const search_target = content["id"] + " " + content["name"] + " " + content["tag"];
+    const search_target = JSON.stringify(content);
 
     // Check if data matches to searchkey
     if (search_target.toLowerCase().includes(interfaceParams.searchKey.toLowerCase())) {

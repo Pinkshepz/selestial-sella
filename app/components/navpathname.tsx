@@ -4,8 +4,8 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation'
 
-import { useGlobalContext } from '../provider';
-import Icon from '@/public/icon';
+import { useGlobalContext } from '../global-provider';
+import Icon from '@/app/libs/material/icon';
 
 export default function NavPathName (): React.ReactNode {
     // Provide interactive path displaying on nav. like we use in folder UI
@@ -41,7 +41,7 @@ export default function NavPathName (): React.ReactNode {
             pathCollection.push(
                 <span className="relative text-md font-bold"
                         key={pathnameSplitted[index]}>
-                    {pathnameSplitted[index].charAt(0).toLocaleUpperCase() + pathnameSplitted[index].slice(1)}
+                    {pathnameSplitted[index].toLocaleUpperCase()}
                 </span>
             );
         } else {
@@ -53,7 +53,7 @@ export default function NavPathName (): React.ReactNode {
                         href={pathNav} 
                         onClick={() => setGlobalParams("isLoading", true)}
                         key={`link ${pathnameSplitted[index]}`}>
-                        {pathnameSplitted[index].charAt(0).toLocaleUpperCase() + pathnameSplitted[index].slice(1)}
+                        {pathnameSplitted[index].toLocaleUpperCase()}
                     </Link>
                 </span>
             );

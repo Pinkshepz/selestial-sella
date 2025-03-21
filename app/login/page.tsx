@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import app from "../libs/firebase/fireclient";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
-import { useGlobalContext } from "../provider"
-import Icon from "../../public/icon"
-import Loading from "../component/loading";
+import { useGlobalContext } from "../global-provider"
+import Icon from "../libs/material/icon"
+import Loading from "../libs/material/loading";
 const GOOGLE_LOGO = "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png"
 
 // render login page

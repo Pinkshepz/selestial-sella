@@ -1,9 +1,9 @@
-export default function sortUidObjectByValue (
+export default function sortUidObjectByValue<T>(
     // {uid: [key to target value: value]}
     object: {[key: string]: {[key: string]: any}}, 
     sortValue: string,
     isAscending: boolean = true
-): {[key: string]: {[key: string]: string}} {
+): {[key: string]: T} {
     // handle blank object
     if (Object.keys(object).length == 0) {
         return {};
@@ -20,7 +20,7 @@ export default function sortUidObjectByValue (
             let ascii: number = 0;
             for (let index = 0; index < object[uid][sortValue].length; index++) {
                 const char = object[uid][sortValue][index];
-                ascii += char.charCodeAt(0) * (10 ** (asciiStandardLength - index - 1));
+                ascii += char.charCodeAt(0) * (100 ** (asciiStandardLength - index - 1));
             }
             sortable.push([ascii, uid]);
         } else {
@@ -37,11 +37,11 @@ export default function sortUidObjectByValue (
     });
 
     // reassemble into object format
-    let reassembledObject: {[key: string]: {[key: string]: string}} = {}
+    let reassembledObject: {[key: string]: T} = {}
 
     for (let index = 0; index < sortable.length; index++) {
         const eachObject = sortable[index];
-        reassembledObject[eachObject[1]] = object[eachObject[1]];
+        reassembledObject[eachObject[1]] = object[eachObject[1]] as T;
     }
 
     return reassembledObject;

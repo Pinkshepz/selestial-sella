@@ -5,8 +5,8 @@ import { useState, useEffect } from "react";
 import makeid from "../../libs/utils/make-id";
 import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
 import firestoreUpdate from "../../libs/firestore/firestore-manager";
-import Icon from "../../../public/icon";
-import { useGlobalContext } from "../../provider";
+import Icon from "../../libs/material/icon";
+import { useGlobalContext } from "../../global-provider";
 import { useInterfaceContext } from "../library-provider";
 
 export default function CardEditor ({
@@ -74,7 +74,7 @@ export default function CardEditor ({
             }
         );
     }
-  }, [globalParams]);
+  }, [globalParams.popUpConfirm]);
 
   // duplicate Library
   const handleDuplicateLibrary = (uid: string): void => {

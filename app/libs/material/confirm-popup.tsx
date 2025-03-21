@@ -1,7 +1,7 @@
 "use client";
 
-import { useGlobalContext } from "../provider";
-import Icon from "@/public/icon";
+import { useGlobalContext } from "../../global-provider";
+import Icon from "@/app/libs/material/icon";
 
 export default function ConfirmPopUp (): React.ReactNode {
     // connect to global context

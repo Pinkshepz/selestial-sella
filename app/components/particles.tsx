@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import {stringToHex} from "../libs/utils/string-to-rgb";
 
 export default function Particles (): React.ReactNode {
 
@@ -13,64 +14,90 @@ export default function Particles (): React.ReactNode {
         height: string,
         width: string,
         backgroundColor: string,
+        boxShadow: string,
         opacity: number
     }
 
     // 2. set state of this page
     const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 }); // cursor position
-    const [screenWidth, setScreenWidth] = useState(0); // screen size: width
-    const [screenHeight, setScreenHeight] = useState(0); // screen size: height
     const [objectStyle, setObjectStyle] = useState<ObjectStyle[]>([]); // all objects' style
+    const [power, setPower] = useState(0); // power for particle accerelation
 
     // 3. track cursor position. Update when cursor position is changed
     const setCoordinate = (e: MouseEvent) => {
         setCursorPos({ x: e.clientX, y: e.clientY });
     };
+
+    const powerLimit = 16;
+
+    const boostPower = () => {
+        if (power < powerLimit) {
+            setPower((prev) => (prev + 1) * 1.05);
+        }
+        else {
+            setPower(powerLimit);
+        }
+    };
+
+    const dragPower = () => {
+        if (power > 0) {
+            setPower((prev) => prev - (2 / (60 / fps)));
+        }
+        else {
+            setPower(0);
+        }
+    };
     
     useEffect(() => {
         window.addEventListener("mousemove", setCoordinate);
+        return () => window.removeEventListener("mousemove", setCoordinate);
     }, [setCoordinate]);
+    
+    useEffect(() => {
+        window.addEventListener("mousedown", boostPower);
+        return () => window.removeEventListener("mousedown", boostPower);
+    }, [boostPower]);
 
-    // 4. track screen size. Update when cursor position is changed
-    const setScreenSize = () => {
-        setScreenWidth(window.innerWidth);
-        setScreenHeight(window.innerHeight);
-    };
+    // 4. object_spacing of objects -> lesser means more density -> more objects displayed
+    const object_spacing = 64;
+    const rare_bubble_chance = 2; // density of colorful bubbles
+    const fps = 3;
+
+    // 5. run clock
+    const [time, setTime] = useState(Date.now());
 
     useEffect(() => {
-        window.addEventListener("mousemove", setScreenSize);
-    }, [setScreenSize]);
-
-    // 5. object_spacing of objects -> lesser means more density -> more objects displayed
-    const object_spacing = 30;
+        const interval = setInterval(() => setTime(Date.now()), 60 / fps);
+        return () => {
+            clearInterval(interval);
+        };
+    }, [time]);
 
     // 6. set initial object coordinates
     useEffect(() => {
         // array storing object style
         let temp_objects_style: ObjectStyle[] = [];
-
+        
         // loop for each row
         for (let row = 0; row < (window.innerHeight / object_spacing); row++) {
-        // loop for each column
+            // loop for each column
             for (let column = 0; column < (window.innerWidth / object_spacing); column++) {
                 const common_rand: number = Math.random();
-
-                const rare_bubble_chance = 5;
 
                 // select color
                 let color: string
                 if ((((row + 1) * 9 + (column + 1)) % rare_bubble_chance) == 0) {
-                    color = "#"+(common_rand * 0xFFFFFF << 0).toString(16).padStart(6, '0')
+                    color = stringToHex(String(common_rand));
                 } else {
-                    color = "#acbccf"
+                    color = "#acbcbf";
                 }
 
                 // select bubble size
-                let size: string
+                let size: number
                 if ((((row + 1) * 9 + (column + 1)) % rare_bubble_chance) == 0) {
-                    size = 1 + (common_rand * 24) + "px"
+                    size = 1 + (common_rand * 32)
                 } else {
-                    size = 1 + (common_rand * 12) + "px"
+                    size = 1 + (common_rand * 12)
                 }
 
                 // config initial style
@@ -79,10 +106,11 @@ export default function Particles (): React.ReactNode {
                     pos_y: (row * object_spacing) + "px",
                     velocity_x: (Math.random() - 0.5) * 25,
                     velocity_y: (Math.random() - 0.5) * 25,
-                    height: size,
-                    width: size,
+                    height: size + "px",
+                    width: size + "px",
                     backgroundColor: color,
-                    opacity: (1.0 - Math.random()) * 0.5
+                    boxShadow: `0px 0px ${size * 0.75}px #ffffff99, 0px 0px ${size * 1.5}px ${color}`,
+                    opacity: 0.9
                 }
 
                 // record style
@@ -91,20 +119,10 @@ export default function Particles (): React.ReactNode {
         }
 
         // save objects
-        setObjectStyle(temp_objects_style)
+        setObjectStyle(temp_objects_style);
     }, [])
 
-    // 7. run clock
-    const [time, setTime] = useState(Date.now());
-
-    useEffect(() => {
-        const interval = setInterval(() => setTime(Date.now()), 50);
-        return () => {
-            clearInterval(interval);
-        };
-    }, [time]);
-
-    // 8. animate objects
+    // 7. animate objects
     // control particle moving in only screen space only
     const spaceControl = (pos: number, screenSize: number) => {
         if (pos <= 0) {
@@ -115,6 +133,9 @@ export default function Particles (): React.ReactNode {
     }
 
     useEffect(() => {
+        // reduce power
+        dragPower()
+
         // update objects state
         if (objectStyle.length > 100) {
             let temp_objects_style: ObjectStyle[] = [];
@@ -126,9 +147,9 @@ export default function Particles (): React.ReactNode {
                 const dy = (objectPosY - cursorPos.y);
                 let distance_xy = ((dx ** 2) + (dy ** 2)) ** 0.5;
                 
-                const max_acceleration = 2;
-                const limit_distance = 156;
-
+                const max_acceleration = 12 * (power + 1);
+                const limit_distance = window.innerWidth / 7;
+                
                 const acceleration = (dPos: number, distance_xy: number) => {
                     if (distance_xy > limit_distance) return 0; // if distance is too far -> null
                     // if distance is in 100px radius -> closer to cursor, more acceleration is
@@ -140,14 +161,16 @@ export default function Particles (): React.ReactNode {
                 }
 
                 // updated style
+                // velocity_t = (constant + (power * radial vector) + radial force from cursor + noise) * friction
                 temp_objects_style.push({
-                    pos_x: spaceControl(objectPosX + objectStyle[index].velocity_x, screenWidth).toString() + "px",
-                    pos_y: spaceControl(objectPosY + objectStyle[index].velocity_y, screenHeight).toString() + "px",
-                    velocity_x: ((objectStyle[index].velocity_x) + acceleration(dx, distance_xy)) * 0.9 + (Math.random() - 0.5),
-                    velocity_y: ((objectStyle[index].velocity_y) + acceleration(dy, distance_xy)) * 0.9 + (Math.random() - 0.5),
+                    pos_x: spaceControl(objectPosX + objectStyle[index].velocity_x, window.innerWidth).toString() + "px",
+                    pos_y: spaceControl(objectPosY + objectStyle[index].velocity_y, window.innerHeight).toString() + "px",
+                    velocity_x: 0.2 + (power * (cursorPos.x - (window.innerWidth / 2)) / window.innerWidth) + ((objectStyle[index].velocity_x) + acceleration(dx, distance_xy)) * 0.97 + (Math.random() - 0.5),
+                    velocity_y: 0.0 + (power * (cursorPos.y - (window.innerHeight / 2)) / window.innerHeight) + ((objectStyle[index].velocity_y) + acceleration(dy, distance_xy)) * 0.97 + (Math.random() - 0.5),
                     height: objectStyle[index].height,
                     width: objectStyle[index].width,
                     backgroundColor: objectStyle[index].backgroundColor,
+                    boxShadow: objectStyle[index].boxShadow,
                     opacity: objectStyle[index].opacity
                 });
             } // end for loop of each object
@@ -158,13 +181,12 @@ export default function Particles (): React.ReactNode {
                     setObjectStyle(temp_objects_style);
                 }
             } catch (error) {}
-            
         }
     }, [time])
 
     return (
         <div className="relative h-full w-full overflow-hidden">
-            <div className="absolute w-[100%] pos_y-0 flex flex-col justify-center">
+            <div className="absolute h-full w-full pos_y-0 flex flex-col justify-center">
                 {Object.values(objectStyle).map((style, index) => (
                     <div
                     className="absolute rounded-full"
@@ -174,11 +196,13 @@ export default function Particles (): React.ReactNode {
                         height: style.height,
                         width: style.width,
                         backgroundColor: style.backgroundColor,
+                        boxShadow: style.boxShadow,
                         opacity: style.opacity
                     }}
                     key={index}></div>
                 ))}
             </div>
+            <div className="absolute pixellet right-10 bottom-10 font-bold select-none cursor-default">{Math.round(power)}</div>
         </div>
     );
 };

@@ -3,7 +3,7 @@ import { firestoreRead } from "../libs/firestore/firestore-read"
 import { LibraryInterfaceProvider } from "./library-provider";
 
 import Interface from "./interface";
-import ErrorMessage from "../component/error";
+import ErrorMessage from "../libs/material/error";
 
 export default async function Library() {
   const contentData = await firestoreRead("library");

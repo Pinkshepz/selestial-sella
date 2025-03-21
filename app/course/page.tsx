@@ -1,9 +1,9 @@
-import { firestoreRead } from "../libs/firestore/firestore-read"
+import { firestoreRead } from "../libs/firestore/firestore-read";
 
 import { CourseInterfaceProvider } from "./course-provider";
 
 import Interface from "./interface";
-import ErrorMessage from "../component/error";
+import ErrorMessage from "../libs/material/error";
 
 export default async function Course() {
   const contentData = await firestoreRead("course");
@@ -20,7 +20,6 @@ export default async function Course() {
         errorMessage={(error as Error).message}
         errorCode={"Access Denied"}
         previousRoute={"../course"} />
-    )
+    );
   }
-
 }

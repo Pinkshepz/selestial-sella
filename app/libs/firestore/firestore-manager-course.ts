@@ -1,14 +1,16 @@
 import firestoreWrite from "./firestore-write";
 import firestoreDelete from "./firestore-delete";
 
-export default async function firestoreUpdate ({
+export default async function firestoreCourseUpdate ({
     collectionName,
     originalData,
     editedData,
+    forceUpdate
 }: {
     collectionName: string,
     originalData: {[key: string]: {[key: string]: any}},
-    editedData: {[key: string]: {[key: string]: any}}
+    editedData: {[key: string]: {[key: string]: any}},
+    forceUpdate?: boolean
 }) {
     let resultLog: {[key: string]: {[key: string]: any}} = {}; // record each doc writing result
     const uidOriginal: string[] = Object.keys(originalData); // all uids of original data
@@ -26,44 +28,41 @@ export default async function firestoreUpdate ({
         }};
     }
 
+    // CASE: forece update is true => overwrite all data
+    if (forceUpdate) {
+        for (let index = 0; index < uidEdited.length; index++) {
+            const euid = uidEdited[index];
+            const {result, error} = await firestoreWrite({collectionName: collectionName, id: euid, data: editedData[euid]});
+            resultLog[euid] = {
+                action: "write",
+                id: editedData[euid].id,
+                name: editedData[euid].name, 
+                result: result, 
+                error: error
+            };
+            console.log(editedData[euid].id, " write");
+            continue;
+        }
+        return resultLog;
+    }
+
 
     for (let index = 0; index < uidEdited.length; index++) {
         const euid = uidEdited[index];
         // DEFINE RULES
         // make sure data meet minimum requirement -> present id, name
-        if (collectionName === "course") {
-            if (!editedData[euid].id || !editedData[euid].name) {
-                resultLog[euid] = {
-                    action: "reject",
-                    id: editedData[euid].id,
-                    name: editedData[euid].name, 
-                    result: "", 
-                    error: `${!editedData[euid].id && "id is not specified"} \n ${!editedData[euid].name && "name is not specified"}`
-                };
-                console.log(editedData[euid].id, " reject");
-                continue;
-            }
+        if (!editedData[euid].id || !editedData[euid].name) {
+            resultLog[euid] = {
+                action: "reject",
+                id: editedData[euid].id,
+                name: editedData[euid].name, 
+                result: "", 
+                error: `${!editedData[euid].id && "id is not specified"} \n ${!editedData[euid].name && "name is not specified"}`
+            };
+            console.log(editedData[euid].id, " reject");
+            continue;
         }
 
-        const legitMode = ["MCQ", "FLASHCARD", "MIXED"];
-
-        if (collectionName === "library") {
-            if (!editedData[euid].id || !editedData[euid].name || 
-                !legitMode.includes(editedData[euid].mode as string)) {
-                resultLog[euid] = {
-                    action: "reject",
-                    id: editedData[euid].id,
-                    name: editedData[euid].name, 
-                    result: "", 
-                    error: `
-                        ${!editedData[euid].id && "id is not specified\n"} 
-                        ${!editedData[euid].name && "name is not specified\n"}
-                        ${!legitMode.includes(editedData[euid].mode as string) && `editedData[euid].mode is not in ${legitMode}`}`
-                };
-                console.log(editedData[euid].id, " reject");
-                continue;
-            }
-        }
         // compare to original data
         // if edited uid doesn't exist in original ones -> write new doc
         // else compare inner data

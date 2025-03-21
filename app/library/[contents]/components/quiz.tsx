@@ -3,13 +3,11 @@
 import React, { useEffect, useState } from 'react';
 import useEventListener from "../../../libs/hooks/useEventListener";
 
-import './interface.css';
-
 import shuffle from '@/app/libs/utils/shuffle';
 import formatQuizText from '@/app/libs/utils/paragraph';
 import { useContentInterfaceContext } from '../content-provider';
-import Icon from '@/public/icon';
-import stringToHex from '@/app/libs/utils/string-to-rgb';
+import Icon from '@/app/libs/material/icon';
+import { ChipTextColor } from '@/app/libs/material/chip';
 
 export default function QuizInterface ({
     libraryData,
@@ -36,7 +34,7 @@ export default function QuizInterface ({
     const ARROWRIGHT_KEYS = ["ArrowRight"];
 
     // 
-    function handler({ key }: {key: string}):void {
+    function handler({ key }: {key: string}): void {
         // escape key = quit
         if (ESCAPE_KEYS.includes(String(key))) {
             setContentInterfaceParams("pageSwitch", false);
@@ -437,16 +435,7 @@ export default function QuizInterface ({
                             { contentInterfaceParams.shuffleQuestion && <Icon icon='shuffle' size={16} />}
                         </div>
                         <div className='flex items-center w-max px-1 py-1 rounded-xl'>
-                            <span
-                                id='clear-chip'
-                                className='text-sm font-semibold'
-                                style={{
-                                    backgroundColor: `rgba(${stringToHex(questionArray[contentInterfaceParams.currentQuestion].mode).r}, ${stringToHex(questionArray[contentInterfaceParams.currentQuestion].mode).g}, ${stringToHex(questionArray[contentInterfaceParams.currentQuestion].mode).b}, 0.4)`,
-                                    border: `solid 1px rgba(${stringToHex(questionArray[contentInterfaceParams.currentQuestion].mode).r}, ${stringToHex(questionArray[contentInterfaceParams.currentQuestion].mode).g}, ${stringToHex(questionArray[contentInterfaceParams.currentQuestion].mode).b}, 0.7)`
-                                    }}>
-                                <Icon icon={questionArray[contentInterfaceParams.currentQuestion].mode} size={16} />
-                                {questionArray[contentInterfaceParams.currentQuestion].mode}
-                            </span>
+                            <ChipTextColor chipText={questionArray[contentInterfaceParams.currentQuestion].mode} chipIcon={questionArray[contentInterfaceParams.currentQuestion].mode}/>
                         </div>
                     </div>
 

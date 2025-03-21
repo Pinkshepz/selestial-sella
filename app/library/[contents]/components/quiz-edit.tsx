@@ -5,11 +5,11 @@ import { useState, useEffect, useRef } from "react";
 import makeid from "@/app/libs/utils/make-id";
 import firestoreUpdate from "../../../libs/firestore/firestore-manager";
 import firestoreUpdateQuiz from "@/app/libs/firestore/firestore-manager-quiz";
-import Icon from "@/public/icon";
-import stringToHex from "@/app/libs/utils/string-to-rgb";
+import Icon from "@/app/libs/material/icon";
+import { ChipTextColor, TextColor } from "@/app/libs/material/chip";
 import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
 import { useContentInterfaceContext } from "../content-provider";
-import { useGlobalContext } from "@/app/provider";
+import { useGlobalContext } from "@/app/global-provider";
 
 export default function EditorInterface ({
     libraryData,
@@ -651,16 +651,7 @@ export default function EditorInterface ({
                         onClick={() => toggleQuestionMode(uid, bufferQuestion[uid].mode)}
                         id={handleFootprintQuestion(uid, "mode")}
                         className="edit-placeholder flex flex-row justify-start items-center gap-2 px-2 font-bold">
-                        <span
-                            id='clear-chip'
-                            className='text-sm font-semibold'
-                            style={{
-                                backgroundColor: `rgba(${stringToHex(bufferQuestion[uid].mode).r}, ${stringToHex(bufferQuestion[uid].mode).g}, ${stringToHex(bufferQuestion[uid].mode).b}, 0.4)`,
-                                border: `solid 1px rgba(${stringToHex(bufferQuestion[uid].mode).r}, ${stringToHex(bufferQuestion[uid].mode).g}, ${stringToHex(bufferQuestion[uid].mode).b}, 0.7)`
-                                }}>
-                            <Icon icon={bufferQuestion[uid].mode} size={16} />
-                            {bufferQuestion[uid].mode}
-                        </span>
+                        <ChipTextColor chipText={bufferQuestion[uid].mode} chipIcon={bufferQuestion[uid].mode} />
                     </button>
                     <div className="flex flex-row gap-4 md:ml-auto">
                         <button
@@ -768,16 +759,11 @@ export default function EditorInterface ({
     
             same_topic_choice_nav.push(
                 <button
-                    className="flex flex-row items-center px-4 py-2 border-t border-border dark:border-border-dark hover:bg-black/10 dark:hover:bg-white/10 ease-in-out duration-200"
+                    className="flex flex-row items-center px-4 py-2 border-t border-border dark:border-border-dark hover:bg-black/10 dark:hover:bg-white/10 ease-in-out duration-50"
                     key={i}
                     onClick={() => scrollToRef(uid)}>
                     <p className="font-bold">{i + 1}</p>
-                    <span
-                        className="ml-1 font-bold"
-                        style={{color: `rgba(${stringToHex(bufferQuestion[uid].mode).r}, ${stringToHex(bufferQuestion[uid].mode).g}, ${stringToHex(bufferQuestion[uid].mode).b}, 1.0)`}}>
-                        {bufferQuestion[uid].mode.toLocaleUpperCase()[0]}
-                    </span>
-
+                    <TextColor chipText={bufferQuestion[uid].mode.toLocaleUpperCase()[0]} />
                     <p className="ml-2 text-xs whitespace-nowrap overflow-hidden">
                         {bufferQuestion[uid].questionText}
                     </p>
@@ -823,7 +809,7 @@ export default function EditorInterface ({
                             DEFAULT {defaultAutosaveTime}
                         </button>}
                     </section>
-                    <section className='pt-4 h-max overflow-y-scroll -scroll-none' key='interface-aside-section-2'>
+                    <section className='pt-4 h-max overflow-y-scroll' key='interface-aside-section-2'>
                         {question_nav}
                     </section>
                 </aside>

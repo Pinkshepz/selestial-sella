@@ -41,6 +41,10 @@ const config: Config = {
         border: {
           DEFAULT: "#d1d5db",
           dark: "#374151"
+        },
+        textSlate: {
+          DEFAULT: "#64748b",
+          dark: "#64748b"
         }
       }
     }

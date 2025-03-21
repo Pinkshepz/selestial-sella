@@ -1,9 +1,9 @@
 "use client";
 
-import { useGlobalContext } from "@/app/provider";
+import { useGlobalContext } from "@/app/global-provider";
 import { useInterfaceContext } from "../course-provider";
 import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
-import Icon from "@/public/icon";
+import Icon from "@/app/libs/material/icon";
 import { useEffect } from "react";
 
 export default function LogUpdate () {

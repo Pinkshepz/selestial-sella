@@ -1,9 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect } from "react";
 
-import Icon from "@/public/icon";
-import { useGlobalContext } from "../../provider"
+import Icon from "@/app/libs/material/icon";
+import { useGlobalContext } from "../../global-provider"
 import { useInterfaceContext } from "../course-provider";
 
 export default function Controller () {
@@ -30,6 +31,16 @@ export default function Controller () {
     return (
         <section className="controller-area">
             <div className="controller-island">
+
+                {!interfaceParams.editMode &&
+                    <Link
+                        href={"/"} 
+                        onClick={() => setGlobalParams("isLoading", true)}
+                        className="controller-menu">
+                        <Icon icon="left" size={16} />
+                        <p>BACK TO HOME</p>
+                    </Link>
+                }
 
                 {!interfaceParams.editMode && (Object.keys(interfaceParams.logUpdate).length === 0) &&
                     <button

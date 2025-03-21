@@ -1,16 +1,18 @@
 import Link from "next/link";
 
-import stringToHex from "../../libs/utils/string-to-rgb";
+import {stringToRgb} from "../../libs/utils/string-to-rgb";
 
 const DisplayRow = ({
     cardUid,
     cardId,
+    cardAbb,
     cardImageLink,
     cardName,
     cardTag
 }: {
     cardUid: string,
     cardId: string,
+    cardAbb: string,
     cardImageLink: string,
     cardName: string,
     cardTag?: string[]
@@ -20,7 +22,7 @@ const DisplayRow = ({
 
     if (cardTag) {
         cardTag.map((tag) => {
-            const color = stringToHex(tag);
+            const color = stringToRgb(tag);
             tagsElements.push(
                 <div
                     className="flex justify-center items-center h-min px-2 text-sm font-semibold rounded-full max-w-max h-full"
@@ -49,7 +51,7 @@ const DisplayRow = ({
             <td className="font-bold" key={cardUid + "2"}>
                 <Link 
                     href={{ pathname: "./course/[courses]" }}
-                    as={`course/${cardId}`}
+                    as={`course/${cardAbb}`}
                     className="underline hover:text-pri dark:hover:text-pri-dark ease-in-out duration-300"
                     key={"Link " + cardUid}>
                         {cardName}
@@ -75,15 +77,18 @@ export default function TableView ({
     // Map contentData into each row
     Object.values(contentData).map((content, index) => {
     const uid = Object.keys(contentData)[index]
-    rows.push(
-        <DisplayRow 
-            cardUid={uid}
-            cardId={content.id}
-            cardImageLink={content.image}
-            cardName={content.name}
-            cardTag={content.tag}
-            key={content.id}/>
-      );
+    if (!content.hidden) {
+        rows.push(
+            <DisplayRow 
+                cardUid={uid}
+                cardId={content.id}
+                cardAbb={content.abbreviation}
+                cardImageLink={content.image}
+                cardName={content.name}
+                cardTag={content.tag}
+                key={content.id}/>
+          );
+    }
   });
 
     return (

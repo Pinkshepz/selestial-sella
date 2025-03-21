@@ -1,6 +1,6 @@
 import { firestoreCountCollection } from "./libs/firestore/firestore-count-collection";
-import Hero from "./component/hero";
-import HomeStats from "./component/home-stats";
+import Hero from "./components/hero";
+import HomeStats from "./components/home-stats";
 
 export default async function Home () {
   const courseCount = await firestoreCountCollection("course");

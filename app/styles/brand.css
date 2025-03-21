@@ -1,0 +1,6 @@
+html.dark #brand {
+    text-shadow:
+            0 0 4px #fff,
+            0 0 9px #fff,
+            0 0 16px #77f
+}

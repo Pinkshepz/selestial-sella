@@ -3,11 +3,10 @@
 import React, { useEffect } from 'react';
 import Link from 'next/link';
 
-import { useGlobalContext } from '@/app/provider';
+import { useGlobalContext } from '@/app/global-provider';
 import { useContentInterfaceContext } from '../content-provider';
-import stringToHex from "../../../libs/utils/string-to-rgb";
-import Icon from "@/public/icon";
-import './slider.css'
+import { ChipTextColor } from '@/app/libs/material/chip';
+import Icon from "@/app/libs/material/icon";
 
 export default function SettingInterface ({
     libraryData,
@@ -69,16 +68,7 @@ export default function SettingInterface ({
 
                 {/* Content data */}
                 <div className='flex flex-wrap gap-4 items-center mt-4'>
-                    <span
-                        id='clear-chip'
-                        className='text-sm font-semibold'
-                        style={{
-                            backgroundColor: `rgba(${stringToHex(libraryData.mode).r}, ${stringToHex(libraryData.mode).g}, ${stringToHex(libraryData.mode).b}, 0.4)`,
-                            border: `solid 1px rgba(${stringToHex(libraryData.mode).r}, ${stringToHex(libraryData.mode).g}, ${stringToHex(libraryData.mode).b}, 0.7)`
-                            }}>
-                        <Icon icon={libraryData.mode ? libraryData.mode.toString().toLocaleLowerCase() : "mcq"} size={12} />
-                        {libraryData.mode}
-                    </span>
+                    <ChipTextColor chipText={libraryData.mode} chipIcon={libraryData.mode ? libraryData.mode.toString().toLocaleLowerCase() : "mcq"} />
                     <span id='pri-chip' className='text-sm font-semibold'>{libraryData.id}</span>
                     <span id='pri-chip' className='text-sm font-semibold'>Total {questionData.length} Questions</span>
                 </div>

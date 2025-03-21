@@ -15,12 +15,13 @@ export default async function Quizset ({ params }: { params: {contents: string} 
         queryValue: params.contents
     });
 
-    // Fetch content / question data for this dynamic route
+    // Fetch content or question data for this dynamic route
+    const libraryUid = Object.keys(libraryData)[0]; // uid of library
     const questionData = await firestoreReadQuery({
         collectionName: "content",
         queryKey: "library",
         queryComparator: "==",
-        queryValue: Object.keys(libraryData)[0] // uid of library
+        queryValue: libraryUid
     });
 
     // fetch ggsheet data if library data is blank

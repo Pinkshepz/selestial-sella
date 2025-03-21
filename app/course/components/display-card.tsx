@@ -1,10 +1,10 @@
 import Link from "next/link";
-
-import stringToHex from "../../libs/utils/string-to-rgb";
+import { ChipTextColor } from "@/app/libs/material/chip";
 
 const DisplayCard = ({
     cardUid,
     cardId,
+    cardAbb,
     cardImageLink,
     cardName,
     cardDescription,
@@ -12,6 +12,7 @@ const DisplayCard = ({
 }: {
     cardUid: string,
     cardId: string,
+    cardAbb: string,
     cardImageLink: string,
     cardName: string,
     cardDescription?: string,
@@ -21,20 +22,7 @@ const DisplayCard = ({
     let tagsElements: React.ReactNode[] = [];
 
     if (cardTag) {
-        cardTag.map((tag) => {
-            const color = stringToHex(tag);
-            tagsElements.push(
-                <span
-                    className="flex justify-center items-center h-min px-2 text-sm font-semibold rounded-full"
-                    style={{
-                        backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.4)`,
-                        border: `solid 1px rgba(${color.r}, ${color.g}, ${color.b}, 0.7)`
-                        }}
-                    key={tag}>
-                    {tag}
-                </span>
-                );
-            }
+        cardTag.map((tag) => tagsElements.push(<ChipTextColor chipText={tag} chipBackgroungOpacity={0.5}/>)
         );
     }
 
@@ -46,7 +34,7 @@ const DisplayCard = ({
                 <div className="absolute w-full h-full z-[-10] bg-gradient-to-t from-black/90 to-transparent"></div>
             </div>
             <div className="p-4 mt-auto">
-                <p className="mt-12 text-md font-bold">{cardId}</p>
+                <p className="mt-12 text-md font-bold">{`${cardId} ￨ ${cardAbb}`}</p>
                 <h4 className="mt-1 text-md font-bold">{cardName}</h4>
                 <div className="flex flex-wrap gap-2 mt-4">
                     {cardTag && tagsElements}
@@ -67,21 +55,24 @@ export default function CardView ({
   // Map contentData into each card
   Object.values(contentData).map((content, index) => {
     const uid = Object.keys(contentData)[index]
-    elements.push(
-        <Link 
-            href={{ pathname: "./course/[courses]" }}
-            as={`course/${content.id}`}
-            key={"Link " + uid}>
-            <DisplayCard 
-                cardUid={uid}
-                cardId={content.id}
-                cardImageLink={content.image}
-                cardName={content.name}
-                cardDescription={content.description}
-                cardTag={content.tag}
-                key={content.id}/>
-        </Link>
-      );
+    if (!content.hidden) {
+        elements.push(
+            <Link 
+                href={{ pathname: "./course/[courses]" }}
+                as={`course/${content.abbreviation}`}
+                key={"Link " + uid}>
+                <DisplayCard 
+                    cardUid={uid}
+                    cardId={content.id}
+                    cardAbb={content.abbreviation}
+                    cardImageLink={content.image}
+                    cardName={content.name}
+                    cardDescription={content.description}
+                    cardTag={content.tag}
+                    key={content.id}/>
+            </Link>
+        );
+    }
   });
 
   return (

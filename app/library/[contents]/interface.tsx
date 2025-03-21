@@ -2,21 +2,19 @@
 
 import { useEffect } from "react";
 
-import { useGlobalContext } from "@/app/provider";
+import { useGlobalContext } from "@/app/global-provider";
 import { useContentInterfaceContext } from "./content-provider";
 
-import ConfirmPopUp from "@/app/component/confirm-popup";
+import ConfirmPopUp from "@/app/libs/material/confirm-popup";
 import SettingInterface from './components/setting';
 import QuizInterface from "./components/quiz";
 import EditorInterface from "./components/quiz-edit";
 import ContentController from "./components/controller";
 import LogUpdate from "./components/log-update";
-import ErrorMessage from "@/app/component/error";
+import ErrorMessage from "@/app/libs/material/error";
 import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
 
 import uidObjectToArray from "@/app/libs/utils/uid-object-to-array";
-
-const DEFAULT_BG = 'https://images.newscientist.com/wp-content/uploads/2022/08/08121245/SEI_117967799.jpg';
 
 export default function Interface ({
     libraryData,
