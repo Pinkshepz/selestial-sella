@@ -23,8 +23,6 @@ export default async function Quizset ({ params }: { params: {courses: string} }
         queryValue: courseUid // uid of library
     });
 
-    console.log(courseData)
-
     return (
         <TopicInterfaceProvider>
             <Interface

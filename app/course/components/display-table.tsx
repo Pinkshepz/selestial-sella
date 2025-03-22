@@ -1,6 +1,7 @@
 import Link from "next/link";
 
-import {stringToRgb} from "../../libs/utils/string-to-rgb";
+import { useGlobalContext } from "@/app/global-provider";
+import {stringToRgb} from "@/app/libs/utils/string-to-rgb";
 
 const DisplayRow = ({
     cardUid,
@@ -17,6 +18,9 @@ const DisplayRow = ({
     cardName: string,
     cardTag?: string[]
 }) => {
+    // connect to global context
+    const {globalParams, setGlobalParams} = useGlobalContext();
+    
     // prepare tag chips
     let tagsElements: React.ReactNode[] = [];
 
@@ -51,6 +55,7 @@ const DisplayRow = ({
             <td className="font-bold" key={cardUid + "2"}>
                 <Link 
                     href={{ pathname: "./course/[courses]" }}
+                    onClick={() => setGlobalParams("isLoading", true)}
                     as={`course/${cardAbb}`}
                     className="underline hover:text-pri dark:hover:text-pri-dark ease-in-out duration-300"
                     key={"Link " + cardUid}>

@@ -824,6 +824,7 @@ export default function EditorInterface ({
                 </main>
             </div>
             <div className="glass-cover-spread"></div>
+            <div className="absolute h-full w-full z-[-30] bg-highlight/90 dark:bg-highlight-dark/90"></div>
             <img src={libraryData.image ? libraryData.image : BG} alt="" height={1000} width={1000} className="fixed z-[-50] w-full h-full object-cover hidden dark:inline dark:brightness-50"/>
         </div>
     );

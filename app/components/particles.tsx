@@ -1,9 +1,33 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import useEventListener from "../libs/hooks/useEventListener";
 import stringToHex from "../libs/utils/string-to-rgb";
 
 export default function Particles (): React.ReactNode {
+
+    // Set keyboard interaction
+    const [freeze, setFreeze] = useState(1);
+    const [glitter, setGlitter] = useState(false);
+    const [monochrome, setMonochrome] = useState(false);
+    const monoColor = "#acbcbf";
+
+    function handler({ key }: {key: string}): void {
+        if (["1"].includes(String(key))) {
+            setFreeze((prev) => prev == 0 ? 1 : 0);
+            return;
+        }
+        if (["2"].includes(String(key))) {
+            setGlitter((prev) => !prev);
+            return;
+        }
+        if (["3"].includes(String(key))) {
+            setMonochrome((prev) => !prev);
+            return;
+        }
+    }
+    
+    useEventListener('keydown', handler);
 
     // 1. data structure of eachobject's style
     interface ObjectStyle {
@@ -23,16 +47,24 @@ export default function Particles (): React.ReactNode {
     const [objectStyle, setObjectStyle] = useState<ObjectStyle[]>([]); // all objects' style
     const [power, setPower] = useState(0); // power for particle accerelation
 
-    // 3. track cursor position. Update when cursor position is changed
+
+    // 3A. track cursor position. Update when cursor position is changed
     const setCoordinate = (e: MouseEvent) => {
         setCursorPos({ x: e.clientX, y: e.clientY });
     };
 
+    useEffect(() => {
+        window.addEventListener("mousemove", setCoordinate);
+        return () => window.removeEventListener("mousemove", setCoordinate);
+    }, [setCoordinate]);
+    
+
+    // 3B. handle onclick -> create accerelation.
     const powerLimit = 16;
 
     const boostPower = () => {
         if (power < powerLimit) {
-            setPower((prev) => (prev + 1) * 1.05);
+            setPower((prev) => (prev + 1) * 1.1);
         }
         else {
             setPower(powerLimit);
@@ -41,7 +73,7 @@ export default function Particles (): React.ReactNode {
 
     const dragPower = () => {
         if (power > 0) {
-            setPower((prev) => prev - (2 / (60 / fps)));
+            setPower((prev) => prev - (0.2 / (60 / fps)));
         }
         else {
             setPower(0);
@@ -49,21 +81,18 @@ export default function Particles (): React.ReactNode {
     };
     
     useEffect(() => {
-        window.addEventListener("mousemove", setCoordinate);
-        return () => window.removeEventListener("mousemove", setCoordinate);
-    }, [setCoordinate]);
-    
-    useEffect(() => {
         window.addEventListener("mousedown", boostPower);
         return () => window.removeEventListener("mousedown", boostPower);
     }, [boostPower]);
 
-    // 4. object_spacing of objects -> lesser means more density -> more objects displayed
-    const object_spacing = 64;
-    const rare_bubble_chance = 2; // density of colorful bubbles
-    const fps = 3;
 
+    // 4. object_spacing of objects -> lesser means more density -> more objects displayed
+    const object_spacing = 72;
+    const rare_bubble_chance = 2; // density of colorful bubbles
+    
+    
     // 5. run clock
+    const fps = 10;
     const [time, setTime] = useState(Date.now());
 
     useEffect(() => {
@@ -71,7 +100,8 @@ export default function Particles (): React.ReactNode {
         return () => {
             clearInterval(interval);
         };
-    }, [time]);
+    }, [time * freeze]);
+
 
     // 6. set initial object coordinates
     useEffect(() => {
@@ -89,7 +119,7 @@ export default function Particles (): React.ReactNode {
                 if ((((row + 1) * 9 + (column + 1)) % rare_bubble_chance) == 0) {
                     color = stringToHex(String(common_rand));
                 } else {
-                    color = "#acbcbf";
+                    color = monoColor;
                 }
 
                 // select bubble size
@@ -162,15 +192,16 @@ export default function Particles (): React.ReactNode {
 
                 // updated style
                 // velocity_t = (constant + (power * radial vector) + radial force from cursor + noise) * friction
+                const newColor = stringToHex(String(Math.random()));
                 temp_objects_style.push({
                     pos_x: spaceControl(objectPosX + objectStyle[index].velocity_x, window.innerWidth).toString() + "px",
                     pos_y: spaceControl(objectPosY + objectStyle[index].velocity_y, window.innerHeight).toString() + "px",
-                    velocity_x: 0.2 + (power * (cursorPos.x - (window.innerWidth / 2)) / window.innerWidth) + ((objectStyle[index].velocity_x) + acceleration(dx, distance_xy)) * 0.97 + (Math.random() - 0.5),
-                    velocity_y: 0.0 + (power * (cursorPos.y - (window.innerHeight / 2)) / window.innerHeight) + ((objectStyle[index].velocity_y) + acceleration(dy, distance_xy)) * 0.97 + (Math.random() - 0.5),
+                    velocity_x: 0.1 + (power * (cursorPos.x - (window.innerWidth / 2)) / window.innerWidth) + ((objectStyle[index].velocity_x) + acceleration(dx, distance_xy)) * 0.97 + (Math.random() - 0.5) / 2,
+                    velocity_y: 0.0 + (power * (cursorPos.y - (window.innerHeight / 2)) / window.innerHeight) + ((objectStyle[index].velocity_y) + acceleration(dy, distance_xy)) * 0.97 + (Math.random() - 0.5) / 2,
                     height: objectStyle[index].height,
                     width: objectStyle[index].width,
-                    backgroundColor: objectStyle[index].backgroundColor,
-                    boxShadow: objectStyle[index].boxShadow,
+                    backgroundColor: glitter ? newColor : monochrome ? "#00000000" : objectStyle[index].backgroundColor,
+                    boxShadow: glitter ? `0px 0px ${Number(objectStyle[index].height.split("px")[0]) * 0.75}px #ffffff99, 0px 0px ${Number(objectStyle[index].height.split("px")[0]) * 1.5}px ${newColor}` : objectStyle[index].boxShadow,
                     opacity: objectStyle[index].opacity
                 });
             } // end for loop of each object
@@ -182,7 +213,7 @@ export default function Particles (): React.ReactNode {
                 }
             } catch (error) {}
         }
-    }, [time])
+    }, [time * freeze])
 
     return (
         <div className="relative h-full w-full overflow-hidden">

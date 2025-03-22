@@ -2,5 +2,30 @@ html.dark #brand {
     text-shadow:
             0 0 4px #fff,
             0 0 9px #fff,
-            0 0 16px #77f
+            0 0 16px #77f;
+    animation: flicker 2s linear infinite;
+}
+
+html.dark #brand-static {
+    text-shadow:
+            0 0 1px #fff,
+            0 0 3px #fff,
+            0 0 5px #77f;
+}
+
+/* Flickering animation */
+@keyframes flicker {
+    
+    0%, 18%, 22%, 25%, 53%, 57%, 100% {
+        text-shadow:
+            0 0 4px #fff,
+            0 0 9px #fff,
+            0 0 16px #77f;
+    }
+
+    20%, 24%, 55% {        
+        text-shadow:
+            0 0 4px #fff,
+            0 0 9px #fff;
+    }    
 }

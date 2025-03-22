@@ -1,7 +1,7 @@
 #quiz-two-cols-fixed {
   display: flex;
   flex-direction: row;
-  height: calc(100dvh - 64px);
+  height: calc(100dvh - var(--nav-height));
   overflow: hidden;
 }
 
@@ -13,7 +13,7 @@
 }
 
 #quiz-col-scroll-aside {
-  margin-top: 64px;
+  margin-top: var(--nav-height);
   display: var(--aside-visibility);
   flex-direction: column;
   width: var(--aside-width);
@@ -23,7 +23,7 @@
 
 #quiz-col-scroll-main {
   padding: 0px 16px 16px 16px;
-  margin-top: 64px;
+  margin-top: var(--nav-height);
   display: flex;
   flex-direction: column;
   width: calc(var(--main-width));

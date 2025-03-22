@@ -5,7 +5,7 @@
     position: fixed;
     left: 0;
     right: 0;
-    top: 64px;
+    top: var(--nav-height);
     height: 72px;
     width: auto;
     margin-left: auto;
@@ -81,7 +81,6 @@
     position: relative;
     display: flex;
     flex-direction: row;
-    padding: 8px;
     align-items: start;
     min-height: 222px;
     overflow: hidden;

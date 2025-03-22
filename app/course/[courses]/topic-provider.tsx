@@ -2,57 +2,58 @@
 
 import { createContext, useContext, useState, useMemo } from "react";
 
-interface TopicInterfaceStructure {
-  editMode: boolean,
+interface interfaceStructure {
+  displayToogle: boolean,
   searchKey: string,
-  addQuestionToggle: boolean,
+  sortAscending: boolean,
+  editMode: boolean,
+  currentCourseUid: string,
+  addCourseToggle: boolean,
   discardChangesToggle: boolean,
-  deleteAllChangesToggle: boolean,
   saveChangesToggle: boolean,
-  logUpdate: {},
-  sortAscending: boolean
+  logUpdate: {}
 }
 
-const topicInterfaceInitialValue = {
-  editMode: false,
+const interfaceInitialValue = {
+  displayToogle: false,
   searchKey: "",
-  addQuestionToggle: false,
+  sortAscending: true,
+  editMode: false,
+  currentCourseUid: "",
+  addCourseToggle: false,
   discardChangesToggle: false,
-  deleteAllChangesToggle: false,
   saveChangesToggle: false,
-  logUpdate: {},
-  sortAscending: true
+  logUpdate: {}
 };
 
-const TopicInterfaceContext = createContext<any>({});
+const InterfaceContext = createContext<any>({});
 
-export function useTopicInterfaceContext() {
-  return useContext(TopicInterfaceContext);
+export function useInterfaceContext() {
+  return useContext(InterfaceContext);
 }
 
 export function TopicInterfaceProvider({ children }: {children: React.ReactNode}) {
 
   // Configure params
-  const [topicInterfaceParams, setAllTopicInterfaceParams] = useState<TopicInterfaceStructure>(topicInterfaceInitialValue);
+  const [interfaceParams, setAllInterfaceParams] = useState<interfaceStructure>(interfaceInitialValue);
 
   // Function for setting specific interface parameter
-  const setTopicInterfaceParams = (
-    param: keyof typeof topicInterfaceInitialValue, 
-    value: boolean | number
-  ) => {
-
-    setAllTopicInterfaceParams((prev) => ({
+  const setInterfaceParams = (
+    param: keyof typeof interfaceInitialValue, 
+    value: any
+  ): void => {
+    setAllInterfaceParams((prev) => ({
       ...prev,
       [param]: value
     }));
   }
 
   // UseMemo optimization
-  const topicInterfaceValue = useMemo(() => ({topicInterfaceParams, setTopicInterfaceParams}), [topicInterfaceParams])
+  const interfaceValue = useMemo(() => ({interfaceParams, setInterfaceParams}), [interfaceParams]);
 
   return (
-    <TopicInterfaceContext.Provider value={topicInterfaceValue}>
+    <InterfaceContext.Provider value={interfaceValue}>
       {children}
-    </TopicInterfaceContext.Provider>
+    </InterfaceContext.Provider>
   );
 }

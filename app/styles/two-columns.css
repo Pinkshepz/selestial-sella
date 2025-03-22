@@ -2,7 +2,7 @@
   position: fixed;
   display: flex;
   flex-direction: row;
-  height: calc(100dvh - 64px - 72px);
+  height: calc(100dvh - var(--nav-height) - var(--controller-height));
   width: 100dvw;
   overflow: hidden;
 }
@@ -11,13 +11,26 @@
   display: var(--aside-visibility);
   flex-direction: column;
   width: var(--aside-width);
-  overflow-y: scroll;
-  background-color: var(--bg-accent);
 }
 
 #col-scroll-main {
   display: flex;
   flex-direction: column;
   width: calc(100dvw - var(--aside-width));
-  overflow-y: scroll;
+}
+
+.w-dvh {
+  width: 100dvw;
+}
+
+.h-dvh {
+  height: 100dvh;
+}
+
+.h-nav {
+  height: calc(100dvh - var(--nav-height));
+}
+
+.h-nav-ctrl {
+  height: calc(100dvh - var(--nav-height) - var(--controller-height));
 }

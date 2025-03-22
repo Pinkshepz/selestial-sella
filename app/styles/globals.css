@@ -35,7 +35,6 @@ html.light {
   --amber: rgba(217, 119, 6, 1.0);
   /* special */
   --bg: rgba(250, 250, 250, 1);
-  --bgaccent: rgba(240, 244, 248, 1);
 }
   
 html.dark {
@@ -70,22 +69,25 @@ html.dark {
   /* amber-400 #fbbf24 /100 */
   --amber: rgba(251, 191, 36, 1);
   /* special */
-  --bg: rgba(0, 0, 0, 0.75);
-  --bgaccent: rgba(2, 6, 17, 1);
+  --bg: rgba(7, 14, 21, 1);
 }
 
 @media screen and (min-width: 800px) {
   :root {
+    --nav-height: 56px;
+    --controller-height: 72px;
     --aside-visibility: flex;
-    --aside-width: 300px;
+    --aside-width: 320px;
     --main-width: calc(100dvw - var(--aside-width));
   }
 }
 
 @media screen and (min-width: 0px) and (max-width: 800px) {
   :root {
+    --nav-height: 56px;
+    --controller-height: 72px;
     --aside-visibility: none;
-    --aside-width: 300px;
+    --aside-width: 320px;
     --main-width: 100dvw;
   }
 }
@@ -103,7 +105,7 @@ html {
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--base-inverse);
+  background-color: var(--bg);
   overflow-x: hidden;
   -ms-overflow-style: none;  /* Internet Explorer 10+ */
   transition: all ease-in-out 200ms;
@@ -185,8 +187,8 @@ hr {
 }
 
 nav {
-  height: 64px;
-  background-color: var(--bgaccent);
+  height: var(--nav-height);
+  background-color: var(--highlight);
   border-bottom: solid 1px var(--border);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);

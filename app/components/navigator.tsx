@@ -9,7 +9,7 @@ import { useGlobalContext } from "../global-provider"
 import NavPathName from "./navpathname";
 import Icon from "@/public/icon";
 
-const GUEST_PROFILE = "https://yt3.googleusercontent.com/Ux21viBcv03vV1Vj8QIQA0vq9AqwC_RmtDmoKZ2S77Kt7DLGgJvNAbC-v2KGzIFKoHKQ_AcNby8=s900-c-k-c0x00ffffff-no-rj";
+const GUEST_PROFILE = "https://yt3.googleusercontent.com/c2qSc796fIy8cqrcoq-JNBnBCsXgT9wpA19k2aBEx8r1Wzn8VUCWrySazhO28iao40CmUrV-3A=s900-c-k-c0x00ffffff-no-rj";
 
 export default function GlobalNavigator (): React.ReactNode {
 
@@ -65,11 +65,11 @@ export default function GlobalNavigator (): React.ReactNode {
   }
 
   return (
-    <nav className="fixed left-0 top-0 flex flex-row justify-between items-center gap-8 w-full z-100 px-4 backdrop-blur-xl">
+    <nav className="fixed left-0 top-0 flex flex-row justify-between items-center gap-8 w-full z-100 px-4 backdrop-blur-lg">
 
       {/* Left portion */}
       <div className='flex flex-row items-center justify-center'>
-        <Link href={'/'} className="-button-line font-bold text-xl relative mr-2">
+        <Link href={'/'} id="brand-static" className="font-black text-xl relative mr-2">
           AURICLE
         </Link>
         <NavPathName />

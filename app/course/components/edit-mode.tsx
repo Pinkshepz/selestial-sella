@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from "react";
 
-import makeid from "../../libs/utils/make-id";
-import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
-import { ChipTextColor, TextColor } from "@/app/libs/material/chip";
-import firestoreUpdate from "../../libs/firestore/firestore-manager";
-import Icon from "../../../public/icon";
-import { useGlobalContext } from "../../global-provider";
+import { useGlobalContext } from "@/app/global-provider";
 import { useInterfaceContext } from "../course-provider";
-import { stringify } from "querystring";
+
+import firestoreUpdate from "@/app/libs/firestore/firestore-manager";
+import makeid from "@/app/libs/utils/make-id";
+import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
+import { TextColor } from "@/app/libs/material/chip";
+import Icon from "@/public/icon";
 
 export default function CardEditor ({
     contentData
@@ -64,7 +64,6 @@ export default function CardEditor ({
     if (interfaceParams.saveChangesToggle &&
         globalParams.popUpConfirm &&
         (globalParams.popUpAction == "saveChangesToggle")) {
-            console.log("aaa");
             setGlobalParams("isLoading", true);
             firestoreUpdate({
                 collectionName: "course",
@@ -245,7 +244,7 @@ export default function CardEditor ({
 
         if (interfaceParams.currentCourseUid == uid) {
             elementAside.push(
-                <div className="flex flex-row px-2 py-2 gap-2 content-center text-left border-t border-border dark:border-border-dark/50 bg-black/10 dark:bg-white/10">
+                <div className="flex flex-row px-2 py-2 gap-2 content-center text-left bg-black/10 dark:bg-white/10" key={uid}>
                     <TextColor chipText={content.id} fontWeight={900} />
                     <span className="font-semibold text-nowrap overflow-hidden">{content.name}</span>
                     <span className="ml-auto">{content.hidden && <Icon icon="eyeSlash" size={16}/>}</span>
@@ -253,10 +252,10 @@ export default function CardEditor ({
             );
         } else {
             elementAside.push(
-                <button onClick={() => setInterfaceParams("currentCourseUid", uid)}
-                    className="flex flex-row px-2 py-2 gap-2 content-center text-left border-t border-border dark:border-border-dark/50 hover:bg-black/10 dark:hover:bg-white/10 ease-in-out duration-50">
+                <button onClick={() => setInterfaceParams("currentCourseUid", uid)} key={uid}
+                    className="flex flex-row px-2 py-2 gap-2 content-center text-left hover:bg-black/10 dark:hover:bg-white/10 ease-in-out duration-50">
                     <TextColor chipText={content.id} fontWeight={900} />
-                    <span className="font-semibold text-nowrap overflow-hidden">{content.name}</span>
+                    <span className="text-nowrap overflow-hidden">{content.name}</span>
                     <span className="ml-auto">{content.hidden && <Icon icon="eyeSlash" size={16}/>}</span>
                 </button>
             );
@@ -286,7 +285,7 @@ export default function CardEditor ({
             Object.keys(sortedFilteredSectionTopicData).map((sectionTopicUid) => {
                 const sectionTopicAtUid = content.section[sectionUid].sectionTopics[sectionTopicUid];
                 elementSectionTopic.push(
-                    <div className="flex flex-row ml-4">
+                    <div className="flex flex-row ml-4" key={sectionTopicUid}>
                         <textarea onChange={e => onPlaceholderChangeIII(interfaceParams.currentCourseUid, sectionUid, sectionTopicUid, "section", "sectionTopics", "topicId", e.target.value)}
                             className="editor-field w-20 mr-8" value={sectionTopicAtUid.topicId}></textarea>
                         <textarea onChange={e => onPlaceholderChangeIII(interfaceParams.currentCourseUid, sectionUid, sectionTopicUid, "section", "sectionTopics", "topicName", e.target.value)}
@@ -302,31 +301,33 @@ export default function CardEditor ({
             });
 
             elementSection.push(
-                <div className="border-b border-broder/50 dark:border-border-dark/50">
-                    <div className="font-bold text-pri dark:text-pri-dark bg-black/10 dark:bg-white/10 p-2 mb-4">
+                <div key={sectionUid}>
+                    <div className="font-bold text-pri dark:text-pri-dark bg-black/10 dark:bg-white/10 p-2 mb-4 rounded-xl">
                         <textarea onChange={e => onPlaceholderChangeII(interfaceParams.currentCourseUid, sectionUid, "section", "sectionId", e.target.value)}
                             className="editor-field w-20 mr-8" value={sectionAtUid.sectionId}></textarea>
                         <textarea onChange={e => onPlaceholderChangeII(interfaceParams.currentCourseUid, sectionUid, "section", "sectionName", e.target.value)}
                             className="editor-field w-96 mr-8" value={sectionAtUid.sectionName}></textarea>
                     </div>
-                    <div className="flex flex-row items-center ml-4 mb-4 border-b border-broder dark:border-border-dark">
-                        <span className="w-20 mr-8">Topic ID</span>
-                        <span className="w-96 mr-8">Topic Name</span>
-                        <button
-                            onClick={() => onPlaceholderChangeIII(interfaceParams.currentCourseUid, sectionUid, makeid(length=20), "section", "sectionTopics", "topicId", "N1")}
-                            className="flex flex-row justify-center items-center gap-2 h-[30px] ml-auto px-2 py-1 ml-4 mb-4 rounded-[8px] border border-ter dark:border-ter-dark hover:text-pri hover:border-pri dark:hover:text-pri-dark dark:hover:border-pri-dark font-bold">
-                            <Icon icon="add" size={16} />
-                            <span className="lg:inline hidden">TOPIC</span>
-                        </button>
-                        <button
-                            onClick={() => onDeleteUidII(interfaceParams.currentCourseUid, sectionUid, "section")}
-                            className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-4 mb-4 rounded-[8px] border border-ter dark:border-ter-dark hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
-                            <Icon icon="trash" size={16} />
-                            <span className="lg:inline hidden">SECTION</span>
-                        </button>
-                    </div>
-                    <div className="flex flex-col gap-2">
-                        {elementSectionTopic}
+                    <div className="flex flex-col ml-4 border-l border-broder dark:border-border-dark">
+                        <div className="flex flex-row font-bold items-center ml-4 mb-4 border-b border-broder dark:border-border-dark">
+                            <span className="w-20 mr-8">Topic ID</span>
+                            <span className="w-96 mr-8">Topic Name</span>
+                            <button
+                                onClick={() => onPlaceholderChangeIII(interfaceParams.currentCourseUid, sectionUid, makeid(length=20), "section", "sectionTopics", "topicId", "N1")}
+                                className="flex flex-row justify-center items-center gap-2 h-[30px] ml-auto px-2 py-1 ml-4 mb-4 rounded-[8px] border border-ter dark:border-ter-dark hover:text-pri hover:border-pri dark:hover:text-pri-dark dark:hover:border-pri-dark font-bold">
+                                <Icon icon="add" size={16} />
+                                <span className="lg:inline hidden">TOPIC</span>
+                            </button>
+                            <button
+                                onClick={() => onDeleteUidII(interfaceParams.currentCourseUid, sectionUid, "section")}
+                                className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-4 mb-4 rounded-[8px] border border-ter dark:border-ter-dark hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
+                                <Icon icon="trash" size={16} />
+                                <span className="lg:inline hidden">SECTION</span>
+                            </button>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            {elementSectionTopic}
+                        </div>
                     </div>
                 </div>
             );
@@ -334,7 +335,7 @@ export default function CardEditor ({
 
         // conbine all interface together
         elementEditor = (
-            <div className="flex flex-col gap-2 mb-16" key={content.uid}>
+            <div className="flex flex-col gap-2" key={content.uid}>
                 <div className="h-56 w-full overflow-hidden">
                     {content.image && <img src={content.image} alt="Invalid image" className="w-full"/>}
                 </div>
@@ -438,7 +439,7 @@ export default function CardEditor ({
                         <Icon icon="table" size={16} />
                         <p>Course section</p>
                     </label>
-                    <div className="flex flex-row items-center px-2 mb-4 border-b border-broder dark:border-border-dark">
+                    <div className="flex flex-row items-center font-bold px-2 mb-4 border-b border-broder dark:border-border-dark">
                         <span className="w-20 mr-8">Section ID</span>
                         <span className="w-96 mr-8">Section Name</span>
                         <button
@@ -461,6 +462,10 @@ export default function CardEditor ({
                     <div className="flex flex-col gap-4">
                         {elementSection}
                     </div>
+                    <div className="flex flex-col mt-8 mb-4 color-slate">
+                        <span>This course will be displayed in the course warehouse and connects to topics and quiz library</span>
+                        <span>{`Last updated ${new Date(new Date(1970, 0, 1).setSeconds(content.latestUpdated.seconds))}`}</span>
+                    </div>
                 </div>
             </div>
         );
@@ -476,16 +481,16 @@ export default function CardEditor ({
     return (
         <div id="two-cols-fixed" className="border-t border-border dark:border-border-dark">
             <aside aria-label="aside-navigator" id="col-scroll-aside" className="w-[25dvw] border-r border-border dark:border-border-dark">
-                <h1 className="px-4">COURSE EDITOR</h1>
+                <div className="flex flex-row gap-4 px-4"><h1>COURSE</h1><h1>EDITOR</h1></div>
                 <div className="px-4 pt-2 pb-4 flex flex-row items-center">
                     <Icon icon="true" size={16}></Icon>
                     <span className="pl-2 font-bold">TOTAL {elementAside.length} COURSES</span>
                 </div>
-                <div className="flex flex-col h-max pb-4 overflow-y-scroll -scroll-none">
+                <div className="flex flex-col h-max pb-4 overflow-y-auto">
                     {elementAside}
                 </div>
             </aside>
-            <section aria-label="main-editor" id="col-scroll-main" className="overflow-y-scroll">
+            <section aria-label="main-editor" id="col-scroll-main" className="overflow-y-auto">
                 {elementEditor}
             </section>
         </div>

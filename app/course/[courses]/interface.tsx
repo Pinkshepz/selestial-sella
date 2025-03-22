@@ -1,63 +1,61 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
-import { useGlobalContext } from "@/app/global-provider";
-import { useTopicInterfaceContext } from "./topic-provider";
+import { useGlobalContext } from "../../global-provider";
+import { useInterfaceContext } from './topic-provider';
 
-import Icon from "@/public/icon";
-import Controller from "./components/controller";
 import ConfirmPopUp from "@/app/libs/material/confirm-popup";
+import Controller from "./components/controller";
 
-import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
-import TopicDisplay from "./components/topic-display";
+import sortUidObjectByValue from '@/app/libs/utils/sort-uid-object-by-value';
+
+import DisplayView from "./components/display-view";
 
 export default function Interface ({
     courseData,
     courseTopicData
 }: {
-    courseData: {[key: string]: string}, // {library data}
-    courseTopicData: {[key: string]: {[key: string]: any}} // {uid: {each question}}
-}) {
+    courseData: {[key: string]: any},
+    courseTopicData: {[key: string]: {[key: string]: any}}
+}): React.ReactNode {
     // connect to global context
     const {globalParams, setGlobalParams} = useGlobalContext();
 
-    // Connect to contentInterfaceContext
-    const {topicInterfaceParams, setTopicInterfaceParams} = useTopicInterfaceContext();
+    useEffect(() => {setGlobalParams("isLoading", false);}, []);
 
-    // Search bar value
-    const [searchKey, setSearchKey] = useState("");
-
+    // connect to interface context
+    const {interfaceParams, setInterfaceParams} = useInterfaceContext();
+  
     // Filter by search key
     let filteredContent: {[key: string]: {[key: string]: string}} = {};
-    for (let index = 0; index < Object.values(courseTopicData).length; index++) {
+    for (let index = 0; index < Object.values(courseData).length; index++) {
         // Each content data
-        const content: {[key: string]: string} = Object.values(courseTopicData)[index];
+        const content: {[key: string]: string} = Object.values(courseData)[index];
         // Create combination of all content information for search target
-        const search_target = content["id"] + " " + content["name"] + " " + content["tag"];
+        const search_target = JSON.stringify(content);
 
         // Check if data matches to searchkey
-        if (search_target.toLowerCase().includes(topicInterfaceParams.searchKey.toLowerCase())) {
-            filteredContent[Object.keys(courseTopicData)[index]] = content;
+        if (search_target.toLowerCase().includes(interfaceParams.searchKey.toLowerCase())) {
+            filteredContent[Object.keys(courseData)[index]] = content;
         }
     }
-    
-    const sortedFilteredContentData: {[key: string]: {[key: string]: string}} = sortUidObjectByValue(
-    filteredContent, "id", topicInterfaceParams.sortAscending
-    )
 
-    const ALT_IMAGE = "https://idsb.tmgrup.com.tr/ly/uploads/images/2020/11/11/71386.jpg"
-
-    useEffect(() => {
-        setGlobalParams("isLoading", false);
-    }, []);
+    const sortedFilteredContentData: {
+        [key: string]: {[key: string]: string}
+    } = sortUidObjectByValue(filteredContent, "id", interfaceParams.sortAscending)
 
     return (
         <>
             <ConfirmPopUp />
-            <main className="relative flex flex-col mt-36 pt-2 mb-16">
+            <main className="relative flex flex-col mt-36 mb-16">
                 <Controller />
-                {/* <TopicDisplay courseTopicData={courseTopicData} /> */}
+                <DisplayView courseData={courseData} courseTopicData={courseTopicData} />
+                {/* {(Object.keys(interfaceParams.logUpdate).length > 0)
+                    ? <LogUpdate />
+                    : interfaceParams.editMode
+                        ? <CardEditor contentData={contentData} />
+                        : <DisplayView contentData={sortedFilteredContentData} />} */}
             </main>
         </>
     );

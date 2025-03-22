@@ -1,13 +1,14 @@
 "use client";
 
-import { useGlobalContext } from "@/app/global-provider";
-import { useInterfaceContext } from "../course-provider";
-import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
-import Icon from "@/public/icon";
 import { useEffect } from "react";
 
-export default function LogUpdate () {
+import { useGlobalContext } from "@/app/global-provider";
+import { useInterfaceContext } from "../course-provider";
 
+import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
+import Icon from "@/public/icon";
+
+export default function LogUpdate (): React.ReactNode {
     // connect to global context
     const {globalParams, setGlobalParams} = useGlobalContext();
 
