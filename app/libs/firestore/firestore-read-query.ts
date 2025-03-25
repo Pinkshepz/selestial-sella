@@ -12,7 +12,7 @@ export async function firestoreReadQuery ({
   queryKey: string,
   queryComparator: WhereFilterOp,
   queryValue: string
-}): Promise<{[key: string]: {[key: string]: any}}> {
+}): Promise<string> {
   try {
     // get database
     const db = getFirestore(fireapp);
@@ -27,8 +27,8 @@ export async function firestoreReadQuery ({
       docs[doc.id] = doc.data();
     })
 
-    return docs;
+    return JSON.stringify(docs);
   } catch (error) {
-    return {0:{"error": error}};
+    return "{}";
   }
 }

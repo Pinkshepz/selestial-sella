@@ -63,6 +63,8 @@ export default async function firestoreUpdateQuiz ({
                 result: result, 
                 error: error
             };
+            console.log(originalData[euid]);
+            console.log(editedData[euid]);
         }
     }
 

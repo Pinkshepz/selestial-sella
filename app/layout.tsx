@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <GlobalProvider>
         <html lang="en" suppressHydrationWarning>
-          <body>
+          <body className='relative'>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem >
               {children}
               <GlobalNavigator />

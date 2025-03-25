@@ -1,7 +1,7 @@
 import firestoreWrite from "./firestore-write";
 import firestoreDelete from "./firestore-delete";
 
-export default async function firestoreUpdate ({
+export default async function firestoreUpdateTopic ({
     collectionName,
     originalData,
     editedData,
@@ -19,8 +19,8 @@ export default async function firestoreUpdate ({
     if ((uidOriginal.length === 0) && (uidEdited.length === 0)){
         return {0: {
             action: "reject",
-            id: -1,
-            name: "", 
+            type: "",
+            topicUid: "", 
             result: "", 
             error: "both original and edited data have no value"
         }};
@@ -30,17 +30,16 @@ export default async function firestoreUpdate ({
     for (let index = 0; index < uidEdited.length; index++) {
         const euid = uidEdited[index];
         // DEFINE RULES
-        // make sure data meet minimum requirement -> present id, name
+        // make sure data meet minimum requirement -> present id, topicUid
         if (collectionName === "course") {
-            if (!editedData[euid].id || !editedData[euid].name) {
+            if (!editedData[euid].id || !editedData[euid].topicUid) {
                 resultLog[euid] = {
                     action: "reject",
                     id: editedData[euid].id,
-                    name: editedData[euid].name, 
+                    topicUid: editedData[euid].topicUid, 
                     result: "", 
-                    error: `${!editedData[euid].id && "id is not specified"} \n ${!editedData[euid].name && "name is not specified"}`
+                    error: `${!editedData[euid].id && "id is not specified"} \n ${!editedData[euid].topicUid && "topicUid is not specified"}`
                 };
-                console.log(editedData[euid].id, " reject");
                 continue;
             }
         }
@@ -48,19 +47,18 @@ export default async function firestoreUpdate ({
         const legitMode = ["MCQ", "FLASHCARD", "MIXED"];
 
         if (collectionName === "library") {
-            if (!editedData[euid].id || !editedData[euid].name || 
+            if (!editedData[euid].id || !editedData[euid].topicUid || 
                 !legitMode.includes(editedData[euid].mode as string)) {
                 resultLog[euid] = {
                     action: "reject",
-                    id: editedData[euid].id,
-                    name: editedData[euid].name, 
+                    type: editedData[euid].contentType,
+                    topicUid: editedData[euid].topicUid, 
                     result: "", 
                     error: `
                         ${!editedData[euid].id && "id is not specified\n"} 
-                        ${!editedData[euid].name && "name is not specified\n"}
+                        ${!editedData[euid].topicUid && "topicUid is not specified\n"}
                         ${!legitMode.includes(editedData[euid].mode as string) && `editedData[euid].mode is not in ${legitMode}`}`
                 };
-                console.log(editedData[euid].id, " reject");
                 continue;
             }
         }
@@ -71,12 +69,11 @@ export default async function firestoreUpdate ({
             const {result, error} = await firestoreWrite({collectionName: collectionName, id: euid, data: editedData[euid]});
             resultLog[euid] = {
                 action: "write",
-                id: editedData[euid].id,
-                name: editedData[euid].name, 
+                type: editedData[euid].contentType,
+                topicUid: editedData[euid].topicUid, 
                 result: result, 
                 error: error
             };
-            console.log(editedData[euid].id, " write");
             continue;
         }
 
@@ -85,25 +82,20 @@ export default async function firestoreUpdate ({
         if (JSON.stringify(originalData[euid]) === JSON.stringify(editedData[euid])) {
             resultLog[euid] = {
                 action: "remain",
-                id: editedData[euid].id,
-                name: editedData[euid].name, 
+                type: editedData[euid].contentType,
+                topicUid: editedData[euid].topicUid, 
                 result: "-",
                 error: "-"
             };
-            console.log(editedData);
-            console.log(editedData[euid].id, " remain");
         } else {
             const {result, error} = await firestoreWrite({collectionName: collectionName, id: euid, data: editedData[euid]});
             resultLog[euid] = {
                 action: "edit",
-                id: editedData[euid].id,
-                name: editedData[euid].name, 
+                type: editedData[euid].contentType,
+                topicUid: editedData[euid].topicUid, 
                 result: result, 
                 error: error
             };
-            console.log(editedData[euid].id, " edit");
-            console.log(originalData[euid]);
-            console.log(editedData[euid]);
         }
     }
 
@@ -114,13 +106,14 @@ export default async function firestoreUpdate ({
             const {result, error} = await firestoreDelete({collectionName: collectionName, id: ouid});
             resultLog[ouid] = {
                 action: "delete",
-                id: originalData[ouid].id,
-                name: originalData[ouid].name,
+                type: originalData[ouid].contentType,
+                topicUid: originalData[ouid].topicUid,
                 result: result, 
                 error: error
             };
-            console.log(editedData[ouid].id, " delete");
         }
     }
+
+    console.log(resultLog);
     return resultLog;
 }

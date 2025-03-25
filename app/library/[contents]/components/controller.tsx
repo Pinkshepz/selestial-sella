@@ -78,7 +78,7 @@ export default function ContentController () {
                         contentEditable={true} suppressContentEditableWarning={true}
                         onInput={e => handleSearchKeyChange(e.currentTarget.textContent!)}>
                     </span>
-                    {!contentInterfaceParams.searchKey && <span className="absolute left-[34px] z-[-10] text-sm">SEARCH</span>}
+                    {!contentInterfaceParams.searchKey && <span className="absolute left-[34px] z-[-10] text-sm">SEARCH QUIZ</span>}
                 </div>
 
                 {contentInterfaceParams.editMode && <button

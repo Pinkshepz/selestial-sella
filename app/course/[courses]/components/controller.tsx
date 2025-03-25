@@ -33,7 +33,7 @@ export default function Controller () {
         <section className="controller-area">
             <div className="controller-island">
 
-                {!interfaceParams.editMode &&
+                {!interfaceParams.editMode && (Object.keys(interfaceParams.logUpdate).length === 0) &&
                     <Link
                         href={"/course"} 
                         onClick={() => setGlobalParams("isLoading", true)}
@@ -43,12 +43,18 @@ export default function Controller () {
                     </Link>
                 }
 
-                {!interfaceParams.editMode && (Object.keys(interfaceParams.logUpdate).length === 0) &&
+                {(Object.keys(interfaceParams.logUpdate).length > 0) &&
                     <button
-                        onClick={() => setInterfaceParams("displayToggle", !interfaceParams.displayToggle)}
+                        onClick={() => {
+                            setInterfaceParams("logUpdate", {});
+                            setGlobalParams("isLoading", true);
+                            if (window !== undefined) {
+                                window.location.reload();
+                            }
+                        }}
                         className="controller-menu">
-                        <Icon icon={interfaceParams.displayToggle ? "table" : "image"} size={16} />
-                        <p>{interfaceParams.displayToggle ? "TABLE" : "GALLERY"}</p>
+                        <Icon icon="left" size={16} />
+                        <p>BACK TO COURSE</p>
                     </button>
                 }
 
@@ -67,17 +73,8 @@ export default function Controller () {
                         contentEditable={true} suppressContentEditableWarning={true}
                         onInput={e => handleSearchKeyChange(e.currentTarget.textContent!)}>
                     </span>
-                    {!interfaceParams.searchKey && <span className="absolute left-[34px] z-[-10] text-sm">SEARCH</span>}
+                    {!interfaceParams.searchKey && <span className="absolute left-[34px] z-[-10] text-sm">SEARCH TOPIC</span>}
                 </div>
-
-                {interfaceParams.editMode && 
-                    <button
-                        onClick={() => setInterfaceParams("addCourseToggle", !interfaceParams.addCourseToggle)}
-                        className="controller-menu">
-                        <Icon icon="add" size={16} />
-                        <p>ADD NEW COURSE</p>
-                    </button>
-                }
 
                 {interfaceParams.editMode && 
                     <button

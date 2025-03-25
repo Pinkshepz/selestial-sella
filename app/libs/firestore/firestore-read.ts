@@ -2,7 +2,11 @@ import fireapp from '../firebase/fireclient';
 import { getFirestore, query, collection, getDocs } from "firebase/firestore";
 
 // get database
-export async function firestoreRead(collectionName: string): Promise<{[key: string]: {[key: string]: any}}> {
+export async function firestoreRead({
+  collectionName
+}: {
+  collectionName: string
+}): Promise<string> {
   try {
     // get database
     const db = getFirestore(fireapp);
@@ -17,8 +21,8 @@ export async function firestoreRead(collectionName: string): Promise<{[key: stri
       docs[doc.id] = doc.data();
     })
 
-    return docs;
+    return JSON.stringify(docs);
   } catch (error) {
-    return {0:{"error": error}};
+    return "{}";
   }
 }

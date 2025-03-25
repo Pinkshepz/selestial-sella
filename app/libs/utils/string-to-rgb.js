@@ -10,7 +10,7 @@ export default function stringToHex (text) {
     }
 
     // calculate representative color
-    return hslToHex((ascii ** 1.8) % 360, 80, 70);
+    return hslToHex((ascii ** 1.8) % 360, 70, 70);
 }
 
 export function stringToRgb (text) {
@@ -22,7 +22,7 @@ export function stringToRgb (text) {
     }
 
     // calculate representative color
-    const color = hexToRgb(hslToHex((ascii ** 1.8) % 360, 80, 70))
+    const color = hexToRgb(hslToHex((ascii ** 1.8) % 360, 70, 70))
 
     return color;
 }

@@ -19,7 +19,7 @@ export default async function firestoreWrite({
     try {
         result = await setDoc(doc(db, collectionName, id), {
             ...data,
-            latestUpdated: Timestamp.now()
+            lastEdited: Timestamp.now().toMillis()
         }, {
             merge: true
         });

@@ -6,7 +6,7 @@ import Interface from "./interface";
 import ErrorMessage from "../libs/material/error";
 
 export default async function Library() {
-  const contentData = await firestoreRead("library");
+  const contentData = await firestoreRead({collectionName: "library"}).then((docs) => JSON.parse(docs));
 
   try {
     return (
@@ -20,7 +20,6 @@ export default async function Library() {
         errorMessage={(error as Error).message}
         errorCode={"Access Denied"}
         previousRoute={"../library"} />
-    )
+    );
   }
-
 }

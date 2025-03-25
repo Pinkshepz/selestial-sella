@@ -6,7 +6,7 @@ import Interface from "./interface";
 import ErrorMessage from "../libs/material/error";
 
 export default async function Course() {
-  const contentData = await firestoreRead("course");
+  const contentData = await firestoreRead({collectionName: "course"}).then((docs) => JSON.parse(docs));
 
   try {
     return (

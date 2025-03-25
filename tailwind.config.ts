@@ -39,7 +39,7 @@ const config: Config = {
           dark: "#11181c"
         },
         border: {
-          DEFAULT: "#d1d5db",
+          DEFAULT: "#a7b1c1",
           dark: "#374151"
         },
         textSlate: {

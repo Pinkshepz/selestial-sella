@@ -13,7 +13,7 @@ export default async function Quizset ({ params }: { params: {contents: string} 
         queryKey: "id",
         queryComparator: "==",
         queryValue: params.contents
-    });
+    }).then((docs) => JSON.parse(docs));
 
     // Fetch content or question data for this dynamic route
     const libraryUid = Object.keys(libraryData)[0]; // uid of library
@@ -22,7 +22,7 @@ export default async function Quizset ({ params }: { params: {contents: string} 
         queryKey: "library",
         queryComparator: "==",
         queryValue: libraryUid
-    });
+    }).then((docs) => JSON.parse(docs));
 
     // fetch ggsheet data if library data is blank
     const ggSheetImport = (Object.keys(libraryData).length == 0) ?

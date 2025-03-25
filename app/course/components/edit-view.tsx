@@ -47,175 +47,175 @@ export default function CardEditor ({
         }
     }
 
-  // discard all changes if toggle
-  useEffect(() => {
-    if (interfaceParams.discardChangesToggle && 
-        globalParams.popUpConfirm &&
-        (globalParams.popUpAction === "discardChangesToggle")) {
-        setBufferContent(contentData);
-        setInterfaceParams("discardChangesToggle", false);
-        setGlobalParams("popUpConfirm", false);
-        setGlobalParams("popUpAction", "");
-    }
-  }, [globalParams]);
-
-  // save all changes if toggle 
-  useEffect(() => {
-    if (interfaceParams.saveChangesToggle &&
-        globalParams.popUpConfirm &&
-        (globalParams.popUpAction == "saveChangesToggle")) {
-            setGlobalParams("isLoading", true);
-            firestoreUpdate({
-                collectionName: "course",
-                originalData: contentData, 
-                editedData: bufferContent
-            }).then(
-                (data) => {
-                    setGlobalParams("popUpConfirm", false);
-                    setGlobalParams("popUpAction", "");
-                    setInterfaceParams("saveChangesToggle", false);
-                    setInterfaceParams("editMode", false);
-                    setInterfaceParams("logUpdate", data);
-                }
-            );
+    // discard all changes if toggle
+    useEffect(() => {
+        if (interfaceParams.discardChangesToggle && 
+            globalParams.popUpConfirm &&
+            (globalParams.popUpAction === "discardChangesToggle")) {
+            setBufferContent(contentData);
+            setInterfaceParams("discardChangesToggle", false);
+            setGlobalParams("popUpConfirm", false);
+            setGlobalParams("popUpAction", "");
         }
-  }, [globalParams.popUpConfirm]);
+    }, [globalParams]);
 
-  // duplicate course
-  const handleDuplicateCourse = (uid: string): void => {
-    if (!globalParams.popUp) {
-        const newUid = makeid(length=20);
-        setBufferContent((prev) => ({
-            ...prev,
-            [newUid]: {
-                id: bufferContent[uid].id + " copy",
-                abbreviation: bufferContent[uid].abbreviation + " copy",
-                name: bufferContent[uid].name + " copy",
-                description: bufferContent[uid].description,
-                image: bufferContent[uid].image,
-                tag: bufferContent[uid].tag,
-                hidden: bufferContent[uid].hidden,
-                section: bufferContent[uid].section
-            }
-        }));
-        setInterfaceParams("currentCourseUid", newUid);
-    }
-  }
-
-  // handle delete course
-  const handleDeleteCourse = (uid: string): void => {
-    if (!globalParams.popUp) {
-        setBufferContent((prev) => {
-            if (prev) {
-                const { [uid]: {}, ...rest } = prev;
-                return rest;
-            } else {
-                return prev;
-            }
-        });
-    }
-  }
-
-  // handle add new course
-  useEffect(() => {
-    if (interfaceParams.addCourseToggle && !globalParams.popUp) {
-        const newUid = makeid(length=20);
-        setBufferContent((prev) => ({
-            ...prev,
-            [newUid]: {
-                id: "99",
-                abbreviation: "X",
-                name: "NEW COURSE",
-                description: "",
-                image: "https://st.depositphotos.com/1411161/2534/i/450/depositphotos_25345533-stock-photo-technical-blueprint.jpg",
-                tag: [],
-                hidden: false,
-                section: {[makeid(length=20)]: {
-                    sectionId: "A",
-                    sectionName: "Section 1",
-                    sectionTopics: {
-                        [makeid(length=20)]: {
-                            topicId: "A1",
-                            topicName: "Topic 1.1",
-                        },
-                        [makeid(length=20)]: {
-                            topicId: "A2",
-                            topicName: "Topic 1.2",
-                        }
+    // save all changes if toggle 
+    useEffect(() => {
+        if (interfaceParams.saveChangesToggle &&
+            globalParams.popUpConfirm &&
+            (globalParams.popUpAction == "saveChangesToggle")) {
+                setGlobalParams("isLoading", true);
+                firestoreUpdate({
+                    collectionName: "course",
+                    originalData: contentData, 
+                    editedData: bufferContent
+                }).then(
+                    (data) => {
+                        setGlobalParams("popUpConfirm", false);
+                        setGlobalParams("popUpAction", "");
+                        setInterfaceParams("saveChangesToggle", false);
+                        setInterfaceParams("editMode", false);
+                        setInterfaceParams("logUpdate", data);
                     }
-                }}
+                );
+            }
+    }, [globalParams.popUpConfirm]);
+
+    // duplicate course
+    const handleDuplicateCourse = (uid: string): void => {
+        if (!globalParams.popUp) {
+            const newUid = makeid(length=20);
+            setBufferContent((prev) => ({
+                ...prev,
+                [newUid]: {
+                    id: bufferContent[uid].id + " copy",
+                    abbreviation: bufferContent[uid].abbreviation + " copy",
+                    name: bufferContent[uid].name + " copy",
+                    description: bufferContent[uid].description,
+                    image: bufferContent[uid].image,
+                    tag: bufferContent[uid].tag,
+                    hidden: bufferContent[uid].hidden,
+                    section: bufferContent[uid].section
+                }
+            }));
+            setInterfaceParams("currentCourseUid", newUid);
+        }
+    }
+
+    // handle delete course
+    const handleDeleteCourse = (uid: string): void => {
+        if (!globalParams.popUp) {
+            setBufferContent((prev) => {
+                if (prev) {
+                    const { [uid]: {}, ...rest } = prev;
+                    return rest;
+                } else {
+                    return prev;
+                }
+            });
+        }
+    }
+
+    // handle add new course
+    useEffect(() => {
+        if (interfaceParams.addCourseToggle && !globalParams.popUp) {
+            const newUid = makeid(length=20);
+            setBufferContent((prev) => ({
+                ...prev,
+                [newUid]: {
+                    id: "99",
+                    abbreviation: "X",
+                    name: "NEW COURSE",
+                    description: "",
+                    image: "https://st.depositphotos.com/1411161/2534/i/450/depositphotos_25345533-stock-photo-technical-blueprint.jpg",
+                    tag: [],
+                    hidden: false,
+                    section: {[makeid(length=20)]: {
+                        sectionId: "A",
+                        sectionName: "Section 1",
+                        sectionTopics: {
+                            [makeid(length=20)]: {
+                                topicId: "A1",
+                                topicName: "Topic 1.1",
+                            },
+                            [makeid(length=20)]: {
+                                topicId: "A2",
+                                topicName: "Topic 1.2",
+                            }
+                        }
+                    }}
+                }
+            }));
+            setInterfaceParams("currentCourseUid", newUid);
+        }
+        setInterfaceParams("addCourseToggle", false);
+    }, [interfaceParams.addCourseToggle]);
+
+    // update course data on placeholder change
+    const onPlaceholderChangeI = (
+        uidI: string, targetKeyI: string, targetValue: any): void => {
+        setBufferContent((prev) => ({
+            ...prev,
+            [uidI]: {
+                ...prev[uidI],
+                [targetKeyI]: targetValue
             }
         }));
-        setInterfaceParams("currentCourseUid", newUid);
-    }
-    setInterfaceParams("addCourseToggle", false);
-  }, [interfaceParams.addCourseToggle]);
+    };
 
-  // update course data on placeholder change
-  const onPlaceholderChangeI = (
-    uidI: string, targetKeyI: string, targetValue: any): void => {
-    setBufferContent((prev) => ({
-        ...prev,
-        [uidI]: {
-            ...prev[uidI],
-            [targetKeyI]: targetValue
-        }
-    }));
-  };
-
-  const onPlaceholderChangeII = (
-    uidI: string, uidII: string, 
-    targetKeyI: string, targetKeyII: string, targetValue: any): void => {
-    setBufferContent((prev) => ({
-        ...prev,
-        [uidI]: {
-            ...prev[uidI],
-            [targetKeyI]: {
-                ...prev[uidI][targetKeyI],
-                [uidII]: {
-                    ...prev[uidI][targetKeyI][uidII],
-                    [targetKeyII]: targetValue
-                }
-            }
-        }
-    }));
-  };
-
-  const onDeleteUidII = (uidI: string, uidII: string, targetKeyI: string): void => {
-    const objectTargetII = bufferContent[uidI][targetKeyI]
-    const { [uidII]: {}, ...rest } = objectTargetII;
-    onPlaceholderChangeI(uidI, targetKeyI, rest);
-  };
-
-  const onPlaceholderChangeIII = (
-    uidI: string, uidII: string, uidIII: string, 
-    targetKeyI: string, targetKeyII: string, targetKeyIII: string, targetValue: any): void => {
-    setBufferContent((prev) => ({
-        ...prev,
-        [uidI]: {
-            ...prev[uidI],
-            [targetKeyI]: {
-                ...prev[uidI][targetKeyI],
-                [uidII]: {
-                    ...prev[uidI][targetKeyI][uidII],
-                    [targetKeyII]: {
-                        ...prev[uidI][targetKeyI][uidII][targetKeyII],
-                        [uidIII]: {
-                            ...prev[uidI][targetKeyI][uidII][targetKeyII][uidIII],
-                            [targetKeyIII]: targetValue
-                        }
+    const onPlaceholderChangeII = (
+        uidI: string, uidII: string, 
+        targetKeyI: string, targetKeyII: string, targetValue: any): void => {
+        setBufferContent((prev) => ({
+            ...prev,
+            [uidI]: {
+                ...prev[uidI],
+                [targetKeyI]: {
+                    ...prev[uidI][targetKeyI],
+                    [uidII]: {
+                        ...prev[uidI][targetKeyI][uidII],
+                        [targetKeyII]: targetValue
                     }
                 }
             }
-        }
-    }));
-  };
+        }));
+    };
 
-  const onDeleteUidIII = (uidI: string, uidII: string, uidIII: string, targetKeyI: string, targetKeyII: string): void => {
-    const objectTargetIII = bufferContent[uidI][targetKeyI][uidII][targetKeyII]
-    const { [uidIII]: {}, ...rest } = objectTargetIII;
-    onPlaceholderChangeII(uidI, uidII, targetKeyI, targetKeyII, rest);
-  };
+    const onDeleteUidII = (uidI: string, uidII: string, targetKeyI: string): void => {
+        const objectTargetII = bufferContent[uidI][targetKeyI]
+        const { [uidII]: {}, ...rest } = objectTargetII;
+        onPlaceholderChangeI(uidI, targetKeyI, rest);
+    };
+
+    const onPlaceholderChangeIII = (
+        uidI: string, uidII: string, uidIII: string, 
+        targetKeyI: string, targetKeyII: string, targetKeyIII: string, targetValue: any): void => {
+        setBufferContent((prev) => ({
+            ...prev,
+            [uidI]: {
+                ...prev[uidI],
+                [targetKeyI]: {
+                    ...prev[uidI][targetKeyI],
+                    [uidII]: {
+                        ...prev[uidI][targetKeyI][uidII],
+                        [targetKeyII]: {
+                            ...prev[uidI][targetKeyI][uidII][targetKeyII],
+                            [uidIII]: {
+                                ...prev[uidI][targetKeyI][uidII][targetKeyII][uidIII],
+                                [targetKeyIII]: targetValue
+                            }
+                        }
+                    }
+                }
+            }
+        }));
+    };
+
+    const onDeleteUidIII = (uidI: string, uidII: string, uidIII: string, targetKeyI: string, targetKeyII: string): void => {
+        const objectTargetIII = bufferContent[uidI][targetKeyI][uidII][targetKeyII]
+        const { [uidIII]: {}, ...rest } = objectTargetIII;
+        onPlaceholderChangeII(uidI, uidII, targetKeyI, targetKeyII, rest);
+    };
 
     // Filter by search key
     let filteredContent: {[key: string]: {[key: string]: any}} = {};
@@ -285,14 +285,14 @@ export default function CardEditor ({
             Object.keys(sortedFilteredSectionTopicData).map((sectionTopicUid) => {
                 const sectionTopicAtUid = content.section[sectionUid].sectionTopics[sectionTopicUid];
                 elementSectionTopic.push(
-                    <div className="flex flex-row ml-4" key={sectionTopicUid}>
-                        <textarea onChange={e => onPlaceholderChangeIII(interfaceParams.currentCourseUid, sectionUid, sectionTopicUid, "section", "sectionTopics", "topicId", e.target.value)}
+                    <div className="flex flex-row items-center ml-4 border-b border-broder/75 dark:border-border-dark/75" key={sectionTopicUid}>
+                        <textarea rows={1} onChange={e => onPlaceholderChangeIII(interfaceParams.currentCourseUid, sectionUid, sectionTopicUid, "section", "sectionTopics", "topicId", e.target.value)}
                             className="editor-field w-20 mr-8" value={sectionTopicAtUid.topicId}></textarea>
-                        <textarea onChange={e => onPlaceholderChangeIII(interfaceParams.currentCourseUid, sectionUid, sectionTopicUid, "section", "sectionTopics", "topicName", e.target.value)}
+                        <textarea rows={1} onChange={e => onPlaceholderChangeIII(interfaceParams.currentCourseUid, sectionUid, sectionTopicUid, "section", "sectionTopics", "topicName", e.target.value)}
                             className="editor-field w-96 mr-8" value={sectionTopicAtUid.topicName}></textarea>
                         <button
                             onClick={() => onDeleteUidIII(interfaceParams.currentCourseUid, sectionUid, sectionTopicUid, "section", "sectionTopics")}
-                            className="flex flex-row justify-center items-center gap-2 h-[30px] ml-auto px-2 py-1 ml-4 mb-4 rounded-[8px] border border-ter dark:border-ter-dark hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
+                            className="flex flex-row justify-center items-center gap-2 h-[30px] ml-auto px-2 py-1 ml-4 my-2 rounded-[8px] border border-border dark:border-border-dark hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
                             <Icon icon="trash" size={16} />
                             <span className="lg:inline hidden">TOPIC</span>
                         </button>
@@ -302,30 +302,30 @@ export default function CardEditor ({
 
             elementSection.push(
                 <div key={sectionUid}>
-                    <div className="font-bold text-pri dark:text-pri-dark bg-black/10 dark:bg-white/10 p-2 mb-4 rounded-xl">
-                        <textarea onChange={e => onPlaceholderChangeII(interfaceParams.currentCourseUid, sectionUid, "section", "sectionId", e.target.value)}
+                    <div className="font-bold text-pri dark:text-pri-dark bg-black/10 dark:bg-white/10 p-2 rounded-t-lg">
+                        <textarea rows={1} onChange={e => onPlaceholderChangeII(interfaceParams.currentCourseUid, sectionUid, "section", "sectionId", e.target.value)}
                             className="editor-field w-20 mr-8" value={sectionAtUid.sectionId}></textarea>
-                        <textarea onChange={e => onPlaceholderChangeII(interfaceParams.currentCourseUid, sectionUid, "section", "sectionName", e.target.value)}
+                        <textarea rows={1} onChange={e => onPlaceholderChangeII(interfaceParams.currentCourseUid, sectionUid, "section", "sectionName", e.target.value)}
                             className="editor-field w-96 mr-8" value={sectionAtUid.sectionName}></textarea>
                     </div>
-                    <div className="flex flex-col ml-4 border-l border-broder dark:border-border-dark">
-                        <div className="flex flex-row font-bold items-center ml-4 mb-4 border-b border-broder dark:border-border-dark">
-                            <span className="w-20 mr-8">Topic ID</span>
+                    <div className="flex flex-col overflow-x-auto ml-4 border-l border-broder dark:border-border-dark">
+                        <div style={{minWidth: "700px"}} className="flex flex-row font-bold items-center ml-4 py-2 border-b border-broder dark:border-border-dark">
+                            <span className="w-20 mr-8">ID</span>
                             <span className="w-96 mr-8">Topic Name</span>
                             <button
                                 onClick={() => onPlaceholderChangeIII(interfaceParams.currentCourseUid, sectionUid, makeid(length=20), "section", "sectionTopics", "topicId", "N1")}
-                                className="flex flex-row justify-center items-center gap-2 h-[30px] ml-auto px-2 py-1 ml-4 mb-4 rounded-[8px] border border-ter dark:border-ter-dark hover:text-pri hover:border-pri dark:hover:text-pri-dark dark:hover:border-pri-dark font-bold">
+                                className="flex flex-row justify-center items-center gap-2 h-[30px] ml-auto px-2 py-1 ml-4 rounded-[8px] border border-border dark:border-border-dark hover:text-pri hover:border-pri dark:hover:text-pri-dark dark:hover:border-pri-dark font-bold">
                                 <Icon icon="add" size={16} />
                                 <span className="lg:inline hidden">TOPIC</span>
                             </button>
                             <button
                                 onClick={() => onDeleteUidII(interfaceParams.currentCourseUid, sectionUid, "section")}
-                                className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-4 mb-4 rounded-[8px] border border-ter dark:border-ter-dark hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
+                                className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-4 rounded-[8px] border border-border dark:border-border-dark hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
                                 <Icon icon="trash" size={16} />
                                 <span className="lg:inline hidden">SECTION</span>
                             </button>
                         </div>
-                        <div className="flex flex-col gap-2">
+                        <div style={{minWidth: "700px"}} className="flex flex-col">
                             {elementSectionTopic}
                         </div>
                     </div>
@@ -350,19 +350,19 @@ export default function CardEditor ({
                     </div>
                     <button
                         onClick={() => {onPlaceholderChangeI(interfaceParams.currentCourseUid, "hidden", !content.hidden)}}
-                        className="flex flex-row justify-center items-center gap-2 px-2 py-1 ml-auto rounded-[8px] border border-ter dark:border-ter-dark hover:text-pri hover:border-pri dark:hover:text-pri-dark dark:hover:border-pri-dark font-bold">
+                        className="flex flex-row justify-center items-center gap-2 px-2 py-1 ml-auto rounded-[8px] border border-border dark:border-border-dark hover:text-pri hover:border-pri dark:hover:text-pri-dark dark:hover:border-pri-dark font-bold">
                         <Icon icon={content.hidden ? "eyeSlash" : "eye"} size={16} />
                         <span className="lg:inline hidden">{content.hidden ? "HIDDEN" : "VISIBLE"}</span>
                     </button>
                     <button
                         onClick={() => {handleDuplicateCourse(interfaceParams.currentCourseUid)}}
-                        className="flex flex-row justify-center items-center gap-2 px-2 py-1 rounded-[8px] border border-ter dark:border-ter-dark hover:text-amber hover:border-amber dark:hover:text-amber-dark dark:hover:border-amber-dark font-bold">
+                        className="flex flex-row justify-center items-center gap-2 px-2 py-1 rounded-[8px] border border-border dark:border-border-dark hover:text-amber hover:border-amber dark:hover:text-amber-dark dark:hover:border-amber-dark font-bold">
                         <Icon icon="copy" size={16} />
                         <span className="lg:inline hidden">DUPLICATE</span>
                     </button>
                     <button
                         onClick={() => {handleDeleteCourse(interfaceParams.currentCourseUid)}}
-                        className="flex flex-row justify-center items-center gap-2 px-2 py-1 rounded-[8px] border border-ter dark:border-ter-dark hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
+                        className="flex flex-row justify-center items-center gap-2 px-2 py-1 rounded-[8px] border border-border dark:border-border-dark hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
                         <Icon icon="trash" size={16} />
                         <span className="lg:inline hidden">DELETE</span>
                     </button>
@@ -373,7 +373,7 @@ export default function CardEditor ({
                         <Icon icon="image" size={16} />
                         <p>Image link</p>
                     </label>
-                    <textarea className="editor-field"
+                    <textarea rows={1} className="editor-field"
                         onChange={e => onPlaceholderChangeI(interfaceParams.currentCourseUid, "image", e.target.value)}
                         value={content.image}>
                     </textarea>
@@ -384,7 +384,7 @@ export default function CardEditor ({
                         <Icon icon="tag" size={16} />
                         <p>ID</p>
                     </label>
-                    <textarea className="editor-field"
+                    <textarea rows={1} className="editor-field"
                         onChange={e => onPlaceholderChangeI(interfaceParams.currentCourseUid, "id", e.target.value)}
                         value={content.id}>
                     </textarea>
@@ -395,7 +395,7 @@ export default function CardEditor ({
                         <Icon icon="font" size={16} />
                         <p>Abbreviation</p>
                     </label>
-                    <textarea className="editor-field"
+                    <textarea rows={1} className="editor-field"
                         onChange={e => onPlaceholderChangeI(interfaceParams.currentCourseUid, "abbreviation", e.target.value)}
                         value={content.abbreviation}>
                     </textarea>
@@ -406,7 +406,7 @@ export default function CardEditor ({
                         <Icon icon="h1" size={16} />
                         <p>Title name</p>
                     </label>
-                    <textarea className="editor-field"
+                    <textarea rows={1} className="editor-field"
                         onChange={e => onPlaceholderChangeI(interfaceParams.currentCourseUid, "name", e.target.value)}
                         value={content.name}>
                     </textarea>
@@ -417,7 +417,7 @@ export default function CardEditor ({
                         <Icon icon="font" size={16} />
                         <p>Description</p>
                     </label>
-                    <textarea className="editor-field"
+                    <textarea rows={1} className="editor-field"
                         onChange={e => onPlaceholderChangeI(interfaceParams.currentCourseUid, "description", e.target.value)}
                         value={content.description}>
                     </textarea>
@@ -428,7 +428,7 @@ export default function CardEditor ({
                         <Icon icon="tag" size={16} />
                         <p>Tag</p>
                     </label>
-                    <textarea className="editor-field"
+                    <textarea rows={1} className="editor-field"
                         onChange={e => onPlaceholderChangeI(interfaceParams.currentCourseUid, "tag", e.target.value.split(","))}
                         value={content.tag}>
                     </textarea>
@@ -439,12 +439,12 @@ export default function CardEditor ({
                         <Icon icon="table" size={16} />
                         <p>Course section</p>
                     </label>
-                    <div className="flex flex-row items-center font-bold px-2 mb-4 border-b border-broder dark:border-border-dark">
-                        <span className="w-20 mr-8">Section ID</span>
+                    <div className="flex flex-row items-center font-bold p-2 mb-4 border-b border-broder dark:border-border-dark">
+                        <span className="w-20 mr-8">ID</span>
                         <span className="w-96 mr-8">Section Name</span>
                         <button
                             onClick={() => setSectionSortAscending((prev) => !prev)}
-                            className="flex flex-row justify-center items-center gap-2 px-2 py-1 ml-auto mb-4 rounded-[8px] border border-ter dark:border-ter-dark hover:text-pri hover:border-pri dark:hover:text-pri-dark dark:hover:border-pri-dark font-bold">
+                            className="flex flex-row justify-center items-center text-nowrap gap-2 px-2 py-1 ml-auto rounded-[8px] border border-border dark:border-border-dark hover:text-pri hover:border-pri dark:hover:text-pri-dark dark:hover:border-pri-dark font-bold">
                             <Icon icon="sort" size={16} />
                             {sectionSortAscending ? "A - Z" : "Z - A"}
                         </button>
@@ -454,7 +454,7 @@ export default function CardEditor ({
                                 onPlaceholderChangeII(interfaceParams.currentCourseUid, newUidII, "section", "sectionTopics", {})
                                 onPlaceholderChangeII(interfaceParams.currentCourseUid, newUidII, "section", "sectionId", "N")
                             }}
-                            className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-4 mb-4 rounded-[8px] border border-ter dark:border-ter-dark hover:text-pri hover:border-pri dark:hover:text-pri-dark dark:hover:border-pri-dark font-bold">
+                            className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-4 rounded-[8px] border border-border dark:border-border-dark hover:text-pri hover:border-pri dark:hover:text-pri-dark dark:hover:border-pri-dark font-bold">
                             <Icon icon="add" size={16} />
                             <span className="lg:inline hidden">SECTION</span>
                         </button>
@@ -464,7 +464,7 @@ export default function CardEditor ({
                     </div>
                     <div className="flex flex-col mt-8 mb-4 color-slate">
                         <span>This course will be displayed in the course warehouse and connects to topics and quiz library</span>
-                        <span>{`Last updated ${new Date(new Date(1970, 0, 1).setSeconds(content.latestUpdated.seconds))}`}</span>
+                        <span>{`Last updated ${new Date(new Date(1970, 0, 1).setSeconds(content.lastEdited / 1000))}`}</span>
                     </div>
                 </div>
             </div>

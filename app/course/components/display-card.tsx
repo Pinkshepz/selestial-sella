@@ -26,10 +26,10 @@ const DisplayCard = ({
 
     return (
         // card template
-        <article className="card-main" key={cardUid}>
+        <article className="card-main -card-hover" key={cardUid}>
             <div className="overflow-hidden">
                 {cardImageLink && <img src={cardImageLink} alt="" className="w-full" height={1000} width={1000} />}
-                <div className="absolute w-full h-full z-[-10] bg-gradient-to-t from-black/90 to-transparent"></div>
+                <div className="absolute w-full h-full z-[-10] bg-gradient-to-t from-black/80 to-transparent"></div>
             </div>
             <div className="p-4 mt-auto">
                 <p className="mt-12 text-md font-bold">{`${cardId} ￨ ${cardAbb}`}</p>

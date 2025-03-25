@@ -12,7 +12,7 @@ import sortUidObjectByValue from '@/app/libs/utils/sort-uid-object-by-value';
 
 import TableView from './components/display-table';
 import CardView from './components/display-card';
-import CardEditor from './components/edit-mode';
+import CardEditor from './components/edit-view';
 import LogUpdate from './components/log-update';
 
 export default function Interface ({

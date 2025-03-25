@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useTheme } from "next-themes";
 import { usePathname } from 'next/navigation'
 import React, { useState, useEffect } from "react";
@@ -8,8 +9,7 @@ import React, { useState, useEffect } from "react";
 import { useGlobalContext } from "../global-provider"
 import NavPathName from "./navpathname";
 import Icon from "@/public/icon";
-
-const GUEST_PROFILE = "https://yt3.googleusercontent.com/c2qSc796fIy8cqrcoq-JNBnBCsXgT9wpA19k2aBEx8r1Wzn8VUCWrySazhO28iao40CmUrV-3A=s900-c-k-c0x00ffffff-no-rj";
+import cat from "@/public/images/cat.png";
 
 export default function GlobalNavigator (): React.ReactNode {
 
@@ -108,7 +108,7 @@ export default function GlobalNavigator (): React.ReactNode {
             // user is already logged in, render guest profile
             <Link href={"/login"} className="flex flex-row justify-center items-center gap-3">
               <div id="frame" className="overflow-hidden bg-cover h-6 w-6 rounded-full border-pri">
-                <img className="h-full w-full" src={GUEST_PROFILE} alt="" />
+                <Image src={cat} alt="" priority={true}></Image>
               </div>
               <h5 className="hidden lg:inline">GUEST</h5>
             </Link>

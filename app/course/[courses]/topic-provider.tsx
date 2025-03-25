@@ -7,8 +7,8 @@ interface interfaceStructure {
   searchKey: string,
   sortAscending: boolean,
   editMode: boolean,
-  currentCourseUid: string,
-  addCourseToggle: boolean,
+  currentSectionUid: string,
+  currentTopicUid: string,
   discardChangesToggle: boolean,
   saveChangesToggle: boolean,
   logUpdate: {}
@@ -19,8 +19,8 @@ const interfaceInitialValue = {
   searchKey: "",
   sortAscending: true,
   editMode: false,
-  currentCourseUid: "",
-  addCourseToggle: false,
+  currentSectionUid: "",
+  currentTopicUid: "",
   discardChangesToggle: false,
   saveChangesToggle: false,
   logUpdate: {}

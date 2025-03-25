@@ -65,7 +65,7 @@
 }
 
 .controller-menu > .input-field {
-    min-width: 60px;
+    min-width: 100px;
     max-width: 25dvw;
     white-space: nowrap;
     font-weight: 400;
@@ -77,12 +77,22 @@
     background-color: rgba(0, 0, 0, 0);
 }
 
+.card {
+    position: relative;
+    display: flex;
+    height: max-content;
+    border: solid 1px var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all ease-in-out 300ms;
+    animation: smooth-appear 400ms ease forwards;
+}
+
 .card-main {
     position: relative;
     display: flex;
-    flex-direction: row;
-    align-items: start;
-    min-height: 222px;
+    height: 25dvh;
+    background-color: var(--highlight);
     overflow: hidden;
     transition: all ease-in-out 300ms;
     color: white;
@@ -93,6 +103,26 @@
     position: absolute;
     z-index: -10;
     object-fit: cover;
+}
+
+.-card-hover {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    transition: all ease-in-out 300ms;
+    overflow: hidden;
+  }
+  
+.-card-hover > div > img {
+    /* position: relative; */
+    transition: all ease-in-out 200ms;
+    object-fit: cover;
+}
+
+.-card-hover:hover > div > img {
+    transform: scale(1.02);
+    transition: all ease-in-out 200ms;
 }
 
 .card-2-main-flow {
@@ -242,3 +272,33 @@
     color: var(--pri);
     border: dashed 1px var(--pri);
 }
+
+#chip-action-pri {
+    width: max-content;
+    padding: 1px 8px;
+    font-size: 1.0rem;
+    font-weight: 700;
+    color: var(--base-inverse);
+    background-color: var(--pri);
+    border-radius: 10px;
+  }
+  
+  #chip-action-sec {
+    width: max-content;
+    padding: 1px 8px;
+    font-size: 1.0rem;
+    font-weight: 700;
+    color: var(--base-inverse);
+    background-color: var(--sec);
+    border-radius: 10px;
+  }
+  
+  #chip-action-neu {
+    width: max-content;
+    padding: 1px 8px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--base-inverse);
+    background-color: var(--ter);
+    border-radius: 10px;
+  }

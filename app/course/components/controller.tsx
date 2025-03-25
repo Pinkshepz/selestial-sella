@@ -32,7 +32,7 @@ export default function Controller () {
         <section className="controller-area">
             <div className="controller-island">
 
-                {!interfaceParams.editMode &&
+                {!interfaceParams.editMode && (Object.keys(interfaceParams.logUpdate).length === 0) &&
                     <Link
                         href={"/"} 
                         onClick={() => setGlobalParams("isLoading", true)}
@@ -66,7 +66,7 @@ export default function Controller () {
                         contentEditable={true} suppressContentEditableWarning={true}
                         onInput={e => handleSearchKeyChange(e.currentTarget.textContent!)}>
                     </span>
-                    {!interfaceParams.searchKey && <span className="absolute left-[34px] z-[-10] text-sm">SEARCH</span>}
+                    {!interfaceParams.searchKey && <span className="absolute left-[34px] z-[-10] text-sm">SEARCH COURSE</span>}
                 </div>
 
                 {interfaceParams.editMode && 

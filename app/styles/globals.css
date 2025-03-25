@@ -14,7 +14,7 @@ html.light {
   /* shadow */
   --shadow: rgba(0, 0, 0, 0.05);
   /* gray-300 #d1d5db /100 */
-  --border: rgba(209, 213, 219, 0.9);
+  --border: rgba(167, 177, 193, 1.0);
   /* blue-500 #3b82f6 /100 */
   --pri: rgba(59, 130, 246, 1.0);
   /* blue-500 #3b82f6 /20 */
@@ -47,7 +47,7 @@ html.dark {
   /* gray-900 #11181c /70 */
   --highlight: rgba(17, 24, 28, 0.7);
   /* shadow */
-  --shadow: rgba(255, 255, 255, 0.1);
+  --shadow: rgba(255, 255, 255, 0.05);
   /* gray-700 #374151 /100 */
   --border: rgba(55, 65, 81, 1.0);
   /* blue-400 #60a5fa /100 */
@@ -158,7 +158,7 @@ h4 {
 
 h5 {
   font-weight: 700;
-  font-size: 1.00rem;
+  font-size: 1.10rem;
   line-height: 110%;
 }
 
@@ -198,6 +198,10 @@ nav {
 footer {
   background-color: var(--bgaccent);
   border-bottom: solid 1px var(--border);
+}
+
+textarea {
+  resize: vertical;
 }
 
 .pixellet {
@@ -257,11 +261,11 @@ footer {
 
 .glass-cover-screen {
   position: fixed;
-  top: 64px;
+  top: var(--nav-height);
   bottom: 0;
   left: 0;
   right: 0;
-  height: calc(100dvh - 64px);
+  height: calc(100dvh - var(--nav-height));
   width: 100dvw;
   z-index: 100;
   background-color: var(--bgaccent);
@@ -278,6 +282,17 @@ footer {
   z-index: -10;
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
+}
+
+.glass-cover-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .glass-cover-row {
@@ -442,7 +457,6 @@ footer {
 }
 
 .theme-table {
-  border: solid 1px var(--border);
   animation: smooth-appear 400ms ease forwards;
 }
 
@@ -466,7 +480,7 @@ footer {
 
 .theme-table > tbody > tr:nth-child(even) > td {
   padding: 16px 24px;
-  background-color: var(--highlight);
+  background-color: var(--shadow);
 }
 
 .theme-table > tbody > tr:hover > td {
