@@ -401,15 +401,18 @@ export default function QuizInterface ({
 
     return(
         <div className='flex flex-col'>
-            <div id='quiz-two-cols-fixed' key='interface'>
+            
+            <div id='quiz-two-cols-fixed' className='-border-t' key='interface'>
 
-                <aside id="quiz-col-scroll-aside" className='-scroll-none' key='interface-aside'>
-                    <section className='m-4' key='interface-aside-section-1'>
-                        <span id='chip-lg'>{libraryData.id}</span>
-                        <h3 className='mt-2'>{libraryData.name}</h3>
-                        <p className='mt-6'>{libraryData.description}</p>
-                        <h4 className='mt-4'>Questions</h4>
-                    </section>
+                <aside id="quiz-col-scroll-aside" className='-scroll-none -border-r' key='interface-aside'>
+
+                    <strong className="mx-4 mt-4">{`QUIZ ${libraryData.id}`}</strong>
+                    <h1 className="mx-4">{libraryData.name.toLocaleUpperCase()}</h1>
+                    <span className="mx-4 mb-8 color-slate">{libraryData.description}</span>
+                    <div className="flex flex-row items-center px-4 mb-4">
+                        <Icon icon="map" size={16} />
+                        <h4 className="ml-2">QUESTIONS</h4>
+                    </div>
 
                     <section className='mx-4 h-max overflow-y-scroll -scroll-none' key='interface-aside-section-2'>
                         <div className='flex flex-col gap-4'>
@@ -420,13 +423,13 @@ export default function QuizInterface ({
 
                 <main id="quiz-col-scroll-main" className='-scroll-none backdrop-blur-xl' key='interface-main'>
                     {/* 01 - Top stats bar */}
-                    <div className='relative h-12 w-full mt-4 flex items-center gap-2'>
+                    <div className='-border-b flex flex-row items-center relative h-12 w-ful px-4 py-8 flex items-center gap-2'>
                         {/* Question stats */}
-                        <div className='flex items-center py-1 rounded-xl'>
+                        <div className='flex items-center rounded-xl'>
                             <span className='font-bold hidden sm:inline'>
-                                Question</span>
+                                QUESTION</span>
                             <span className='font-bold inline sm:hidden'>
-                                Quiz</span>
+                                QUIZ</span>
                             <span className='px-2 font-bold'>
                                 {contentInterfaceParams.currentQuestion + 1}</span>
                             <span className='font-bold'>|</span>
@@ -434,13 +437,13 @@ export default function QuizInterface ({
                                 {contentInterfaceParams.questionNumber}</span>
                             { contentInterfaceParams.shuffleQuestion && <Icon icon='shuffle' size={16} />}
                         </div>
-                        <div className='flex items-center w-max px-1 py-1 rounded-xl'>
-                            <ChipTextColor chipText={questionArray[contentInterfaceParams.currentQuestion].mode} chipIcon={questionArray[contentInterfaceParams.currentQuestion].mode}/>
+                        <div className='flex items-center w-max px-1 py-1 ml-auto rounded-xl'>
+                            <ChipTextColor chipText={questionArray[contentInterfaceParams.currentQuestion].mode} chipIcon={questionArray[contentInterfaceParams.currentQuestion].mode} paddingY={1} />
                         </div>
                     </div>
 
                     {/* 02 - Question */}
-                    <div className='relative w-full py-4 flex flex-col md:flex-row'>
+                    <div className='relative w-full p-4 flex flex-col md:flex-row'>
                         {/* Question Image */}
                         {questionArray[contentInterfaceParams.currentQuestion].questionImage ?
                             <img className='max-h-[45vh] md:max-w-[40dvw] lg:max-h-[30dvh] md:mr-4 mb-4 md:mb-0 rounded-2xl'
@@ -467,7 +470,7 @@ export default function QuizInterface ({
                     </div>
 
                     {/* 03 - Choice */}
-                    <div className={'-scroll-none relative h-full lg:h-full w-full flex flex-col lg:grid gap-4 ' + (questionArray[contentInterfaceParams.currentQuestion].mode == 'flashcard'
+                    <div className={'-scroll-none px-4 pb-4 relative h-full lg:h-full w-full flex flex-col lg:grid gap-4 ' + (questionArray[contentInterfaceParams.currentQuestion].mode == 'flashcard'
                         ? 'lg:grid-cols-1'
                         : Object.keys(questionArray[contentInterfaceParams.currentQuestion].choices).length == 1
                             ? 'lg:grid-cols-1'
@@ -478,13 +481,13 @@ export default function QuizInterface ({
             </div>
 
             {/* 04 - Bottom action bar */}
-            <footer id='separate-top' className='w-full h-16 flex flex-row items-center justify-center'>
+            <footer className='-border-t w-full h-nav flex flex-row items-center justify-center'>
 
-                <div className="flex flex-col items-center content-center text-center">
+                <div className="-hover-bg-200 -border-r flex flex-col items-center content-center text-center">
                     <button onClick={() => handleReload()} 
-                        id='separate-right' className="h-16 px-4">
+                        className="h-nav px-4">
                         <div className='text-xl font-bold'>
-                            <span>Quit</span>
+                            <span>QUIT</span>
                         </div>
                     </button>
                 </div>
@@ -492,50 +495,53 @@ export default function QuizInterface ({
                 { !((questionArray[contentInterfaceParams.currentQuestion].choices[0].graded) ||
                     (questionArray[contentInterfaceParams.currentQuestion].mode == "flashcard")) 
                     
-                    ? <button className="text-xl h-16 w-full"
+                    ? <button className="-hover-bg-200 text-xl h-nav w-full"
                         onClick={() => gradeAllChoices()}>
-                        <div className='font-bold'>
-                            <span>Submit →</span>
+                        <div className='flex flex-row items-center justify-center gap-2 font-bold'>
+                            <span>SUBMIT</span>
+                            <Icon icon='right' size={16} />
                         </div>
                     </button>
                     
                     : (contentInterfaceParams.currentQuestion < contentInterfaceParams.questionNumber - 1)
                         ? <div className="flex flex-col w-full items-center content-center text-center">
                             <a className='w-full'>
-                                <button className="text-xl h-16 px-3 w-full"
+                                <button className="-hover-bg-200 text-xl h-nav px-3 w-full"
                                     onClick={() => changeQuestion(contentInterfaceParams.currentQuestion + 1)}>
-                                    <div className='hidden sm:inline font-bold'>
-                                        <span>Next Question</span>
-                                        <span className="ml-2">→</span>
+                                    <div className='hidden sm:flex flex-row items-center justify-center gap-2 font-bold'>
+                                        <span>NEXT QUESTION</span>
+                                        <Icon icon='right' size={16} />
                                     </div>
-                                    <div className='inline sm:hidden font-bold'>
-                                        <span>Next</span>
-                                        <span className="ml-2">→</span>
+                                    <div className='flex sm:hidden flex flex-row items-center justify-center gap-2 font-bold'>
+                                        <span>NEXT</span>
+                                        <Icon icon='right' size={16} />
                                     </div>
                                 </button>
                             </a>
                         </div>
                         : <button onClick={() => setContentInterfaceParams("pageSwitch", false)}
-                            className="flex flex-col font-bold text-xl w-full h-16 px-4 items-center justify-center text-center">
+                            className="flex flex-col font-bold text-xl w-full h-nav px-4 items-center justify-center text-center">
                             Finish
                         </button>
                 }
 
                 { (contentInterfaceParams.currentQuestion > 0) ?
                     <div className="flex flex-col items-center content-center text-center">
-                        <button id='separate-left' className="text-xl h-16 px-4"
+                        <button className="-hover-bg-200 -border-l text-xl h-nav px-4"
                             onClick={() => changeQuestion(contentInterfaceParams.currentQuestion - 1)}>
                                 <div className='font-bold'>
-                                    <span>Back</span>
+                                    <span>BACK</span>
                                 </div>
                         </button>
                     </div> : null
                 }
 
             </footer>
-            <div className="glass-cover-spread"></div>
-            <div className="absolute h-full w-full z-[-30] bg-highlight/90 dark:bg-highlight-dark/90"></div>
-            <img src={libraryData.image ? libraryData.image : BG} alt="" height={1000} width={1000} className="fixed z-[-50] w-full h-full object-cover hidden dark:inline dark:brightness-150"/>
+            <div className="fixed bottom-0 w-dvw h-dvh z-[-100]">
+                <img src={libraryData.image ? libraryData.image : BG} alt="" className="absolute h-full w-full z-[-100]" />
+                <div className="absolute h-full w-full z-[-90] bg-highlight/90 dark:bg-highlight-dark/90"></div>
+                <div className="glass-cover-spread z-[-80]"></div>
+            </div>
         </div>
     );
 }

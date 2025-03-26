@@ -69,7 +69,7 @@ export default function GlobalNavigator (): React.ReactNode {
 
       {/* Left portion */}
       <div className='flex flex-row items-center justify-center'>
-        <Link href={'/'} id="brand-static" className="font-black text-xl relative mr-2">
+        <Link href={'/'} onClick={() => setGlobalParams("isLoading", true)} id="brand-static" className="font-black text-xl relative mr-2">
           AURICLE
         </Link>
         <NavPathName />

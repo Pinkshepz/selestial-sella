@@ -57,7 +57,7 @@
 }
 
 .controller-menu:hover {
-    background-color: var(--border);
+    background-color: var(--bg-hover);
 }
 
 .controller-menu > svg {

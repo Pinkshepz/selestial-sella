@@ -1,5 +1,6 @@
 import firestoreWrite from "./firestore-write";
 import firestoreDelete from "./firestore-delete";
+import object_compare from "@/app/libs/utils/object-compare"
 
 export default async function firestoreUpdateQuiz ({
     originalData,
@@ -46,7 +47,7 @@ export default async function firestoreUpdateQuiz ({
 
         // if inner data is unchanged -> no action
         // else overwrite new data
-        if (JSON.stringify(originalData[euid]) === JSON.stringify(editedData[euid])) {
+        if (object_compare(originalData[euid], editedData[euid])) {
             resultLog[euid] = {
                 action: "remain",
                 id: editedData[euid].id,
@@ -63,8 +64,6 @@ export default async function firestoreUpdateQuiz ({
                 result: result, 
                 error: error
             };
-            console.log(originalData[euid]);
-            console.log(editedData[euid]);
         }
     }
 

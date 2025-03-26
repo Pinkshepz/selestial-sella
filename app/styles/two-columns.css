@@ -28,9 +28,17 @@
 }
 
 .h-nav {
+  height: var(--nav-height);
+}
+
+.h-dvh-nav {
   height: calc(100dvh - var(--nav-height));
 }
 
-.h-nav-ctrl {
+.h-dvh-nav {
+  height: calc(100dvh - var(--nav-height));
+}
+
+.h-dvh-nav-ctrl {
   height: calc(100dvh - var(--nav-height) - var(--controller-height));
 }

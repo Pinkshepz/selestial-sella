@@ -92,7 +92,7 @@ export default function Particles (): React.ReactNode {
     
     
     // 5. run clock
-    const fps = 10;
+    const fps = 12;
     const [time, setTime] = useState(Date.now());
 
     useEffect(() => {
@@ -178,7 +178,7 @@ export default function Particles (): React.ReactNode {
                 let distance_xy = ((dx ** 2) + (dy ** 2)) ** 0.5;
                 
                 const max_acceleration = 12 * (power + 1);
-                const limit_distance = window.innerWidth / 7;
+                const limit_distance = window.innerWidth / 12;
                 
                 const acceleration = (dPos: number, distance_xy: number) => {
                     if (distance_xy > limit_distance) return 0; // if distance is too far -> null
@@ -196,7 +196,7 @@ export default function Particles (): React.ReactNode {
                 temp_objects_style.push({
                     pos_x: spaceControl(objectPosX + objectStyle[index].velocity_x, window.innerWidth).toString() + "px",
                     pos_y: spaceControl(objectPosY + objectStyle[index].velocity_y, window.innerHeight).toString() + "px",
-                    velocity_x: 0.1 + (power * (cursorPos.x - (window.innerWidth / 2)) / window.innerWidth) + ((objectStyle[index].velocity_x) + acceleration(dx, distance_xy)) * 0.97 + (Math.random() - 0.5) / 2,
+                    velocity_x: 0.05 + (power * (cursorPos.x - (window.innerWidth / 2)) / window.innerWidth) + ((objectStyle[index].velocity_x) + acceleration(dx, distance_xy)) * 0.97 + (Math.random() - 0.5) / 2,
                     velocity_y: 0.0 + (power * (cursorPos.y - (window.innerHeight / 2)) / window.innerHeight) + ((objectStyle[index].velocity_y) + acceleration(dy, distance_xy)) * 0.97 + (Math.random() - 0.5) / 2,
                     height: objectStyle[index].height,
                     width: objectStyle[index].width,

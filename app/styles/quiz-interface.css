@@ -1,49 +1,42 @@
 #quiz-two-cols-fixed {
   display: flex;
   flex-direction: row;
-  height: calc(100dvh - var(--nav-height));
+  height: calc(100dvh - var(--nav-height) - var(--nav-height) + 6px);
   overflow: hidden;
 }
 
 #editor-two-cols-fixed {
   display: flex;
   flex-direction: row;
-  height: calc(100dvh);
+  height: calc(100dvh - var(--nav-height) - var(--controller-height));
+  margin-top: calc(var(--nav-height) + var(--controller-height));
   overflow: hidden;
 }
 
 #quiz-col-scroll-aside {
-  margin-top: var(--nav-height);
   display: var(--aside-visibility);
   flex-direction: column;
   width: var(--aside-width);
-  overflow-y: scroll;
-  background-color: var(--bgaccent);
 }
 
 #quiz-col-scroll-main {
-  padding: 0px 16px 16px 16px;
-  margin-top: var(--nav-height);
   display: flex;
   flex-direction: column;
-  width: calc(var(--main-width));
-  overflow-y: scroll;
-  border-left: solid 1px var(--border);
-  background-color: var(--bgaccent);
+  width: var(--main-width);
 }
 
-#separate-top {
-  border-top: solid 1px var(--border);
-}
-#separate-left {
-  border-left: solid 1px var(--border);
-}
-#separate-left {
-  border-left: solid 1px var(--border);
+
+
+#col-scroll-aside {
+  display: var(--aside-visibility);
+  flex-direction: column;
+  width: var(--aside-width);
 }
 
-#separate-right {
-  border-right: solid 1px var(--border);
+#col-scroll-main {
+  display: flex;
+  flex-direction: column;
+  width: calc(100dvw - var(--aside-width));
 }
 
 #card-nav-neu {

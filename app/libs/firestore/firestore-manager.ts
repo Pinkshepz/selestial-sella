@@ -1,5 +1,6 @@
 import firestoreWrite from "./firestore-write";
 import firestoreDelete from "./firestore-delete";
+import object_compare from "../utils/object-compare";
 
 export default async function firestoreUpdate ({
     collectionName,
@@ -13,8 +14,6 @@ export default async function firestoreUpdate ({
     let resultLog: {[key: string]: {[key: string]: any}} = {}; // record each doc writing result
     const uidOriginal: string[] = Object.keys(originalData); // all uids of original data
     const uidEdited: string[] = Object.keys(editedData); // all uids of edited data
-    
-    console.log("Start saving data");
     
     if ((uidOriginal.length === 0) && (uidEdited.length === 0)){
         return {0: {
@@ -40,7 +39,6 @@ export default async function firestoreUpdate ({
                     result: "", 
                     error: `${!editedData[euid].id && "id is not specified"} \n ${!editedData[euid].name && "name is not specified"}`
                 };
-                console.log(editedData[euid].id, " reject");
                 continue;
             }
         }
@@ -60,7 +58,6 @@ export default async function firestoreUpdate ({
                         ${!editedData[euid].name && "name is not specified\n"}
                         ${!legitMode.includes(editedData[euid].mode as string) && `editedData[euid].mode is not in ${legitMode}`}`
                 };
-                console.log(editedData[euid].id, " reject");
                 continue;
             }
         }
@@ -76,13 +73,12 @@ export default async function firestoreUpdate ({
                 result: result, 
                 error: error
             };
-            console.log(editedData[euid].id, " write");
             continue;
         }
 
         // if inner data is unchanged -> no action
         // else overwrite new data
-        if (JSON.stringify(originalData[euid]) === JSON.stringify(editedData[euid])) {
+        if (object_compare(originalData[euid], editedData[euid])) {
             resultLog[euid] = {
                 action: "remain",
                 id: editedData[euid].id,
@@ -90,8 +86,6 @@ export default async function firestoreUpdate ({
                 result: "-",
                 error: "-"
             };
-            console.log(editedData);
-            console.log(editedData[euid].id, " remain");
         } else {
             const {result, error} = await firestoreWrite({collectionName: collectionName, id: euid, data: editedData[euid]});
             resultLog[euid] = {
@@ -101,9 +95,6 @@ export default async function firestoreUpdate ({
                 result: result, 
                 error: error
             };
-            console.log(editedData[euid].id, " edit");
-            console.log(originalData[euid]);
-            console.log(editedData[euid]);
         }
     }
 
@@ -119,7 +110,6 @@ export default async function firestoreUpdate ({
                 result: result, 
                 error: error
             };
-            console.log(editedData[ouid].id, " delete");
         }
     }
     return resultLog;

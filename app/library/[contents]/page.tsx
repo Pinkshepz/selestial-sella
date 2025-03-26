@@ -2,7 +2,6 @@ import { firestoreReadQuery } from "../../libs/firestore/firestore-read-query";
 import { ContentInterfaceProvider } from "./content-provider";
 import Interface from './interface';
 import uidObjectToArray from "@/app/libs/utils/uid-object-to-array";
-import { quizDataFetcher } from "@/app/libs/ggsheet/data-fetch";
 
 // Dynamic routing <cardsets>
 export default async function Quizset ({ params }: { params: {contents: string} }) {
@@ -24,17 +23,11 @@ export default async function Quizset ({ params }: { params: {contents: string} 
         queryValue: libraryUid
     }).then((docs) => JSON.parse(docs));
 
-    // fetch ggsheet data if library data is blank
-    const ggSheetImport = (Object.keys(libraryData).length == 0) ?
-        await quizDataFetcher({content: params.contents}) :
-        {}
-
     return (
         <ContentInterfaceProvider>
             <Interface
                 libraryData={uidObjectToArray(libraryData)[0]}
-                questionData={questionData}
-                ggSheetImport={ggSheetImport} />
+                questionData={questionData} />
         </ContentInterfaceProvider>
     );
 }

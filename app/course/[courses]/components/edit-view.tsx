@@ -334,7 +334,7 @@ export default function EditView ({
                     <TextColor chipText={section.sectionId} fontWeight={900} />
                     <span className="font-semibold text-nowrap overflow-hidden">{section.sectionName}</span>
                 </div>
-                <div className="flex flex-col ml-5 border-l border-broder dark:border-border-dark">
+                <div className="flex flex-col ml-5 -border-l">
                     {elementAsideSectionTopic}
                 </div>
             </div>
@@ -372,7 +372,7 @@ export default function EditView ({
                                     className="editor-field w-[540px] mr-8" value={content.description}></textarea>
                                 <button
                                     onClick={() => onDeleteUidII_Ia(topicContentUid, contentUid, "topicData", "content")}
-                                    className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-auto rounded-[8px] border border-border dark:border-border-dark hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
+                                    className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-auto rounded-[8px] -border hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
                                     <Icon icon="trash" size={16} />
                                     <span className="lg:inline hidden">DELETE</span>
                                 </button>
@@ -395,7 +395,7 @@ export default function EditView ({
                                     className="editor-field w-40 ml-2 mr-8" value={resource.icon}></textarea>
                                 <button
                                     onClick={() => onDeleteUidII_Ia(topicContentUid, resourceUid, "topicData", "resource")}
-                                    className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-auto rounded-[8px] border border-border dark:border-border-dark hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
+                                    className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-auto rounded-[8px] -border hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
                                     <Icon icon="trash" size={16} />
                                     <span className="lg:inline hidden">DELETE</span>
                                 </button>
@@ -409,9 +409,9 @@ export default function EditView ({
                                 ref={(element) => {elementsRef.current[topicContentUid] = element}}>
                                 <ChipTextColor chipText="CONTENT CARD" chipIcon="table" fontWeight={900} chipBackgroungOpacity={0.1} paddingY={4} />
                                 {(lastEditUid === topicContentUid) && <LastEdited />}
-                                <div className="w-full border-b border-border dark:border-border-dark"></div>
+                                <div className="w-full -border-b"></div>
                                 <button onClick={() => onDeleteUidI(topicContentUid)}
-                                    className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-auto rounded-[8px] border border-border dark:border-border-dark hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
+                                    className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-auto rounded-[8px] -border hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
                                     <Icon icon="trash" size={16} />
                                     <span className="text-nowrap">DELETE QUIZ BANNER</span>
                                 </button>
@@ -419,7 +419,7 @@ export default function EditView ({
                             <div className="px-6 flex flex-col gap-8" key={index}>
                                 <div className="flex flex-col overflow-x-auto">
                                     {/* Resource editor */}
-                                    <div style={{minWidth: "1000px"}} className="flex flex-row items-center font-bold text-nowrap p-2 border-b border-broder dark:border-border-dark rounded-t-xl bg-black/10 dark:bg-white/10">
+                                    <div style={{minWidth: "1000px"}} className="flex flex-row items-center font-bold text-nowrap p-2 -border-b rounded-t-xl bg-black/10 dark:bg-white/10">
                                         <span className="w-40 mr-8">Resource Name</span>
                                         <span className="w-40 mr-8">Description</span>
                                         <span className="w-72 mr-8">URL</span>
@@ -432,7 +432,7 @@ export default function EditView ({
                                                 onPlaceholderChangeII_Ia(topicContentUid, newUidII, "topicData", "resource", "url", "")
                                                 onPlaceholderChangeII_Ia(topicContentUid, newUidII, "topicData", "resource", "icon", "")
                                             }}
-                                            className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-auto rounded-[8px] border border-border dark:border-border-dark hover:text-pri hover:border-pri dark:hover:text-pri-dark dark:hover:border-pri-dark font-bold">
+                                            className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-auto rounded-[8px] -border hover:text-pri hover:border-pri dark:hover:text-pri-dark dark:hover:border-pri-dark font-bold">
                                             <Icon icon="add" size={16} />
                                             <span className="lg:inline hidden">RESOURCE</span>
                                         </button>
@@ -444,7 +444,7 @@ export default function EditView ({
 
                                 <div className="flex flex-col">
                                     {/* Content editor */}
-                                    <div style={{minWidth: "1000px"}} className="flex flex-row items-center font-bold text-nowrap p-2 border-b border-broder dark:border-border-dark rounded-t-xl bg-black/10 dark:bg-white/10">
+                                    <div style={{minWidth: "1000px"}} className="flex flex-row items-center font-bold text-nowrap p-2 -border-b rounded-t-xl bg-black/10 dark:bg-white/10">
                                         <span className="w-80 mr-8">Subtopic</span>
                                         <span className="w-[540px] mr-8">Description</span>
                                         <button
@@ -453,7 +453,7 @@ export default function EditView ({
                                                 onPlaceholderChangeII_Ia(topicContentUid, newUidII, "topicData", "content", "subTopic", "")
                                                 onPlaceholderChangeII_Ia(topicContentUid, newUidII, "topicData", "content", "description", "")
                                             }}
-                                            className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-auto rounded-[8px] border border-border dark:border-border-dark hover:text-pri hover:border-pri dark:hover:text-pri-dark dark:hover:border-pri-dark font-bold">
+                                            className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-auto rounded-[8px] -border hover:text-pri hover:border-pri dark:hover:text-pri-dark dark:hover:border-pri-dark font-bold">
                                             <Icon icon="add" size={16} />
                                             <span className="lg:inline hidden">SUBTOPIC</span>
                                         </button>
@@ -474,9 +474,9 @@ export default function EditView ({
                             ref={(element) => {elementsRef.current[topicContentUid] = element}}>
                             <ChipTextColor chipText="QUIZ BANNER" chipIcon="tag" fontWeight={900} chipBackgroungOpacity={0.1} paddingY={4} />
                             {(lastEditUid === topicContentUid) && <LastEdited />}
-                            <div className="w-full border-b border-border dark:border-border-dark"></div>
+                            <div className="w-full -border-b"></div>
                             <button onClick={() => onDeleteUidI(topicContentUid)}
-                                className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-auto rounded-[8px] border border-border dark:border-border-dark hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
+                                className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-auto rounded-[8px] -border hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
                                 <Icon icon="trash" size={16} />
                                 <span className="text-nowrap">DELETE CONTENT CARD</span>
                             </button>
@@ -485,7 +485,7 @@ export default function EditView ({
 
                     elementTopic.quizBanner.push(
                         <button onClick={() => setTopicUidToLinkLibrary(topicContentUid)} key={"Editor_" + index}
-                            className="flex flex-row justify-center items-center gap-2 mx-6 mb-4 px-2 py-2 rounded-[8px] border border-border dark:border-border-dark hover:text-pri hover:border-pri dark:hover:text-pri-dark dark:hover:border-pri-dark font-bold">
+                            className="-hover-bg-200 flex flex-row justify-center items-center gap-2 mx-6 mb-4 px-2 py-2 rounded-[8px] -border hover:text-pri hover:border-pri dark:hover:text-pri-dark dark:hover:border-pri-dark font-bold">
                             <Icon icon="tool" size={16} />
                             <span className="text-lg text-nowrap">CHOOSE REFERENCE LIBRARY</span>
                         </button>
@@ -531,9 +531,9 @@ export default function EditView ({
                             ref={(element) => {elementsRef.current[topicContentUid] = element}}>
                             <ChipTextColor chipText="QUIZ CARD" chipIcon="tag" fontWeight={900} chipBackgroungOpacity={0.1} paddingY={4} />
                             {(lastEditUid === topicContentUid) && <LastEdited />}
-                            <div className="w-full border-b border-border dark:border-border-dark"></div>
+                            <div className="w-full -border-b"></div>
                             <button onClick={() => onDeleteUidI(topicContentUid)}
-                                className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-auto rounded-[8px] border border-border dark:border-border-dark hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
+                                className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-auto rounded-[8px] -border hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
                                 <Icon icon="trash" size={16} />
                                 <span className="text-nowrap">DELETE QUIZ CARD</span>
                             </button>
@@ -542,7 +542,7 @@ export default function EditView ({
 
                     elementTopic.quizCard.push(
                         <button onClick={() => setTopicUidToLinkLibrary(topicContentUid)} key={"Editor_" + index}
-                            className="flex flex-row justify-center items-center gap-2 mx-6 mb-4 px-2 py-2 rounded-[8px] border border-border dark:border-border-dark hover:text-pri hover:border-pri dark:hover:text-pri-dark dark:hover:border-pri-dark font-bold">
+                            className="-hover-bg-200 flex flex-row justify-center items-center gap-2 mx-6 mb-4 px-2 py-2 rounded-[8px] -border hover:text-pri hover:border-pri dark:hover:text-pri-dark dark:hover:border-pri-dark font-bold">
                             <Icon icon="tool" size={16} />
                             <span className="text-lg text-nowrap">CHOOSE REFERENCE LIBRARY</span>
                         </button>
@@ -584,27 +584,27 @@ export default function EditView ({
         })
 
         elementMainSection = (
-            <div className="relative h-nav-ctrl pb-12">
+            <div className="relative h-dvh-nav-ctrl pb-12">
                 {/* Upper console */}
-                <div className="flex flex-row items-center p-2 py-2 gap-2 overflow-x-auto border-b border-border dark:border-border-dark">
-                    <button
+                <div className="flex flex-row items-center p-2 py-2 gap-2 overflow-x-auto -border-b">
+                    {(topicUidToLinkLibrary === "") && <button
                         onClick={() => onAddTopicContentCard()}
                         className="controller-menu">
                         <Icon icon="add" size={16} />
                         <p>ADD CONTENT CARD</p>
-                    </button>
-                    <button
+                    </button>}
+                    {(topicUidToLinkLibrary === "") && <button
                         onClick={() => onAddTopicQuizBanner()}
                         className="controller-menu">
                         <Icon icon="add" size={16} />
                         <p>ADD QUIZ BANNER</p>
-                    </button>
-                    <button
+                    </button>}
+                    {(topicUidToLinkLibrary === "") && <button
                         onClick={() => onAddTopicQuizCard()}
                         className="controller-menu">
                         <Icon icon="add" size={16} />
                         <p>ADD QUIZ CARD</p>
-                    </button>
+                    </button>}
                     <div className="controller-menu">
                         <Icon icon="search" size={16} />
                         <span id="librarySearch" className="input-field"
@@ -619,6 +619,12 @@ export default function EditView ({
                                 document.getElementById("librarySearch")!.textContent = "";
                             }}><Icon icon="xCircle" size={16}/></button>}
                     </div>
+                    {(topicUidToLinkLibrary !== "") && <button
+                        onClick={() => setTopicUidToLinkLibrary("")}
+                        className="controller-menu text-amber dark:text-amber-dark">
+                        <Icon icon="xCircle" size={16} />
+                        <p>CANCEL</p>
+                    </button>}
                 </div>
 
                 {/* Editing & display interface */}
@@ -628,7 +634,7 @@ export default function EditView ({
                             <TextColor chipText={section.sectionId} fontWeight={700} fontSize="1.5rem" />
                             <h3 className="font-semibold text-nowrap overflow-hidden">{section.sectionName}</h3>
                         </div>
-                        <div className="flex flex-row items-center px-4 py-4 gap-4 section-center text-left border-b border-broder dark:border-border-dark">
+                        <div className="flex flex-row items-center px-4 py-4 gap-4 section-center text-left -border-b">
                             <TextColor chipText={topic.topicId} fontWeight={700} fontSize="1.25rem" textColor={stringToRgb(section.sectionId)} />
                             <h4 className="font-semibold text-nowrap overflow-hidden">{topic.topicName}</h4>
                         </div>
@@ -667,8 +673,8 @@ export default function EditView ({
 
     return (
         <div>
-            <div id="two-cols-fixed" className="border-t border-border dark:border-border-dark">
-                <aside aria-label="aside-navigator" id="col-scroll-aside" className="border-r border-border dark:border-border-dark">
+            <div id="two-cols-fixed" className="-border-t">
+                <aside aria-label="aside-navigator" id="col-scroll-aside" className="-border-r">
                     <strong className="mx-4 mt-4">{`COURSE ${courseData.id} ┇ ${courseData.abbreviation}`}</strong>
                     <h1 className="mx-4">{courseData.name.toLocaleUpperCase()}</h1>
                     <div className="flex flex-row items-center px-4 my-4">

@@ -9,7 +9,7 @@ import ConfirmPopUp from "@/app/libs/material/confirm-popup";
 import SettingInterface from './components/setting';
 import QuizInterface from "./components/quiz";
 import EditorInterface from "./components/quiz-edit";
-import ContentController from "./components/controller";
+import ControllerEdit from "./components/controller-edit";
 import LogUpdate from "./components/log-update";
 import ErrorMessage from "@/app/libs/material/error";
 import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
@@ -18,12 +18,10 @@ import uidObjectToArray from "@/app/libs/utils/uid-object-to-array";
 
 export default function Interface ({
     libraryData,
-    questionData,
-    ggSheetImport
+    questionData
 }: {
     libraryData: {[key: string]: string}, // {library data}
     questionData: {[key: string]: {[key: string]: any}} // {uid: {each question}}
-    ggSheetImport: {[key: string]: {[key: string]: any}} | undefined // {uid: {each question}}
 }) {
     // connect to global context
     const {globalParams, setGlobalParams} = useGlobalContext();
@@ -53,10 +51,10 @@ export default function Interface ({
         return uidObjectToArray(processedData);
     }
 
-    if (Object.keys(contentInterfaceParams.logUpdate).length !== 0) {
+    if (Object.keys(contentInterfaceParams.logUpdate).length > 0) {
         return (
             <>
-                <ContentController />
+                <ControllerEdit />
                 <ConfirmPopUp />
                 <LogUpdate />
             </>
@@ -64,12 +62,11 @@ export default function Interface ({
     } else if (contentInterfaceParams.editMode) {
         return (
             <>
-                <ContentController />
+                <ControllerEdit />
                 <ConfirmPopUp />
                 <EditorInterface
                     libraryData={libraryData}
-                    questionData={questionData}
-                    ggSheetImport={ggSheetImport} />
+                    questionData={questionData} />
             </>
         );
     } else {
@@ -77,16 +74,19 @@ export default function Interface ({
             return (
             <>
                 <ConfirmPopUp />
-                <main className="relative flex flex-col h-[100dvh] w-full">
+                <main className="relative flex flex-col mt-14">
                     {(contentInterfaceParams.pageSwitch == false) && 
                     <SettingInterface
                         libraryData={libraryData}
                         questionData={uidObjectToArray(questionData)} />}
         
                     {(contentInterfaceParams.pageSwitch == true) && 
-                    <QuizInterface
+                    <>
+                        <QuizInterface
                         libraryData={libraryData}
-                        questionData={processData(questionData)} />}
+                        questionData={processData(questionData)} />
+                    </>
+                    }
                     <div className="glass-cover-spread"></div>
                 </main>
             </>

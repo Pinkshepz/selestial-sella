@@ -13,12 +13,10 @@ import { useGlobalContext } from "@/app/global-provider";
 
 export default function EditorInterface ({
     libraryData,
-    questionData,
-    ggSheetImport
+    questionData
 }: {
     libraryData: {[key: string]: string}, // {uid: {library data}}
     questionData: {[key: string]: {[key: string]: any}}, // {uid: {each question}}
-    ggSheetImport: {[key: string]: {[key: string]: any}} | undefined // {uid: {each question}}
 }): React.ReactNode {
     // supplement wallpaper
     const BG = "https://media.suara.com/pictures/653x366/2019/12/19/95933-aurora.jpg";
@@ -46,51 +44,7 @@ export default function EditorInterface ({
     // choice key toggle
     const [choiceKeyToggle, setChoiceKeyToggle] = useState(1);
 
-    // track cursor position. Update when cursor position is changed
-    const [cursorPosY, setCursorPosY] = useState(0); // cursor position
-
-    const setCoordinate = (e: MouseEvent) => {
-        if ((window !== undefined) && (e.clientY > (window.innerHeight * 0.5))) {
-            setCursorPosY(window.innerHeight * 0.5);
-        } else {
-            setCursorPosY(e.clientY);
-        }
-    };
-    
-    useEffect(() => {
-        window.addEventListener("mousemove", setCoordinate);
-    }, [setCoordinate]);
-
-    // autosave toggle and clock
-    const [autoSaveToggle, setAutoSaveToggle] = useState(true);
-    const CLOCK: number[] = [10, 30, 60, 120, 300, 600];
-    const [defaultAutosaveTime, setDefaultAutosaveTime] = useState(CLOCK[2]);
-    const [autoSaveClock, setAutoSaveClock] = useState(defaultAutosaveTime);
-
-    // toggle autosave clock default time [30, 60, 300, 600]
-    const toggleAutosaveClock = (): void => {
-        const currentIndex: number = CLOCK.indexOf(defaultAutosaveTime);
-        // change to next clock option
-        setDefaultAutosaveTime(CLOCK[(currentIndex + 1) % CLOCK.length]);
-        setAutoSaveClock(CLOCK[(currentIndex + 1) % CLOCK.length]);
-        return;
-    };
-
-    // autosave clock countdown
-    const [time, setTime] = useState(Date.now());
-
-    // run autosave clock
-    useEffect(() => {
-        if (autoSaveToggle) {
-            const interval = setInterval(() => setTime(Date.now()), 1000);
-            setAutoSaveClock(autoSaveClock - 1);
-            return () => {
-                clearInterval(interval);
-            };
-        }
-    }, [time, autoSaveToggle]);
-
-    // ref for elements
+    // ref for elementsEditQuiz
     const elementsRef: {[key: string]: any} = useRef({});
 
     // go to ref
@@ -342,7 +296,7 @@ export default function EditorInterface ({
         }
     }
 
-    // toggle question mode ["singleChoice", "multipleChoice", "flashcard"]
+    // toggle question mode ["singleChoice", "multipleChoice", "flashcard", "binary", "dropdown", "tabular", "completion"]
     const MODE: string[] = ["singleChoice", "multipleChoice", "flashcard"];
     const toggleQuestionMode = (uid: string, currentMode: string): void => {
         const currentIndex: number = MODE.indexOf(currentMode);
@@ -351,20 +305,6 @@ export default function EditorInterface ({
         setRecentlyUsedMode(MODE[(currentIndex + 1) % MODE.length]);
         return;
     };
-
-    // delete all changes if toggle
-    useEffect(() => {
-        if (contentInterfaceParams.deleteAllChangesToggle && 
-            globalParams.popUpConfirm &&
-            (globalParams.popUpAction === "deleteAllChangesToggle")) {
-            setBufferQuestion({});
-            setContentInterfaceParams("deleteAllChangesToggle", false);
-            setGlobalParams("popUpConfirm", false);
-            setGlobalParams("popUpAction", "");
-            setAutoSaveClock(defaultAutosaveTime);
-        }
-        setChoiceKeyToggle((prev) => (prev + 1));
-    }, [globalParams.popUpConfirm]);
 
     // discard all changes if toggle
     useEffect(() => {
@@ -380,7 +320,7 @@ export default function EditorInterface ({
     
     // run autosave
     useEffect(() => {
-        if ((autoSaveToggle) && (autoSaveClock == 1)) {
+        if (contentInterfaceParams.autosaveTimer === 0) {
             setGlobalParams("isLoading", true);
             const cloneLibraryData = structuredClone(libraryData);
             const libraryUid = cloneLibraryData.uid;
@@ -416,11 +356,11 @@ export default function EditorInterface ({
             }).then(
                 () => {
                     setGlobalParams("isLoading", false);
-                    setAutoSaveClock(defaultAutosaveTime);
+                    setContentInterfaceParams("autosaveTimer", contentInterfaceParams.autosaveToggle * 60);
                 }
             );
         }
-    }, [time]);
+    }, [contentInterfaceParams.autosaveTimer]);
 
     // save all changes if toggle 
     useEffect(() => {
@@ -433,7 +373,6 @@ export default function EditorInterface ({
             delete cloneLibraryData.uid;
 
             const processData = (rawData: typeof bufferQuestion) => {
-                console.log(libraryUid)
                 let processedData: typeof bufferQuestion = {};
                 // assign new question number and library uid
                 Object.keys(sortUidObjectByValue(rawData, "id", true)).map((uid, index) => {
@@ -474,28 +413,14 @@ export default function EditorInterface ({
 
     // warn if autosave is off and question numbers added exceed 25
     useEffect(() => {
-        if (!autoSaveToggle) {
+        if (contentInterfaceParams.autoSaveToggle < 0) {
             if (Object.keys(bufferQuestion).length - Object.keys(questionData).length > 10) {
-                setContentInterfaceParams("autoSaveToggle", !autoSaveToggle);
                 setGlobalParams("popUp", true);
                 setGlobalParams("popUpAction", "saveChangesToggle");
                 setGlobalParams("popUpText", "We recommend to save all changes to prevent data loss")
             }
         }
     }, [targetUidScroll]);
-
-    // listen gg sheet import
-    useEffect(() => {
-        if (contentInterfaceParams.importSheetToggle) {
-            if (ggSheetImport !== undefined) {
-                setBufferQuestion((prev) => ({
-                    ...prev,
-                    ...ggSheetImport
-                }));
-            }
-        }
-        setContentInterfaceParams("importSheetToggle", false);
-    }, [contentInterfaceParams.importSheetToggle]);
 
     // Filter by search key
     let filteredQuestion: {[key: string]: {[key: string]: any}} = {};
@@ -516,39 +441,35 @@ export default function EditorInterface ({
     );
 
     // Render questions and choices
-    let elements: Array<React.ReactNode> = [];
+    let elementsEditQuiz: React.ReactNode = <></>;
 
-    Object.values(sortedFilteredQuestionData).map((question, index) => {
-        // get uid as object key
-        const uid = Object.keys(sortedFilteredQuestionData)[index];
-
-        // pre-render choices
+    try {
+        const question = sortedFilteredQuestionData[contentInterfaceParams.currentQuizUid];
         const choicesElements: React.ReactNode[] = [];
-
-        const questionChoices: {[key: string]: any}[] = question.choices;
+        const questionChoices: {[key: string]: any}[] = Object.values(question.choices);
         
         questionChoices.map((choice, choiceIndex) => {
             choicesElements.push(
                 <div 
                     className="edit-placeholder flex flex-col gap-4 bg-highlight dark:bg-highlight-dark"
-                    key={uid + choiceIndex}>
+                    key={contentInterfaceParams.currentQuizUid + choiceIndex}>
                     <div className="edit-placeholder">
                         <label className="flex flex-row justify-start items-center">
                             <Icon icon="font" size={16} />
                             <p>Choice text</p>
                         </label>
                         <textarea className="editor-field" key={1 + choiceIndex * questionChoices.length + choiceKeyToggle}
-                            onChange={e => onPlaceholderQuestionChoiceChange(uid, choiceIndex, "choiceText", e.target.value)}
+                            onChange={e => onPlaceholderQuestionChoiceChange(contentInterfaceParams.currentQuizUid, choiceIndex, "choiceText", e.target.value)}
                             defaultValue={choice.choiceText}>
                         </textarea>
                     </div>
-                    {(bufferQuestion[uid].mode !== "flashcard") && <div className="edit-placeholder">
+                    {(bufferQuestion[contentInterfaceParams.currentQuizUid].mode !== "flashcard") && <div className="edit-placeholder">
                         <label className="flex flex-row justify-start items-center">
                             <Icon icon="mcq" size={16} />
                             <p>Choice answer</p>
                         </label>
                         <button className={`toggle-field ${choice.choiceAnswer ? "toggleOn" : "toggleOff"}`}
-                            onClick={() => onPlaceholderQuestionChoiceChange(uid, choiceIndex, "choiceAnswer", !choice.choiceAnswer)}
+                            onClick={() => onPlaceholderQuestionChoiceChange(contentInterfaceParams.currentQuizUid, choiceIndex, "choiceAnswer", !choice.choiceAnswer)}
                             defaultValue={choice.choiceAnswer}>
                             {choice.choiceAnswer ? "TRUE" : "FALSE"}
                         </button>
@@ -559,7 +480,7 @@ export default function EditorInterface ({
                             <p>Choice back text</p>
                         </label>
                         <textarea className="editor-field" key={1 + choiceIndex * questionChoices.length + choiceKeyToggle}
-                            onChange={e => onPlaceholderQuestionChoiceChange(uid, choiceIndex, "choiceBackText", e.target.value)}
+                            onChange={e => onPlaceholderQuestionChoiceChange(contentInterfaceParams.currentQuizUid, choiceIndex, "choiceBackText", e.target.value)}
                             defaultValue={choice.choiceBackText}>
                         </textarea>
                     </div>
@@ -569,7 +490,7 @@ export default function EditorInterface ({
                             <p>Choice image URL</p>
                         </label>
                         <input type="text" className="editor-field" key={1 + choiceIndex * questionChoices.length + choiceKeyToggle}
-                            onChange={e => onPlaceholderQuestionChoiceChange(uid, choiceIndex, "choiceImage", e.target.value)}
+                            onChange={e => onPlaceholderQuestionChoiceChange(contentInterfaceParams.currentQuizUid, choiceIndex, "choiceImage", e.target.value)}
                             defaultValue={choice.choiceImage}>
                         </input>
                     </div>
@@ -579,18 +500,18 @@ export default function EditorInterface ({
                     </div>}
                     <div className="flex flex-row items-center gap-2 w-full mt-2">
                         <button
-                            onClick={() => {handleDuplicateQuestionChoice(uid, choiceIndex)}}
+                            onClick={() => {handleDuplicateQuestionChoice(contentInterfaceParams.currentQuizUid, choiceIndex)}}
                             className="flex flex-row justify-center items-center gap-2 px-2 py-2 rounded-[8px] border border-highlight dark:border-highlight-dark hover:text-amber hover:border-amber dark:hover:text-amber-dark dark:hover:border-amber-dark font-bold">
                             <Icon icon="copy" size={16} />
                         </button>
                         <button
-                            onClick={() => {handleDeleteQuestionChoice(uid, choiceIndex)}}
+                            onClick={() => {handleDeleteQuestionChoice(contentInterfaceParams.currentQuizUid, choiceIndex)}}
                             className="flex flex-row justify-center items-center gap-2 px-2 py-2 rounded-[8px] border border-highlight dark:border-highlight-dark hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
                             <Icon icon="trash" size={16} />
                         </button>
                         <div className="h-full mx-2 border-r border-border"></div>
                         <button
-                            onClick={() => {handleChoicePositionBackward(uid, choiceIndex)}}
+                            onClick={() => {handleChoicePositionBackward(contentInterfaceParams.currentQuizUid, choiceIndex)}}
                             className="flex flex-row justify-center items-center gap-2 px-2 py-2 rounded-[8px] border border-highlight dark:border-highlight-dark hover:text-pri hover:border-pri dark:hover:text-pri-dark dark:hover:border-pri-dark font-bold">
                             <Icon icon="left" size={16} />
                         </button>
@@ -598,7 +519,7 @@ export default function EditorInterface ({
                             {choiceIndex + 1}
                         </div>
                         <button
-                            onClick={() => {handleChoicePositionForward(uid, choiceIndex)}}
+                            onClick={() => {handleChoicePositionForward(contentInterfaceParams.currentQuizUid, choiceIndex)}}
                             className="flex flex-row justify-center items-center gap-2 px-2 py-2 rounded-[8px] border border-highlight dark:border-highlight-dark hover:text-pri hover:border-pri dark:hover:text-pri-dark dark:hover:border-pri-dark font-bold">
                             <Icon icon="right" size={16} />
                         </button>
@@ -606,27 +527,24 @@ export default function EditorInterface ({
                 </div>
             );
         });
-
+    
         choicesElements.push(
             <button
-                onClick={() => handleAddQuestionChoice(uid, bufferQuestion[uid].choices.length)}
-                className="add-button p-12" key={uid + 999999999}>
+                onClick={() => handleAddQuestionChoice(contentInterfaceParams.currentQuizUid, bufferQuestion[contentInterfaceParams.currentQuizUid].choices.length)}
+                className="add-button p-12" key={contentInterfaceParams.currentQuizUid + 999999999}>
                 <Icon icon="add" size={36} />
                 <p className="mt-4 text-lg font-bold">NEW CHOICE</p>
             </button>
         );
-
-        elements.push(
-            <section id={handleFootprintQuestion(uid, "")} className="card-edit" 
-                key={uid}>
-                <div aria-label="ref" className="absolute"
-                    ref={(element) => {elementsRef.current[uid] = element}}
-                    style={{top: `calc(-${cursorPosY}px + 80px)`}}></div>
+    
+        elementsEditQuiz = (
+            <section id={handleFootprintQuestion(contentInterfaceParams.currentQuizUid, "")} 
+                key={contentInterfaceParams.currentQuizUid}>
                 <article aria-label="question-header" className="flex flex-wrap gap-4 p-4">
                     <div
                         className="flex flex-row justify-start items-center gap-2 font-bold">
                         <button
-                            onClick={() => {onPlaceholderQuestionChange(uid, "id", bufferQuestion[uid].id + 1.5)}}
+                            onClick={() => {onPlaceholderQuestionChange(contentInterfaceParams.currentQuizUid, "id", bufferQuestion[contentInterfaceParams.currentQuizUid].id + 1.5)}}
                             className="edit-placeholder flex flex-row justify-start items-center gap-2 font-bold">
                             <label
                                 className='text-sm font-semibold rounded-full'>
@@ -636,10 +554,10 @@ export default function EditorInterface ({
                         <span
                             id='clear-chip'
                             className='text-2xl font-semibold'>
-                            {bufferQuestion[uid].id}
+                            {bufferQuestion[contentInterfaceParams.currentQuizUid].id}
                         </span>
                         <button
-                            onClick={() => {onPlaceholderQuestionChange(uid, "id", bufferQuestion[uid].id - 1.5)}}
+                            onClick={() => {onPlaceholderQuestionChange(contentInterfaceParams.currentQuizUid, "id", bufferQuestion[contentInterfaceParams.currentQuizUid].id - 1.5)}}
                             className="edit-placeholder flex flex-row justify-start items-center gap-2 font-bold">
                             <label
                                 className='text-sm font-semibold rounded-full'>
@@ -648,20 +566,20 @@ export default function EditorInterface ({
                         </button>
                     </div>
                     <button
-                        onClick={() => toggleQuestionMode(uid, bufferQuestion[uid].mode)}
-                        id={handleFootprintQuestion(uid, "mode")}
+                        onClick={() => toggleQuestionMode(contentInterfaceParams.currentQuizUid, bufferQuestion[contentInterfaceParams.currentQuizUid].mode)}
+                        id={handleFootprintQuestion(contentInterfaceParams.currentQuizUid, "mode")}
                         className="edit-placeholder flex flex-row justify-start items-center gap-2 px-2 font-bold">
-                        <ChipTextColor chipText={bufferQuestion[uid].mode} chipIcon={bufferQuestion[uid].mode} />
+                        <ChipTextColor chipText={bufferQuestion[contentInterfaceParams.currentQuizUid].mode} chipIcon={bufferQuestion[contentInterfaceParams.currentQuizUid].mode} />
                     </button>
                     <div className="flex flex-row gap-4 md:ml-auto">
                         <button
-                            onClick={() => {handleDuplicateQuestion(uid)}}
+                            onClick={() => {handleDuplicateQuestion(contentInterfaceParams.currentQuizUid)}}
                             className="flex flex-row justify-center items-center gap-2 px-2 py-1 rounded-[8px] border border-border dark:border-border-dark hover:text-amber hover:border-amber dark:hover:text-amber-dark dark:hover:border-amber-dark font-bold">
                             <Icon icon="copy" size={16} />
                             DUPLICATE
                         </button>
                         <button
-                            onClick={() => {handleDeleteQuestion(uid)}}
+                            onClick={() => {handleDeleteQuestion(contentInterfaceParams.currentQuizUid)}}
                             className="flex flex-row justify-center items-center gap-2 px-2 py-1 rounded-[8px] border border-border dark:border-border-dark hover:text-red hover:border-red dark:hover:text-red-dark dark:hover:border-red-dark font-bold">
                             <Icon icon="trash" size={16} />
                             DELETE
@@ -670,60 +588,67 @@ export default function EditorInterface ({
                 </article>
                 <article aria-label="question-content" className="flex flex-row border-t border-border dark:border-border-dark">
                     <div className="flex flex-col gap-4 w-full p-4">
-                        <div id={handleFootprintQuestion(uid, "questionText")} className="edit-placeholder">
+                        <div id={handleFootprintQuestion(contentInterfaceParams.currentQuizUid, "questionText")} className="edit-placeholder">
                             <label className="flex flex-row justify-start items-center">
                                 <Icon icon="h1" size={16} />
                                 <p>Question text</p>
                             </label>
-                            <textarea className="editor-field"
-                                onChange={e => onPlaceholderQuestionChange(uid, "questionText", e.target.value)}
-                                defaultValue={bufferQuestion[uid].questionText}>
+                            <textarea className="editor-field" rows={5}
+                                onChange={e => onPlaceholderQuestionChange(contentInterfaceParams.currentQuizUid, "questionText", e.target.value)}
+                                defaultValue={bufferQuestion[contentInterfaceParams.currentQuizUid].questionText}>
                             </textarea>
                         </div>
-                        <div id={handleFootprintQuestion(uid, "questionSection")} className="edit-placeholder">
+                        <div id={handleFootprintQuestion(contentInterfaceParams.currentQuizUid, "questionSection")} className="edit-placeholder">
                             <label className="flex flex-row justify-start items-center">
                                 <Icon icon="card" size={16} />
                                 <p>Question section</p>
                             </label>
                             <input type="text" className="editor-field"
-                                onChange={e => onPlaceholderQuestionChange(uid, "questionSection", e.target.value)}
-                                defaultValue={bufferQuestion[uid].questionSection}>
+                                onChange={e => onPlaceholderQuestionChange(contentInterfaceParams.currentQuizUid, "questionSection", e.target.value)}
+                                defaultValue={bufferQuestion[contentInterfaceParams.currentQuizUid].questionSection}>
                             </input>
                         </div>
                     </div>
                     <div className="flex flex-col gap-4 w-full p-4">
-                        <div id={handleFootprintQuestion(uid, "questionBackText")} className="edit-placeholder">
+                        <div id={handleFootprintQuestion(contentInterfaceParams.currentQuizUid, "questionBackText")} className="edit-placeholder">
                             <label className="flex flex-row justify-start items-center">
                                 <Icon icon="font" size={16} />
                                 <p>Question back text</p>
                             </label>
-                            <textarea className="editor-field"
-                                onChange={e => onPlaceholderQuestionChange(uid, "questionBackText", e.target.value)}
-                                defaultValue={bufferQuestion[uid].questionBackText}>
+                            <textarea className="editor-field" rows={5}
+                                onChange={e => onPlaceholderQuestionChange(contentInterfaceParams.currentQuizUid, "questionBackText", e.target.value)}
+                                defaultValue={bufferQuestion[contentInterfaceParams.currentQuizUid].questionBackText}>
                             </textarea>
                         </div>  
-                        <div id={handleFootprintQuestion(uid, "questionImage")} className="edit-placeholder">
+                        <div id={handleFootprintQuestion(contentInterfaceParams.currentQuizUid, "questionImage")} className="edit-placeholder">
                             <label className="flex flex-row justify-start items-center">
                                 <Icon icon="image" size={16} />
                                 <p>Question image URL</p>
                             </label>
                             <input type="text" className="editor-field"
-                                onChange={e => onPlaceholderQuestionChange(uid, "questionImage", e.target.value)}
-                                defaultValue={bufferQuestion[uid].questionImage}>
+                                onChange={e => onPlaceholderQuestionChange(contentInterfaceParams.currentQuizUid, "questionImage", e.target.value)}
+                                defaultValue={bufferQuestion[contentInterfaceParams.currentQuizUid].questionImage}>
                             </input>
                         </div>
                     </div>
-                    {bufferQuestion[uid].questionImage && 
+                    {bufferQuestion[contentInterfaceParams.currentQuizUid].questionImage && 
                         <div className="flex flex-col gap-4 pr-4 py-4">
-                            <img src={bufferQuestion[uid].questionImage} alt="" className="rounded-xl" />
+                            <img src={bufferQuestion[contentInterfaceParams.currentQuizUid].questionImage} alt="" className="rounded-xl" />
                         </div>}
                 </article>
-                <article aria-label="question-choice" className="-scroll-none flex flex-row gap-4 overflow-x-scroll w-full p-4 border-t border-border dark:border-border-dark">
+                <article aria-label="question-choice" className="-scroll-none grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 overflow-x-scroll w-full p-4 border-t border-border dark:border-border-dark">
                     {choicesElements}
                 </article>
             </section>
         );
-    });
+    } catch (error) {
+        elementsEditQuiz = (
+            <div className="my-auto text-textSlate dark:text-textSlate-dark flex flex-col justify-center items-center text-center" key="blank">
+                <Icon icon="edit" size={48} />
+                <h1>Choose quiz to edit</h1>
+            </div>
+        );
+    }
 
     // question nav
     let same_topic_choice_nav: React.ReactNode[] = [];
@@ -759,12 +684,12 @@ export default function EditorInterface ({
     
             same_topic_choice_nav.push(
                 <button
-                    className="flex flex-row items-center px-4 py-2 border-t border-border dark:border-border-dark hover:bg-black/10 dark:hover:bg-white/10 ease-in-out duration-50"
+                    className="flex flex-row items-center gap-2 px-4 py-2 border-t border-border dark:border-border-dark hover:bg-black/10 dark:hover:bg-white/10 ease-in-out duration-50"
                     key={i}
-                    onClick={() => scrollToRef(uid)}>
+                    onClick={() => setContentInterfaceParams("currentQuizUid", uid)}>
                     <p className="font-bold">{i + 1}</p>
                     <TextColor chipText={bufferQuestion[uid].mode.toLocaleUpperCase()[0]} />
-                    <p className="ml-2 text-xs whitespace-nowrap overflow-hidden">
+                    <p className="text-xs whitespace-nowrap overflow-hidden">
                         {bufferQuestion[uid].questionText}
                     </p>
                 </button>
@@ -792,40 +717,26 @@ export default function EditorInterface ({
 
     return (
         <div className='flex flex-col'>
-            <div id='editor-two-cols-fixed' key='interface'>
 
-                <aside id="quiz-col-scroll-aside" className='-scroll-none relative pt-[90px]' key='interface-aside'>
-                    <div className="border-t border-border dark:border-border-dark"></div>
-                    <section className="px-2 py-4 flex flex-row items-center">
-                        <button 
-                            onClick={() => setAutoSaveToggle((prev) => (!prev))}
-                            className="controller-menu text-sm">
-                            <Icon icon="save" size={16} />
-                            AUTOSAVE {autoSaveToggle ? "ON " + autoSaveClock : "OFF"}
-                        </button>
-                        {autoSaveToggle && <button 
-                            onClick={() => toggleAutosaveClock()}
-                            className="controller-menu ml-auto text-sm">
-                            DEFAULT {defaultAutosaveTime}
-                        </button>}
-                    </section>
+            <div id='editor-two-cols-fixed' className='-border-t' key='interface'>
+
+                <aside id="quiz-col-scroll-aside" className='-scroll-none relative -border-r' key='interface-aside'>
+                    <strong className="mx-4 mt-4">{`QUIZ ${libraryData.id}`}</strong>
+                    <h1 className="mx-4">{libraryData.name.toLocaleUpperCase()}</h1>
                     <section className='pt-4 h-max overflow-y-scroll' key='interface-aside-section-2'>
                         {question_nav}
                     </section>
                 </aside>
 
-                <main id="quiz-col-scroll-main" className='-scroll-none' key='interface-main'>
-                    <section className='mt-[90px] m-4' key='interface-aside-section-1'>
-                        <h3 className='my-4'>{libraryData.name}</h3>
-                    </section>
-                    <section className="flex flex-col gap-8 mx-4">
-                        {elements}
-                    </section>
+                <main id="quiz-col-scroll-main" className='overflow-y-auto' key='interface-main'>
+                    {elementsEditQuiz}
                 </main>
             </div>
-            <div className="glass-cover-spread"></div>
-            <div className="absolute h-full w-full z-[-30] bg-highlight/90 dark:bg-highlight-dark/90"></div>
-            <img src={libraryData.image ? libraryData.image : BG} alt="" height={1000} width={1000} className="fixed z-[-50] w-full h-full object-cover hidden dark:inline dark:brightness-50"/>
+            <div className="fixed bottom-0 w-dvw h-dvh z-[-100]">
+                <img src={libraryData.image ? libraryData.image : BG} alt="" className="absolute h-full w-full z-[-100]" />
+                <div className="absolute h-full w-full z-[-90] bg-highlight/90 dark:bg-highlight-dark/90"></div>
+                <div className="glass-cover-spread z-[-80]"></div>
+            </div>
         </div>
     );
 }

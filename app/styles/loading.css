@@ -8,7 +8,7 @@ html.dark {
 }
 
 .loader {
-  width: 60px;
+  width: 80px;
   aspect-ratio: 2;
   background: 
     var(--_g) 0%   50%,
