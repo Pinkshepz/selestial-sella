@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 
-import makeid from "../../libs/utils/make-id";
-import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
+import makeid from "../../libs/function/make-id";
+import sortUidObjectByValue from "@/app/libs/function/sort-uid-object-by-value";
 import firestoreUpdate from "../../libs/firestore/firestore-manager";
 import Icon from "../../../public/icon";
 import { useGlobalContext } from "../../global-provider";
@@ -61,6 +61,13 @@ export default function CardEditor ({
         (globalParams.popUpAction == "saveChangesToggle")) {
         setGlobalParams("isLoading", true);
         firestoreUpdate({
+            firebaseBranch: "ALPHA",
+            collectionName: "library",
+            originalData: contentData, 
+            editedData: bufferContent
+        })
+        firestoreUpdate({
+            firebaseBranch: "BETA",
             collectionName: "library",
             originalData: contentData, 
             editedData: bufferContent
@@ -112,8 +119,8 @@ export default function CardEditor ({
         setBufferContent((prev) => ({
             ...prev,
             [newUid]: {
-                id: "",
-                name: "",
+                id: "0",
+                name: "New library",
                 description: "",
                 image: "",
                 mode: "MCQ",

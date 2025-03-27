@@ -1,23 +1,28 @@
-import { firestoreRead } from "@/app/libs/firestore/firestore-read";
-import { firestoreReadQuery } from "../../libs/firestore/firestore-read-query";
+import firestoreRead from "@/app/libs/firestore/firestore-read";
+import firestoreReadQuery from "../../libs/firestore/firestore-read-query";
+
 import { TopicInterfaceProvider } from "./topic-provider";
+
 import Interface from "./interface";
-import uidObjectToArray from "@/app/libs/utils/uid-object-to-array";
+
+import uidObjectToArray from "@/app/libs/function/uid-object-to-array";
 
 // Dynamic routing <cardsets>
 export default async function Quizset ({ params }: { params: {courses: string} }) {
    
     // Fetch library data for this dynamic route
     const courseData = await firestoreReadQuery({
-      collectionName: "course",
-      queryKey: "abbreviation",
-      queryComparator: "==",
-      queryValue: params.courses
+        firebaseBranch: "ALPHA",
+        collectionName: "course",
+        queryKey: "abbreviation",
+        queryComparator: "==",
+        queryValue: params.courses
     }).then((docs) => JSON.parse(docs));
 
     // Fetch content / question data for this dynamic route
     const courseUid = Object.keys(courseData)[0];
     const topicData = await firestoreReadQuery({
+        firebaseBranch: "ALPHA",
         collectionName: "topic",
         queryKey: "courseUid",
         queryComparator: "==",
@@ -26,6 +31,7 @@ export default async function Quizset ({ params }: { params: {courses: string} }
 
     // Fetch all libraries
     const library = await firestoreRead({
+        firebaseBranch: "ALPHA",
         collectionName: "library"
     }).then((docs) => JSON.parse(docs));
 

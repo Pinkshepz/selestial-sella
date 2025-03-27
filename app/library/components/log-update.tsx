@@ -2,7 +2,7 @@
 
 import { useGlobalContext } from "@/app/global-provider";
 import { useInterfaceContext } from "../library-provider";
-import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
+import sortUidObjectByValue from "@/app/libs/function/sort-uid-object-by-value";
 import Icon from "@/public/icon";
 import { useEffect } from "react";
 

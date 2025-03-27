@@ -1,9 +1,9 @@
-import { firestoreRead } from "../libs/firestore/firestore-read";
+import firestoreRead from "../libs/firestore/firestore-read";
 
 import { CourseInterfaceProvider } from "./course-provider";
 
 import Interface from "./interface";
-import ErrorMessage from "../libs/material/error";
+import ErrorMessage from "../libs/components/error";
 
 export default async function Course() {
   const contentData = await firestoreRead({collectionName: "course"}).then((docs) => JSON.parse(docs));

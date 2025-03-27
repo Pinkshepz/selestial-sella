@@ -6,9 +6,9 @@ import Link from "next/link";
 import { useGlobalContext } from "@/app/global-provider";
 import { useInterfaceContext } from "./../topic-provider";
 
-import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
-import stringToHex, { stringToRgb } from "@/app/libs/utils/string-to-rgb";
-import { TextColor } from "@/app/libs/material/chip";
+import sortUidObjectByValue from "@/app/libs/function/sort-uid-object-by-value";
+import stringToHex, { stringToRgb } from "@/app/libs/function/string-to-rgb";
+import { TextColor } from "@/app/libs/components/chip";
 import Icon from "@/public/icon";
 
 export default function DisplayView ({
@@ -310,7 +310,7 @@ export default function DisplayView ({
             </div>
             <div className="fixed bottom-0 w-dvw h-dvh z-[-100]">
                 <img src={courseData.image} alt="" className="absolute h-full w-full z-[-100]" />
-                <div className="absolute h-full w-full z-[-90] bg-highlight/90 dark:bg-highlight-dark/90"></div>
+                <div className="absolute h-full w-full z-[-90] bg-highlight/95 dark:bg-highlight-dark/90"></div>
                 <div className="glass-cover-spread z-[-80]"></div>
             </div>
         </div>

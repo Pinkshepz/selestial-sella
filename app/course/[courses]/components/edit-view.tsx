@@ -6,12 +6,12 @@ import { useGlobalContext } from "@/app/global-provider";
 import { useInterfaceContext } from "../topic-provider";
 
 import firestoreUpdateTopic from "@/app/libs/firestore/firestore-manager-topic";
-import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
-import { stringToRgb } from "@/app/libs/utils/string-to-rgb";
-import { TextColor, ChipTextColor } from "@/app/libs/material/chip";
-import makeid from "@/app/libs/utils/make-id";
+import sortUidObjectByValue from "@/app/libs/function/sort-uid-object-by-value";
+import { stringToRgb } from "@/app/libs/function/string-to-rgb";
+import { TextColor, ChipTextColor } from "@/app/libs/components/chip";
+import makeid from "@/app/libs/function/make-id";
 import Icon from "@/public/icon";
-import LastEdited from "@/app/libs/material/last-edited";
+import LastEdited from "@/app/libs/components/last-edited";
 
 export default function EditView ({
     courseData,
@@ -91,8 +91,15 @@ export default function EditView ({
         (globalParams.popUpAction == "saveChangesToggle")) {
             setGlobalParams("isLoading", true);
             firestoreUpdateTopic({
+                firebaseBranch: "ALPHA",
                 collectionName: "topic",
-                originalData: topicData, 
+                originalData: {}, 
+                editedData: bufferTopicData
+            });
+            firestoreUpdateTopic({
+                firebaseBranch: "BETA",
+                collectionName: "topic",
+                originalData: {}, 
                 editedData: bufferTopicData
             }).then(
                 (data) => {
@@ -105,6 +112,7 @@ export default function EditView ({
             );
         }
     }, [globalParams.popUpConfirm]);
+
 
     // handle add new topic content
     // 1. contentCard
@@ -691,7 +699,7 @@ export default function EditView ({
             </div>
             <div className="fixed bottom-0 w-dvw h-dvh z-[-100]">
                 <img src={courseData.image} alt="" className="absolute h-full w-full z-[-100]" />
-                <div className="absolute h-full w-full z-[-90] bg-highlight/90 dark:bg-highlight-dark/90"></div>
+                <div className="absolute h-full w-full z-[-90] bg-highlight/95 dark:bg-highlight-dark/90"></div>
                 <div className="glass-cover-spread z-[-80]"></div>
             </div>
         </div>

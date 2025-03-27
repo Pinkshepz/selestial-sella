@@ -3,11 +3,11 @@
 import React, { useEffect, useState } from 'react';
 import useEventListener from "../../../libs/hooks/useEventListener";
 
-import shuffle from '@/app/libs/utils/shuffle';
-import formatQuizText from '@/app/libs/utils/paragraph';
+import shuffle from '@/app/libs/function/shuffle';
+import formatQuizText from '@/app/libs/function/paragraph';
 import { useContentInterfaceContext } from '../content-provider';
 import Icon from '@/public/icon';
-import { ChipTextColor } from '@/app/libs/material/chip';
+import { ChipTextColor } from '@/app/libs/components/chip';
 
 export default function QuizInterface ({
     libraryData,
@@ -401,7 +401,7 @@ export default function QuizInterface ({
 
     return(
         <div className='flex flex-col'>
-            
+
             <div id='quiz-two-cols-fixed' className='-border-t' key='interface'>
 
                 <aside id="quiz-col-scroll-aside" className='-scroll-none -border-r' key='interface-aside'>
@@ -539,7 +539,7 @@ export default function QuizInterface ({
             </footer>
             <div className="fixed bottom-0 w-dvw h-dvh z-[-100]">
                 <img src={libraryData.image ? libraryData.image : BG} alt="" className="absolute h-full w-full z-[-100]" />
-                <div className="absolute h-full w-full z-[-90] bg-highlight/90 dark:bg-highlight-dark/90"></div>
+                <div className="absolute h-full w-full z-[-90] bg-highlight/95 dark:bg-highlight-dark/90"></div>
                 <div className="glass-cover-spread z-[-80]"></div>
             </div>
         </div>

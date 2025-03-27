@@ -5,10 +5,10 @@ import { useEffect } from "react";
 import { useGlobalContext } from "../global-provider";
 import { useInterfaceContext } from './course-provider';
 
-import ConfirmPopUp from "@/app/libs/material/confirm-popup";
+import ConfirmPopUp from "@/app/libs/components/confirm-popup";
 import Controller from "./components/controller";
 
-import sortUidObjectByValue from '@/app/libs/utils/sort-uid-object-by-value';
+import sortUidObjectByValue from '@/app/libs/function/sort-uid-object-by-value';
 
 import TableView from './components/display-table';
 import CardView from './components/display-card';
@@ -49,7 +49,7 @@ export default function Interface ({
     return (
         <>
             <ConfirmPopUp />
-            <main className="relative flex flex-col mt-36 mb-16">
+            <main className="relative flex flex-col pt-36 mb-16">
                 <Controller />
                 {(Object.keys(interfaceParams.logUpdate).length > 0)
                     ? <LogUpdate />

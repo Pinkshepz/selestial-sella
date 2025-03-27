@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import useEventListener from "../libs/hooks/useEventListener";
-import stringToHex from "../libs/utils/string-to-rgb";
+import stringToHex from "../libs/function/string-to-rgb";
 
 export default function Particles (): React.ReactNode {
 

@@ -1,16 +1,48 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+// =========================================================================
+// 1. IMPORT
+// =========================================================================
 
-import makeid from "@/app/libs/utils/make-id";
+//// 1.1 Metadata & module & framework
+import metadata from "@/metadata.json";
+import { useState, useEffect, useRef } from "react";
 import firestoreUpdate from "../../../libs/firestore/firestore-manager";
 import firestoreUpdateQuiz from "@/app/libs/firestore/firestore-manager-quiz";
-import Icon from "@/public/icon";
-import { ChipTextColor, TextColor } from "@/app/libs/material/chip";
-import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
-import { useContentInterfaceContext } from "../content-provider";
-import { useGlobalContext } from "@/app/global-provider";
 
+//// 1.2 Custom React hooks
+import { useGlobalContext } from "@/app/global-provider";
+import { useContentInterfaceContext } from "../content-provider";
+
+//// 1.3 React components
+import { ChipTextColor, TextColor } from "@/app/libs/components/chip";
+
+//// 1.4 Utility functions
+import makeid from "@/app/libs/function/make-id";
+import sortUidObjectByValue from "@/app/libs/function/sort-uid-object-by-value";
+
+//// 1.5 Public and others
+import Icon from "@/public/icon";
+
+
+// =========================================================================
+// 2. GLOBAL CONSTANT VARIABLES AND FUNCTIONS
+// =========================================================================
+
+const BG = "https://media.suara.com/pictures/653x366/2019/12/19/95933-aurora.jpg"; // Default background image
+
+
+// =========================================================================
+// 3. LOCAL COMPONENTS
+// =========================================================================
+
+// NONE
+
+
+// =========================================================================
+// 4. EXPORT DEFAULT FUNCTION
+// =========================================================================
+    
 export default function EditorInterface ({
     libraryData,
     questionData
@@ -18,48 +50,34 @@ export default function EditorInterface ({
     libraryData: {[key: string]: string}, // {uid: {library data}}
     questionData: {[key: string]: {[key: string]: any}}, // {uid: {each question}}
 }): React.ReactNode {
-    // supplement wallpaper
-    const BG = "https://media.suara.com/pictures/653x366/2019/12/19/95933-aurora.jpg";
-    // connect to global context
+
+    //// =========================================================================
+    //// A. REACT HOOKS AND HANDLING FUNCTION
+    //// =========================================================================
+
+    ////// A.I Connect global context: /app/*
     const {globalParams, setGlobalParams} = useGlobalContext();
 
-    // connect to interface context
+    ////// A.II Connect local context: /app/library/[quiz]/*
     const {contentInterfaceParams, setContentInterfaceParams} = useContentInterfaceContext();
 
-    // counterpart of content data for editing
+    ////// A.III useState storing buffer data (duplicate of original data for live editing)
     const [bufferQuestion, setBufferQuestion] = useState(questionData);
 
-    // recent mode of question
-    const [recentlyUsedMode, setRecentlyUsedMode] = useState("flashcard");
+    ////// A.IV Current modality of question for determining editing interface and default modality
+    const [currentQuestionModality, setCurrentQuestionModality] = useState("flashcard");
 
-    // recent section of question
-    const [recentlyUsedSection, setRecentlyUsedSection] = useState("");
+    ////// A.V Current section of question for default section value after adding new question
+    const [currentQuestionSection, setCurrentQuestionSection] = useState("");
 
-    // toggle reset id
-    const [toggleResetId, setToggleResetId] = useState(false);
+    ////// A.VI <Toggle> reset all questions id for rearranging after adding, duplicating, deleting and moving question
+    const [toggleResetQuestionId, setToggleResetQuestionId] = useState(false);
 
-    // target uid to scroll to after id has been already reset
-    const [targetUidScroll, setTargetUidScroll] = useState("");
-
-    // choice key toggle
+    ////// A.VII choice key toggle
     const [choiceKeyToggle, setChoiceKeyToggle] = useState(1);
 
-    // ref for elementsEditQuiz
+    ////// A.IX ref for elementsEditQuiz
     const elementsRef: {[key: string]: any} = useRef({});
-
-    // go to ref
-    const scrollToRef = (refKey: string): void => {
-        try {
-            elementsRef.current[refKey].scrollIntoView({
-                block: "start",
-                behavior: "smooth"
-            });
-            setTargetUidScroll("");
-            return;
-        } catch (error) {
-            return;
-        }
-    };
 
     // detect footprint of question and return id="changed"
     const handleFootprintQuestion = (uid: string, footprint: string) => {
@@ -82,7 +100,7 @@ export default function EditorInterface ({
 
     // handle reset id toggle
     useEffect(() => {
-        if (toggleResetId) {
+        if (toggleResetQuestionId) {
             const processData = (): typeof bufferQuestion => {
                 let processedData: typeof bufferQuestion = {};
                 // assign new question number and library uid
@@ -92,13 +110,12 @@ export default function EditorInterface ({
                         id: index + 1
                     }
                 });
-                setToggleResetId(false);
-                scrollToRef(targetUidScroll);
+                setToggleResetQuestionId(false);
                 return sortUidObjectByValue(processedData, "id", true);
             }
             setBufferQuestion(processData());
         }
-    }, [toggleResetId]);
+    }, [toggleResetQuestionId]);
 
     // duplicate question
     const handleDuplicateQuestion = (uid: string): void => {
@@ -117,8 +134,7 @@ export default function EditorInterface ({
                 choices: bufferQuestion[uid].choices
             }
         }));
-        setTargetUidScroll(newUid);
-        setToggleResetId(true);
+        setToggleResetQuestionId(true);
     }
 
     // duplicate question choice
@@ -169,9 +185,9 @@ export default function EditorInterface ({
             setBufferQuestion((prev) => ({
                 ...prev,
                 [newUid]: {
-                    mode: recentlyUsedMode,
+                    mode: currentQuestionModality,
                     libraryFootprint: libraryData.id, // for recover deleted library
-                    questionSection: recentlyUsedSection,
+                    questionSection: currentQuestionSection,
                     questionImage: "",
                     questionText: "",
                     questionBackText: "",
@@ -185,8 +201,7 @@ export default function EditorInterface ({
                     }] // may be have another parameter determining amount of choices added
                 }
             }));
-            setTargetUidScroll(newUid);
-            setToggleResetId(true);
+            setToggleResetQuestionId(true);
         }
         setContentInterfaceParams("addQuestionToggle", false)
     }, [contentInterfaceParams.addQuestionToggle]);
@@ -222,12 +237,11 @@ export default function EditorInterface ({
         }));
         // remember recent section
         if (targetKey == "questionSection") {
-            setRecentlyUsedSection(targetValue);
+            setCurrentQuestionSection(targetValue);
         }
         // if id change -> reset id
         if (targetKey == "id") {
-            setToggleResetId(true);
-            setTargetUidScroll(uid);
+            setToggleResetQuestionId(true);
         }
     };
 
@@ -302,7 +316,7 @@ export default function EditorInterface ({
         const currentIndex: number = MODE.indexOf(currentMode);
         // change to next mode
         onPlaceholderQuestionChange(uid, "mode", MODE[(currentIndex + 1) % MODE.length]);
-        setRecentlyUsedMode(MODE[(currentIndex + 1) % MODE.length]);
+        setCurrentQuestionModality(MODE[(currentIndex + 1) % MODE.length]);
         return;
     };
 
@@ -341,6 +355,16 @@ export default function EditorInterface ({
 
             // update library data
             firestoreUpdate({
+                firebaseBranch: "ALPHA",
+                collectionName: "library",
+                originalData: {[libraryUid]: cloneLibraryData}, 
+                editedData: {[libraryUid]: {
+                    ...cloneLibraryData,
+                    totalQuestion: Object.keys(bufferQuestion).length
+                }}
+            });
+            firestoreUpdate({
+                firebaseBranch: "BETA",
                 collectionName: "library",
                 originalData: {[libraryUid]: cloneLibraryData}, 
                 editedData: {[libraryUid]: {
@@ -351,6 +375,12 @@ export default function EditorInterface ({
 
             // update all question data
             firestoreUpdateQuiz({
+                firebaseBranch: "ALPHA",
+                originalData: questionData, 
+                editedData: processData(bufferQuestion)
+            })
+            firestoreUpdateQuiz({
+                firebaseBranch: "BETA",
                 originalData: questionData, 
                 editedData: processData(bufferQuestion)
             }).then(
@@ -387,6 +417,16 @@ export default function EditorInterface ({
             
             // update library data
             firestoreUpdate({
+                firebaseBranch: "ALPHA",
+                collectionName: "library",
+                originalData: {[libraryUid]: cloneLibraryData}, 
+                editedData: {[libraryUid]: {
+                    ...cloneLibraryData,
+                    totalQuestion: Object.keys(bufferQuestion).length
+                }}
+            });
+            firestoreUpdate({
+                firebaseBranch: "BETA",
                 collectionName: "library",
                 originalData: {[libraryUid]: cloneLibraryData}, 
                 editedData: {[libraryUid]: {
@@ -397,6 +437,12 @@ export default function EditorInterface ({
             
             // update all question data
             firestoreUpdateQuiz({
+                firebaseBranch: "ALPHA",
+                originalData: questionData, 
+                editedData: processData(bufferQuestion) as typeof bufferQuestion
+            })
+            firestoreUpdateQuiz({
+                firebaseBranch: "BETA",
                 originalData: questionData, 
                 editedData: processData(bufferQuestion) as typeof bufferQuestion
             }).then(
@@ -420,7 +466,7 @@ export default function EditorInterface ({
                 setGlobalParams("popUpText", "We recommend to save all changes to prevent data loss")
             }
         }
-    }, [targetUidScroll]);
+    }, [Object.keys(bufferQuestion).length]);
 
     // Filter by search key
     let filteredQuestion: {[key: string]: {[key: string]: any}} = {};
@@ -734,7 +780,7 @@ export default function EditorInterface ({
             </div>
             <div className="fixed bottom-0 w-dvw h-dvh z-[-100]">
                 <img src={libraryData.image ? libraryData.image : BG} alt="" className="absolute h-full w-full z-[-100]" />
-                <div className="absolute h-full w-full z-[-90] bg-highlight/90 dark:bg-highlight-dark/90"></div>
+                <div className="absolute h-full w-full z-[-90] bg-highlight/95 dark:bg-highlight-dark/90"></div>
                 <div className="glass-cover-spread z-[-80]"></div>
             </div>
         </div>

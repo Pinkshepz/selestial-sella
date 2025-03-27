@@ -42,6 +42,21 @@ export default function Controller () {
                     </Link>
                 }
 
+                {(Object.keys(interfaceParams.logUpdate).length > 0) &&
+                    <button
+                        onClick={() => {
+                            setInterfaceParams("logUpdate", {});
+                            setGlobalParams("isLoading", true);
+                            if (window !== undefined) {
+                                window.location.reload();
+                            }
+                        }}
+                        className="controller-menu">
+                        <Icon icon="left" size={16} />
+                        <p>BACK TO COURSES</p>
+                    </button>
+                }
+
                 {!interfaceParams.editMode && (Object.keys(interfaceParams.logUpdate).length === 0) &&
                     <button
                         onClick={() => setInterfaceParams("displayToggle", !interfaceParams.displayToggle)}

@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { useGlobalContext } from "@/app/global-provider";
-import {stringToRgb} from "@/app/libs/utils/string-to-rgb";
+import {stringToRgb} from "@/app/libs/function/string-to-rgb";
 
 const DisplayRow = ({
     cardUid,

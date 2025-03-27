@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 import { useGlobalContext } from "../global-provider";
 
-import ConfirmPopUp from "@/app/libs/material/confirm-popup";
+import ConfirmPopUp from "@/app/libs/components/confirm-popup";
 import Controller from "./components/controller";
 import CourseDisplay from "./components/course-display";
 
@@ -23,7 +23,7 @@ export default function Interface ({
     return (
         <>
             <ConfirmPopUp />
-            <main className="relative flex flex-col mt-36 mb-16" aria-haspopup={true} aria-disabled={globalParams.popUp}>
+            <main className="relative flex flex-col pt-36 mb-16" aria-haspopup={true} aria-disabled={globalParams.popUp}>
                 <Controller />
                 <CourseDisplay contentData={contentData} />
             </main>

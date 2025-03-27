@@ -6,9 +6,10 @@ import { useGlobalContext } from "@/app/global-provider";
 import { useInterfaceContext } from "../course-provider";
 
 import firestoreUpdate from "@/app/libs/firestore/firestore-manager";
-import makeid from "@/app/libs/utils/make-id";
-import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
-import { TextColor } from "@/app/libs/material/chip";
+import makeid from "@/app/libs/function/make-id";
+import sortUidObjectByValue from "@/app/libs/function/sort-uid-object-by-value";
+import { TextColor } from "@/app/libs/components/chip";
+
 import Icon from "@/public/icon";
 
 export default function CardEditor ({
@@ -66,6 +67,13 @@ export default function CardEditor ({
             (globalParams.popUpAction == "saveChangesToggle")) {
                 setGlobalParams("isLoading", true);
                 firestoreUpdate({
+                    firebaseBranch: "ALPHA",
+                    collectionName: "course",
+                    originalData: contentData, 
+                    editedData: bufferContent
+                });
+                firestoreUpdate({
+                    firebaseBranch: "BETA",
                     collectionName: "course",
                     originalData: contentData, 
                     editedData: bufferContent

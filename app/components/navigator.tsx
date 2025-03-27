@@ -50,15 +50,13 @@ export default function GlobalNavigator (): React.ReactNode {
     const handleLink = () => {
       setGlobalParams("isLoading", true);
       // if link to route A is clicked while it is already on the route A -> reload
-      if ((window !== undefined) && (currentPath == "/course")) {
+      if ((window !== undefined) && (currentPath == `/${route}`)) {
         window.location.reload();
       }
     }
 
     return (
-      <Link 
-        onClick={handleLink}
-        href={`/${route}`} className="-button-line">
+      <Link onClick={handleLink} href={`/${route}`} className="-button-line">
         <h5>{route.toLocaleUpperCase()}</h5>
       </Link>
     );

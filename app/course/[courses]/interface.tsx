@@ -6,7 +6,7 @@ import { useGlobalContext } from "../../global-provider";
 import { useInterfaceContext } from './topic-provider';
 
 import LogUpdate from "./components/log-update";
-import ConfirmPopUp from "@/app/libs/material/confirm-popup";
+import ConfirmPopUp from "@/app/libs/components/confirm-popup";
 import Controller from "./components/controller";
 
 import DisplayView from "./components/display-view";
@@ -32,7 +32,7 @@ export default function Interface ({
     return (
         <>
             <ConfirmPopUp />
-            <main className="relative flex flex-col mt-36 mb-16">
+            <main className="relative flex flex-col pt-36 mb-16">
                 <Controller />
                 {(Object.keys(interfaceParams.logUpdate).length > 0)
                     ? <LogUpdate courseData={courseData} />

@@ -5,16 +5,16 @@ import { useEffect } from "react";
 import { useGlobalContext } from "@/app/global-provider";
 import { useContentInterfaceContext } from "./content-provider";
 
-import ConfirmPopUp from "@/app/libs/material/confirm-popup";
+import ConfirmPopUp from "@/app/libs/components/confirm-popup";
 import SettingInterface from './components/setting';
 import QuizInterface from "./components/quiz";
 import EditorInterface from "./components/quiz-edit";
 import ControllerEdit from "./components/controller-edit";
 import LogUpdate from "./components/log-update";
-import ErrorMessage from "@/app/libs/material/error";
-import sortUidObjectByValue from "@/app/libs/utils/sort-uid-object-by-value";
+import ErrorMessage from "@/app/libs/components/error";
+import sortUidObjectByValue from "@/app/libs/function/sort-uid-object-by-value";
 
-import uidObjectToArray from "@/app/libs/utils/uid-object-to-array";
+import uidObjectToArray from "@/app/libs/function/uid-object-to-array";
 
 export default function Interface ({
     libraryData,

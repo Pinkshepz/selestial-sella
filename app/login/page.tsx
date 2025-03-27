@@ -3,11 +3,11 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import app from "../libs/firebase/fireclient";
+import app from "../libs/firebase/fireclient-alpha";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 import { useGlobalContext } from "../global-provider"
 import Icon from "../../public/icon"
-import Loading from "../libs/material/loading";
+import Loading from "../libs/components/loading";
 const GOOGLE_LOGO = "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png"
 
 // render login page

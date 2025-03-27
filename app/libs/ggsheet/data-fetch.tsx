@@ -1,5 +1,5 @@
 import { getGoogleSheetProps } from './ggsheet';
-import makeid from '../utils/make-id';
+import makeid from '../function/make-id';
 
 // CONSTANT VARIABLE
 const CARDSET_RANGE = "B1:Z";

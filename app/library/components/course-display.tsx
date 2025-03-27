@@ -1,7 +1,7 @@
 "use client";
 
 import { useInterfaceContext } from '../library-provider';
-import sortUidObjectByValue from '@/app/libs/utils/sort-uid-object-by-value';
+import sortUidObjectByValue from '@/app/libs/function/sort-uid-object-by-value';
 
 import TableView from './display-table';
 import CardView from './display-card';

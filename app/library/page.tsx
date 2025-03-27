@@ -1,9 +1,9 @@
-import { firestoreRead } from "../libs/firestore/firestore-read"
+import firestoreRead from "../libs/firestore/firestore-read"
 
 import { LibraryInterfaceProvider } from "./library-provider";
 
 import Interface from "./interface";
-import ErrorMessage from "../libs/material/error";
+import ErrorMessage from "../libs/components/error";
 
 export default async function Library() {
   const contentData = await firestoreRead({collectionName: "library"}).then((docs) => JSON.parse(docs));

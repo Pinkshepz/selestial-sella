@@ -1,34 +1,66 @@
-import fireapp from "../firebase/fireclient";
+import metadata from "@/metadata.json";
+
 import { getFirestore, query, where, collection, getDocs, WhereFilterOp } from "firebase/firestore";
 
+import appClientAlpha from '../firebase/fireclient-alpha';
+import appClientBeta from '../firebase/fireclient-beta';
+
 // get database
-export async function firestoreReadQuery ({
+export default async function firestoreReadQuery({
+  firebaseBranch = metadata.firebaseBranch[Math.round(Math.random() * metadata.firebaseBranch.length) - 1],
   collectionName,
   queryKey,
   queryComparator,
   queryValue
-} : {
+}: {
+  firebaseBranch?: typeof metadata.firebaseBranch[number],
   collectionName: string,
   queryKey: string,
   queryComparator: WhereFilterOp,
   queryValue: string
 }): Promise<string> {
-  try {
-    // get database
-    const db = getFirestore(fireapp);
-
-    // query data
-    const q = query(collection(db, collectionName), where(queryKey, queryComparator, queryValue));
+  console.log(`✏️ START READING ${firebaseBranch}/COLLECTION/${collectionName}`);
+  if (firebaseBranch == "ALPHA") {
+    try {
+      // get database
+      const dbAlpha = getFirestore(appClientAlpha);
+  
+      // query data
+      const q = query(collection(dbAlpha, collectionName), where(queryKey, queryComparator, queryValue));
     const querySnapshot = await getDocs(q);
-
-    // extract data
-    let docs: {[key: string]: {[key: string]: any}} = {}
-    querySnapshot.forEach((doc) => {
-      docs[doc.id] = doc.data();
-    })
-
-    return JSON.stringify(docs);
-  } catch (error) {
-    return "{}";
-  }
+  
+      // extract data
+      let docs: {[key: string]: {[key: string]: any}} = {}
+      querySnapshot.forEach((doc) => {
+        docs[doc.id] = doc.data();
+      })
+  
+      return JSON.stringify(docs);
+    } catch (error) {
+      return "{}";
+    }
+  } 
+  
+  else if (firebaseBranch == "BETA") {
+    try {
+      // get database
+      const dbBeta = getFirestore(appClientBeta);
+  
+      // query data
+      const q = query(collection(dbBeta, collectionName), where(queryKey, queryComparator, queryValue));
+    const querySnapshot = await getDocs(q);
+  
+      // extract data
+      let docs: {[key: string]: {[key: string]: any}} = {}
+      querySnapshot.forEach((doc) => {
+        docs[doc.id] = doc.data();
+      })
+  
+      return JSON.stringify(docs);
+    } catch (error) {
+      return "{}";
+    }
+  } 
+  
+  else {return "{}";}
 }

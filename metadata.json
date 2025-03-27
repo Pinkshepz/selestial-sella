@@ -1,0 +1,27 @@
+{
+    "appName": "AURICLE",
+    "appDescription": "Make medical complexity simple again.",
+    "firebaseBranch": ["ALPHA", "BETA"],
+    "questionModality": {
+        "BEST-ANSWER": {
+            "icon": "singleChoice",
+            "abbreviation": "MCQ"
+        },
+        "MULTIPLE-ANSWER": {
+            "icon": "multipleChoice",
+            "abbreviation": "MCQ"
+        },
+        "FLASHCARD": {
+            "icon": "flashcard",
+            "abbreviation": "CARD"
+        },
+        "SELECT-MATRIX": {
+            "icon": "table",
+            "abbreviation": "SELECT"
+        },
+        "SENTENCE-COMPLETION": {
+            "icon": "paragraph",
+            "abbreviation": "COMPLETION"
+        }
+    }
+}

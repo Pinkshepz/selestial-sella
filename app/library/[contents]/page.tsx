@@ -1,7 +1,10 @@
-import { firestoreReadQuery } from "../../libs/firestore/firestore-read-query";
+import firestoreReadQuery from "../../libs/firestore/firestore-read-query";
+
 import { ContentInterfaceProvider } from "./content-provider";
+
 import Interface from './interface';
-import uidObjectToArray from "@/app/libs/utils/uid-object-to-array";
+
+import uidObjectToArray from "@/app/libs/function/uid-object-to-array";
 
 // Dynamic routing <cardsets>
 export default async function Quizset ({ params }: { params: {contents: string} }) {
