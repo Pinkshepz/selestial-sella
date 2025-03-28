@@ -1,12 +1,21 @@
 "use client";
 
+//// 1.1 Metadata & module & framework
 import { useEffect } from "react";
 
+//// 1.2 Custom React hooks
 import { useGlobalContext } from "@/app/global-provider";
 import { useInterfaceContext } from "../topic-provider";
 
-import sortUidObjectByValue from "@/app/libs/function/sort-uid-object-by-value";
+//// 1.3 React components
+////     N/A
+
+//// 1.4 Utility functions
+import sortUidObjectByValue from "@/app/utility/function/object/sort-uid-object-by-value";
+
+//// 1.5 Public and others
 import Icon from "@/public/icon";
+
 
 export default function LogUpdate ({
     courseData

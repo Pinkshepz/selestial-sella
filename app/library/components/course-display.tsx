@@ -1,12 +1,23 @@
 "use client";
 
-import { useInterfaceContext } from '../library-provider';
-import sortUidObjectByValue from '@/app/libs/function/sort-uid-object-by-value';
+//// 1.1 Metadata & module & framework
+////     N/A
 
+//// 1.2 Custom React hooks
+import { useInterfaceContext } from '../library-provider';
+
+//// 1.3 React components
 import TableView from './display-table';
 import CardView from './display-card';
 import CardEditor from './edit-mode';
 import LogUpdate from './log-update';
+
+//// 1.4 Utility functions
+import sortUidObjectByValue from '@/app/utility/function/object/sort-uid-object-by-value';
+
+//// 1.5 Public and others
+////     N/A
+
 
 export default function CourseDisplay({
   contentData

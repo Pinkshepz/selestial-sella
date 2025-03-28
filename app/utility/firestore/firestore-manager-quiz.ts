@@ -2,7 +2,7 @@ import metadata from "@/metadata.json";
 
 import firestoreWrite from "./firestore-write";
 import firestoreDelete from "./firestore-delete";
-import object_compare from "@/app/libs/function/object-compare"
+import object_compare from "@/app/utility/function/object-compare"
 
 export default async function firestoreUpdateQuiz ({
     firebaseBranch,

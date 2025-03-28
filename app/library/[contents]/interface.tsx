@@ -1,20 +1,29 @@
 "use client";
 
+//// 1.1 Metadata & module & framework
 import { useEffect } from "react";
 
+//// 1.2 Custom React hooks
 import { useGlobalContext } from "@/app/global-provider";
 import { useContentInterfaceContext } from "./content-provider";
 
-import ConfirmPopUp from "@/app/libs/components/confirm-popup";
+//// 1.3 React components
+import ConfirmPopUp from "@/app/utility/components/confirm-popup";
+import ErrorMessage from "@/app/utility/components/error";
+
 import SettingInterface from './components/setting';
 import QuizInterface from "./components/quiz";
 import EditorInterface from "./components/quiz-edit";
 import ControllerEdit from "./components/controller-edit";
 import LogUpdate from "./components/log-update";
-import ErrorMessage from "@/app/libs/components/error";
-import sortUidObjectByValue from "@/app/libs/function/sort-uid-object-by-value";
 
-import uidObjectToArray from "@/app/libs/function/uid-object-to-array";
+//// 1.4 Utility functions
+import sortUidObjectByValue from "@/app/utility/function/object/sort-uid-object-by-value";
+import uidObjectToArray from "@/app/utility/function/object/uid-object-to-array";
+
+//// 1.5 Public and others
+////     N/A
+
 
 export default function Interface ({
     libraryData,

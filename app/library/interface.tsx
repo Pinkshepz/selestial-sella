@@ -1,12 +1,23 @@
 "use client";
 
+//// 1.1 Metadata & module & framework
 import { useEffect } from "react";
 
+//// 1.2 Custom React hooks
 import { useGlobalContext } from "../global-provider";
 
-import ConfirmPopUp from "@/app/libs/components/confirm-popup";
+//// 1.3 React components
 import Controller from "./components/controller";
 import CourseDisplay from "./components/course-display";
+
+import ConfirmPopUp from "@/app/utility/components/confirm-popup";
+
+//// 1.4 Utility functions
+////     N/A
+
+//// 1.5 Public and others
+////     N/A
+
 
 export default function Interface ({
     contentData

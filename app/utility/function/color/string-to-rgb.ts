@@ -1,7 +1,7 @@
 import hexToRgb from "./hex-to-rgb";
 import hslToHex from "./hsl-to-hex";
 
-export default function stringToHex (text) {
+export default function stringToHex (text: string) {
     // turn string to ascii code -> sort both alphabet and number
     let ascii = 0;
     for (let index = 0; index < text.length; index++) {
@@ -13,7 +13,7 @@ export default function stringToHex (text) {
     return hslToHex((ascii ** 1.8) % 360, 70, 70);
 }
 
-export function stringToRgb (text) {
+export function stringToRgb (text: string) {
     // turn string to ascii code -> sort both alphabet and number
     let ascii = 0;
     for (let index = 0; index < text.length; index++) {

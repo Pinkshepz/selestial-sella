@@ -1,15 +1,23 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+//// 1.1 Metadata & module & framework
 import Link from "next/link";
+import { useState, useRef } from "react";
 
+//// 1.2 Custom React hooks
 import { useGlobalContext } from "@/app/global-provider";
 import { useInterfaceContext } from "./../topic-provider";
 
-import sortUidObjectByValue from "@/app/libs/function/sort-uid-object-by-value";
-import stringToHex, { stringToRgb } from "@/app/libs/function/string-to-rgb";
-import { TextColor } from "@/app/libs/components/chip";
+//// 1.3 React components
+import { TextColor } from "@/app/utility/components/chip";
+
+//// 1.4 Utility functions
+import sortUidObjectByValue from "@/app/utility/function/object/sort-uid-object-by-value";
+import stringToHex, { stringToRgb } from "@/app/utility/function/color/string-to-rgb";
+
+//// 1.5 Public and others
 import Icon from "@/public/icon";
+
 
 export default function DisplayView ({
     courseData,

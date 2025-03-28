@@ -1,8 +1,16 @@
 "use client";
 
-import Link from "next/link";
+//// 1.1 Metadata & module & framework
+
+//// 1.2 Custom React hooks
 import { useGlobalContext } from "../global-provider";
-import Icon from "@/public/icon";
+
+//// 1.3 React components
+
+//// 1.4 Utility functions
+
+//// 1.5 Public and others
+
 
 export default function HomeStats ({
     courseCount,

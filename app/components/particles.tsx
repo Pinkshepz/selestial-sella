@@ -1,8 +1,20 @@
 "use client";
 
+//// 1.1 Metadata & module & framework
 import React, { useState, useEffect } from "react";
-import useEventListener from "../libs/hooks/useEventListener";
-import stringToHex from "../libs/function/string-to-rgb";
+
+//// 1.2 Custom React hooks
+import useEventListener from "../utility/hooks/useEventListener";
+
+//// 1.3 React components
+////     N/A
+
+//// 1.4 Utility functions
+import stringToHex from "../utility/function/color/string-to-rgb";
+
+//// 1.5 Public and others
+////     N/A
+
 
 export default function Particles (): React.ReactNode {
 

@@ -6,7 +6,7 @@ import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { type ThemeProviderProps } from "next-themes/dist/types";
 
 import { getAuth } from "firebase/auth";
-import app from "./libs/firebase/fireclient-alpha";
+import app from "./utility/firebase/fireclient-alpha";
 
 // manage theme provider
 const ThemeProvider = ({ children, ...props }: ThemeProviderProps) => {

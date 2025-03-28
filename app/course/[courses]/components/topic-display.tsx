@@ -1,7 +1,20 @@
 "use client";
 
+//// 1.1 Metadata & module & framework
+////     N/A
+
+//// 1.2 Custom React hooks
 import { useInterfaceContext } from '../../course-provider';
-import sortUidObjectByValue from '@/app/libs/function/sort-uid-object-by-value';;
+
+//// 1.3 React components
+////     N/A
+
+//// 1.4 Utility functions
+import sortUidObjectByValue from '@/app/utility/function/object/sort-uid-object-by-value';;
+
+//// 1.5 Public and others
+////     N/A
+
 
 export default function TopicDisplay({
   courseTopicData

@@ -7,19 +7,19 @@
 //// 1.1 Metadata & module & framework
 import metadata from "@/metadata.json";
 import { useState, useEffect, useRef } from "react";
-import firestoreUpdate from "../../../libs/firestore/firestore-manager";
-import firestoreUpdateQuiz from "@/app/libs/firestore/firestore-manager-quiz";
+import firestoreUpdate from "../../../utility/firestore/firestore-manager";
+import firestoreUpdateQuiz from "@/app/utility/firestore/firestore-manager-quiz";
 
 //// 1.2 Custom React hooks
 import { useGlobalContext } from "@/app/global-provider";
 import { useContentInterfaceContext } from "../content-provider";
 
 //// 1.3 React components
-import { ChipTextColor, TextColor } from "@/app/libs/components/chip";
+import { ChipTextColor, TextColor } from "@/app/utility/components/chip";
 
 //// 1.4 Utility functions
-import makeid from "@/app/libs/function/make-id";
-import sortUidObjectByValue from "@/app/libs/function/sort-uid-object-by-value";
+import makeid from "@/app/utility/function/make-id";
+import sortUidObjectByValue from "@/app/utility/function/object/sort-uid-object-by-value";
 
 //// 1.5 Public and others
 import Icon from "@/public/icon";

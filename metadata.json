@@ -1,6 +1,6 @@
 {
     "appName": "AURICLE",
-    "appDescription": "Make medical complexity simple again.",
+    "appDescription": "Make medical complexity simple again",
     "firebaseBranch": ["ALPHA", "BETA"],
     "questionModality": {
         "BEST-ANSWER": {

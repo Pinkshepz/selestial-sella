@@ -1,5 +1,5 @@
 import Icon from "@/public/icon";
-import { stringToRgb } from "@/app/libs/function/string-to-rgb";
+import { stringToRgb } from "@/app/utility/function/color/string-to-rgb";
 
 export function Chip ({
     chipText,

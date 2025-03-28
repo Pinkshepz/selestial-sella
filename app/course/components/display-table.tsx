@@ -1,7 +1,19 @@
+//// 1.1 Metadata & module & framework
 import Link from "next/link";
 
+//// 1.2 Custom React hooks
 import { useGlobalContext } from "@/app/global-provider";
-import {stringToRgb} from "@/app/libs/function/string-to-rgb";
+
+//// 1.3 React components
+////     N/A
+
+//// 1.4 Utility functions
+import {stringToRgb} from "@/app/utility/function/color/string-to-rgb";
+
+//// 1.5 Public and others
+////     N/A
+
+
 
 const DisplayRow = ({
     cardUid,

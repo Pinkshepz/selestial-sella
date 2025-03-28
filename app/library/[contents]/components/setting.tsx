@@ -1,12 +1,22 @@
 "use client";
 
+//// 1.1 Metadata & module & framework
 import React, { useEffect } from 'react';
 import Link from 'next/link';
 
+//// 1.2 Custom React hooks
 import { useGlobalContext } from '@/app/global-provider';
 import { useContentInterfaceContext } from '../content-provider';
-import { ChipTextColor } from '@/app/libs/components/chip';
+
+//// 1.3 React components
+import { ChipTextColor } from '@/app/utility/components/chip';
+
+//// 1.4 Utility functions
+////     N/A
+
+//// 1.5 Public and others
 import Icon from "@/public/icon";
+
 
 export default function SettingInterface ({
     libraryData,

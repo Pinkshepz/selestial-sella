@@ -1,16 +1,26 @@
 "use client";
 
+//// 1.1 Metadata & module & framework
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import app from "../libs/firebase/fireclient-alpha";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
-import { useGlobalContext } from "../global-provider"
-import Icon from "../../public/icon"
-import Loading from "../libs/components/loading";
-const GOOGLE_LOGO = "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png"
 
-// render login page
+//// 1.2 Custom React hooks
+import { useGlobalContext } from "../global-provider"
+
+//// 1.3 React components
+import Loading from "@/app/utility/components/loading";
+
+//// 1.4 Utility functions
+import app from "@/app/utility/firebase/fireclient-alpha";
+
+//// 1.5 Public and others
+const GOOGLE_LOGO = "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png";
+import Icon from "@/public/icon";
+
+
+// Render login page
 const Login = (): React.ReactNode => {
     // access web router
     const router = useRouter();

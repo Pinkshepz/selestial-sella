@@ -1,4 +1,4 @@
-import { firestoreCountCollection } from "./libs/firestore/firestore-count-collection";
+import { firestoreCountCollection } from "./utility/firestore/firestore-count-collection";
 import Hero from "./components/hero";
 import HomeStats from "./components/home-stats";
 

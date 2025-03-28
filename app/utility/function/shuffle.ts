@@ -1,5 +1,5 @@
 // Shuffle items in array
-export default function shuffle(array) {
+export default function shuffle(array: any[]) {
     // Copy new array
     let c_array = [...array];
 

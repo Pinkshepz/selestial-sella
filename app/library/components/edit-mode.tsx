@@ -1,13 +1,23 @@
 "use client";
 
+//// 1.1 Metadata & module & framework
 import { useState, useEffect } from "react";
 
-import makeid from "../../libs/function/make-id";
-import sortUidObjectByValue from "@/app/libs/function/sort-uid-object-by-value";
-import firestoreUpdate from "../../libs/firestore/firestore-manager";
-import Icon from "../../../public/icon";
+//// 1.2 Custom React hooks
 import { useGlobalContext } from "../../global-provider";
 import { useInterfaceContext } from "../library-provider";
+
+//// 1.3 React components
+////     N/A
+
+//// 1.4 Utility functions
+import firestoreUpdate from "@/app/utility/firestore/firestore-manager";
+import makeid from "@/app/utility/function/make-id";
+import sortUidObjectByValue from "@/app/utility/function/object/sort-uid-object-by-value";
+
+//// 1.5 Public and others
+import Icon from "@/public/icon";
+
 
 export default function CardEditor ({
     contentData

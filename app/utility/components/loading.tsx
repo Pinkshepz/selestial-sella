@@ -2,7 +2,7 @@
 
 import "@/app/styles/loading.css";
 
-import { useGlobalContext } from "../../global-provider";
+import { useGlobalContext } from "@/app/global-provider";
 
 export default function Loading (): React.ReactNode {
     // access global data

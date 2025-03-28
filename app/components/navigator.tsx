@@ -1,15 +1,25 @@
 "use client";
 
+//// 1.1 Metadata & module & framework
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import { usePathname } from 'next/navigation'
-import React, { useState, useEffect } from "react";
 
+//// 1.2 Custom React hooks
 import { useGlobalContext } from "../global-provider"
+
+//// 1.3 React components
 import NavPathName from "./navpathname";
+
+//// 1.4 Utility functions
+////     N/A
+
+//// 1.5 Public and others
 import Icon from "@/public/icon";
 import cat from "@/public/images/cat.png";
+
 
 export default function GlobalNavigator (): React.ReactNode {
 

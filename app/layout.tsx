@@ -9,10 +9,10 @@ import './styles/two-columns.css'
 import './styles/quiz-interface.css'
 import './styles/slider.css'
 
-import "./libs/firebase/fireclient-alpha"
+import "./utility/firebase/fireclient-alpha"
 
 import GlobalNavigator from './components/navigator'
-import Loading from './libs/components/loading'
+import Loading from './utility/components/loading'
 import ThemeProvider from './global-provider'
 import { GlobalProvider } from "./global-provider";
 

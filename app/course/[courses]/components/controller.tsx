@@ -1,12 +1,20 @@
 "use client";
 
+//// 1.1 Metadata & module & framework
 import { useEffect } from "react";
 import Link from "next/link";
 
-import { useGlobalContext } from "../../../global-provider"
+//// 1.2 Custom React hooks
+import { useGlobalContext } from "@/app/global-provider"
 import { useInterfaceContext } from "./../topic-provider";
 
+//// 1.3 React components
+
+//// 1.4 Utility functions
+
+//// 1.5 Public and others
 import Icon from "@/public/icon";
+
 
 export default function Controller () {
     // connect to global context

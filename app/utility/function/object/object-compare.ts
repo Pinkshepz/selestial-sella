@@ -1,4 +1,4 @@
-export default function object_compare( x, y ) {
+export default function object_compare( x: any, y: any ) {
     if ( x === y ) return true;
       // if both x and y are null or undefined and exactly the same
   

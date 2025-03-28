@@ -1,13 +1,22 @@
 "use client";
 
+//// 1.1 Metadata & module & framework
 import React, { useEffect, useState } from 'react';
-import useEventListener from "../../../libs/hooks/useEventListener";
 
-import shuffle from '@/app/libs/function/shuffle';
-import formatQuizText from '@/app/libs/function/paragraph';
+//// 1.2 Custom React hooks
+import useEventListener from "@/app/utility/hooks/useEventListener";
 import { useContentInterfaceContext } from '../content-provider';
+
+//// 1.3 React components
+import { ChipTextColor } from '@/app/utility/components/chip';
+
+//// 1.4 Utility functions
+import formatQuizText from '@/app/utility/function/paragraph';
+import shuffle from '@/app/utility/function/shuffle';
+
+//// 1.5 Public and others
 import Icon from '@/public/icon';
-import { ChipTextColor } from '@/app/libs/components/chip';
+
 
 export default function QuizInterface ({
     libraryData,
