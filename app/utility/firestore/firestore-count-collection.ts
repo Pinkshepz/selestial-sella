@@ -1,7 +1,5 @@
-import fireapp from '../firebase/fireclient-alpha';
 import { getFirestore, collection, getCountFromServer } from "firebase/firestore";
 import appClientAlpha from '../firebase/fireclient-alpha';
-
 
 // get database
 export async function firestoreCountCollection(collectionName: string): Promise<number> {
