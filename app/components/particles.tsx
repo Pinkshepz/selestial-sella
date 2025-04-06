@@ -99,7 +99,7 @@ export default function Particles (): React.ReactNode {
 
 
     // 4. object_spacing of objects -> lesser means more density -> more objects displayed
-    const object_spacing = 75;
+    const object_spacing = 60;
     const rare_bubble_chance = 2; // density of colorful bubbles
     
     
@@ -137,7 +137,7 @@ export default function Particles (): React.ReactNode {
                 // select bubble size
                 let size: number
                 if ((((row + 1) * 9 + (column + 1)) % rare_bubble_chance) == 0) {
-                    size = 1 + (common_rand * 48)
+                    size = 1 + (common_rand * 36)
                 } else {
                     size = 1 + (common_rand * 12)
                 }

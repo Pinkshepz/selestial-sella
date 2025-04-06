@@ -55,7 +55,7 @@ export default function QuizDisplayMain_A_Modality ({
         array: localQuizContextParams.bufferLibrary.questionUidOrder,
         targetValue: localQuizContextParams.currentQuestionUid});
 
-        
+
     //// -------------------------------------------------------------------------
     //// D. RETURN FINAL COMPONENT
     //// -------------------------------------------------------------------------
@@ -79,10 +79,10 @@ export default function QuizDisplayMain_A_Modality ({
                     </div>
     
                     <div className="flex flex-row items-center gap-2 ml-auto px-2 py-1 -hover-bg-active-half rounded-lg">
-                        <Icon icon="true" size={16} />
+                        <Icon icon="rocket" size={16} />
                         <div className="flex flex-row items-center gap-1 font-bold">
-                            <span className="mr-2">ACCURACY</span>
-                            <span>{`${Math.round(100 * (questionNumber + 1) / totalQuestion)}`}%</span>
+                            <span className="mr-2">PROGRESS</span>
+                            <span>{`${Math.round(100 * (JSON.stringify(localQuizContextParams.bufferQuestion).split("graded").length - 1) / totalQuestion)}`}%</span>
                         </div>
                     </div>
             </article>
