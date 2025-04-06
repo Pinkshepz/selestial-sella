@@ -24,14 +24,8 @@ import objectKeyRetrieve from "@/app/utility/function/object/object-key-retrieve
 
 //// 1.5 Public and others
 import Icon from "@/public/icon";
-import { ChipTextColor, TextColor } from "@/app/utility/components/chip";
+import { TextColor } from "@/app/utility/components/chip";
 import stringToHex from "@/app/utility/function/color/string-to-rgb";
-
-
-// =========================================================================
-// 2. GLOBAL CONSTANT VARIABLES AND FUNCTIONS
-// =========================================================================
-
 
 // =========================================================================
 // 3. EXPORT DEFAULT FUNCTION
@@ -67,23 +61,6 @@ export default function QuizDisplayMain_C_CARD (): React.ReactNode {
 
     ////// -------------------------------------------------------------------------
     ////// GENERAL
-
-    ////// B.I Function to dynamically update object dataX
-    const handleQuestionKeyValueUpdate = ({
-        keysHierachy, // [key_1, key_2, key_3, ..., key_n]
-        targetValue // Newly assigned value of key_n
-    }: {
-        keysHierachy: string[],
-        targetValue: any
-    }): void => {
-        try {
-            setLocalQuizContextParams("bufferQuestion", objectKeyValueUpdate({
-                object: localQuizContextParams.bufferQuestion,
-                keysHierachy: keysHierachy,
-                targetValue:  targetValue
-            }));
-        } catch (error) {null}
-    }
 
     ////// B.IIa Function to handle choice selection
     const handleFlipCard = ({

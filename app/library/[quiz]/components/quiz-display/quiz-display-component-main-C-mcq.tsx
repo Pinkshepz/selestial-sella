@@ -141,7 +141,7 @@ export default function QuizDisplayMain_C_MCQ (): React.ReactNode {
     }, [localQuizContextParams.bufferQuestion])
     
     ////// B.IIb Function to handle choice grading
-    const handleGradeChoice = () => {}
+    // const handleGradeChoice = () => {}
 
     //// -------------------------------------------------------------------------
     //// C. COMPONENT ASSEMBLY

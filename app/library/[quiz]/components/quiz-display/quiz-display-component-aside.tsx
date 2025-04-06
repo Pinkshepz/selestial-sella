@@ -17,6 +17,7 @@ import { useLocalQuizContext } from "@/app/library/[quiz]/local-quiz-provider";
 //// 1.3 React components
 import Library from "@/app/utility/interface/interface-library";
 import QuestionAction from "@/app/utility/interface/interface-quiz";
+import { UniversalQuestionModality_Action } from "@/app/utility/interface/interface-quiz";
 
 import { TextColor } from "@/app/utility/components/chip";
 
@@ -72,7 +73,7 @@ export default React.memo(function QuizDisplayAside ({
     const alllQuestionUid = localQuizContextParams.bufferLibrary.questionUidOrder as string[];
     
     alllQuestionUid.filter(value => Object.keys(questionData).includes(value)).map((eachQuestionUid, index) => {
-        const eachQuestionData = questionData[eachQuestionUid];
+        const eachQuestionData = questionData[eachQuestionUid].questionData[questionData[eachQuestionUid].modality] as UniversalQuestionModality_Action;
 
         if (eachQuestionUid === localQuizContextParams.currentQuestionUid) {
             elementQuizAside.push(
@@ -80,12 +81,12 @@ export default React.memo(function QuizDisplayAside ({
                     className="flex flex-row items-center gap-2 w-full px-4 py-2 -border-b -hover-bg-active">
                     <p className={`font-bold text-left color-slate ${(index < 100) ? "min-w-4" : "min-w-8"}`}>{index + 1}</p>
                     <TextColor 
-                        textColor={eachQuestionData.questionData[eachQuestionData.modality]!.graded
-                            ? stringToRgb(metadata.questionModality[eachQuestionData.modality].iconColorCode, globalParams.theme)
+                        textColor={eachQuestionData!.graded
+                            ? stringToRgb(metadata.questionModality[questionData[eachQuestionUid].modality].iconColorCode, globalParams.theme)
                             : {r: 128, g: 128, b: 128}}
-                        chipIcon={metadata.questionModality[eachQuestionData.modality].icon} />
+                        chipIcon={metadata.questionModality[questionData[eachQuestionUid].modality].icon} />
                     <div className="font-bold whitespace-nowrap overflow-hidden">
-                        {eachQuestionData.questionData[eachQuestionData.modality]!.questionText}
+                        {eachQuestionData!.questionText}
                     </div>
                 </div>
             );
@@ -99,12 +100,12 @@ export default React.memo(function QuizDisplayAside ({
                     className="flex flex-row items-center gap-2 w-full px-4 py-2 -border-b -hover-bg-50">
                     <p className={`font-bold text-left color-slate ${(index < 100) ? "min-w-4" : "min-w-8"}`}>{index + 1}</p>
                     <TextColor 
-                        textColor={eachQuestionData.questionData[eachQuestionData.modality]!.graded
-                            ? stringToRgb(metadata.questionModality[eachQuestionData.modality].iconColorCode, globalParams.theme)
+                        textColor={eachQuestionData!.graded
+                            ? stringToRgb(metadata.questionModality[questionData[eachQuestionUid].modality].iconColorCode, globalParams.theme)
                             : {r: 128, g: 128, b: 128}}
-                        chipIcon={metadata.questionModality[eachQuestionData.modality].icon} />
+                        chipIcon={metadata.questionModality[questionData[eachQuestionUid].modality].icon} />
                     <div className="font-bold whitespace-nowrap overflow-hidden">
-                        {eachQuestionData.questionData[eachQuestionData.modality]!.questionText}
+                        {eachQuestionData!.questionText}
                     </div>
                 </button>
             );

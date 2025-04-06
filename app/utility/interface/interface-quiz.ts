@@ -1,7 +1,8 @@
 import metadata from "@/metadata.json";
 import objectUidFill from "@/app/utility/function/object/object-uid-fill";
 
-export type UniversalQuestionModality = QuestionModalityMCQ | QuestionModalityFlashcard | QuestionModalitySelect | QuestionModalityMCQ_Action | QuestionModalityFlashcard_Action | QuestionModalitySelect_Action
+export type UniversalQuestionModality = QuestionModalityMCQ | QuestionModalityFlashcard | QuestionModalitySelect
+export type UniversalQuestionModality_Action = QuestionModalityMCQ_Action | QuestionModalityFlashcard_Action | QuestionModalitySelect_Action
 
 type QuestionData = {
     "BEST-ANSWER"?: QuestionModalityMCQ,

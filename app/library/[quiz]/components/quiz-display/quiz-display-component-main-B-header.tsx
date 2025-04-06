@@ -7,7 +7,7 @@
 // =========================================================================
 
 //// 1.1 Metadata & module & framework
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 //// 1.2 Custom React hooks
 import { useLocalQuizContext } from "@/app/library/[quiz]/local-quiz-provider";
