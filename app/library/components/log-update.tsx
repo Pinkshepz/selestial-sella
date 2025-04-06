@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 //// 1.2 Custom React hooks
 import { useGlobalContext } from "@/app/global-provider";
-import { useInterfaceContext } from "../library-provider";
+import { useLocalLibraryContext } from "@/app/library/local-library-provider";
 
 //// 1.3 React components
 ////     N/A
@@ -17,19 +17,33 @@ import sortUidObjectByValue from "@/app/utility/function/object/sort-uid-object-
 import Icon from "@/public/icon";
 
 
-export default function LogUpdate () {
+export default function LogUpdate (): React.ReactNode {
 
-    // connect to global context
+    //// -------------------------------------------------------------------------
+    //// A. LOCAL CONSTANTS & CONSTANT-RELATED REACT HOOKS
+    //// -------------------------------------------------------------------------
+
+    ////// A.I Connect global context: /app/*
     const {globalParams, setGlobalParams} = useGlobalContext();
 
-    // connect to interface context
-    const {interfaceParams, setInterfaceParams} = useInterfaceContext();
+    ////// A.II Connect local context: /app/course/*
+    const {localLibraryContextParams, setLocalLibraryContextParams} = useLocalLibraryContext();
 
+
+    //// -------------------------------------------------------------------------
+    //// B. LOCAL FUNCTIONS & FUNCTION-RELATED REACT HOOKS
+    //// -------------------------------------------------------------------------
+
+    ////// B.I Turn off loading cover
     useEffect(() => {
         setGlobalParams("isLoading", false);
     }, []);
 
-    const log: {[key: string]: {[key: string]: any}} = interfaceParams.logUpdate;
+    
+    //// -------------------------------------------------------------------------
+    //// C. COMPONENT ASSEMBLY
+    //// -------------------------------------------------------------------------
+    const log: {[key: string]: {[key: string]: any}} = localLibraryContextParams.logUpdate;
 
     // Filter by search key
     let filteredContent: {[key: string]: {[key: string]: any}} = {};
@@ -40,22 +54,22 @@ export default function LogUpdate () {
         const search_target = content.action + " " + content.id + " " + content.name;
 
         // Check if data matches to searchkey
-        if (search_target.toLowerCase().includes(interfaceParams.searchKey.toLowerCase())) {
+        if (search_target.toLowerCase().includes(localLibraryContextParams.searchKey.toLowerCase())) {
         filteredContent[Object.keys(log)[index]] = content;
         }
     };
 
     const sortedFilteredContentData: {[key: string]: {[key: string]: string}} = sortUidObjectByValue(
-        filteredContent, "id", interfaceParams.sortAscending
+        filteredContent, "id", localLibraryContextParams.sortAscending
     );
     
     let tableContent: React.ReactNode[] = [];
 
     const actionMap = {
-        WRITE: "text-pri dark:text-pri-dark",
-        EDIT: "text-amber dark:text-amber-dark",
-        DELETE: "text-sec dark:text-sec-dark",
-        REMAIN: "text-ter dark:text-ter-dark"
+        WRITE: "color-pri",
+        EDIT: "color-amber",
+        DELETE: "color-red",
+        REMAIN: "color-slate"
     };
 
     Object.values(sortedFilteredContentData).map((log, index) => {
@@ -91,7 +105,7 @@ export default function LogUpdate () {
                 </table>
             <button
                 onClick={() => {
-                    setInterfaceParams("logUpdate", {});
+                    setLocalLibraryContextParams("logUpdate", {});
                     setGlobalParams("isLoading", true);
                     if (window !== undefined) {
                         window.location.reload();

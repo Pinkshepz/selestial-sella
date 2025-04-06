@@ -2,26 +2,170 @@
     "appName": "AURICLE",
     "appDescription": "Make medical complexity simple again",
     "firebaseBranch": ["ALPHA", "BETA"],
+    "autosaveMinuteClocks": [-1, 1, 2, 5, 10],
+    "entityLimit": {
+        "question": 256,
+        "choice": 8,
+        "card": 8,
+        "selectColumn": 4,
+        "selectColumnProperty": 8,
+        "selectColumnPropertyTextLength": 24,
+        "selectRow": 8
+    },
     "questionModality": {
         "BEST-ANSWER": {
+            "questionDataFormat": {
+                "questionImageUrl": "",
+                "questionText": "New best answer question",
+                "questionComment": "",
+                "questionResourceUrl": "",
+                "questionChoicesUidSequence": ["#UID-1", "#UID-2"],
+                "questionChoices": {
+                    "#UID-1": {
+                        "choiceAnswer": false,
+                        "choiceComment": "",
+                        "choiceText": "New choice"
+                    },
+                    "#UID-2": {
+                        "choiceAnswer": true,
+                        "choiceComment": "",
+                        "choiceText": "New choice"
+                    }
+                }
+            },
             "icon": "singleChoice",
+            "iconColorCode": "K",
             "abbreviation": "MCQ"
         },
         "MULTIPLE-ANSWER": {
+            "questionDataFormat": {
+                "questionImageUrl": "",
+                "questionComment": "",
+                "questionResourceUrl": "",
+                "questionText": "New multiple answer question",
+                "questionChoicesUidSequence": ["#UID-1", "#UID-2"],
+                "questionChoices": {
+                    "#UID-1": {
+                        "choiceAnswer": false,
+                        "choiceComment": "",
+                        "choiceText": "New choice"
+                    },
+                    "#UID-2": {
+                        "choiceAnswer": true,
+                        "choiceComment": "",
+                        "choiceText": "New choice"
+                    },
+                    "#UID-3": {
+                        "choiceAnswer": true,
+                        "choiceComment": "",
+                        "choiceText": "New choice"
+                    }
+                }
+            },
             "icon": "multipleChoice",
+            "iconColorCode": "L",
             "abbreviation": "MCQ"
         },
         "FLASHCARD": {
+            "questionDataFormat": {
+                "questionText": "New flashcard",
+                "questionImageUrl": "",
+                "questionResourceUrl": "",
+                "questionCardsUidSequence": ["#UID-1"],
+                "questionCards": {
+                    "#UID-1": {
+                        "cardBackText": "New back card",
+                        "cardFrontText": "New front card",
+                        "cardAllowlipped": true
+                    }
+                }
+            },
             "icon": "flashcard",
+            "iconColorCode": "2",
             "abbreviation": "CARD"
         },
-        "SELECT-MATRIX": {
+        "SELECT": {
+            "questionDataFormat": {
+                "questionText": "New select tabular question",
+                "questionResourceUrl": "",
+                "questionColumns": {
+                    "columnsDataUidSequence": ["#UID-1", "#UID-2"],
+                    "columnsData": {
+                        "#UID-1": {
+                            "columnText": "New property",
+                            "columnSelect": {
+                                "#UID-3": {
+                                    "propertyText": "A",
+                                    "propertyIcon": "",
+                                    "propertyColorCode": ""
+                                },
+                                "#UID-4": {
+                                    "propertyText": "B",
+                                    "propertyIcon": "",
+                                    "propertyColorCode": ""
+                                }
+                            }
+                        },
+                        "#UID-2": {
+                            "columnText": "New property",
+                            "columnSelect": {
+                                "#UID-5": {
+                                    "propertyText": "TRUE",
+                                    "propertyIcon": "true",
+                                    "propertyColorCode": "K"
+                                },
+                                "#UID-6": {
+                                    "propertyText": "FALSE",
+                                    "propertyIcon": "false",
+                                    "propertyColorCode": "G"
+                                }
+                            }
+                        }
+                    }
+                },
+                "questionRows": {
+                    "rowsDataUidSequence": ["#UID-7", "#UID-8"],
+                    "rowsData": {
+                        "#UID-7": {
+                            "rowText": "New row",
+                            "rowAnswer": {
+                                "#UID-1": "#UID-3",
+                                "#UID-2": "#UID-5"
+                            }
+                        },
+                        "#UID-8": {
+                            "rowText": "New row",
+                            "rowAnswer": {
+                                "#UID-1": "#UID-4",
+                                "#UID-2": "#UID-6"
+                            }
+                        }
+                    }
+                }
+            },
             "icon": "table",
-            "abbreviation": "SELECT"
+            "abbreviation": "SELECT",
+            "iconColorCode": "K",
+            "propertyIcons": [
+                "true", "false", "arrow-up", "arrow-down", "arrow-left", "arrow-right", "arrow-up-right", "arrow-down-right", "arrow-right-left", "shuffle",
+                "circle", "circle-fill", "0-circle", "1-circle", "2-circle", "3-circle", "4-circle", "5-circle", "6-circle", "7-circle", "8-circle", "9-circle",
+                "star", "sparkles", "font", "paragraph", "tag", "paper-clip", "exclamation", "cube", "twoSide", "squares-2x2",
+                "person", "people", "universal-access", "cloud", "gear", "lightbulb", "light", "dark", "fire", "wind", "droplet", "eye", "lung", "heart",
+                "signal", "barcode", "flag", "home", "map", "rocket", "search", "beaker", "capsule", "bug", "virus"
+            ],
+            "propertyColorCodes": [
+                "G", "A", "2", "B", "C", "TRU", "D", "K", "E", "F", "TRUEZE"
+            ]
         },
-        "SENTENCE-COMPLETION": {
+        "WORD-CLOUD": {
+            "questionDataFormat": {
+                "questionText": "Roses are ⎨red⎬, violets are ⎨blue⎬",
+                "questionImageUrl": "",
+                "questionResourceUrl": ""
+            },
             "icon": "paragraph",
-            "abbreviation": "COMPLETION"
+            "iconColorCode": "E",
+            "abbreviation": "CLOUD"
         }
     }
 }

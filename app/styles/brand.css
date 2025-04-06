@@ -29,3 +29,82 @@ html.dark #brand-static {
             0 0 9px #fff;
     }    
 }
+
+.animate-cloud-a {
+    animation: cloudA 5000ms linear 0ms infinite;
+}
+
+.animate-cloud-b {
+    animation: cloudB 4000ms linear 0ms infinite;
+}
+
+.animate-cloud-c {
+    animation: cloudB 3000ms linear 0ms infinite;
+}
+
+@keyframes cloudA {
+    0% {
+        opacity: 1;
+        translate: 1px 0px;
+    }
+    25% {
+        translate: 0px 2px;
+        transform: scale(1.1);
+    }
+    50% {
+        opacity: 0.5;
+        translate: -1px 0.25px;
+    }
+    75% {
+        translate: 0px -2px;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0.75;
+        translate: 1px -0.25px;
+    }
+}
+
+@keyframes cloudB {
+    0% {
+        translate: 0px 2px;
+        transform: scale(1.1);
+    }
+    25% {
+        opacity: 0.5;
+        translate: 0.75px -0.25px;
+    }
+    50% {
+        translate: 0 -2px;
+        transform: scale(1);
+    }
+    75% {
+        opacity: 0.75;
+        translate: -0.75px 0.5px;
+    }
+    100% {
+        translate: 0px 2px;
+    }
+}
+
+@keyframes cloudC {
+    0% {
+        translate: 0px 2px;
+        transform: scale(1);
+    }
+    25% {
+        opacity: 0.5;
+        translate: 0.75px 0.5px;
+    }
+    50% {
+        translate: 0 -2px;
+        transform: scale(1.1);
+    }
+    75% {
+        opacity: 0.75;
+        translate: -0.75px -0.5px;
+    }
+    100% {
+        translate: 0px 2px;
+    }
+}

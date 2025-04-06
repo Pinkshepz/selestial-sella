@@ -1,60 +1,57 @@
+//// 1.1 Metadata & module & framework
 import metadata from "@/metadata.json";
-
 import { getFirestore, query, collection, getDocs } from "firebase/firestore";
 
-import appClientAlpha from '../firebase/fireclient-alpha';
-import appClientBeta from '../firebase/fireclient-beta';
+//// 1.2 Custom React hooks
+////     N/A
+
+//// 1.3 React components
+////     N/A
+
+//// 1.4 Utility functions
+import appClientAlpha from "@/app/utility/firebase/fireclient-alpha";
+import appClientBeta from "@/app/utility/firebase/fireclient-beta";
+
+import { getRandomArrayItem } from "../function/array/array-random-pick";
+
+//// 1.5 Public and others
+////     N/A
+
 
 // get database
 export default async function firestoreRead({
-  firebaseBranch = metadata.firebaseBranch[Math.round((Math.random() * 100) % (metadata.firebaseBranch.length - 1))],
+  firebaseBranch = getRandomArrayItem(metadata.firebaseBranch),
   collectionName
 }: {
   firebaseBranch?: typeof metadata.firebaseBranch[number],
   collectionName: string
 }): Promise<string> {
-  console.log(`✏️ START READING ${firebaseBranch}/COLLECTION/${collectionName}`);
+  
+  // Prepare docs varaible storing fetch data
+  let docs: {[key: string]: {[key: string]: any}} = {}
+  // Get database
+  const getDatabase = () => {
+    switch (firebaseBranch) {
+      case "ALPHA":
+        return getFirestore(appClientAlpha);
 
-  if (firebaseBranch == "ALPHA") {
-    try {
-      // get database
-      const dbAlpha = getFirestore(appClientAlpha);
-  
-      // query data
-      const q = query(collection(dbAlpha, collectionName));
-      const querySnapshot = await getDocs(q);
-  
-      // extract data
-      let docs: {[key: string]: {[key: string]: any}} = {}
-      querySnapshot.forEach((doc) => {
-        docs[doc.id] = doc.data();
-      })
-  
-      return JSON.stringify(docs);
-    } catch (error) {
-      return "{}";
+      case "BETA":
+        return getFirestore(appClientBeta);
+        
+      default:
+        return getFirestore(appClientAlpha);
     }
-  } 
+  }
+
+  try {
+    // Query data
+    const q = query(collection(getDatabase(), collectionName));
+    const querySnapshot = await getDocs(q);
+
+    // Extract data
+    querySnapshot.forEach((doc) => docs[doc.id] = doc.data());
+  } catch (error) {null}
   
-  else if (firebaseBranch == "BETA") {
-    try {
-      // get database
-      const dbBeta = getFirestore(appClientBeta);
-  
-      // query data
-      const q = query(collection(dbBeta, collectionName));
-      const querySnapshot = await getDocs(q);
-  
-      // extract data
-      let docs: {[key: string]: {[key: string]: any}} = {}
-      querySnapshot.forEach((doc) => {
-        docs[doc.id] = doc.data();
-      })
-      return JSON.stringify(docs);
-    } catch (error) {
-      return "{}";
-    }
-  } 
-  
-  else {return "{}";}
+  console.log(`✏️ START READING ${firebaseBranch}/COLLECTION/${collectionName} [${Object.keys(docs).length}]`);
+  return JSON.stringify(docs);
 }

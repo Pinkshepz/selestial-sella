@@ -1,9 +1,20 @@
+//// 1.1 Metadata & module & framework
 import metadata from "@/metadata.json";
-
 import { getFirestore, doc, deleteDoc } from "firebase/firestore";
 
+//// 1.2 Custom React hooks
+////     N/A
+
+//// 1.3 React components
+////     N/A
+
+//// 1.4 Utility functions
 import appClientAlpha from '../firebase/fireclient-alpha';
 import appClientBeta from '../firebase/fireclient-beta';
+
+//// 1.5 Public and others
+////     N/A
+
 
 export default async function firestoreDelete({
     firebaseBranch,

@@ -6,13 +6,14 @@ import Icon from "@/public/icon";
 export default function ConfirmPopUp (): React.ReactNode {
     // connect to global context
     const {globalParams, setGlobalParams} = useGlobalContext();
-
     if (globalParams.popUp) {
         return (
             <>
-                <div className="glass-cover"></div>
+                <div className="glass-cover-screen"></div>
                 <section className="main-popup">
-                    <h1>Confirmation</h1>
+                    {!globalParams.popUpAction.startsWith("⟨")
+                        ? <h1>CONFIRMATION</h1>
+                        : <h1>SERVER EXCEPTION</h1>}
                     <span id="pri-chip">
                         <Icon icon="code" size={16} />
                         {globalParams.popUpAction.split("Toggle")[0]}
@@ -26,15 +27,17 @@ export default function ConfirmPopUp (): React.ReactNode {
                                 setGlobalParams("popUpAction", "");
                                 setGlobalParams("popUpText", "");
                             }}
-                            id="theme-button">Go back</button>
-                        <button
-                            onClick={() => {
-                                setGlobalParams("popUp", false);
-                                setGlobalParams("popUpConfirm", true);
-                                setGlobalParams("popUpText", "");
-                            }}
-                            className="text-pri dark:text-pri"
-                            id="theme-button">Confirm</button>
+                            id="theme-button">GO BACK</button>
+                        {!globalParams.popUpAction.startsWith("⟨") 
+                            && <button
+                                onClick={() => {
+                                    setGlobalParams("popUp", false);
+                                    setGlobalParams("popUpConfirm", true);
+                                    setGlobalParams("popUpText", "");
+                                }}
+                                className="text-pri dark:text-pri"
+                                id="theme-button">CONFIRM</button>
+                        }
                     </div>
                 </section>
             </>

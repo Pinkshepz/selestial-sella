@@ -27,10 +27,7 @@
     background-color: var(--highlight);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    overflow-y: scroll;
-    transition: all ease-in-out 200ms;
-    -ms-overflow-style: none;  /* Internet Explorer 10+ */
-    scrollbar-width: none;  /* Firefox */
+    overflow-y: auto;
 }
 
 .controller-island::-webkit-scrollbar { 
@@ -52,8 +49,6 @@
     border-radius: 8px;
     font-weight: 800;
     white-space: nowrap;
-    transition: all ease-in-out 200ms;
-    animation: smooth-appear 400ms ease forwards;
 }
 
 .controller-menu:hover {
@@ -65,7 +60,7 @@
 }
 
 .controller-menu > .input-field {
-    min-width: 100px;
+    min-width: 110px;
     max-width: 25dvw;
     white-space: nowrap;
     font-weight: 400;
@@ -84,8 +79,6 @@
     border: solid 1px var(--border);
     border-radius: 12px;
     overflow: hidden;
-    transition: all ease-in-out 300ms;
-    animation: smooth-appear 400ms ease forwards;
 }
 
 .card-main {
@@ -94,9 +87,7 @@
     height: 25dvh;
     background-color: var(--highlight);
     overflow: hidden;
-    transition: all ease-in-out 300ms;
     color: white;
-    animation: smooth-appear 400ms ease forwards;
 }
 
 .card-main > div > img {
@@ -110,19 +101,16 @@
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    transition: all ease-in-out 300ms;
     overflow: hidden;
   }
   
 .-card-hover > div > img {
     /* position: relative; */
-    transition: all ease-in-out 200ms;
     object-fit: cover;
 }
 
 .-card-hover:hover > div > img {
     transform: scale(1.02);
-    transition: all ease-in-out 200ms;
 }
 
 .card-2-main-flow {
@@ -130,9 +118,7 @@
     display: flex;
     flex-direction: column;
     align-items: start;
-    transition: all ease-in-out 300ms;
     border-radius: 12px;
-    animation: smooth-appear 400ms ease forwards;
 }
 
 .card-2-main {
@@ -141,9 +127,7 @@
     flex-direction: column;
     align-items: start;
     overflow: hidden;
-    transition: all ease-in-out 300ms;
     border-radius: 12px;
-    animation: smooth-appear 400ms ease forwards;
 }
 
 .card-2-image {
@@ -190,31 +174,22 @@
     border: solid 1px var(--border);
     border-radius: 12px;
     overflow: hidden;
-    transition: all ease-in-out 300ms;
-    animation: smooth-appear 400ms ease forwards;
 }
 
 .card-edit > div > img {
     position: relative;
-    transition: all ease-in-out 400ms;
     object-fit: cover;
 }
 
 .card-edit:hover > div > img {
     transform: scale(1.02);
-    transition: all ease-in-out 400ms;
 }
 
 .edit-placeholder {
     padding: 8px;
     border-radius: 8px;
     /* border: solid 1px var(--border); */
-    font-size: 1rem;
     text-wrap: wrap;
-}
-
-.edit-placeholder:hover > label{
-    color: var(--pri);
 }
 
 .edit-placeholder > label {
@@ -222,6 +197,8 @@
     flex-direction: row;
     gap: 8px;
     font-weight: 800;
+    font-size: 2rem;
+    color: var(--pri);
 }
 
 .edit-placeholder > .editor-field {
@@ -253,10 +230,6 @@
     color: var(--red);
 }
 
-.edit-placeholder:hover > .editor-field {
-    background-color: var(--highlight);
-}
-
 .add-button {
     display: flex;
     flex-direction: column;
@@ -265,7 +238,6 @@
     border: dashed 1px var(--border);
     border-radius: 12px;
     white-space: nowrap;
-    transition: all ease-in-out 200ms;
 }
 
 .add-button:hover {
@@ -283,7 +255,7 @@
     border-radius: 10px;
   }
   
-  #chip-action-sec {
+#chip-action-sec {
     width: max-content;
     padding: 1px 8px;
     font-size: 1.0rem;
@@ -291,9 +263,9 @@
     color: var(--base-inverse);
     background-color: var(--sec);
     border-radius: 10px;
-  }
-  
-  #chip-action-neu {
+}
+
+#chip-action-neu {
     width: max-content;
     padding: 1px 8px;
     font-size: 1.1rem;
@@ -301,4 +273,4 @@
     color: var(--base-inverse);
     background-color: var(--ter);
     border-radius: 10px;
-  }
+}

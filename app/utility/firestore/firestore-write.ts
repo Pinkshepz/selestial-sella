@@ -1,9 +1,20 @@
+//// 1.1 Metadata & module & framework
 import metadata from "@/metadata.json";
-
 import { getFirestore, doc, setDoc, Timestamp } from "firebase/firestore";
 
-import appClientAlpha from '../firebase/fireclient-alpha';
-import appClientBeta from '../firebase/fireclient-beta';
+//// 1.2 Custom React hooks
+////     N/A
+
+//// 1.3 React components
+////     N/A
+
+//// 1.4 Utility functions
+import appClientAlpha from "@/app/utility/firebase/fireclient-alpha";
+import appClientBeta from "@/app/utility/firebase/fireclient-beta";
+
+//// 1.5 Public and others
+////     N/A
+
 
 export default async function firestoreWrite({
     firebaseBranch,
@@ -26,8 +37,6 @@ export default async function firestoreWrite({
             result = await setDoc(doc(dbAlpha, collectionName, id), {
                 ...data,
                 lastEdited: Timestamp.now().toMillis()
-            }, {
-                merge: true
             });
         } catch (e) {
             error = e;
@@ -42,8 +51,6 @@ export default async function firestoreWrite({
             result = await setDoc(doc(dbBeta, collectionName, id), {
                 ...data,
                 lastEdited: Timestamp.now().toMillis()
-            }, {
-                merge: true
             });
         } catch (e) {
             error = e;

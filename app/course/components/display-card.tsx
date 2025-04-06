@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useGlobalContext } from "@/app/global-provider";
 
 //// 1.3 React components
-////     N/A
+import Course from "@/app/utility/interface/interface-course";
 
 //// 1.4 Utility functions
 import { ChipTextColor } from "@/app/utility/components/chip";
@@ -55,9 +55,9 @@ const DisplayCard = ({
 }
 
 export default function CardView ({
-    contentData
+    courseData
 }: {
-    contentData: {[key: string]: {[key: string]: any}}
+    courseData: {[key: string]: Course}
 }): React.ReactNode {
     // connect to global context
     const {globalParams, setGlobalParams} = useGlobalContext();
@@ -65,9 +65,9 @@ export default function CardView ({
     // Store all elements
     let elements: Array<React.ReactNode> = [];
 
-    // Map contentData into each card
-    Object.values(contentData).map((content, index) => {
-        const uid = Object.keys(contentData)[index]
+    // Map courseData into each card
+    Object.values(courseData).map((content, index) => {
+        const uid = Object.keys(courseData)[index]
         if (!content.hidden) {
             elements.push(
                 <Link 

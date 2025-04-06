@@ -9,6 +9,9 @@ import { useGlobalContext } from "@/app/global-provider";
 import { useInterfaceContext } from "./../topic-provider";
 
 //// 1.3 React components
+import Course from "@/app/utility/interface/interface-course";
+import Library from "@/app/utility/interface/interface-library";
+
 import { TextColor } from "@/app/utility/components/chip";
 
 //// 1.4 Utility functions
@@ -24,9 +27,9 @@ export default function DisplayView ({
     topicData,
     libraryData
 }: {
-    courseData: {[key: string]: any},
+    courseData: Course,
     topicData: {[key: string]: {[key: string]: any}},
-    libraryData: {[key: string]: any}
+    libraryData: {[key: string]: Library}
 }): React.ReactNode {
     // connect to global context
     const {globalParams, setGlobalParams} = useGlobalContext();
@@ -216,10 +219,10 @@ export default function DisplayView ({
                                         <p className='mt-8 font-semibold'>{topicLibrary.description}</p>
                                         <div className="flex flex-row justify-between items-center w-full mt-4">
                                             <div className='flex flex-row items-center'>
-                                                <span id="chip-action-neu">{topicLibrary.mode}</span>
+                                                {/* <span id="chip-action-neu">{topicLibrary.mode}</span> */}
                                                 <h5 className="flex flex-row gap-1 ml-2">{topicLibrary.id}</h5>
                                             </div>
-                                            <h5 className='ml-1'>{topicLibrary.totalQuestion} Questions</h5>
+                                            {/* <h5 className='ml-1'>{topicLibrary.totalQuestion} Questions</h5> */}
                                         </div>
                                     </div>
                                     <div className='absolute top-0 w-full overflow-hidden z-0'>
@@ -246,10 +249,10 @@ export default function DisplayView ({
                                         <p className='mt-8 font-semibold'>{topicLibrary.description}</p>
                                         <div className="flex flex-row justify-between items-center w-full mt-4">
                                             <div className='flex flex-row items-center'>
-                                                <span id="chip-action-neu">{topicLibrary.mode}</span>
+                                                {/* <span id="chip-action-neu">{topicLibrary.mode}</span> */}
                                                 <h5 className="flex flex-row gap-1 ml-2">{topicLibrary.id}</h5>
                                             </div>
-                                            <h5 className='ml-1'>{topicLibrary.totalQuestion} Questions</h5>
+                                            {/* <h5 className='ml-1'>{topicLibrary.totalQuestion} Questions</h5> */}
                                         </div>
                                     </div>
                                     <div className='absolute top-0 w-full overflow-hidden z-0'>

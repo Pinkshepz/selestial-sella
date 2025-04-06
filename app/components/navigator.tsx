@@ -1,7 +1,7 @@
 "use client";
 
 //// 1.1 Metadata & module & framework
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useTheme } from "next-themes";
@@ -29,6 +29,7 @@ export default function GlobalNavigator (): React.ReactNode {
   // set isClient to true in client rendering
   useEffect(() => {
     setIsClient(true)
+    setGlobalParams("theme", document.getElementsByTagName("html")[0].className);
   }, [])
   
   // access global data
@@ -36,7 +37,7 @@ export default function GlobalNavigator (): React.ReactNode {
   
   // toggle of theme menu (light or dark mode)
   const [themeToggle, setThemeToggle] = useState<number>(0);
-  const avaliableTheme = ["light", "dark", "system"]
+  const avaliableTheme = ["light", "dark"]
   
   // access theme
   const { theme, setTheme } = useTheme();
@@ -46,8 +47,9 @@ export default function GlobalNavigator (): React.ReactNode {
 
   // switch among 3 themes options
   const handleThemeToggle = () => {
-    setThemeToggle((prev) => (prev + 1) % 3)
-    setTheme(avaliableTheme[themeToggle])
+    setThemeToggle((prev) => (prev + 1) % avaliableTheme.length);
+    setTheme(avaliableTheme[themeToggle]);
+    setGlobalParams("theme", avaliableTheme[themeToggle]);
   }
   
   // if route is changed -> reset global.access status

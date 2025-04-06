@@ -99,7 +99,7 @@ export default function Particles (): React.ReactNode {
 
 
     // 4. object_spacing of objects -> lesser means more density -> more objects displayed
-    const object_spacing = 72;
+    const object_spacing = 100;
     const rare_bubble_chance = 2; // density of colorful bubbles
     
     
@@ -129,7 +129,7 @@ export default function Particles (): React.ReactNode {
                 // select color
                 let color: string
                 if ((((row + 1) * 9 + (column + 1)) % rare_bubble_chance) == 0) {
-                    color = stringToHex(String(common_rand));
+                    color = stringToHex(String(common_rand), "dark");
                 } else {
                     color = monoColor;
                 }
@@ -137,7 +137,7 @@ export default function Particles (): React.ReactNode {
                 // select bubble size
                 let size: number
                 if ((((row + 1) * 9 + (column + 1)) % rare_bubble_chance) == 0) {
-                    size = 1 + (common_rand * 32)
+                    size = 1 + (common_rand * 48)
                 } else {
                     size = 1 + (common_rand * 12)
                 }
@@ -152,7 +152,7 @@ export default function Particles (): React.ReactNode {
                     width: size + "px",
                     backgroundColor: color,
                     boxShadow: `0px 0px ${size * 0.75}px #ffffff99, 0px 0px ${size * 1.5}px ${color}`,
-                    opacity: 0.9
+                    opacity: 1
                 }
 
                 // record style
@@ -204,12 +204,12 @@ export default function Particles (): React.ReactNode {
 
                 // updated style
                 // velocity_t = (constant + (power * radial vector) + radial force from cursor + noise) * friction
-                const newColor = stringToHex(String(Math.random()));
+                const newColor = stringToHex(String(Math.random()), "dark");
                 temp_objects_style.push({
                     pos_x: spaceControl(objectPosX + objectStyle[index].velocity_x, window.innerWidth).toString() + "px",
                     pos_y: spaceControl(objectPosY + objectStyle[index].velocity_y, window.innerHeight).toString() + "px",
-                    velocity_x: 0.05 + (power * (cursorPos.x - (window.innerWidth / 2)) / window.innerWidth) + ((objectStyle[index].velocity_x) + acceleration(dx, distance_xy)) * 0.97 + (Math.random() - 0.5) / 2,
-                    velocity_y: 0.0 + (power * (cursorPos.y - (window.innerHeight / 2)) / window.innerHeight) + ((objectStyle[index].velocity_y) + acceleration(dy, distance_xy)) * 0.97 + (Math.random() - 0.5) / 2,
+                    velocity_x: 0.05 + ((power / 10) * (cursorPos.x - (window.innerWidth / 2)) / window.innerWidth) + ((objectStyle[index].velocity_x) + acceleration(dx, distance_xy)) * 0.97 + (Math.random() - 0.5) / 2,
+                    velocity_y: 0.0 + ((power / 10) * (cursorPos.y - (window.innerHeight / 2)) / window.innerHeight) + ((objectStyle[index].velocity_y) + acceleration(dy, distance_xy)) * 0.97 + (Math.random() - 0.5) / 2,
                     height: objectStyle[index].height,
                     width: objectStyle[index].width,
                     backgroundColor: glitter ? newColor : monochrome ? "#00000000" : objectStyle[index].backgroundColor,

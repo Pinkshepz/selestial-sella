@@ -1,0 +1,98 @@
+"use client";
+
+// app/library/[contents]/components/quiz-edit/quiz-edit.tsx
+
+// =========================================================================
+// 1. IMPORT
+// =========================================================================
+
+//// 1.1 Metadata & module & framework
+
+//// 1.2 Custom React hooks
+import { useGlobalContext } from "@/app/global-provider"
+import { useLocalQuizContext } from "@/app/library/[quiz]/local-quiz-provider";
+
+//// 1.3 React components
+
+//// 1.4 Utility functions
+import objectKeyRetrieve from "@/app/utility/function/object/object-key-retrieve";
+import objectKeyValueUpdate from "@/app/utility/function/object/object-dynamic-change";
+
+import arrayIndexOf from "@/app/utility/function/array/array-index-of";
+import makeid from "@/app/utility/function/make-id";
+
+//// 1.5 Public and others
+
+
+// =========================================================================
+// 2. GLOBAL CONSTANT VARIABLES AND FUNCTIONS
+// =========================================================================
+
+
+// =========================================================================
+// 3. EXPORT DEFAULT FUNCTION
+// =========================================================================
+
+export default function ConsoleDisplay (): React.ReactNode {
+    // I. Connect to global context
+    const {globalParams, setGlobalParams} = useGlobalContext();
+    
+    // II. Connect to interface context
+    const {localQuizContextParams, setLocalQuizContextParams} = useLocalQuizContext();
+
+    // III. Get current question data
+    const currentQuestionData = objectKeyRetrieve({
+        object: localQuizContextParams.bufferQuestion,
+        keysHierachy: [localQuizContextParams.currentQuestionUid, "questionData", localQuizContextParams.currentQuestionModality]
+    });
+
+    // IV. Function to handle move question
+    const handleQuestionChange = (direction: 1 | -1) => {
+        const currentIndex: number = arrayIndexOf<string>({
+            array: localQuizContextParams.bufferLibrary.questionUidOrder,
+            targetValue: localQuizContextParams.currentQuestionUid
+        });
+        const newQuestionUid = localQuizContextParams.bufferLibrary.questionUidOrder[(currentIndex + direction) % localQuizContextParams.bufferLibrary.questionUidOrder.length];
+        
+        // Change to new modality
+        setLocalQuizContextParams("currentQuestionUid", newQuestionUid);
+        setLocalQuizContextParams("currentQuestionModality", localQuizContextParams.bufferQuestion[newQuestionUid].modality);
+    }
+
+    // V. Function to handle move question
+    const handleQuestionGrade = () => {
+        // Change to new modality
+        setLocalQuizContextParams("bufferQuestion", objectKeyValueUpdate({
+            object: localQuizContextParams.bufferQuestion,
+            keysHierachy: [localQuizContextParams.currentQuestionUid, "questionData", localQuizContextParams.currentQuestionModality, "graded"],
+            targetValue: true
+        }));
+    }
+
+    try {
+        return (
+            <div key={1} className="flex flex-row items-center text-center h-16 font-black text-xl -border-y">
+                {(arrayIndexOf<string>({
+                    array: localQuizContextParams.bufferLibrary.questionUidOrder,
+                    targetValue: localQuizContextParams.currentQuestionUid}) > 0) 
+                    && <button key={makeid(20)} onClick={() => handleQuestionChange(-1)} className="h-full w-48 -hover-bg-half">PREVIOUS</button>}
+                
+                <button key={makeid(20)} onClick={() => handleQuestionGrade()} className={`h-full ${currentQuestionData.graded ? "w-0" : "w-full"} -border-l -hover-bg-half`}>{!currentQuestionData.graded && "SUBMIT"}</button>
+                
+                {(arrayIndexOf<string>({
+                    array: localQuizContextParams.bufferLibrary.questionUidOrder,
+                    targetValue: localQuizContextParams.currentQuestionUid}) + 1 < localQuizContextParams.bufferLibrary.questionUidOrder.length) 
+                    ? <button key={makeid(20)} onClick={() => handleQuestionChange(1)} className={`h-full ${currentQuestionData.graded ? "w-full" : "w-48"} -border-l -hover-bg-half`}>NEXT</button>
+                    : currentQuestionData.graded && <button key={makeid(20)} onClick={() => {
+                            setGlobalParams("isLoading", true);
+                            if (window !== undefined) window.location.reload();
+                        }} className={`h-full w-full -border-l -hover-bg-half`}>FINISH</button>
+                }
+            </div>
+        );
+    } catch (error) {
+        return (
+            <div className="flex flex-row items-center text-center h-16 font-black text-xl -border-y"></div>
+        );
+    }
+}

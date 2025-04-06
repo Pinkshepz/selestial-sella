@@ -17,17 +17,27 @@ import Icon from "@/public/icon";
 
 
 export default function Controller () {
-    // connect to global context
+
+    //// -------------------------------------------------------------------------
+    //// A. LOCAL CONSTANTS & CONSTANT-RELATED REACT HOOKS
+    //// -------------------------------------------------------------------------
+
+    ////// A.I Connect global context: /app/*
     const {globalParams, setGlobalParams} = useGlobalContext();
 
-    // connect to interface context
+    ////// A.II Connect local context: /app/course/*
     const {interfaceParams, setInterfaceParams} = useInterfaceContext();
 
     const handleSearchKeyChange = (searchKey: string) => {
         setInterfaceParams("searchKey", searchKey);
     }
 
-    // manage editing mode on and off
+
+    //// -------------------------------------------------------------------------
+    //// B. LOCAL FUNCTIONS & FUNCTION-RELATED REACT HOOKS
+    //// -------------------------------------------------------------------------
+
+    // Manage editing mode on and off
     useEffect(() => {
         if (globalParams.popUpConfirm &&
             (globalParams.popUpAction.toString().includes("turnEditMode"))) {
@@ -87,6 +97,7 @@ export default function Controller () {
                 {interfaceParams.editMode && 
                     <button
                         onClick={() => {
+                            setGlobalParams("popUpConfirm", false);
                             setInterfaceParams("discardChangesToggle", !interfaceParams.discardChangesToggle);
                             setGlobalParams("popUp", true);
                             setGlobalParams("popUpAction", "discardChangesToggle");
@@ -101,6 +112,7 @@ export default function Controller () {
                 {interfaceParams.editMode && 
                     <button
                         onClick={() => {
+                            setGlobalParams("popUpConfirm", false);
                             setInterfaceParams("saveChangesToggle", !interfaceParams.saveChangesToggle)
                             setGlobalParams("popUp", true);
                             setGlobalParams("popUpAction", "saveChangesToggle");
@@ -115,6 +127,7 @@ export default function Controller () {
                 {(Object.keys(interfaceParams.logUpdate).length === 0) &&
                     <button
                         onClick={() => {
+                            setGlobalParams("popUpConfirm", false);
                             setGlobalParams("popUp", true);
                             setGlobalParams("popUpAction", interfaceParams.editMode ? "turnEditModeOff" : "turnEditModeOn");
                             setGlobalParams("popUpText", interfaceParams.editMode ? 

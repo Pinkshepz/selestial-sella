@@ -1,8 +1,8 @@
-export default function uidObjectToArray (
-    object: {[key: string]: {[key: string]: any}} // {uid: {data map}}
-): {[key: string]: any}[] { // turn to {{...data map, uid: uid}}[]
+export default function uidObjectToArray<T>(
+    object: {[key: string]: T} // {uid: {data map}}
+): T[] { // turn to {{...data map, uid: uid}}[]
     // array of objects
-    let arrayOfObjects: {[key: string]: any}[] = [];
+    let arrayOfObjects: T[] = [];
     // array of all uid
     const uid: string[] = Object.keys(object);
 

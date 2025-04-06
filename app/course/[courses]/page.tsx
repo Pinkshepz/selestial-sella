@@ -5,6 +5,9 @@
 import { TopicInterfaceProvider } from "./topic-provider";
 
 //// 1.3 React components
+import Course from "@/app/utility/interface/interface-course";
+import Library from "@/app/utility/interface/interface-library";
+
 import Interface from "./interface";
 
 //// 1.4 Utility functions
@@ -20,7 +23,7 @@ import uidObjectToArray from "@/app/utility/function/object/uid-object-to-array"
 export default async function Quizset ({ params }: { params: {courses: string} }) {
    
     // Fetch library data for this dynamic route
-    const courseData = await firestoreReadQuery({
+    const courseData: {[key:string]: Course} = await firestoreReadQuery({
         firebaseBranch: "ALPHA",
         collectionName: "course",
         queryKey: "abbreviation",
@@ -39,15 +42,14 @@ export default async function Quizset ({ params }: { params: {courses: string} }
     }).then((docs) => JSON.parse(docs));
 
     // Fetch all libraries
-    const library = await firestoreRead({
-        firebaseBranch: "ALPHA",
+    const library: {[key: string]: Library} = await firestoreRead({
         collectionName: "library"
     }).then((docs) => JSON.parse(docs));
 
     return (
         <TopicInterfaceProvider>
             <Interface
-                courseData={uidObjectToArray(courseData)[0]}
+                courseData={uidObjectToArray<Course>(courseData)[0]}
                 topicData={topicData}
                 libraryData={library} />
         </TopicInterfaceProvider>

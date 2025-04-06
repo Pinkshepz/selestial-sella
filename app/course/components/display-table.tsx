@@ -5,14 +5,13 @@ import Link from "next/link";
 import { useGlobalContext } from "@/app/global-provider";
 
 //// 1.3 React components
-////     N/A
+import Course from "@/app/utility/interface/interface-course";
 
 //// 1.4 Utility functions
 import {stringToRgb} from "@/app/utility/function/color/string-to-rgb";
 
 //// 1.5 Public and others
 ////     N/A
-
 
 
 const DisplayRow = ({
@@ -84,16 +83,16 @@ const DisplayRow = ({
 }
 
 export default function TableView ({
-    contentData
+    courseData
 }: {
-    contentData: {[key: string]: {[key: string]: any}}
+    courseData: {[key: string]: Course}
 }): React.ReactNode {
     // Store all rows
     let rows: Array<React.ReactNode> = [];
 
-    // Map contentData into each row
-    Object.values(contentData).map((content, index) => {
-    const uid = Object.keys(contentData)[index]
+    // Map courseData into each row
+    Object.values(courseData).map((content, index) => {
+    const uid = Object.keys(courseData)[index]
     if (!content.hidden) {
         rows.push(
             <DisplayRow 
@@ -104,7 +103,7 @@ export default function TableView ({
                 cardName={content.name}
                 cardTag={content.tag}
                 key={content.id}/>
-          );
+        );
     }
   });
 
@@ -123,5 +122,5 @@ export default function TableView ({
                 </tbody>
             </table>
         </section>
-    )
+    );
 }

@@ -26,7 +26,7 @@ const config: Config = {
           DEFAULT: "#dc2626",
           dark: "#f87171"
         },
-        green: {
+        teal: {
           DEFAULT: "#0d9488",
           dark: "#2dd4bf"
         },

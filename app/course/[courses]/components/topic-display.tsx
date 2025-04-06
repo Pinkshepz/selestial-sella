@@ -4,7 +4,7 @@
 ////     N/A
 
 //// 1.2 Custom React hooks
-import { useInterfaceContext } from '../../course-provider';
+import { useLocalCourseContext } from "@/app/course/local-course-provider";
 
 //// 1.3 React components
 ////     N/A
@@ -22,8 +22,8 @@ export default function TopicDisplay({
   courseTopicData: {[key: string]: {[key: string]: string}}
 }) {
 
-  // connect to interface context
-  const {interfaceParams, setInterfaceParams} = useInterfaceContext();
+  ////// A.II Connect local context: /app/course/*
+  const {localCourseContextParams, setLocalCourseContextParams} = useLocalCourseContext();
   
   // Filter by search key
   let filteredContent: {[key: string]: {[key: string]: string}} = {};
@@ -34,13 +34,13 @@ export default function TopicDisplay({
     const search_target = content["id"] + " " + content["name"] + " " + content["tag"];
 
     // Check if data matches to searchkey
-    if (search_target.toLowerCase().includes(interfaceParams.searchKey.toLowerCase())) {
+    if (search_target.toLowerCase().includes(localCourseContextParams.searchKey.toLowerCase())) {
       filteredContent[Object.keys(courseTopicData)[index]] = content;
     }
   }
 
   const sortedFilteredContentData: {[key: string]: {[key: string]: string}} = sortUidObjectByValue(
-    filteredContent, "id", interfaceParams.sortAscending
+    filteredContent, "id", localCourseContextParams.sortAscending
   )
 
   

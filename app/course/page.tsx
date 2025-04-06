@@ -2,7 +2,7 @@
 ////     N/A
 
 //// 1.2 Custom React hooks
-import { CourseInterfaceProvider } from "./course-provider";
+import { LocalCourseContextProvider } from "./local-course-provider";
 
 //// 1.3 React components
 import Interface from "./interface";
@@ -16,13 +16,13 @@ import ErrorMessage from "@/app/utility/components/error";
 
 
 export default async function Course() {
-  const contentData = await firestoreRead({collectionName: "course"}).then((docs) => JSON.parse(docs));
+  const courseData = await firestoreRead({collectionName: "course"}).then((docs) => JSON.parse(docs));
 
   try {
     return (
-      <CourseInterfaceProvider>
-        <Interface contentData={contentData} />
-      </CourseInterfaceProvider>
+      <LocalCourseContextProvider>
+        <Interface courseData={courseData} />
+      </LocalCourseContextProvider>
     );
   } catch (error) {
     return (

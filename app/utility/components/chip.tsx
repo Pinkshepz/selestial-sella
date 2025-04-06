@@ -1,5 +1,6 @@
-import Icon from "@/public/icon";
+import { useGlobalContext } from "@/app/global-provider";
 import { stringToRgb } from "@/app/utility/function/color/string-to-rgb";
+import Icon from "@/public/icon";
 
 export function Chip ({
     chipText,
@@ -17,29 +18,43 @@ export function Chip ({
 }
 
 export function ChipTextColor ({
-    chipText,
+    chipText = "",
     chipIcon,
     fontWeight = 700,
     fontSize = "1rem",
-    chipBackgroungOpacity = 0.4,
+    chipBackgroundOpacity = 0.7,
+    chipBorderOpacity = 0.7,
     textColor = null,
-    paddingY = 0
+    textStringForColor = "",
+    paddingY = 0,
+    colorTheme = ""
 }: {
-    chipText: string,
+    chipText?: string,
     chipIcon?: string,
     fontWeight?: number,
     fontSize?: string,
-    chipBackgroungOpacity?: number,
+    chipBackgroundOpacity?: number,
+    chipBorderOpacity?: number,
     textColor?: ReturnType<typeof stringToRgb> | null,
-    paddingY?: number
+    textStringForColor?: string,
+    paddingY?: number,
+    colorTheme?: string
 }) {
-    const color = textColor ? textColor : stringToRgb(chipText);
+    const {globalParams, setGlobalParams} = useGlobalContext();
+    colorTheme = colorTheme ? colorTheme : globalParams.theme;
+    const color = textColor 
+        ? textColor 
+        : textStringForColor
+            ? stringToRgb(textStringForColor, colorTheme)
+            : stringToRgb(chipText, colorTheme);
+    
     return (
-        <span
-            className="flex flex-row gap-2 items-center px-2 rounded-lg text-nowrap"
+        <div
+            className="flex flex-row gap-2 items-center w-fit px-2 rounded-lg text-nowrap"
             style={{
-                backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, ${Math.abs((chipBackgroungOpacity - 0.001) % 1)})`,
-                border: `solid 1px rgba(${color.r}, ${color.g}, ${color.b}, 0.7)`,
+                color: "white",
+                backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, ${Math.abs((chipBackgroundOpacity - 0.001) % 1)})`,
+                border: `solid 1px rgba(${color.r}, ${color.g}, ${color.b}, ${Math.abs((chipBorderOpacity - 0.001) % 1)})`,
                 fontWeight: fontWeight,
                 fontSize: fontSize,
                 paddingTop: paddingY,
@@ -48,38 +63,48 @@ export function ChipTextColor ({
             key={chipText}>
             {chipIcon && <Icon icon={chipIcon} size={16}/>}
             {chipText}
-        </span>
+        </div>
     );
 }
 
 export function TextColor ({
-    chipText,
+    chipText = "",
     chipIcon,
-    fontWeight = 400,
+    fontWeight = 700,
     fontSize = "1rem",
     textColor = null,
-    backgroundColor = null
+    textStringForColor = "",
+    colorTheme = "",
+    opacity = 1
 }: {
-    chipText: string,
+    chipText?: string,
     chipIcon?: string,
     fontWeight?: number,
     fontSize?: string,
-    textColor?: ReturnType<typeof stringToRgb> | null
-    backgroundColor?: ReturnType<typeof stringToRgb> | null
+    textColor?: ReturnType<typeof stringToRgb> | null,
+    textStringForColor?: string,
+    colorTheme?: string,
+    opacity?: number
 }) {
-    const color = textColor ? textColor : stringToRgb(chipText);
-    const bgColor = backgroundColor ? backgroundColor : {r: 0, g:0, b:0};
+    const {globalParams, setGlobalParams} = useGlobalContext();
+    colorTheme = colorTheme ? colorTheme : globalParams.theme;
+    const color = textColor 
+        ? textColor 
+        : textStringForColor
+            ? stringToRgb(textStringForColor, colorTheme)
+            : stringToRgb(chipText, colorTheme);
+
     return (
         <span
-            className="px-2 rounded-xl"
+            className="flex flex-row gap-2 items-center w-fit px-2 rounded-lg text-nowrap"
             style={{
                 color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
                 fontWeight: fontWeight,
                 fontSize: fontSize,
-                backgroundColor: `rgba(${bgColor.r}, ${bgColor.g}, ${bgColor.b}, 1)`
-                }}
+                opacity: opacity
+            }}
             key={chipText}>
-            {chipIcon && <Icon icon="icon" size={16}/>}
+            {chipIcon && <Icon icon={chipIcon} size={16}/>}
             {chipText}
         </span>
     );

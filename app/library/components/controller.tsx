@@ -5,8 +5,8 @@ import { useEffect } from "react";
 import Link from "next/link";
 
 //// 1.2 Custom React hooks
-import { useGlobalContext } from "../../global-provider"
-import { useInterfaceContext } from "../library-provider";
+import { useGlobalContext } from "@/app/global-provider"
+import { useLocalLibraryContext } from "@/app/library/local-library-provider";
 
 //// 1.3 React components
 ////     N/A
@@ -19,133 +19,169 @@ import Icon from "@/public/icon";
 
 
 export default function Controller () {
-    // connect to global context
+    //// -------------------------------------------------------------------------
+    //// A. LOCAL CONSTANTS & CONSTANT-RELATED REACT HOOKS
+    //// -------------------------------------------------------------------------
+
+    ////// A.I Connect global context: /app/*
     const {globalParams, setGlobalParams} = useGlobalContext();
 
-    // connect to interface context
-    const {interfaceParams, setInterfaceParams} = useInterfaceContext();
+    ////// A.II Connect local context: /app/library/*
+    const {localLibraryContextParams, setLocalLibraryContextParams} = useLocalLibraryContext();
+
+
+    //// -------------------------------------------------------------------------
+    //// B. LOCAL FUNCTIONS & FUNCTION-RELATED REACT HOOKS
+    //// -------------------------------------------------------------------------
 
     const handleSearchKeyChange = (searchKey: string) => {
-        setInterfaceParams("searchKey", searchKey);
+        setLocalLibraryContextParams("searchKey", searchKey);
     }
 
     // manage editing mode on and off
     useEffect(() => {
         if (globalParams.popUpConfirm &&
             (globalParams.popUpAction.toString().includes("turnEditMode"))) {
-            setInterfaceParams("editMode", !interfaceParams.editMode)
+            setLocalLibraryContextParams("editMode", !localLibraryContextParams.editMode)
             setGlobalParams("popUpConfirm", false);
             setGlobalParams("popUpAction", "");
         }
     }, [globalParams]);
 
+
+    //// -------------------------------------------------------------------------
+    //// C. COMPONENT ASSEMBLY
+    //// -------------------------------------------------------------------------
+
+    let controllerMenu: React.ReactNode[] = [];
+
+    if (!localLibraryContextParams.editMode && (Object.keys(localLibraryContextParams.logUpdate).length === 0)) {
+        controllerMenu.push(
+            <Link key="C1"
+                href={"/"} 
+                onClick={() => setGlobalParams("isLoading", true)}
+                className="controller-menu">
+                <Icon icon="left" size={16} />
+                <p>BACK TO HOME</p>
+            </Link>
+        );
+    
+        controllerMenu.push(
+            <button key="C2"
+                onClick={() => setLocalLibraryContextParams("displayToggle", !localLibraryContextParams.displayToggle)}
+                className="controller-menu">
+                <Icon icon={localLibraryContextParams.displayToggle ? "table" : "image"} size={16} />
+                <p>{localLibraryContextParams.displayToggle ? "TABLE" : "GALLERY"}</p>
+            </button>
+        );
+    }
+        
+
+    controllerMenu.push(
+        <div key="C3" className="controller-menu">
+            <Icon icon="search" size={16} />
+            <span className="input-field"
+                contentEditable={true} suppressContentEditableWarning={true}
+                onInput={e => handleSearchKeyChange(e.currentTarget.textContent!)}>
+            </span>
+            {!localLibraryContextParams.searchKey && <span className="absolute left-[34px] z-[-10] text-sm">SEARCH LIBRARY</span>}
+        </div>
+    );
+        
+
+    if (Object.keys(localLibraryContextParams.logUpdate).length > 0) {
+        controllerMenu.push(
+            <button key="C4"
+                onClick={() => {
+                    setLocalLibraryContextParams("logUpdate", {});
+                    setGlobalParams("isLoading", true);
+                    if (window !== undefined) {
+                        window.location.reload();
+                    }
+                }}
+                className="controller-menu">
+                <Icon icon="left" size={16} />
+                <p>BACK TO LIBRARY</p>
+            </button>
+        )
+    }
+
+    if (localLibraryContextParams.editMode) {
+        controllerMenu.push(
+            <button key="C5a"
+                onClick={() => setLocalLibraryContextParams("sortAscending", !localLibraryContextParams.sortAscending)}
+                className="controller-menu">
+                <Icon icon="sort" size={16} />
+                <p>{localLibraryContextParams.sortAscending ? "0 - 9" : "9 - 0"}</p>
+            </button>
+        );
+
+        controllerMenu.push(
+            <button key="C5b"
+                onClick={() => setLocalLibraryContextParams("addLibraryToggle", !localLibraryContextParams.addLibraryToggle)}
+                className="controller-menu">
+                <Icon icon="add" size={16} />
+                <p>ADD NEW LIBRARY</p>
+            </button>
+        );
+
+        controllerMenu.push(
+            <button key="C5c"
+                onClick={() => {
+                    setGlobalParams("popUpConfirm", false);
+                    setLocalLibraryContextParams("discardChangesToggle", !localLibraryContextParams.discardChangesToggle);
+                    setGlobalParams("popUp", true);
+                    setGlobalParams("popUpAction", "discardChangesToggle");
+                    setGlobalParams("popUpText", "Discard all changes, your library data will be recovered to the original one");
+                }}
+                className="controller-menu">
+                <Icon icon="trash" size={16} />
+                <p>DISCARD CHANGES</p>
+            </button>
+        );
+
+        controllerMenu.push(
+            <button key="C5d"
+                onClick={() => {
+                    setGlobalParams("popUpConfirm", false);
+                    setLocalLibraryContextParams("saveChangesToggle", !localLibraryContextParams.saveChangesToggle)
+                    setGlobalParams("popUp", true);
+                    setGlobalParams("popUpAction", "saveChangesToggle");
+                    setGlobalParams("popUpText", "Save all recent changes. All data will be permanently updated")
+                }}
+                className="controller-menu">
+                <Icon icon="save" size={16} />
+                <p>SAVE CHANGES</p>
+            </button>
+        );
+    }
+
+    if (Object.keys(localLibraryContextParams.logUpdate).length === 0) {
+        controllerMenu.push(
+            <button key="C6"
+                onClick={() => {
+                    setGlobalParams("popUp", true);
+                    setGlobalParams("popUpAction", localLibraryContextParams.editMode ? "turnEditModeOff" : "turnEditModeOn");
+                    setGlobalParams("popUpText", localLibraryContextParams.editMode ? 
+                        "Turn editing mode off. All unsaved changes will be ignored" : 
+                        `Turn editing mode on`)
+                }}
+                className="controller-menu">
+                <Icon icon={localLibraryContextParams.editMode ? "edit" : "map"} size={16} />
+                <p>{localLibraryContextParams.editMode ? "EXIT EDIT MODE" : "ENTER EDIT MODE"}</p>
+            </button>
+        );
+    }
+
+
+    //// -------------------------------------------------------------------------
+    //// D. RETURN FINAL COMPONENT
+    //// -------------------------------------------------------------------------
+
     return (
         <section className="controller-area">
             <div className="controller-island">
-
-                {!interfaceParams.editMode &&
-                    <Link
-                        href={"/"} 
-                        onClick={() => setGlobalParams("isLoading", true)}
-                        className="controller-menu">
-                        <Icon icon="left" size={16} />
-                        <p>BACK TO HOME</p>
-                    </Link>
-                }
-
-                {(Object.keys(interfaceParams.logUpdate).length > 0) &&
-                    <button
-                        onClick={() => {
-                            setInterfaceParams("logUpdate", {});
-                            setGlobalParams("isLoading", true);
-                            if (window !== undefined) {
-                                window.location.reload();
-                            }
-                        }}
-                        className="controller-menu">
-                        <Icon icon="left" size={16} />
-                        <p>BACK TO LIBRARIES</p>
-                    </button>
-                }
-
-                {!interfaceParams.editMode && (Object.keys(interfaceParams.logUpdate).length === 0) &&
-                    <button
-                        onClick={() => setInterfaceParams("displayToggle", !interfaceParams.displayToggle)}
-                        className="controller-menu">
-                        <Icon icon={interfaceParams.displayToggle ? "table" : "card"} size={16} />
-                        <p>{interfaceParams.displayToggle ? "TABLE" : "CARD"}</p>
-                    </button>
-                }
-
-                {!interfaceParams.editMode &&
-                    <button
-                        onClick={() => setInterfaceParams("sortAscending", !interfaceParams.sortAscending)}
-                        className="controller-menu">
-                        <Icon icon="sort" size={16} />
-                        <p>{interfaceParams.sortAscending ? "0 - 9" : "9 - 0"}</p>
-                    </button>
-                }
-
-                <div className="controller-menu">
-                    <Icon icon="search" size={16} />
-                    <span className="input-field"
-                        contentEditable={true} suppressContentEditableWarning={true}
-                        onInput={e => handleSearchKeyChange(e.currentTarget.textContent!)}>
-                    </span>
-                    {!interfaceParams.searchKey && <span className="absolute left-[34px] z-[-10] text-sm">SEARCH QUIZ</span>}
-                </div>
-
-                {interfaceParams.editMode && 
-                    <button
-                        onClick={() => setInterfaceParams("addLibraryToggle", !interfaceParams.addLibraryToggle)}
-                        className="controller-menu">
-                        <Icon icon="add" size={16} />
-                        <p>ADD NEW LIBRARY</p>
-                    </button>
-                }
-
-                {interfaceParams.editMode && 
-                    <button
-                        onClick={() => {
-                            setInterfaceParams("discardChangesToggle", !interfaceParams.discardChangesToggle);
-                            setGlobalParams("popUp", true);
-                            setGlobalParams("popUpAction", "discardChangesToggle");
-                            setGlobalParams("popUpText", "Discard all changes, your course data will be recovered to the original one");
-                        }}
-                        className="controller-menu">
-                        <Icon icon="trash" size={16} />
-                        <p>DISCARD CHANGES</p>
-                    </button>
-                }
-
-                {interfaceParams.editMode && 
-                    <button
-                        onClick={() => {
-                            setInterfaceParams("saveChangesToggle", !interfaceParams.saveChangesToggle)
-                            setGlobalParams("popUp", true);
-                            setGlobalParams("popUpAction", "saveChangesToggle");
-                            setGlobalParams("popUpText", "Save all recent changes. All data will be permanently updated")
-                        }}
-                        className="controller-menu">
-                        <Icon icon="save" size={16} />
-                        <p>SAVE CHANGES</p>
-                    </button>
-                }
-
-                {(Object.keys(interfaceParams.logUpdate).length === 0) &&
-                    <button
-                        onClick={() => {
-                            setGlobalParams("popUp", true);
-                            setGlobalParams("popUpAction", interfaceParams.editMode ? "turnEditModeOff" : "turnEditModeOn");
-                            setGlobalParams("popUpText", interfaceParams.editMode ? 
-                                "Turn editing mode off. All unsaved changes will be ignored" : 
-                                `Turn editing mode on`)
-                        }}
-                        className="controller-menu">
-                        <Icon icon={interfaceParams.editMode ? "edit" : "map"} size={16} />
-                        <p>{interfaceParams.editMode ? "EXIT EDIT MODE" : "ENTER EDIT MODE"}</p>
-                    </button>}
-
+                {controllerMenu}
             </div>
         </section>
     );

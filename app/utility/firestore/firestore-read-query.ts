@@ -1,13 +1,26 @@
+//// 1.1 Metadata & module & framework
 import metadata from "@/metadata.json";
-
 import { getFirestore, query, where, collection, getDocs, WhereFilterOp } from "firebase/firestore";
 
-import appClientAlpha from '../firebase/fireclient-alpha';
-import appClientBeta from '../firebase/fireclient-beta';
+//// 1.2 Custom React hooks
+////     N/A
+
+//// 1.3 React components
+////     N/A
+
+//// 1.4 Utility functions
+import appClientAlpha from "@/app/utility/firebase/fireclient-alpha";
+import appClientBeta from "@/app/utility/firebase/fireclient-beta";
+
+import { getRandomArrayItem } from "../function/array/array-random-pick";
+
+//// 1.5 Public and others
+////     N/A
+
 
 // get database
 export default async function firestoreReadQuery({
-  firebaseBranch = metadata.firebaseBranch[Math.round(Math.random() * metadata.firebaseBranch.length) - 1],
+  firebaseBranch = getRandomArrayItem(metadata.firebaseBranch),
   collectionName,
   queryKey,
   queryComparator,
@@ -19,48 +32,32 @@ export default async function firestoreReadQuery({
   queryComparator: WhereFilterOp,
   queryValue: string
 }): Promise<string> {
-  console.log(`✏️ START READING ${firebaseBranch}/COLLECTION/${collectionName}`);
-  if (firebaseBranch == "ALPHA") {
-    try {
-      // get database
-      const dbAlpha = getFirestore(appClientAlpha);
-  
-      // query data
-      const q = query(collection(dbAlpha, collectionName), where(queryKey, queryComparator, queryValue));
-    const querySnapshot = await getDocs(q);
-  
-      // extract data
-      let docs: {[key: string]: {[key: string]: any}} = {}
-      querySnapshot.forEach((doc) => {
-        docs[doc.id] = doc.data();
-      })
-  
-      return JSON.stringify(docs);
-    } catch (error) {
-      return "{}";
+
+  // Prepare docs varaible storing fetch data
+  let docs: {[key: string]: {[key: string]: any}} = {}
+  // Get database
+  const getDatabase = () => {
+    switch (firebaseBranch) {
+      case "ALPHA":
+        return getFirestore(appClientAlpha);
+
+      case "BETA":
+        return getFirestore(appClientBeta);
+        
+      default:
+        return getFirestore(appClientAlpha);
     }
-  } 
+  }
   
-  else if (firebaseBranch == "BETA") {
-    try {
-      // get database
-      const dbBeta = getFirestore(appClientBeta);
-  
-      // query data
-      const q = query(collection(dbBeta, collectionName), where(queryKey, queryComparator, queryValue));
+  try {
+    // Query data
+    const q = query(collection(getDatabase(), collectionName), where(queryKey, queryComparator, queryValue));
     const querySnapshot = await getDocs(q);
+
+    // Extract data
+    querySnapshot.forEach((doc) => docs[doc.id] = doc.data());
+  } catch (error) {null}
   
-      // extract data
-      let docs: {[key: string]: {[key: string]: any}} = {}
-      querySnapshot.forEach((doc) => {
-        docs[doc.id] = doc.data();
-      })
-  
-      return JSON.stringify(docs);
-    } catch (error) {
-      return "{}";
-    }
-  } 
-  
-  else {return "{}";}
+  console.log(`✏️ START QUERY READING ${firebaseBranch}/COLLECTION/${collectionName} [${Object.keys(docs).length}]`);
+  return JSON.stringify(docs);
 }

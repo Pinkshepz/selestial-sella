@@ -14,11 +14,12 @@ html.light {
   /* shadow */
   --shadow: rgba(0, 0, 0, 0.05);
   /* gray-300 #d1d5db /100 */
-  --border: rgba(167, 177, 193, 1.0);
+  --border: rgb(202, 209, 222, 1.0);
+  --border-half: rgb(202, 209, 222, 0.25);
   /* blue-500 #3b82f6 /100 */
   --pri: rgba(59, 130, 246, 1.0);
   /* blue-500 #3b82f6 /20 */
-  --pri-accent: rgba(14, 165, 233, 0.2);
+  --pri-accent: rgba(59, 130, 246, 0.75);
   /* rose-500 #f43f5e /100 */
   --sec: rgba(244, 63, 94, 1.0);
   /* rose-500 #f43f5e /20 */
@@ -26,7 +27,7 @@ html.light {
   /* f0f0f0 / 100 */
   --ter: rgba(160, 160, 160, 1.0);
   /* slate-500 #64748b /100 */
-  --text-slate: rgba(100, 116, 139, 1.0);
+  --slate: rgb(139, 154, 176);
   /* teal-600 #0d9488 /100 */
   --teal: rgba(13, 148, 136, 1.0);
   /* red-600 #dc2626 /100 */
@@ -36,7 +37,8 @@ html.light {
   /* special */
   --bg: rgba(250, 250, 250, 1);
   /* special */
-  --bg-hover: rgba(187, 197, 213, 0.5);
+  --bg-hover: rgba(202, 209, 222, 0.40);
+  --bg-hover-half: rgba(202, 209, 222, 0.20);
 }
   
 html.dark {
@@ -52,10 +54,11 @@ html.dark {
   --shadow: rgba(255, 255, 255, 0.05);
   /* gray-700 #374151 /100 */
   --border: rgba(55, 65, 81, 1.0);
+  --border-half: rgba(55, 65, 81, 0.25);
   /* blue-400 #60a5fa /100 */
   --pri: rgba(96, 165, 250, 1.0);
   /* blue-400 #60a5fa /70 */
-  --pri-accent: rgba(96, 165, 250, 0.7);
+  --pri-accent: rgba(96, 165, 250, 0.75);
   /* rose-400 #fb7185 /100 */
   --sec: rgba(251, 113, 133, 1.0);
   /* rose-400 #fb7185 /20 */
@@ -63,7 +66,7 @@ html.dark {
   /* fefefe / 100 */
   --ter: rgba(239, 239, 239, 1.0);
   /* slate-500 #64748b /100 */
-  --text-slate: rgba(100, 116, 139, 1.0);
+  --slate: rgba(100, 116, 139, 1.0);
   /* teal-400 #2dd4bf /100 */
   --teal: rgba(45, 212, 191, 1);
   /* red-400 #f87171 /100 */
@@ -73,10 +76,12 @@ html.dark {
   /* special */
   --bg: rgba(7, 14, 21, 1);
   /* special */
-  --bg-hover: rgba(55, 65, 81, 0.75);
+  --bg-hover: rgba(55, 65, 81, 0.60);
+  --bg-hover-half: rgba(55, 65, 81, 0.20);
 }
 
-@media screen and (min-width: 800px) {
+/* BREAK POINT AT "lg" */
+@media screen and (min-width: 64rem) {
   :root {
     --nav-height: 56px;
     --controller-height: 72px;
@@ -86,7 +91,7 @@ html.dark {
   }
 }
 
-@media screen and (min-width: 0px) and (max-width: 800px) {
+@media screen and (min-width: 0px) and (max-width: 64rem) {
   :root {
     --nav-height: 56px;
     --controller-height: 72px;
@@ -104,7 +109,7 @@ html {
   padding: 0;
   margin: 0;
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 400;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
@@ -112,17 +117,18 @@ html {
   background-color: var(--bg);
   overflow-x: hidden;
   -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  transition: all ease-in-out 200ms;
 }
 
 html::-webkit-scrollbar { 
   display: none;  /* Safari and Chrome */
   scrollbar-track-color: #00000000;
   scrollbar-gutter: none;
+  z-index: 1000;
 }
 
 html::-webkit-scrollbar-track {
   background: transparent;
+  z-index: 1000;
  }
 
 input:focus, input,
@@ -221,7 +227,27 @@ textarea {
 }
 
 .color-slate {
-  color: var(--text-slate);
+  color: var(--slate);
+}
+
+.color-red {
+  color: var(--red);
+}
+
+.color-amber {
+  color: var(--amber);
+}
+
+.color-teal {
+  color: var(--teal);
+}
+
+.highlight {
+  font-weight: 900;
+  color: var(--amber);
+  text-shadow:
+    0 0 0.5px #ffffffff,
+    0 0 1px var(--pri-accent)
 }
 
 .-scroll-none {
@@ -231,6 +257,18 @@ textarea {
 
 .-scroll-none::-webkit-scrollbar { 
   display: none;  /* Safari and Chrome */
+}
+
+.-prevent-select {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
+button {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 
 .main-popup {
@@ -255,10 +293,10 @@ textarea {
   gap: 32px;
   text-align: center;
   border: solid 1px var(--border);
-  border-radius: 12px;
-  background-color: var(--highlight-strong);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  border-radius: 48px;
+  background-color: var(--highlight);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   transform: scale3d(1.1);
   animation: smooth-appear 400ms ease forwards;
 }
@@ -378,8 +416,38 @@ textarea {
   border-bottom: solid 1px var(--border);
 }
 
-.-border{
+.-border {
   border: solid 1px var(--border);
+}
+
+.-border-l-half {
+  border-left: solid 1px var(--border-half);
+}
+
+.-border-r-half {
+  border-right: solid 1px var(--border-half);
+}
+
+.-border-t-half {
+  border-top: solid 1px var(--border-half);
+}
+
+.-border-b-half {
+  border-bottom: solid 1px var(--border-half);
+}
+
+.-border-x-half {
+  border-left: solid 1px var(--border-half);
+  border-right: solid 1px var(--border-half);
+}
+
+.-border-y-half {
+  border-top: solid 1px var(--border-half);
+  border-bottom: solid 1px var(--border-half);
+}
+
+.-border-half {
+  border: solid 1px var(--border-half);
 }
 
 .background-image {
@@ -392,14 +460,43 @@ textarea {
   filter: brightness(2);
 }
 
-.-hover-bg-100:hover {
-  background-color: var(--bg-hover);
-  transition: all ease-in-out 100ms;
-}
-
-.-hover-bg-200:hover {
+.-button-hover-red:hover {
   background-color: var(--bg-hover);
   transition: all ease-in-out 200ms;
+  border: solid 1px var(--red);
+  color: var(--red);
+}
+
+.-button-hover-amber:hover {
+  background-color: var(--bg-hover);
+  transition: all ease-in-out 200ms;
+  border: solid 1px var(--amber);
+  color: var(--amber);
+}
+
+.-button-hover-pri:hover {
+  background-color: var(--bg-hover);
+  transition: all ease-in-out 200ms;
+  border: solid 1px var(--pri);
+  color: var(--pri);
+}
+
+.-hover-bg:hover {
+  background-color: var(--bg-hover);
+  transition: all ease-in-out 200ms;
+}
+
+.-hover-bg-half:hover {
+  background-color: var(--bg-hover-half);
+  transition: all ease-in-out 200ms;
+}
+
+.-hover-bg-active {
+  background-color: var(--bg-hover);
+}
+
+.-hover-bg-active-half {
+  background-color: var(--bg-hover-half);
 }
 
 .-button-line {

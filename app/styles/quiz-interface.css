@@ -13,6 +13,14 @@
   overflow: hidden;
 }
 
+#display-two-cols-fixed {
+  display: flex;
+  flex-direction: row;
+  height: calc(100dvh - var(--nav-height) - var(--controller-height) - var(--controller-height) + 8px);
+  margin-top: calc(var(--nav-height) + var(--controller-height));
+  overflow: hidden;
+}
+
 #quiz-col-scroll-aside {
   display: var(--aside-visibility);
   flex-direction: column;
@@ -24,7 +32,6 @@
   flex-direction: column;
   width: var(--main-width);
 }
-
 
 
 #col-scroll-aside {
@@ -47,8 +54,6 @@
   border: solid 1px var(--border);
   border-radius: 8px;
   overflow: hidden;
-  transition: all 200ms ease-in-out;
-  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-nav-neu:hover {
@@ -64,8 +69,6 @@
   border: solid 1px var(--border);
   border-radius: 8px;
   overflow: hidden;
-  transition: all 200ms ease-in-out;
-  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-nav-ter {
@@ -77,8 +80,6 @@
   border: solid 1px var(--ter);
   border-radius: 8px;
   overflow: hidden;
-  transition: all 200ms ease-in-out;
-  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-nav-green {
@@ -90,8 +91,6 @@
   border: solid 1px var(--teal);
   border-radius: 8px;
   overflow: hidden;
-  transition: all 200ms ease-in-out;
-  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-nav-red {
@@ -103,8 +102,6 @@
   border: solid 1px var(--red);
   border-radius: 8px;
   overflow: hidden;
-  transition: all 200ms ease-in-out;
-  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-nav-amber {
@@ -116,14 +113,10 @@
   border: solid 1px var(--amber);
   border-radius: 8px;
   overflow: hidden;
-  transition: all 200ms ease-in-out;
-  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-quiz-container {
   position: relative;
-  transition: all 200ms ease-in-out;
-  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-quiz-container > button {
@@ -136,8 +129,6 @@
   border: solid 1px var(--border);
   border-radius: 12px;
   overflow: hidden;
-  transition: all 200ms ease-in-out;
-  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-quiz> #answer-type {
@@ -149,8 +140,6 @@
   border: solid 1px var(--pri);
   border-radius: 12px;
   overflow: hidden;
-  transition: all 200ms ease-in-out;
-  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-quiz-pri > #answer-type {
@@ -163,8 +152,6 @@
   border: solid 1px var(--ter);
   border-radius: 12px;
   overflow: hidden;
-  transition: all 200ms ease-in-out;
-  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-quiz-ter > #answer-type {
@@ -177,8 +164,6 @@
   box-shadow: 0 0 var(--shadow-radius) calc(var(--shadow-radius)/2) var(--teal);
   border-radius: 12px;
   overflow: hidden;
-  transition: all 200ms ease-in-out;
-  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-quiz-green > #answer-report {
@@ -191,8 +176,6 @@
   border-radius: 12px;
   box-shadow: 0 0 var(--shadow-radius) calc(var(--shadow-radius)/2) var(--red);
   overflow: hidden;
-  transition: all 200ms ease-in-out;
-  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-quiz-red > #answer-report {
@@ -205,8 +188,6 @@
   border-radius: 12px;
   box-shadow: 0 0 var(--shadow-radius) calc(var(--shadow-radius)/2) var(--amber);
   overflow: hidden;
-  transition: all 200ms ease-in-out;
-  animation: smooth-appear 400ms ease forwards;
 }
 
 #card-quiz-amber > #answer-report {

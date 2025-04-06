@@ -1,8 +1,20 @@
+//// 1.1 Metadata & module & framework
 import metadata from "@/metadata.json";
 
+//// 1.2 Custom React hooks
+////     N/A
+
+//// 1.3 React components
+////     N/A
+
+//// 1.4 Utility functions
 import firestoreWrite from "./firestore-write";
 import firestoreDelete from "./firestore-delete";
 import object_compare from "@/app/utility/function/object/object-compare";
+
+//// 1.5 Public and others
+////     N/A
+
 
 export default async function firestoreUpdateTopic ({
     firebaseBranch,

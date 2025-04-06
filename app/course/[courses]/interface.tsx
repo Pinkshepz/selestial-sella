@@ -8,9 +8,12 @@ import { useGlobalContext } from "../../global-provider";
 import { useInterfaceContext } from './topic-provider';
 
 //// 1.3 React components
+import Course from "@/app/utility/interface/interface-course";
+import Library from "@/app/utility/interface/interface-library";
+
 import Controller from "./components/controller";
 import DisplayView from "./components/display-view";
-import EditView from "./components/edit-view";
+import EditView from "./components/topic-edit";
 import LogUpdate from "./components/log-update";
 
 //// 1.4 Utility functions
@@ -20,15 +23,14 @@ import ConfirmPopUp from "@/app/utility/components/confirm-popup";
 ////     N/A
 
 
-
 export default function Interface ({
     courseData,
     topicData,
     libraryData
 }: {
-    courseData: {[key: string]: any},
+    courseData: Course,
     topicData: {[key: string]: {[key: string]: any}},
-    libraryData: {[key: string]: any}
+    libraryData: {[key: string]: Library}
 }): React.ReactNode {
     // connect to global context
     const {globalParams, setGlobalParams} = useGlobalContext();

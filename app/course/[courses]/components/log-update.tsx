@@ -66,10 +66,10 @@ export default function LogUpdate ({
     let tableContent: React.ReactNode[] = [];
 
     const actionMap = {
-        WRITE: "text-pri dark:text-pri-dark",
-        EDIT: "text-amber dark:text-amber-dark",
-        DELETE: "text-sec dark:text-sec-dark",
-        REMAIN: "text-ter dark:text-ter-dark"
+        WRITE: "color-pri",
+        EDIT: "color-amber",
+        DELETE: "color-red",
+        REMAIN: "color-slate"
     };
 
     Object.values(sortedFilteredContentData).map((log, index) => {
