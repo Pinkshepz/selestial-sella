@@ -55,15 +55,7 @@ export default function QuizDisplayMain_A_Modality ({
         array: localQuizContextParams.bufferLibrary.questionUidOrder,
         targetValue: localQuizContextParams.currentQuestionUid});
 
-    //// -------------------------------------------------------------------------
-    //// B. LOCAL FUNCTIONS & FUNCTION-RELATED REACT HOOKS
-    //// -------------------------------------------------------------------------
-
-    //// -------------------------------------------------------------------------
-    //// C. COMPONENT ASSEMBLY
-    //// -------------------------------------------------------------------------
-
-
+        
     //// -------------------------------------------------------------------------
     //// D. RETURN FINAL COMPONENT
     //// -------------------------------------------------------------------------

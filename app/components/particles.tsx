@@ -99,7 +99,7 @@ export default function Particles (): React.ReactNode {
 
 
     // 4. object_spacing of objects -> lesser means more density -> more objects displayed
-    const object_spacing = 100;
+    const object_spacing = 75;
     const rare_bubble_chance = 2; // density of colorful bubbles
     
     
