@@ -34,7 +34,7 @@ const DisplayCard = ({
     // prepare tag chips
     let tagsElements: React.ReactNode[] = [];
 
-    if (cardTag) {cardTag.map((tag) => tagsElements.push(<span key={tag}><ChipTextColor chipText={tag} chipBackgroungOpacity={0.5}/></span>));}
+    if (cardTag) {cardTag.map((tag) => tagsElements.push(<span key={tag}><ChipTextColor chipText={tag} chipBackgroundOpacity={0.5}/></span>));}
 
     return (
         // card template

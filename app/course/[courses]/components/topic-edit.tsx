@@ -449,7 +449,7 @@ export default function EditView ({
                         <div key={index}>
                             <div className="px-6 py-4 my-8 flex flex-row gap-4 w-full items-center justify-center bg-black/1 dark:bg-white/5"
                                 ref={(element) => {elementsRef.current[topicContentUid] = element}}>
-                                <ChipTextColor chipText="CONTENT CARD" chipIcon="table" fontWeight={900} chipBackgroungOpacity={0.1} paddingY={4} />
+                                <ChipTextColor chipText="CONTENT CARD" chipIcon="table" fontWeight={900} chipBackgroundOpacity={0.1} paddingY={4} />
                                 {(lastEditUid === topicContentUid) && <LastEdited />}
                                 <div className="w-full -border-b"></div>
                                 <button onClick={() => handleObjectKeyDelete({keysHierachy: [], keyToDelete: topicContentUid})}
@@ -514,7 +514,7 @@ export default function EditView ({
                     elementTopic.quizBanner.push(
                         <div className="px-6 py-4 my-8 flex flex-row gap-4 w-full items-center justify-center bg-black/1 dark:bg-white/5" key={"Header_" + index}
                             ref={(element) => {elementsRef.current[topicContentUid] = element}}>
-                            <ChipTextColor chipText="QUIZ BANNER" chipIcon="tag" fontWeight={900} chipBackgroungOpacity={0.1} paddingY={4} />
+                            <ChipTextColor chipText="QUIZ BANNER" chipIcon="tag" fontWeight={900} chipBackgroundOpacity={0.1} paddingY={4} />
                             {(lastEditUid === topicContentUid) && <LastEdited />}
                             <div className="w-full -border-b"></div>
                             <button onClick={() => handleObjectKeyDelete({keysHierachy: [], keyToDelete: topicContentUid})}
@@ -571,7 +571,7 @@ export default function EditView ({
                     elementTopic.quizCard.push(
                         <div className="px-6 py-4 my-8 flex flex-row gap-4 w-full items-center justify-center -hover-bg-active" key={"Header_" + index}
                             ref={(element) => {elementsRef.current[topicContentUid] = element}}>
-                            <ChipTextColor chipText="QUIZ CARD" chipIcon="tag" fontWeight={900} chipBackgroungOpacity={0.1} paddingY={4} />
+                            <ChipTextColor chipText="QUIZ CARD" chipIcon="tag" fontWeight={900} chipBackgroundOpacity={0.1} paddingY={4} />
                             {(lastEditUid === topicContentUid) && <LastEdited />}
                             <div className="w-full -border-b"></div>
                             <button onClick={() => handleObjectKeyDelete({keysHierachy: [], keyToDelete: topicContentUid})}
