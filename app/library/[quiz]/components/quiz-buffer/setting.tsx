@@ -12,13 +12,12 @@ import { useLocalQuizContext } from "@/app/library/[quiz]/local-quiz-provider";
 import Library from '@/app/utility/interface/interface-library';
 import Question from '@/app/utility/interface/interface-quiz';
 
-import { ChipTextColor } from '@/app/utility/components/chip';
-
 //// 1.4 Utility functions
 ////     N/A
 
 //// 1.5 Public and others
 import Icon from "@/public/icon";
+import { ChipTextColor } from '@/app/utility/components/chip';
 
 
 export default function SettingInterface ({
@@ -28,16 +27,26 @@ export default function SettingInterface ({
     libraryData: Library, // {uid: {library data}}
     questionData: Question[] // {uid: {each question}}
 }) {
-    // supplement wallpaper
-    const BG = "https://media.suara.com/pictures/653x366/2019/12/19/95933-aurora.jpg";
     
-    // connect to global context
+    //// -------------------------------------------------------------------------
+    //// A. LOCAL CONSTANTS & CONSTANT-RELATED REACT HOOKS
+    //// -------------------------------------------------------------------------
+    
+    ////// A.I Connect global context: /app/*
     const {globalParams, setGlobalParams} = useGlobalContext();
-
-    // Connect to interfaceContext
+    
+    ////// A.II Connect local context: /app/library/[quiz]/
     const {localQuizContextParams, setLocalQuizContextParams} = useLocalQuizContext();
 
-    // manage editing mode on and off
+    ////// A.III Supplement wallpaper if library data has invalid image
+    const BG = "https://media.suara.com/pictures/653x366/2019/12/19/95933-aurora.jpg";
+
+    
+    //// -------------------------------------------------------------------------
+    //// B. LOCAL FUNCTIONS & FUNCTION-RELATED REACT HOOKS
+    //// -------------------------------------------------------------------------
+
+    // Manage editing mode on and off
     useEffect(() => {
         if (globalParams.popUpConfirm &&
             (globalParams.popUpAction.toString().includes("turnEditMode"))) {
@@ -82,8 +91,8 @@ export default function SettingInterface ({
 
                     {/* Content data */}
                     <div className='flex flex-wrap gap-4 items-center mt-4'>
-                        <span id='pri-chip' className='text-sm font-semibold'>{libraryData.id}</span>
-                        <span id='pri-chip' className='text-sm font-semibold'>Total {questionData.length} Questions</span>
+                        <ChipTextColor chipText={libraryData.id} />
+                        <ChipTextColor chipText={`${questionData.length} QUESTION ${(questionData.length > 0) ? "S" : ""}`} />
                     </div>
 
                     {/* Settings */}
@@ -146,37 +155,53 @@ export default function SettingInterface ({
                     }
 
                     {/* Action */}
-                    <div className="flex flex-wrap lg:flex-row mt-8 gap-8">
-                        <Link href={"./"} className="text-md">
-                            <button
-                                onClick={() => setGlobalParams("isLoading", true)}
-                                id="theme-button">
-                                GO BACK
-                            </button>
-                        </Link>
+                    <div className="flex flex-col mt-16 gap-8 w-full text-nowrap">
+                        
                         {!(localQuizContextParams.questionNumber < 1) && 
                             <a href="#top" className="text-md">
-                                <button id="theme-button"
+                                <button className="flex flex-row gap-2 items-center px-4 py-2 font-bold -border -button-hover-pri rounded-xl"
                                     onClick={() => setLocalQuizContextParams("pageSwitch", true)}>
-                                    START QUIZ
+                                    <Icon icon="rocket" size={32} />
+                                    <p className="font-black text-3xl">START QUIZ</p>
                                 </button>
                             </a>
                         }
-                        <div className='hidden lg:inline'>
-                            <button
+
+                        <div className="flex flex-wrap items-center gap-8 w-full">
+                            {globalParams.latestPath && <Link href={globalParams.latestPath}
                                 onClick={() => {
-                                    setGlobalParams("popUp", true);
-                                    setGlobalParams("popUpAction", localQuizContextParams.editMode ? "turnEditModeOff" : "turnEditModeOn");
-                                    setGlobalParams("popUpText", localQuizContextParams.editMode ? 
-                                        "Turn editing mode off. All unsaved changes will be ignored" : 
-                                        `Turn editing mode on`);
+                                    setGlobalParams("isLoading", true);
+                                    setGlobalParams("latestPath", "");
                                 }}
-                                id="theme-button"
-                                className="lg:ml-auto text-md">
-                                <Icon icon={localQuizContextParams.editMode ? "edit" : "map"} size={16} />
-                                {localQuizContextParams.editMode ? "EXIT EDIT MODE" : "ENTER EDIT MODE"}
-                            </button>
+                                className="flex flex-row gap-2 items-center px-4 py-2 font-bold -border -button-hover-pri rounded-xl cursor-pointer">
+                                <Icon icon="cube" size={18} />
+                                <p className="font-bold text-lg">BACK TO LATEST TOPIC</p>
+                            </Link>}
+                            <Link href={"/library"}
+                                onClick={() => {
+                                    setGlobalParams("isLoading", true);
+                                    setGlobalParams("latestPath", "");
+                                }}
+                                className="flex flex-row gap-2 items-center px-4 py-2 font-bold -border -button-hover-pri rounded-xl cursor-pointer">
+                                <Icon icon="book" size={18} />
+                                <p className="font-bold text-lg">BACK TO LIBRARY</p>
+                            </Link>
+                            <div className="hidden lg:inline ml-auto">
+                                <button
+                                    onClick={() => {
+                                        setGlobalParams("popUp", true);
+                                        setGlobalParams("popUpAction", localQuizContextParams.editMode ? "turnEditModeOff" : "turnEditModeOn");
+                                        setGlobalParams("popUpText", localQuizContextParams.editMode ? 
+                                            "Turn editing mode off. All unsaved changes will be ignored" : 
+                                            `Turn editing mode on`);
+                                    }}
+                                    className="flex flex-row gap-2 items-center px-4 py-2 font-bold color-slate -button-hover-amber rounded-xl cursor-pointer">
+                                    <Icon icon={localQuizContextParams.editMode ? "" : "edit"} size={16} />
+                                    <p className="font-bold text-lg">{localQuizContextParams.editMode ? "" : "EDIT"}</p>
+                                </button>
+                            </div>
                         </div>
+
                     </div>
                 </article>
                 <div className="card-2-glow-image">

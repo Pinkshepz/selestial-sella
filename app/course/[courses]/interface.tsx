@@ -2,6 +2,7 @@
 
 //// 1.1 Metadata & module & framework
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 //// 1.2 Custom React hooks
 import { useGlobalContext } from "../../global-provider";
@@ -32,13 +33,27 @@ export default function Interface ({
     topicData: {[key: string]: {[key: string]: any}},
     libraryData: {[key: string]: Library}
 }): React.ReactNode {
-    // connect to global context
+    
+    //// -------------------------------------------------------------------------
+    //// A. LOCAL CONSTANTS & CONSTANT-RELATED REACT HOOKS
+    //// -------------------------------------------------------------------------
+
+    ////// A.I Connect global context: /app/*
     const {globalParams, setGlobalParams} = useGlobalContext();
 
-    useEffect(() => {setGlobalParams("isLoading", false);}, []);
-
-    // connect to interface context
+    ////// A.II Connect local context: /app/course/[courses]/*
     const {interfaceParams, setInterfaceParams} = useInterfaceContext();
+    
+    //// -------------------------------------------------------------------------
+    //// B. LOCAL FUNCTIONS & FUNCTION-RELATED REACT HOOKS
+    //// -------------------------------------------------------------------------
+
+    const currentPath = usePathname();
+
+    useEffect(() => {
+        setGlobalParams("isLoading", false);
+        setGlobalParams("latestPath", currentPath);
+    }, []);
   
     return (
         <>

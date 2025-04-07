@@ -19,12 +19,21 @@ import Icon from "@/public/icon";
 
 export default function LogUpdate () {
 
-    // connect to global context
+    //// -------------------------------------------------------------------------
+    //// A. LOCAL CONSTANTS & CONSTANT-RELATED REACT HOOKS
+    //// -------------------------------------------------------------------------
+    
+    ////// A.I Connect global context: /app/*
     const {globalParams, setGlobalParams} = useGlobalContext();
 
-    // connect to interface context
+    ////// A.II Connect local context: /app/library/[quiz]/
     const {localQuizContextParams, setLocalQuizContextParams} = useLocalQuizContext();
 
+
+    //// -------------------------------------------------------------------------
+    //// B. LOCAL FUNCTIONS & FUNCTION-RELATED REACT HOOKS
+    //// -------------------------------------------------------------------------
+    
     useEffect(() => {
         setGlobalParams("isLoading", false);
     }, []);

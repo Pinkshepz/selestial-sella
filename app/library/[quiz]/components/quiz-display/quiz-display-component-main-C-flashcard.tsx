@@ -98,7 +98,7 @@ export default function QuizDisplayMain_C_CARD (): React.ReactNode {
                     bufferQuestion: localQuizContextParams.bufferQuestion,
                     questionUid: localQuizContextParams.currentQuestionUid,
                     cardUid: cardUid})}
-                key={cardUid} className={`flex flex-col -border-half rounded-xl pb-4 -prevent-select ${
+                key={cardUid + cardContent.flipped} className={`-smooth-appear flex flex-col -border-half rounded-xl pb-4 -prevent-select ${
                     cardContent.cardAllowFlipped ? "-hover-bg-active-half cursor-pointer" : "-hover-bg-half"}`}
                 style={
                     cardContent.cardAllowFlipped
@@ -124,6 +124,10 @@ export default function QuizDisplayMain_C_CARD (): React.ReactNode {
                         : <TextColor chipText="CLOUD CARD" chipIcon="cloud" textStringForColor="K" opacity={0.9} />
                         }
                     </div>
+                    {cardContent.cardAllowFlipped
+                        && <p className="ml-auto font-bold color-slate">CLICK TO FILP</p>
+
+                    }
                 </div>
                 {
                     cardContent.flipped
@@ -141,7 +145,7 @@ export default function QuizDisplayMain_C_CARD (): React.ReactNode {
     const CARDInterface = (
         <div aria-label="mcq-C1-choice-overview" key="mcq-C1-choice-overview"
             className="h-full flex flex-col">
-            <p className="mx-4 mt-8 mb-2 p-1 font-bold text-md color-slate -border-b-half">FLASHCARD TO INTERACT; CLOUD CARD IS STATIC, WHILE FLIP CARD CAN BE FLIPPED</p>
+            <p className="mx-4 mt-8 mb-2 p-1 font-bold text-md color-slate -border-b-half -prevent-select">FLASHCARD TO INTERACT; CLOUD CARD IS STATIC, WHILE FLIP CARD CAN BE FLIPPED</p>
             { (allCardsUid.length === 0)
                 ? <NoChoice />
                 : <div className={"grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 items-start gap-8 w-full p-4 overflow-x-auto"}>
@@ -170,7 +174,7 @@ export default function QuizDisplayMain_C_CARD (): React.ReactNode {
 // =========================================================================
 
 const NoChoice = () => (
-    <div className="w-full my-12 text-textSlate dark:text-textSlate-dark flex flex-col justify-center items-center text-center" key="blank">
+    <div className="-smooth-appear w-full my-12 text-textSlate dark:text-textSlate-dark flex flex-col justify-center items-center text-center -prevent-select" key="blank">
         <Icon icon="exclamation" size={48} />
         <h1>Oops! Something went wrong with these choices</h1>
     </div>

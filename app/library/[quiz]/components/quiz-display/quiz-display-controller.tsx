@@ -5,6 +5,7 @@
 //// 1.2 Custom React hooks
 import { useGlobalContext } from "@/app/global-provider"
 import { useLocalQuizContext } from "@/app/library/[quiz]/local-quiz-provider";
+import makeid from "@/app/utility/function/make-id";
 
 //// 1.3 React components
 
@@ -36,7 +37,7 @@ export default function ControllerDisplay () {
                             window.location.reload();
                         }
                     }}
-                    className="controller-menu">
+                    className="controller-menu -smooth-appear">
                     <Icon icon="left" size={16} />
                     <p>BACK TO QUIZ PAGE</p>
                 </button>
@@ -47,12 +48,12 @@ export default function ControllerDisplay () {
                     setGlobalParams("popUpAction", "discardChangesToggle");
                     setGlobalParams("popUpText", "Discard all changes, all question answer will be resetted");
                 }}
-                    className="controller-menu">
+                    className="controller-menu -smooth-appear">
                     <Icon icon="false" size={16} />
                     <p>RESET ALL</p>
                 </button>
 
-                <div className="controller-menu">
+                <div className="controller-menu -smooth-appear">
                     <Icon icon="search" size={16} />
                     <span className="input-field" id="quizSearch"
                         contentEditable={true} suppressContentEditableWarning={true}
@@ -61,7 +62,7 @@ export default function ControllerDisplay () {
                     {!localQuizContextParams.searchKey && <span className="absolute left-[34px] z-[-10] text-sm">SEARCH QUIZ</span>}
                 </div>
 
-                <button className="controller-menu" 
+                <button className="controller-menu -smooth-appear" 
                     onClick={() => setLocalQuizContextParams("themeToggle", !localQuizContextParams.themeToggle)}>
                     <Icon icon={localQuizContextParams.themeToggle ? "wind" : "sparkles"} size={16} />
                    <p>{localQuizContextParams.themeToggle ? "JET BLACK THEME" : "MIDNIGHT BLUE THEME"}</p>

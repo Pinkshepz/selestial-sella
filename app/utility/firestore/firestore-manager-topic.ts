@@ -28,10 +28,16 @@ export default async function firestoreUpdateTopic ({
     editedData: {[key: string]: {[key: string]: any}}
 }) {
     console.log(`✏️ START UPDATE ${firebaseBranch}/COLLECTION/TOPIC DATA`);
+
+    console.log(originalData);
+    console.log(editedData);
     
     let resultLog: {[key: string]: {[key: string]: any}} = {}; // record each doc writing result
     const uidOriginal: string[] = Object.keys(originalData); // all uids of original data
     const uidEdited: string[] = Object.keys(editedData); // all uids of edited data
+
+    console.log(uidOriginal);
+    console.log(uidEdited);
     
     if ((uidOriginal.length === 0) && (uidEdited.length === 0)){
         return {0: {
@@ -61,24 +67,6 @@ export default async function firestoreUpdateTopic ({
             }
         }
 
-        const legitMode = ["MCQ", "FLASHCARD", "MIXED"];
-
-        if (collectionName === "library") {
-            if (!editedData[euid].id || !editedData[euid].topicUid || 
-                !legitMode.includes(editedData[euid].mode as string)) {
-                resultLog[euid] = {
-                    action: "reject",
-                    type: editedData[euid].contentType,
-                    topicUid: editedData[euid].topicUid, 
-                    result: "", 
-                    error: `
-                        ${!editedData[euid].id && "id is not specified\n"} 
-                        ${!editedData[euid].topicUid && "topicUid is not specified\n"}
-                        ${!legitMode.includes(editedData[euid].mode as string) && `editedData[euid].mode is not in ${legitMode}`}`
-                };
-                continue;
-            }
-        }
         // compare to original data
         // if edited uid doesn't exist in original ones -> write new doc
         // else compare inner data

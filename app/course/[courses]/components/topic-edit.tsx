@@ -62,6 +62,8 @@ export default function EditView ({
     ////// A.III useState storing buffer data (duplicate of original data for live editing)
     const [bufferTopicData, setBufferTopicData] = useState(topicData);
 
+    console.log(bufferTopicData);
+
     ////// A.IV useState storing search key for library
     const [searchLibraryKey, setSearchLibraryKey] = useState("");
 
@@ -131,13 +133,13 @@ export default function EditView ({
             firestoreUpdateTopic({
                 firebaseBranch: "ALPHA",
                 collectionName: "topic",
-                originalData: {}, 
+                originalData: topicData, 
                 editedData: bufferTopicData
             });
             firestoreUpdateTopic({
                 firebaseBranch: "BETA",
                 collectionName: "topic",
-                originalData: {}, 
+                originalData: topicData, 
                 editedData: bufferTopicData
             }).then(
                 (data) => {

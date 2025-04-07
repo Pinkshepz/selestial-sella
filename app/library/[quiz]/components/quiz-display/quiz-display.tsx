@@ -140,7 +140,7 @@ export default function QuizDisplayInterface ({
         // Assemble each sub-components
         elementsEditQuiz = <section aria-label="main-quiz-edit" className="flex flex-col h-full">
             <div className="h-16">
-                <QuizDisplayMain_A_Modality libraryData={libraryData} questionDatum={currentQuestion}/>
+                <QuizDisplayMain_A_Modality />
             </div>
             <div className="h-full overflow-y-auto">
                 <QuizDisplayMain_B_Header />
@@ -157,10 +157,10 @@ export default function QuizDisplayInterface ({
     //// -------------------------------------------------------------------------
 
     return (
-        <div className='flex flex-col'>
-            <div id='display-two-cols-fixed' className='-border-t' key='interface'>
+        <div className="flex flex-col -smooth-appear">
+            <div id="display-two-cols-fixed" className="-border-t" key="interface">
                 <QuizDisplayAside libraryData={libraryData} questionData={sortedFilteredQuestionData} />
-                <main id="quiz-col-scroll-main" className='overflow-y-auto' key='interface-main'>
+                <main id="quiz-col-scroll-main" className="overflow-y-auto" key="interface-main">
                     {elementsEditQuiz}
                 </main>
             </div>

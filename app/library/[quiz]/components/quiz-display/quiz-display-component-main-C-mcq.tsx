@@ -159,7 +159,7 @@ export default function QuizDisplayMain_C_MCQ (): React.ReactNode {
                     questionModality: localQuizContextParams.currentQuestionModality,
                     questionUid: localQuizContextParams.currentQuestionUid,
                     choiceUid: choiceUid}))}
-                key={choiceUid} className={`flex flex-col -border rounded-xl pb-4 -prevent-select ${
+                key={choiceUid + currentQuestionData.graded} className={`-smooth-appear flex flex-col -border rounded-xl pb-4 -prevent-select ${
                     choiceContent.selected ? "-hover-bg-active-half" : "cursor-pointer -hover-bg-half"}`}
                 style={
                         currentQuestionData.graded
@@ -246,8 +246,8 @@ export default function QuizDisplayMain_C_MCQ (): React.ReactNode {
         <div aria-label="mcq-C1-choice-overview" key="mcq-C1-choice-overview"
             className="h-full flex flex-col">
             {localQuizContextParams.currentQuestionModality === "BEST-ANSWER"
-                ? <p className="mx-4 mt-8 mb-2 p-1 font-bold text-md color-slate -border-b-half">SELECT ONE CHOICE</p>
-                : <p className="mx-4 mt-8 mb-2 p-1 font-bold text-md color-slate -border-b-half">SELECT MULTIPLE CHOICES</p>
+                ? <p className="mx-4 mt-8 mb-2 p-1 font-bold text-md color-slate -border-b-half -prevent-select">SELECT ONE CHOICE</p>
+                : <p className="mx-4 mt-8 mb-2 p-1 font-bold text-md color-slate -border-b-half -prevent-select">SELECT MULTIPLE CHOICES</p>
             }
             { (allChoicesUid.length === 0)
                 ? <NoChoice />
@@ -278,7 +278,7 @@ export default function QuizDisplayMain_C_MCQ (): React.ReactNode {
 // =========================================================================
 
 const NoChoice = () => (
-    <div className="w-full my-12 text-textSlate dark:text-textSlate-dark flex flex-col justify-center items-center text-center" key="blank">
+    <div className="w-full my-12 text-textSlate dark:text-textSlate-dark flex flex-col justify-center items-center text-center -prevent-select" key="blank">
         <Icon icon="exclamation" size={48} />
         <h1>Oops! Something went wrong with these choices</h1>
     </div>

@@ -35,11 +35,21 @@ export default function Interface ({
     libraryData: Library, // {library data}
     questionData: {[key: string]: Question} // {uid: {each question}}
 }) {
-    // connect to global context
+
+    //// -------------------------------------------------------------------------
+    //// A. LOCAL CONSTANTS & CONSTANT-RELATED REACT HOOKS
+    //// -------------------------------------------------------------------------
+
+    ////// A.I Connect global context: /app/*
     const {globalParams, setGlobalParams} = useGlobalContext();
 
-    // Connect to contentInterfaceContext
+    ////// A.II Connect local context: /app/library/quiz/*
     const {localQuizContextParams, setLocalQuizContextParams} = useLocalQuizContext();
+
+
+    //// -------------------------------------------------------------------------
+    //// B. LOCAL FUNCTIONS & FUNCTION-RELATED REACT HOOKS
+    //// -------------------------------------------------------------------------
 
     useEffect(() => {
         setGlobalParams("isLoading", false);

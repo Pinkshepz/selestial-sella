@@ -108,3 +108,18 @@ html.dark #brand-static {
         translate: 0px 2px;
     }
 }
+
+@keyframes smooth-appear {
+    0% {
+        top: 8px;
+        opacity: 0;
+    }
+    100% {
+        top: 0px;
+        opacity: 1;
+    }
+}
+
+.-smooth-appear {
+animation: smooth-appear 555ms ease-in-out forwards;
+}

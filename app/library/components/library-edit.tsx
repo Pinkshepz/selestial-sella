@@ -226,7 +226,7 @@ export default function LibraryEditor ({
 
         if (localLibraryContextParams.currentLibraryUid == libraryUid) {
             elementAside.push(
-                <div className="flex flex-row px-2 py-2 gap-2 content-center text-left -hover-bg-active" key={libraryUid}>
+                <div className="-smooth-appear flex flex-row px-2 py-2 gap-2 content-center text-left -hover-bg-active" key={libraryUid}>
                     <span className="text-nowrap">
                         <TextColor chipText={eachLibraryData.id} fontWeight={900} />
                     </span>
@@ -237,7 +237,7 @@ export default function LibraryEditor ({
         } else {
             elementAside.push(
                 <button onClick={() => setLocalLibraryContextParams("currentLibraryUid", libraryUid)} key={libraryUid}
-                    className="flex flex-row px-2 py-2 gap-2 items-center text-left -hover-bg">
+                    className="-smooth-appear flex flex-row px-2 py-2 gap-2 items-center text-left -hover-bg">
                     <span className="text-nowrap">
                         <TextColor chipText={eachLibraryData.id} fontWeight={900} />
                     </span>
@@ -255,7 +255,7 @@ export default function LibraryEditor ({
     try {
         // Conbine all interface together
         elementEditor = (
-            <div className="flex flex-col gap-2" key={eachLibrary.uid}>
+            <div className="-smooth-appear flex flex-col gap-2" key={eachLibrary.uid}>
                 {eachLibrary.image && <div className="h-56 w-full overflow-hidden">
                     <img src={eachLibrary.image} alt="Invalid image" className="w-full"/>
                 </div>}
@@ -404,7 +404,7 @@ export default function LibraryEditor ({
         );
     } catch (error) {
         elementEditor = (
-            <div className="my-auto text-textSlate dark:text-textSlate-dark flex flex-col justiy-center items-center text-center">
+            <div className="-smooth-appear my-auto text-textSlate dark:text-textSlate-dark flex flex-col justiy-center items-center text-center">
                 <Icon icon="add" size={48} />
                 <h1>Choose library to edit</h1>
             </div>

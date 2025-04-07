@@ -41,13 +41,13 @@ const DisplayCard = ({
 
     return (
         // card template
-        <article className="card-main -card-hover duration-200" key={cardUid}>
+        <article className="card-main -card-hover duration-200 -smooth-appear" key={cardUid}>
             <div className="overflow-hidden">
                 {cardImageLink 
                     ? <img src={cardImageLink} alt="" className="w-full" height={1000} width={1000} />
                     : <Image src={aurora} alt="" width={1000} height={1000} />
                 }
-                <div className="absolute w-full h-full z-[-10] bg-gradient-to-t from-black/60 to-black/60 overflow-hidden"></div>
+                <div className="absolute w-full h-full z-[-10] bg-gradient-to-t from-black/90 to-black/40 overflow-hidden"></div>
             </div>
             <div className="flex flex-col h-full p-4">
                 <p className="mb-2 text-md font-bold">{`${cardId}`}</p>

@@ -25,6 +25,7 @@ import arrayIndexOf from "@/app/utility/function/array/array-index-of";
 import stringToHex from "@/app/utility/function/color/string-to-rgb";
 
 //// 1.5 Public and others
+import Icon from "@/public/icon";
 import { TextColor, ChipTextColor } from "@/app/utility/components/chip";
 
 
@@ -49,6 +50,9 @@ export default function QuizDisplayMain_C_SELECT (): React.ReactNode {
 
     ////// A.IV useState focused row uid
     const [currentRowUid, setCurrentRowUid] = useState("");
+
+    ////// A.V useState toggle selected VS. answer
+    const [toggleShowSelected, setToggleShowSelected] = useState(true);
 
     //// -------------------------------------------------------------------------
     //// B. LOCAL FUNCTIONS & FUNCTION-RELATED REACT HOOKS & COMPONENT
@@ -199,7 +203,7 @@ export default function QuizDisplayMain_C_SELECT (): React.ReactNode {
 
             matrixDataAnswer 
                 ? elementRowPropertyAnswer.push(
-                    <td aria-label="table-row-property" key={columnUid} className={`-border-l-half p-3 ${
+                    <td aria-label="table-row-property" key={columnUid + questionData.graded + matrixDataSelected.propertyText} className={`-smooth-appear -border-l-half p-3 ${
                         // Ungraded
                         !questionData.graded && (currentRowUid === rowUid) && (currentColumnUid === columnUid)
                             ? "-hover-bg-active"
@@ -207,11 +211,15 @@ export default function QuizDisplayMain_C_SELECT (): React.ReactNode {
                     }`} style={
                         // Graded
                         questionData.graded
-                            ? (selectedPropertyUid === answerPropertyUid)
-                                // CORRECT ANSWER
-                                ? {backgroundColor: `${stringToHex("K", globalParams.theme)}28`}
-                                // INCORRECT ANSWER
-                                : {backgroundColor: `${stringToHex("G", globalParams.theme)}28`}
+                            ? toggleShowSelected
+                                ? (selectedPropertyUid === answerPropertyUid)
+                                    // CORRECT ANSWER
+                                    ? {backgroundColor: `${stringToHex("K", globalParams.theme)}24`}
+                                    // INCORRECT ANSWER
+                                    : {backgroundColor: `${stringToHex("G", globalParams.theme)}24`}
+                                : (selectedPropertyUid === answerPropertyUid)
+                                    ? {backgroundColor: "pointer"}
+                                    : {backgroundColor: `${stringToHex("A", globalParams.theme)}24`}
                             : {cursor: "pointer"}
                     }
                     onClick={() => {
@@ -231,20 +239,45 @@ export default function QuizDisplayMain_C_SELECT (): React.ReactNode {
                                 // Graded
                                 : selectedPropertyUid === answerPropertyUid
                                     // CORRECT ANSWER
-                                    ? <ChipTextColor chipText={matrixDataSelected.propertyText} chipIcon={matrixDataSelected.propertyIcon} 
+                                    ? toggleShowSelected
+                                        ? <div className="flex flex-col justify-start items-start">
+                                            <div className="flex flex-row items-center gap-2 mb-4 px-2 py-1 rounded-full -hover-bg-active">
+                                                <Icon icon="true" size={16}/>
+                                                <p className="font-bold">CORRECT</p>
+                                            </div>
+                                            <ChipTextColor chipText={matrixDataSelected.propertyText} chipIcon={matrixDataSelected.propertyIcon} 
+                                            textStringForColor={matrixDataSelected.propertyColorCode ? matrixDataSelected.propertyColorCode : matrixDataSelected.propertyText} 
+                                            chipBackgroundOpacity={0.6} />
+                                        </div>
+                                        : <div className="flex flex-col justify-start items-start">
+                                            <div className="flex flex-row items-center gap-2 mb-4 px-2 py-1 rounded-full -hover-bg-active">
+                                                <Icon icon="true" size={16}/>
+                                                <p className="font-bold">~</p>
+                                            </div>
+                                            <ChipTextColor chipText={matrixDataSelected.propertyText} chipIcon={matrixDataSelected.propertyIcon} 
+                                            textStringForColor={matrixDataSelected.propertyColorCode ? matrixDataSelected.propertyColorCode : matrixDataSelected.propertyText} 
+                                            chipBackgroundOpacity={0.6} />
+                                        </div>
+                                    // INCORRECT ANSWER
+                                    : toggleShowSelected
+                                        ? <div className="flex flex-col justify-start items-start">
+                                            <div className="flex flex-row items-center gap-2 mb-4 px-2 py-1 rounded-full -hover-bg-active">
+                                                <Icon icon="false" size={16}/>
+                                                <p className="font-bold">INCORRECT</p>
+                                            </div>
+                                            <ChipTextColor chipText={matrixDataSelected.propertyText} chipIcon={matrixDataSelected.propertyIcon} 
                                         textStringForColor={matrixDataSelected.propertyColorCode ? matrixDataSelected.propertyColorCode : matrixDataSelected.propertyText} 
                                         chipBackgroundOpacity={0.6} />
-                                    // INCORRECT ANSWER
-                                    : <div className="flex flex-col justify-start items-start">
-                                        <div className="w-fit p-0.5 -border -hover-bg-active rounded-lg">
-                                            <TextColor chipText={matrixDataSelected.propertyText} chipIcon={matrixDataSelected.propertyIcon} 
-                                                textStringForColor={matrixDataSelected.propertyColorCode ? matrixDataSelected.propertyColorCode : matrixDataSelected.propertyText} />
                                         </div>
-                                        <p className="mt-4 mb-2 p-1 font-bold text-md color-slate -border-b-half">CORRECT ANSWER IS</p>
-                                        <ChipTextColor chipText={matrixDataAnswer.propertyText} chipIcon={matrixDataAnswer.propertyIcon} 
-                                            textStringForColor={matrixDataAnswer.propertyColorCode ? matrixDataAnswer.propertyColorCode : matrixDataAnswer.propertyText} 
-                                            chipBackgroundOpacity={0.6} />
-                                    </div>
+                                        : <div className="flex flex-col justify-start items-start">
+                                            <div className="flex flex-row items-center gap-2 mb-4 px-2 py-1 rounded-full -hover-bg-active">
+                                                <Icon icon="diamond" size={16}/>
+                                                <p className="font-bold">ANSWER KEY</p>
+                                            </div>
+                                            <ChipTextColor chipText={matrixDataAnswer.propertyText} chipIcon={matrixDataAnswer.propertyIcon} 
+                                                textStringForColor={matrixDataAnswer.propertyColorCode ? matrixDataAnswer.propertyColorCode : matrixDataAnswer.propertyText} 
+                                                chipBackgroundOpacity={0.6} />
+                                        </div>
                         }
                     </td>)
                 : elementRowPropertyAnswer.push(
@@ -273,10 +306,17 @@ export default function QuizDisplayMain_C_SELECT (): React.ReactNode {
     //////// C.I Table structure
     const selectTabularStructure = (
         <div aria-label="select-C1-tabular-structure" key="select-C1-tabular-structure"
-            className="h-full flex flex-col">
-            <p className="mx-4 mt-8 mb-2 p-1 font-bold text-md color-slate -border-b-half">TOGGLE ROW-COLUMN PROPERTY</p>
-            <div className="m-4 -border rounded-xl overflow-x-auto">
-                <table className="-border-r text-nowrap -prevent-select">
+            className="-smooth-appear h-full flex flex-col">
+            <p className="mx-4 mt-8 mb-2 p-1 font-bold text-md color-slate -border-b-half -prevent-select">TOGGLE ROW-COLUMN PROPERTY</p>
+            {questionData.graded && 
+                <button onClick={() => setToggleShowSelected((prev) => (!prev))} 
+                    className="-smooth-appear flex flex-row items-center gap-2 m-4 px-3 py-2 font-black -border rounded-xl -button-hover-pri">
+                    <Icon icon={toggleShowSelected ? "card" : "true"} size={20} />
+                    {toggleShowSelected ? "YOUR SELECTED CHOICE" : "THE ANSWER KEY"}
+                </button>
+            }
+            <div key={toggleShowSelected ? "A" : "B"} className="m-4 -border rounded-xl overflow-x-auto">
+                <table className="-border-r text-nowrap -prevent-select -smooth-appear">
                     <thead>
                         <tr className="-border-b -hover-bg-active-half">
                             {elementsHeader}
@@ -306,7 +346,7 @@ export default function QuizDisplayMain_C_SELECT (): React.ReactNode {
 
         elementPropertiesChip.push(
             <button key={propertyUid} className="p-2 -hover-bg rounded-xl"
-            onClick={() => handleSetRowPropertyValue({rowUid: currentRowUid, columnUid: currentColumnUid, currentProperty: propertyUid})}>
+            onClick={() => !questionData.graded && handleSetRowPropertyValue({rowUid: currentRowUid, columnUid: currentColumnUid, currentProperty: propertyUid})}>
                 <ChipTextColor chipText={matrixData.propertyText} chipIcon={matrixData.propertyIcon} textStringForColor={matrixData.propertyColorCode ? matrixData.propertyColorCode : matrixData.propertyText}
                     chipBackgroundOpacity={0.6} />
             </button>
@@ -315,7 +355,7 @@ export default function QuizDisplayMain_C_SELECT (): React.ReactNode {
 
     const selectTabularPropertyChip = (
         <div className="mt-8 -hover-bg-active-half">
-            <p className="mt-4 mx-4 mb-2 p-1 font-bold text-md color-slate -border-b-half">AVALIABLE PROPERTIES</p>
+            <p className="mt-4 mx-4 mb-2 p-1 font-bold text-md color-slate -border-b-half -prevent-select">AVALIABLE PROPERTIES</p>
             <div className="flex flex-wrap gap-4 p-4 justify-start items-center text-nowrap overflow-x-auto">
                 {(elementPropertiesChip.length > 0)
                     && elementPropertiesChip}

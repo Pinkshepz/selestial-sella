@@ -32,13 +32,7 @@ import Icon from "@/public/icon";
 // 3. EXPORT DEFAULT FUNCTION
 // =========================================================================
 
-export default function QuizDisplayMain_A_Modality ({
-    libraryData,
-    questionDatum
-}: {
-    libraryData: Library, // {uid: {library data}}
-    questionDatum: QuestionAction, // Individual question data
-}): React.ReactNode {
+export default function QuizDisplayMain_A_Modality (): React.ReactNode {
 
     //// -------------------------------------------------------------------------
     //// A. LOCAL CONSTANTS & CONSTANT-RELATED REACT HOOKS
@@ -63,7 +57,7 @@ export default function QuizDisplayMain_A_Modality ({
     try {
         return (
             <article aria-label="main-A-modality" key="main-A-modality" 
-                className="min-h-16 px-4 flex flex-row items-center gap-4 -border-b text-nowrap overflow-x-auto -prevent-select">
+                className="-smooth-appear min-h-16 px-4 flex flex-row items-center gap-4 -border-b text-nowrap overflow-x-auto -prevent-select">
                     <div className="flex flex-row items-center gap-1 px-2 py-1 -hover-bg-active-half rounded-lg">
                         <span className="mr-1 font-bold">QUESTION</span>
                         <span className="font-black">{questionNumber + 1}</span>

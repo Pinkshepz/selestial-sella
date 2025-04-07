@@ -54,7 +54,7 @@ const DisplayRow = ({
     }
 
     return (
-        <tr key={cardUid}>
+        <tr key={cardUid} className="-smooth-appear">
             <td className="font-bold" key={cardUid + "1"}>
                 <div className="flex flex-row items-center gap-2">
                     <div id="frame" className="flex justify-center items-center overflow-hidden bg-cover h-6 w-6 rounded-full border-pri">

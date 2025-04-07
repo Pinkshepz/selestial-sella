@@ -216,7 +216,7 @@ export default function QuizEditorInterface ({
                     {elementsEditQuiz}
                 </main>
             </div>
-            <BackgroundImage libraryDataImage={libraryData.image} />
+            <BackgroundImage libraryDataImage={libraryData.image} theme={localQuizContextParams.themeToggle} />
         </div>
     );
 }
@@ -234,16 +234,18 @@ const ChooseQuizToEdit = () => (
 );
 
 const BackgroundImage = ({
-    libraryDataImage
+    libraryDataImage,
+    theme
 }: {
-    libraryDataImage: string | undefined
+    libraryDataImage: string | undefined,
+    theme: boolean
 }) => (
-    <div className="fixed bottom-0 w-dvw h-dvh z-[-100]">
+    <div className="fixed bottom-0 w-dvw h-dvh z-[-100]" key={theme ? "A" : "B"}>
         {libraryDataImage
             ? <img src={libraryDataImage} alt="" className="absolute h-full w-full z-[-100]" />
             : <Image src={BG} width={1000} height={1000} alt="" className="absolute h-full w-full z-[-100]" />
         }
-        <div className="absolute h-full w-full z-[-90] bg-highlight/95 dark:bg-highlight-dark/90"></div>
+        <div className={`absolute h-full w-full z-[-90] ${theme ? "bg-white/[0.95] dark:bg-black/[0.87]" : "bg-highlight/90 dark:bg-highlight-dark/90"}`}></div>
         <div className="glass-cover-spread z-[-80]"></div>
     </div>
 );

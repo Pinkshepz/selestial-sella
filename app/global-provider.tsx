@@ -25,7 +25,8 @@ interface globalContextStructure {
   popUp: boolean,
   popUpConfirm: boolean,
   popUpAction: string,
-  popUpText: string
+  popUpText: string,
+  latestPath: string
 }
 
 const globalInitialValue = {
@@ -37,7 +38,8 @@ const globalInitialValue = {
   popUp: false,
   popUpConfirm: false,
   popUpAction: "",
-  popUpText: ""
+  popUpText: "",
+  latestPath: ""
 };
 
 const GlobalContext = createContext<any>({});

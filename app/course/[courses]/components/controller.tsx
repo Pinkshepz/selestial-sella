@@ -14,6 +14,7 @@ import { useInterfaceContext } from "./../topic-provider";
 
 //// 1.5 Public and others
 import Icon from "@/public/icon";
+import makeid from "@/app/utility/function/make-id";
 
 
 export default function Controller () {
@@ -53,9 +54,9 @@ export default function Controller () {
 
                 {!interfaceParams.editMode && (Object.keys(interfaceParams.logUpdate).length === 0) &&
                     <Link
-                        href={"/course"} 
+                        href={"/course"}
                         onClick={() => setGlobalParams("isLoading", true)}
-                        className="controller-menu">
+                        className="controller-menu -smooth-appear">
                         <Icon icon="left" size={16} />
                         <p>BACK TO COURSES</p>
                     </Link>
@@ -70,7 +71,7 @@ export default function Controller () {
                                 window.location.reload();
                             }
                         }}
-                        className="controller-menu">
+                        className="controller-menu -smooth-appear">
                         <Icon icon="left" size={16} />
                         <p>BACK TO COURSE</p>
                     </button>
@@ -79,13 +80,13 @@ export default function Controller () {
                 {!interfaceParams.editMode &&
                     <button
                         onClick={() => setInterfaceParams("sortAscending", !interfaceParams.sortAscending)}
-                        className="controller-menu">
+                     className="controller-menu -smooth-appear">
                         <Icon icon="sort" size={16} />
                         <p>{interfaceParams.sortAscending ? "0 - 9" : "9 - 0"}</p>
                     </button>
                 }
 
-                <div className="controller-menu">
+                <div className="controller-menu -smooth-appear">
                     <Icon icon="search" size={16} />
                     <span className="input-field"
                         contentEditable={true} suppressContentEditableWarning={true}
@@ -103,7 +104,7 @@ export default function Controller () {
                             setGlobalParams("popUpAction", "discardChangesToggle");
                             setGlobalParams("popUpText", "Discard all changes, your course data will be recovered to the original one");
                         }}
-                        className="controller-menu">
+                        className="controller-menu -smooth-appear">
                         <Icon icon="trash" size={16} />
                         <p>DISCARD CHANGES</p>
                     </button>
@@ -118,14 +119,14 @@ export default function Controller () {
                         setGlobalParams("popUpAction", "saveChangesToggle");
                         setGlobalParams("popUpText", "Save all recent changes. All data will be permanently updated")
                     }}
-                    className="controller-menu">
+                    className="controller-menu -smooth-appear">
                         <Icon icon="save" size={16} />
                         <p>SAVE CHANGES</p>
                     </button>
                 }
 
                 {
-                    <button className="controller-menu" 
+                    <button className="controller-menu -smooth-appear" 
                         onClick={() => setInterfaceParams("themeToggle", !interfaceParams.themeToggle)}>
                         <Icon icon={interfaceParams.themeToggle ? "wind" : "sparkles"} size={16} />
                         <p>{interfaceParams.themeToggle ? "JET BLACK THEME" : "MIDNIGHT BLUE THEME"}</p>
@@ -142,8 +143,8 @@ export default function Controller () {
                                 "Turn editing mode off. All unsaved changes will be ignored" : 
                                 `Turn editing mode on`)
                         }}
-                        className="controller-menu">
-                        <Icon icon={interfaceParams.editMode ? "edit" : "map"} size={16} />
+                        className="controller-menu -smooth-appear">
+                        <Icon icon={!interfaceParams.editMode ? "edit" : "map"} size={16} />
                         <p>{interfaceParams.editMode ? "EXIT EDIT MODE" : "ENTER EDIT MODE"}</p>
                     </button>}
             </div>

@@ -55,11 +55,11 @@ export default function QuizDisplayMain_B_Header (): React.ReactNode {
 
     try {
         return (
-            <article aria-label="main-B-header" key="main-B-header" className="relative flex flex-col">
+            <article aria-label="main-B-header" key={`main-B-header ${localQuizContextParams.currentQuestionUid}`} className="-smooth-appear relative flex flex-col">
                 <div className="flex flex-col items-start gap-4 px-4">
                     <div className="w-full mt-4 font-bold rounded-xl -border -prevent-select overflow-hidden">
                         <p className="text-xs color-slate p-4 -hover-bg-active-half">QUESTION</p>
-                        <div className="px-4 pb-6 text-xl -hover-bg-active-half">
+                        <div className="-smooth-appear px-4 pb-6 text-xl -hover-bg-active-half">
                             <AuricleText inputText={currentQuestionData.questionText} />
                         </div>
                         {currentQuestionData.questionResourceUrl && 
@@ -75,7 +75,7 @@ export default function QuizDisplayMain_B_Header (): React.ReactNode {
                     }
                 </div>
                 {currentQuestionData.graded && currentQuestionData.questionComment && 
-                    <div className="-hover-bg-active-half mx-4 mt-4 p-4 font-bold rounded-xl -prevent-select -prevent-select">
+                    <div className="-smooth-appear -hover-bg-active-half mx-4 mt-4 p-4 font-bold rounded-xl -prevent-select -prevent-select">
                         <p className="text-xs color-slate mb-2">QUESTION COMMENT</p>
                         <AuricleText inputText={currentQuestionData.questionComment} />
                     </div>}

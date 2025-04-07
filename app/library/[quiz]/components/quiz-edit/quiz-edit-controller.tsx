@@ -17,6 +17,7 @@ import firestoreUpdate from "@/app/utility/firestore/firestore-manager-library";
 import firestoreUpdateQuiz from "@/app/utility/firestore/firestore-manager-quiz";
 import { processAddQuestion, processInsertArrayDataString } from "./quiz-edit-function-general";
 import arrayIndexOf from "@/app/utility/function/array/array-index-of";
+import makeid from "@/app/utility/function/make-id";
 
 //// 1.5 Public and others
 import Icon from "@/public/icon";
@@ -131,7 +132,7 @@ export default function ControllerEdit ({
                                 window.location.reload();
                             }
                         }}
-                        className="controller-menu">
+                        className="controller-menu -smooth-appear">
                         <Icon icon="left" size={16} />
                         <p>BACK TO QUIZ PAGE</p>
                     </button>
@@ -146,33 +147,37 @@ export default function ControllerEdit ({
                                 window.location.reload();
                             }
                         }}
-                        className="controller-menu">
+                        className="controller-menu -smooth-appear">
                         <Icon icon="left" size={16} />
                         <p>BACK TO QUIZ PAGE</p>
                     </button>
                 }
 
-                {localQuizContextParams.editMode && <button
-                    onClick={() => {
-                        setGlobalParams("popUpConfirm", false);
-                        setLocalQuizContextParams("discardChangesToggle", !localQuizContextParams.discardChangesToggle);
-                        setGlobalParams("popUp", true);
-                        setGlobalParams("popUpAction", "discardChangesToggle");
-                        setGlobalParams("popUpText", "Discard all changes, your question data will be recovered to the original one");
-                    }}
-                    className="controller-menu">
-                    <Icon icon="trash" size={16} />
-                    <p>DISCARD CHANGES</p>
-                </button>}
+                {localQuizContextParams.editMode && 
+                    <button
+                        onClick={() => {
+                            setGlobalParams("popUpConfirm", false);
+                            setLocalQuizContextParams("discardChangesToggle", !localQuizContextParams.discardChangesToggle);
+                            setGlobalParams("popUp", true);
+                            setGlobalParams("popUpAction", "discardChangesToggle");
+                            setGlobalParams("popUpText", "Discard all changes, your question data will be recovered to the original one");
+                        }}
+                        className="controller-menu -smooth-appear">
+                        <Icon icon="trash" size={16} />
+                        <p>DISCARD CHANGES</p>
+                    </button>
+                }
 
-                {localQuizContextParams.editMode && <button
-                    onClick={() => setLocalQuizContextParams("sortAscending", !localQuizContextParams.sortAscending)}
-                    className="controller-menu">
-                    <Icon icon="sort" size={16} />
-                    <p>{localQuizContextParams.sortAscending ? "0 - 9" : "9 - 0"}</p>
-                </button>}
+                {localQuizContextParams.editMode && 
+                    <button
+                        onClick={() => setLocalQuizContextParams("sortAscending", !localQuizContextParams.sortAscending)}
+                        className="controller-menu -smooth-appear">
+                        <Icon icon="sort" size={16} />
+                        <p>{localQuizContextParams.sortAscending ? "0 - 9" : "9 - 0"}</p>
+                    </button>
+                }
 
-                <div className="controller-menu">
+                <div className="controller-menu -smooth-appear">
                     <Icon icon="search" size={16} />
                     <span className="input-field" id="quizSearch"
                         contentEditable={true} suppressContentEditableWarning={true}
@@ -181,73 +186,88 @@ export default function ControllerEdit ({
                     {!localQuizContextParams.searchKey && <span className="absolute left-[34px] z-[-10] text-sm">SEARCH QUIZ</span>}
                 </div>
 
-                {localQuizContextParams.editMode && <button
-                    onClick={() => {
-                        if (Object.keys(localQuizContextParams.bufferQuestion).length < metadata.entityLimit.question) {
-                            const processedBufferQuestion = processAddQuestion({
-                                questionModality: localQuizContextParams.currentQuestionModality,
-                                bufferQuestion: localQuizContextParams.bufferQuestion,
-                                libraryUid: libraryData.uid!
-                            });
-                            setLocalQuizContextParams("bufferQuestion", processedBufferQuestion.newBufferQuestion);
-                            setLocalQuizContextParams("bufferLibrary", processInsertArrayDataString({
-                                object: localQuizContextParams.bufferLibrary,
-                                keysHierachyToTargetObjectUidSequenceArray: ["questionUidOrder"],
-                                targetValueToInsert: processedBufferQuestion.newQuestionUid,
-                                insertPosition: localQuizContextParams.currentQuestionUid 
-                                    ? arrayIndexOf({array:localQuizContextParams.bufferLibrary.questionUidOrder, targetValue: localQuizContextParams.currentQuestionUid, indexIfError: -2}) + 1
-                                    : -1
-                            }));
-                            setLocalQuizContextParams("currentQuestionUid", processedBufferQuestion.newQuestionUid);
-                            setLocalQuizContextParams("searchKey", "");
-                            document.getElementById("quizSearch")!.textContent = "";
-                        } else {
+                {localQuizContextParams.editMode && 
+                    <button
+                        onClick={() => {
+                            if (Object.keys(localQuizContextParams.bufferQuestion).length < metadata.entityLimit.question) {
+                                const processedBufferQuestion = processAddQuestion({
+                                    questionModality: localQuizContextParams.currentQuestionModality,
+                                    bufferQuestion: localQuizContextParams.bufferQuestion,
+                                    libraryUid: libraryData.uid!
+                                });
+                                setLocalQuizContextParams("bufferQuestion", processedBufferQuestion.newBufferQuestion);
+                                setLocalQuizContextParams("bufferLibrary", processInsertArrayDataString({
+                                    object: localQuizContextParams.bufferLibrary,
+                                    keysHierachyToTargetObjectUidSequenceArray: ["questionUidOrder"],
+                                    targetValueToInsert: processedBufferQuestion.newQuestionUid,
+                                    insertPosition: localQuizContextParams.currentQuestionUid 
+                                        ? arrayIndexOf({array:localQuizContextParams.bufferLibrary.questionUidOrder, targetValue: localQuizContextParams.currentQuestionUid, indexIfError: -2}) + 1
+                                        : -1
+                                }));
+                                setLocalQuizContextParams("currentQuestionUid", processedBufferQuestion.newQuestionUid);
+                                setLocalQuizContextParams("searchKey", "");
+                                document.getElementById("quizSearch")!.textContent = "";
+                            } else {
+                                setGlobalParams("popUp", true);
+                                setGlobalParams("popUpAction", "⟨EXCEPTION⟩: entity limit");
+                                setGlobalParams("popUpText", `Total questions exceeds limit at ${metadata.entityLimit.question} questions per library`);
+                            }
+                        }}
+                        className="controller-menu -smooth-appear">
+                        <Icon icon="add" size={16} />
+                        <p>ADD NEW QUESTION</p>
+                    </button>
+                }
+
+                {localQuizContextParams.editMode && 
+                    <button
+                        onClick={() => {
+                            setGlobalParams("popUpConfirm", false);
+                            setLocalQuizContextParams("saveChangesToggle", !localQuizContextParams.saveChangesToggle)
                             setGlobalParams("popUp", true);
-                            setGlobalParams("popUpAction", "⟨EXCEPTION⟩: entity limit");
-                            setGlobalParams("popUpText", `Total questions exceeds limit at ${metadata.entityLimit.question} questions per library`);
-                        }
-                    }}
-                    className="controller-menu">
-                    <Icon icon="add" size={16} />
-                    <p>ADD NEW QUESTION</p>
-                </button>}
+                            setGlobalParams("popUpAction", "saveChangesToggle");
+                            setGlobalParams("popUpText", "Save all recent changes. All data will be permanently updated");
+                        }}
+                        className="controller-menu -smooth-appear">
+                        <Icon icon="save" size={16} />
+                        <p>SAVE CHANGES</p>
+                    </button>
+                }
 
-                {localQuizContextParams.editMode && <button
-                    onClick={() => {
-                        setGlobalParams("popUpConfirm", false);
-                        setLocalQuizContextParams("saveChangesToggle", !localQuizContextParams.saveChangesToggle)
-                        setGlobalParams("popUp", true);
-                        setGlobalParams("popUpAction", "saveChangesToggle");
-                        setGlobalParams("popUpText", "Save all recent changes. All data will be permanently updated");
-                    }}
-                    className="controller-menu">
-                    <Icon icon="save" size={16} />
-                    <p>SAVE CHANGES</p>
-                </button>}
+                {localQuizContextParams.editMode && 
+                    <button
+                        onClick={() => toggleAutosaveClock()}
+                        className={`controller-menu -smooth-appear ${(autosaveTimer <= 30) && (autosaveTimer >= 0) && (autosaveTimer % 2 == 0) && "text-amber dark:text-amber-dark"}`}>
+                        {(autosaveToggle < 0)  ? <Icon icon="xCircle" size={16} /> : <Icon icon="true" size={16} />}
+                        <p>{(autosaveToggle < 0) 
+                            ? `AUTOSAVE OFF` 
+                            : (autosaveTimer < 60)
+                                ? `AUTOSAVE IN ${autosaveTimer} SEC`
+                                : `AUTOSAVE IN ${Math.round(autosaveTimer / 60)} MIN`}</p>
+                    </button>
+                }
 
-                {localQuizContextParams.editMode && <button
-                    onClick={() => toggleAutosaveClock()}
-                    className={`controller-menu ${(autosaveTimer <= 30) && (autosaveTimer >= 0) && (autosaveTimer % 2 == 0) && "text-amber dark:text-amber-dark"}`}>
-                    {(autosaveToggle < 0)  ? <Icon icon="xCircle" size={16} /> : <Icon icon="true" size={16} />}
-                    <p>{(autosaveToggle < 0) 
-                        ? `AUTOSAVE OFF` 
-                        : (autosaveTimer < 60)
-                            ? `AUTOSAVE IN ${autosaveTimer} SEC`
-                            : `AUTOSAVE IN ${Math.round(autosaveTimer / 60)} MIN`}</p>
-                </button>}
+                {localQuizContextParams.editMode &&
+                    <button
+                        onClick={() => {
+                            setGlobalParams("popUp", true);
+                            setGlobalParams("popUpAction", localQuizContextParams.editMode ? "turnEditModeOff" : "turnEditModeOn");
+                            setGlobalParams("popUpText", localQuizContextParams.editMode ? 
+                                "Turn editing mode off. All unsaved changes will be ignored" : 
+                                `Turn editing mode on as ${globalParams.user.displayName}`)
+                        }}
+                        className="controller-menu -smooth-appear">
+                        <Icon icon={!localQuizContextParams.editMode ? "edit" : "map"} size={16} />
+                        <p>{localQuizContextParams.editMode ? "EXIT EDIT MODE" : "ENTER EDIT MODE"}</p>
+                    </button>
+                }
+                
+                <button className="controller-menu -smooth-appear" 
+                    onClick={() => setLocalQuizContextParams("themeToggle", !localQuizContextParams.themeToggle)}>
+                    <Icon icon={localQuizContextParams.themeToggle ? "wind" : "sparkles"} size={16} />
+                   <p>{localQuizContextParams.themeToggle ? "JET BLACK THEME" : "MIDNIGHT BLUE THEME"}</p>
+                </button>
 
-                {localQuizContextParams.editMode && <button
-                    onClick={() => {
-                        setGlobalParams("popUp", true);
-                        setGlobalParams("popUpAction", localQuizContextParams.editMode ? "turnEditModeOff" : "turnEditModeOn");
-                        setGlobalParams("popUpText", localQuizContextParams.editMode ? 
-                            "Turn editing mode off. All unsaved changes will be ignored" : 
-                            `Turn editing mode on as ${globalParams.user.displayName}`)
-                    }}
-                    className="controller-menu">
-                    <Icon icon={localQuizContextParams.editMode ? "edit" : "map"} size={16} />
-                    <p>{localQuizContextParams.editMode ? "EXIT EDIT MODE" : "ENTER EDIT MODE"}</p>
-                </button>}
             </div>
         </section>
     );

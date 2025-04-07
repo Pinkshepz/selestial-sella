@@ -1,7 +1,5 @@
 "use client";
 
-// app/course/interface.tsx
-
 // =========================================================================
 // 1. IMPORT
 // =========================================================================
@@ -32,11 +30,6 @@ import sortUidObjectByValue from '@/app/utility/function/object/sort-uid-object-
 
 
 // =========================================================================
-// 2. GLOBAL CONSTANT VARIABLES AND FUNCTIONS
-// =========================================================================
-
-
-// =========================================================================
 // 3. EXPORT DEFAULT FUNCTION
 // =========================================================================
 
@@ -53,15 +46,17 @@ export default function Interface ({
     ////// A.I Connect global context: /app/*
     const {globalParams, setGlobalParams} = useGlobalContext();
 
-    ////// A.II Connect local context: /app/course/*
+    ////// A.II Connect local context: /app/library/*
     const {localLibraryContextParams, setLocalLibraryContextParams} = useLocalLibraryContext();
     
+
     //// -------------------------------------------------------------------------
     //// B. LOCAL FUNCTIONS & FUNCTION-RELATED REACT HOOKS
     //// -------------------------------------------------------------------------
 
     ////// B.I Turn off loading cover
     useEffect(() => {setGlobalParams("isLoading", false);}, []);
+    
 
 
     //// -------------------------------------------------------------------------

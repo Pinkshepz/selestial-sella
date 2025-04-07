@@ -16,6 +16,7 @@ import { useLocalLibraryContext } from "@/app/library/local-library-provider";
 
 //// 1.5 Public and others
 import Icon from "@/public/icon";
+import makeid from "@/app/utility/function/make-id";
 
 
 export default function Controller () {
@@ -57,19 +58,19 @@ export default function Controller () {
 
     if (!localLibraryContextParams.editMode && (Object.keys(localLibraryContextParams.logUpdate).length === 0)) {
         controllerMenu.push(
-            <Link key="C1"
+            <Link
                 href={"/"} 
                 onClick={() => setGlobalParams("isLoading", true)}
-                className="controller-menu">
+                className="controller-menu -smooth-appear">
                 <Icon icon="left" size={16} />
                 <p>BACK TO HOME</p>
             </Link>
         );
     
         controllerMenu.push(
-            <button key="C2"
+            <button
                 onClick={() => setLocalLibraryContextParams("displayToggle", !localLibraryContextParams.displayToggle)}
-                className="controller-menu">
+                className="controller-menu -smooth-appear">
                 <Icon icon={localLibraryContextParams.displayToggle ? "table" : "image"} size={16} />
                 <p>{localLibraryContextParams.displayToggle ? "TABLE" : "GALLERY"}</p>
             </button>
@@ -78,7 +79,7 @@ export default function Controller () {
         
 
     controllerMenu.push(
-        <div key="C3" className="controller-menu">
+        <div className="controller-menu -smooth-appear">
             <Icon icon="search" size={16} />
             <span className="input-field"
                 contentEditable={true} suppressContentEditableWarning={true}
@@ -91,7 +92,7 @@ export default function Controller () {
 
     if (Object.keys(localLibraryContextParams.logUpdate).length > 0) {
         controllerMenu.push(
-            <button key="C4"
+            <button
                 onClick={() => {
                     setLocalLibraryContextParams("logUpdate", {});
                     setGlobalParams("isLoading", true);
@@ -99,7 +100,7 @@ export default function Controller () {
                         window.location.reload();
                     }
                 }}
-                className="controller-menu">
+                className="controller-menu -smooth-appear">
                 <Icon icon="left" size={16} />
                 <p>BACK TO LIBRARY</p>
             </button>
@@ -108,25 +109,25 @@ export default function Controller () {
 
     if (localLibraryContextParams.editMode) {
         controllerMenu.push(
-            <button key="C5a"
+            <button
                 onClick={() => setLocalLibraryContextParams("sortAscending", !localLibraryContextParams.sortAscending)}
-                className="controller-menu">
+                className="controller-menu -smooth-appear">
                 <Icon icon="sort" size={16} />
                 <p>{localLibraryContextParams.sortAscending ? "0 - 9" : "9 - 0"}</p>
             </button>
         );
 
         controllerMenu.push(
-            <button key="C5b"
+            <button
                 onClick={() => setLocalLibraryContextParams("addLibraryToggle", !localLibraryContextParams.addLibraryToggle)}
-                className="controller-menu">
+                className="controller-menu -smooth-appear">
                 <Icon icon="add" size={16} />
                 <p>ADD NEW LIBRARY</p>
             </button>
         );
 
         controllerMenu.push(
-            <button key="C5c"
+            <button
                 onClick={() => {
                     setGlobalParams("popUpConfirm", false);
                     setLocalLibraryContextParams("discardChangesToggle", !localLibraryContextParams.discardChangesToggle);
@@ -134,14 +135,14 @@ export default function Controller () {
                     setGlobalParams("popUpAction", "discardChangesToggle");
                     setGlobalParams("popUpText", "Discard all changes, your library data will be recovered to the original one");
                 }}
-                className="controller-menu">
+                className="controller-menu -smooth-appear">
                 <Icon icon="trash" size={16} />
                 <p>DISCARD CHANGES</p>
             </button>
         );
 
         controllerMenu.push(
-            <button key="C5d"
+            <button
                 onClick={() => {
                     setGlobalParams("popUpConfirm", false);
                     setLocalLibraryContextParams("saveChangesToggle", !localLibraryContextParams.saveChangesToggle)
@@ -149,7 +150,7 @@ export default function Controller () {
                     setGlobalParams("popUpAction", "saveChangesToggle");
                     setGlobalParams("popUpText", "Save all recent changes. All data will be permanently updated")
                 }}
-                className="controller-menu">
+                className="controller-menu -smooth-appear">
                 <Icon icon="save" size={16} />
                 <p>SAVE CHANGES</p>
             </button>
@@ -158,7 +159,7 @@ export default function Controller () {
 
     if (Object.keys(localLibraryContextParams.logUpdate).length === 0) {
         controllerMenu.push(
-            <button key="C6"
+            <button
                 onClick={() => {
                     setGlobalParams("popUp", true);
                     setGlobalParams("popUpAction", localLibraryContextParams.editMode ? "turnEditModeOff" : "turnEditModeOn");
@@ -166,8 +167,8 @@ export default function Controller () {
                         "Turn editing mode off. All unsaved changes will be ignored" : 
                         `Turn editing mode on`)
                 }}
-                className="controller-menu">
-                <Icon icon={localLibraryContextParams.editMode ? "edit" : "map"} size={16} />
+                className="controller-menu -smooth-appear">
+                <Icon icon={!localLibraryContextParams.editMode ? "edit" : "map"} size={16} />
                 <p>{localLibraryContextParams.editMode ? "EXIT EDIT MODE" : "ENTER EDIT MODE"}</p>
             </button>
         );

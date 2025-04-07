@@ -40,10 +40,10 @@ const DisplayCard = ({
 
     return (
         // card template
-        <article className="card-main -card-hover" key={cardUid}>
+        <article className="card-main -card-hover -smooth-appear" key={cardUid}>
             <div className="overflow-hidden">
                 {cardImageLink && <img src={cardImageLink} alt="" className="w-full duration-200" height={1000} width={1000} />}
-                <div aria-label="effect-filter" className="absolute w-full h-full z-[-10] bg-gradient-to-t from-black/30 to-black/10"></div>
+                <div aria-label="effect-filter" className="absolute w-full h-full z-[-10] bg-gradient-to-t from-black/[0.95] to-black/60"></div>
             </div>
             <div className="flex flex-col h-full p-4">
                 <p className="w-fit mb-2 px-2 py-1 text-md font-bold -hover-bg-active rounded-lg">{`${cardId} ￨ ${cardAbb}`}</p>

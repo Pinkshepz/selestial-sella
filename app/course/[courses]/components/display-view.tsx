@@ -1,8 +1,8 @@
 "use client";
 
 //// 1.1 Metadata & module & framework
-import Link from "next/link";
 import { useState, useRef } from "react";
+import Link from "next/link";
 
 //// 1.2 Custom React hooks
 import { useGlobalContext } from "@/app/global-provider";
@@ -105,7 +105,7 @@ export default function DisplayView ({
 
             elementAsideSectionTopic.push(
                 <button onClick={() => scrollToRef(topicUid)}
-                    className="flex flex-row px-2 py-2 gap-2 section-center text-left -hover-bg" key={"Aside_" + topicUid}>
+                    className="-smooth-appear flex flex-row px-2 py-2 gap-2 section-center text-left -hover-bg" key={"Aside_" + topicUid}>
                     <TextColor chipText={topic.topicId} fontWeight={900} textColor={stringToRgb(section.sectionId, globalParams.theme)} />
                     <span className="font-semibold text-nowrap overflow-hidden">{topic.topicName}</span>
                 </button>
@@ -113,7 +113,7 @@ export default function DisplayView ({
         });
 
         elementAsideSection.push(
-            <div className="flex flex-col mb-4" key={"Aside_" + sectionUid}>
+            <div className="-smooth-appear flex flex-col mb-4" key={"Aside_" + sectionUid}>
                 <button onClick={() => scrollToRef(sectionUid)}
                     className="flex flex-row px-2 py-2 gap-2 section-center text-left bg-black/5 dark:bg-white/5 -hover-bg">
                     <ChipTextColor chipText={section.sectionId} fontWeight={900} textColor={stringToRgb(section.sectionId, globalParams.theme)} />
@@ -168,7 +168,7 @@ export default function DisplayView ({
                             Object.keys(topicContent.topicData.resource).map((resourceUid, index) => {
                                 const resource = topicContent.topicData.resource[resourceUid]
                                 elementTopicResource.push(
-                                    <a href={resource.url} target="_blank" className="card rounded-md flex-row justify-center p-2 -hover-bg" key={index}>
+                                    <a href={resource.url} target="_blank" className="-smooth-appear card rounded-md flex-row justify-center p-2 -hover-bg" key={index}>
                                         <span className="flex flex-row items-center justify-center px-1" style={{color: stringToHex(section.sectionId)}}><Icon icon={resource.icon} size={24}/></span>
                                         <div className="mx-2">
                                             <h5>{resource.name}</h5>
@@ -193,7 +193,7 @@ export default function DisplayView ({
                             }
 
                             elementTopic.contentCard.push(
-                                <div className="flex flex-col gap-8" key={topicUid}>
+                                <div className="-smooth-appear flex flex-col gap-8" key={topicUid}>
                                     {elementTopicResource.length > 0 && <div className="flex flex-wrap gap-4">
                                         {elementTopicResource}
                                     </div>}
@@ -211,8 +211,10 @@ export default function DisplayView ({
                             const topicLibrary = libraryData[topicContent.topicData.quizUid];
                             elementTopic.quizBanner.push(
                                 <Link href={{ pathname: "./library/[quiz]" }} as={`/library/${topicLibrary.uid}`}
-                                    onClick={() => setGlobalParams("isLoading", true)}
-                                    className={`relative overflow-hidden -hover-bg -border rounded-xl relative flex flex-col ${(topicLibrary.image) && "text-white"}`} key={topicUid}>
+                                    onClick={() => {
+                                        setGlobalParams("isLoading", true);
+                                    }}
+                                    className={`-smooth-appear relative overflow-hidden -hover-bg -border rounded-xl relative flex flex-col ${(topicLibrary.image) && "text-white"}`} key={topicUid}>
                                     <div className='w-full p-4 z-10'>
                                         <ChipTextColor chipText="TOPIC PRACTICE" textColor={stringToRgb(section.sectionId, globalParams.theme)} chipBackgroundOpacity={0.5} />
                                         <h3 className='max-h-[52px] overflow-hidden mt-4 font-black'>{topicLibrary.name.toLocaleUpperCase()}</h3>
@@ -240,8 +242,10 @@ export default function DisplayView ({
                             const topicLibrary = libraryData[topicContent.topicData.quizUid];
                             elementTopic.quizCard.push(
                                 <Link href={{ pathname: "./library/[quiz]" }} as={`/library/${topicLibrary.uid}`}
-                                    onClick={() => setGlobalParams("isLoading", true)}
-                                    className={`relative overflow-hidden -hover-bg -border rounded-xl relative flex flex-col ${(topicLibrary.image) && "text-white"}`} key={topicUid}>
+                                    onClick={() => {
+                                        setGlobalParams("isLoading", true);
+                                    }}
+                                    className={`-smooth-appear relative overflow-hidden -hover-bg -border rounded-xl relative flex flex-col ${(topicLibrary.image) && "text-white"}`} key={topicUid}>
                                     <div className='w-full p-4 z-10'>
                                         <ChipTextColor chipText="PRACTICE" textColor={stringToRgb(section.sectionId, globalParams.theme)} chipBackgroundOpacity={0.5} />
                                         <h4 className="max-h-[48px] overflow-hidden mt-2 font-black">{topicLibrary.name.toLocaleUpperCase()}</h4>
@@ -266,7 +270,7 @@ export default function DisplayView ({
             })
 
             elementMainSectionTopic.push(
-                <div className="flex flex-col my-2" key={"Main_" + topicUid}
+                <div className="-smooth-appear flex flex-col my-2" key={"Main_" + topicUid}
                     ref={(element) => {elementsRef.current[topicUid] = element}}>
                     <div className="flex flex-row items-center px-4 py-4 mb-4 gap-4 section-center text-left">
                     <ChipTextColor chipText={topic.topicId} fontWeight={900} textColor={stringToRgb(section.sectionId, globalParams.theme)} chipBackgroundOpacity={0.1} />
@@ -284,7 +288,7 @@ export default function DisplayView ({
         });
 
         elementMainSection.push(
-            <div className="flex flex-col mb-4" key={"Main_" + sectionUid}
+            <div className="-smooth-appear flex flex-col mb-4" key={"Main_" + sectionUid}
                 ref={(element) => {elementsRef.current[sectionUid] = element}}>
                 <div className="flex flex-row items-center px-4 py-4 gap-2 section-center text-left bg-black/5 dark:bg-white/5">
                     <ChipTextColor chipText={section.sectionId} fontWeight={900} />
