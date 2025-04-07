@@ -19,6 +19,7 @@ import Library from "@/app/utility/interface/interface-library";
 import Question from "@/app/utility/interface/interface-quiz";
 
 import { TextColor } from "@/app/utility/components/chip";
+import { UnformattedAuricleText } from "@/app/utility/components/auricleText";
 
 //// 1.4 Utility functions
 import { stringToRgb } from "@/app/utility/function/color/string-to-rgb";
@@ -72,7 +73,7 @@ export default React.memo(function QuizEditAside ({
     const alllQuestionUid = localQuizContextParams.bufferLibrary.questionUidOrder as string[];
     
     alllQuestionUid.filter(value => Object.keys(questionData).includes(value)).map((eachQuestionUid, index) => {
-        const eachQuestionData = questionData[eachQuestionUid];
+        const eachQuestionData = questionData[eachQuestionUid].questionData[questionData[eachQuestionUid].modality];
 
         if (eachQuestionUid === localQuizContextParams.currentQuestionUid) {
             elementQuizAside.push(
@@ -80,10 +81,10 @@ export default React.memo(function QuizEditAside ({
                     className="flex flex-row items-center gap-2 w-full px-4 py-2 -border-b -hover-bg-active">
                     <p className={`font-bold text-left color-slate ${(index < 100) ? "min-w-4" : "min-w-8"}`}>{index + 1}</p>
                     <TextColor 
-                        textColor={stringToRgb(metadata.questionModality[eachQuestionData.modality].iconColorCode, globalParams.theme)} 
-                        chipIcon={metadata.questionModality[eachQuestionData.modality].icon} />
+                        textColor={stringToRgb(metadata.questionModality[questionData[eachQuestionUid].modality].iconColorCode, globalParams.theme)} 
+                        chipIcon={metadata.questionModality[questionData[eachQuestionUid].modality].icon} />
                     <div className="font-bold whitespace-nowrap overflow-hidden">
-                        {eachQuestionData.questionData[eachQuestionData.modality]!.questionText}
+                        <UnformattedAuricleText inputText={eachQuestionData!.questionText} />
                     </div>
                 </div>
             );
@@ -96,10 +97,10 @@ export default React.memo(function QuizEditAside ({
                     className="flex flex-row items-center gap-2 w-full px-4 py-2 -border-b -hover-bg-50">
                     <p className={`font-bold text-left color-slate ${(index < 100) ? "min-w-4" : "min-w-8"}`}>{index + 1}</p>
                     <TextColor 
-                        textColor={stringToRgb(metadata.questionModality[eachQuestionData.modality].iconColorCode, globalParams.theme)} 
-                        chipIcon={metadata.questionModality[eachQuestionData.modality].icon} />
+                        textColor={stringToRgb(metadata.questionModality[questionData[eachQuestionUid].modality].iconColorCode, globalParams.theme)} 
+                        chipIcon={metadata.questionModality[questionData[eachQuestionUid].modality].icon} />
                     <div className="font-bold whitespace-nowrap overflow-hidden">
-                        {eachQuestionData.questionData[eachQuestionData.modality]!.questionText}
+                        <UnformattedAuricleText inputText={eachQuestionData!.questionText} />
                     </div>
                 </button>
             );

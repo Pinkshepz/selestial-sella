@@ -139,6 +139,13 @@ export default function Controller () {
                         <p>{interfaceParams.editMode ? "EXIT EDIT MODE" : "ENTER EDIT MODE"}</p>
                     </button>}
 
+                {
+                    <button className="controller-menu" 
+                        onClick={() => setInterfaceParams("themeToggle", !interfaceParams.themeToggle)}>
+                        <Icon icon={interfaceParams.themeToggle ? "wind" : "sparkles"} size={16} />
+                        <p>{interfaceParams.themeToggle ? "JET BLACK THEME" : "MIDNIGHT BLUE THEME"}</p>
+                    </button>
+                }
             </div>
         </section>
     );

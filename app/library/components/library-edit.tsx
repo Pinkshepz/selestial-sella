@@ -334,7 +334,7 @@ export default function LibraryEditor ({
                         <Icon icon="font" size={16} />
                         <p>Description</p>
                     </label>
-                    <textarea rows={1} className="editor-field"
+                    <textarea rows={2} className="editor-field"
                         onChange={e => handleObjectKeyValueUpdate({
                             keysHierachy: [localLibraryContextParams.currentLibraryUid, "description"],
                             targetValue: e.target.value
@@ -412,7 +412,7 @@ export default function LibraryEditor ({
     return (
         <div id="two-cols-fixed" className="-border-t">
             <aside aria-label="aside-navigator" id="col-scroll-aside" className="w-[25dvw] -border-r">
-                <div className="flex flex-row gap-4 px-4"><h1>COURSE</h1><h1>EDITOR</h1></div>
+                <div className="flex flex-row gap-4 p-4"><h2>COURSE</h2><h2>EDITOR</h2></div>
                 <div className="px-4 pt-2 pb-4 flex flex-row items-center">
                     <Icon icon="true" size={16}></Icon>
                     <span className="pl-2 font-bold">TOTAL {elementAside.length} COURSES</span>

@@ -87,7 +87,7 @@ export default function SettingInterface ({
                     </div>
 
                     {/* Settings */}
-                    {(localQuizContextParams.questionNumber > 0) && 
+                    {false && 
                         <div className="flex flex-col mt-8"> 
                             {/* Shuffle */}
                             <div className="flex flex-wrap gap-4">

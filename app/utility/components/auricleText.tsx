@@ -26,9 +26,9 @@ const CloudNine = memo(function CloudNine ({
 
   return (
     <span onClick={() => setRevealed((prev) => (!prev))}
-      className="relative mx-2 border-b-2 border-dashed border-textSlate dark:border-textSlate-dark border-white/20 dark:border-white-dark/20 -hover-bg-active cursor-pointer">
+      className="relative mx-1 -border-b -hover-bg-active rounded-md cursor-pointer">
       {!revealed && cloudCover}
-      {revealed ? <span key={1} className="z-0">{text}</span> : <span key={0} className="z-0 text-pri/0">{text}</span>}
+      {revealed ? <span key={1} className="z-0 px-1">{text}</span> : <span key={0} className="z-0 px-1 text-pri/0">{text}</span>}
     </span>
   );
 })
@@ -49,6 +49,22 @@ export const parseToHTML = (inputText: string) => {
   });
 }
 
+export const removeSpecialCharacter = (inputText: string) => {
+  return inputText.split(/(⟪[^⟫]+⟫|❬[^❭]+❭|【[^❭]+】|⎨[^⎬]+⎬|\\n)/g).map((part, indexPart) => {
+    if (part.startsWith("⟪") && part.endsWith("⟫")) {
+      return <span key={indexPart}>{part.slice(1, -1)}</span>;
+    } else if (part.startsWith("【") && part.endsWith("】")) {
+      return <span key={indexPart}>{part.slice(1, -1)}</span>;
+    } else if (part.startsWith("❬") && part.endsWith("❭")) {
+      return <span key={indexPart}>{part.slice(1, -1)}</span>;
+    } else if (part.startsWith("⎨") && part.endsWith("⎬")) {
+      return <span className="px-1 -hover-bg-active rounded-lg" key={indexPart}>...</span>;
+    } else {
+      return <span className="font-medium" key={indexPart}>{part}</span>;
+    }
+  });
+}
+
 export default function AuricleText ({
   inputText
 }: {
@@ -57,7 +73,7 @@ export default function AuricleText ({
     let processedParagraphs: React.ReactNode[] = [];
 
     try {
-      inputText.split('\\n').map((paragraph, indexParagraph) => {
+      inputText.split("\\n").map((paragraph, indexParagraph) => {
         processedParagraphs.push(
             <div key={indexParagraph}>
                 {parseToHTML(paragraph)}
@@ -70,4 +86,12 @@ export default function AuricleText ({
     }
 
     return <div className="flex flex-col gap-4">{processedParagraphs}</div>;
+};
+
+export function UnformattedAuricleText ({
+  inputText
+}: {
+  inputText: string
+}): React.ReactNode {
+    return <div>{removeSpecialCharacter(inputText.replace("\\n", ""))}</div>;
 };

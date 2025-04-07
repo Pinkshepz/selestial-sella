@@ -2,8 +2,8 @@ import hexToRgb from "./hex-to-rgb";
 import hslToHex from "./hsl-to-hex";
 
 export default function stringToHex (text: string, colorTheme: string = "dark") {
-    const saturation: number = (colorTheme == "dark") ? 70 : 60
-    const lightness: number = (colorTheme == "dark") ? 70 : 40
+    const saturation: number = (colorTheme == "light") ? 60 : 70;
+    const lightness: number = (colorTheme == "light") ? 40 : 70;
 
     if (typeof text !== "string") {return hslToHex(0, saturation, lightness)}
 
@@ -19,8 +19,8 @@ export default function stringToHex (text: string, colorTheme: string = "dark") 
 }
 
 export function stringToRgb (text: string, colorTheme: string = "dark") {
-    const saturation: number = (colorTheme == "dark") ? 70 : 60
-    const lightness: number = (colorTheme == "dark") ? 70 : 40
+    const saturation: number = (colorTheme == "light") ? 60 : 70;
+    const lightness: number = (colorTheme == "light") ? 40 : 70;
 
     if (typeof text !== "string") {return hexToRgb(hslToHex(0, saturation, lightness))}
 
@@ -32,7 +32,7 @@ export function stringToRgb (text: string, colorTheme: string = "dark") {
     }
 
     // Calculate representative color
-    const color = hexToRgb(hslToHex((ascii ** 1.8) % 360, saturation, lightness))
+    const color = hexToRgb(hslToHex((ascii ** 1.8) % 360, saturation, lightness));
 
     return color;
 }

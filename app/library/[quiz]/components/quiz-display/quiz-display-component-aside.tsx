@@ -20,6 +20,7 @@ import QuestionAction from "@/app/utility/interface/interface-quiz";
 import { UniversalQuestionModality_Action } from "@/app/utility/interface/interface-quiz";
 
 import { TextColor } from "@/app/utility/components/chip";
+import { UnformattedAuricleText } from "@/app/utility/components/auricleText";
 
 //// 1.4 Utility functions
 import { stringToRgb } from "@/app/utility/function/color/string-to-rgb";
@@ -79,7 +80,7 @@ export default React.memo(function QuizDisplayAside ({
                             : {r: 128, g: 128, b: 128}}
                         chipIcon={metadata.questionModality[questionData[eachQuestionUid].modality].icon} />
                     <div className="font-bold whitespace-nowrap overflow-hidden">
-                        {eachQuestionData!.questionText}
+                        <UnformattedAuricleText inputText={eachQuestionData!.questionText} />
                     </div>
                 </div>
             );
@@ -98,7 +99,7 @@ export default React.memo(function QuizDisplayAside ({
                             : {r: 128, g: 128, b: 128}}
                         chipIcon={metadata.questionModality[questionData[eachQuestionUid].modality].icon} />
                     <div className="font-bold whitespace-nowrap overflow-hidden">
-                        {eachQuestionData!.questionText}
+                        <UnformattedAuricleText inputText={eachQuestionData!.questionText} />
                     </div>
                 </button>
             );

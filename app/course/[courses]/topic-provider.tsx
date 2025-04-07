@@ -11,7 +11,8 @@ interface interfaceStructure {
   currentTopicUid: string,
   discardChangesToggle: boolean,
   saveChangesToggle: boolean,
-  logUpdate: {}
+  logUpdate: {},
+  themeToggle: boolean
 }
 
 const interfaceInitialValue = {
@@ -23,7 +24,8 @@ const interfaceInitialValue = {
   currentTopicUid: "",
   discardChangesToggle: false,
   saveChangesToggle: false,
-  logUpdate: {}
+  logUpdate: {},
+  themeToggle: true
 };
 
 const InterfaceContext = createContext<any>({});

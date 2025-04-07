@@ -718,7 +718,7 @@ export default function EditView ({
             <div id="two-cols-fixed" className="-border-t">
                 <aside aria-label="aside-navigator" id="col-scroll-aside" className="-border-r">
                     <strong className="mx-4 mt-4">{`COURSE ${courseData.id} ┇ ${courseData.abbreviation}`}</strong>
-                    <h1 className="mx-4">{courseData.name.toLocaleUpperCase()}</h1>
+                    <h2 className="m-4">{courseData.name.toLocaleUpperCase()}</h2>
                     <div className="flex flex-row items-center px-4 my-4">
                         <Icon icon="map" size={16} />
                         <h4 className="ml-2">SECTION & TOPICS</h4>
@@ -731,9 +731,9 @@ export default function EditView ({
                     {elementMainSection}
                 </section>
             </div>
-            <div className="fixed bottom-0 w-dvw h-dvh z-[-100]">
+            <div key={interfaceParams.themeToggle ? "A" : "B"} className="fixed bottom-0 w-dvw h-dvh z-[-100]">
                 <img src={courseData.image} alt="" className="absolute h-full w-full z-[-100]" />
-                <div className="absolute h-full w-full z-[-90] bg-highlight/95 dark:bg-highlight-dark/90"></div>
+                <div className={`absolute h-full w-full z-[-90] ${interfaceParams.themeToggle ? "bg-white/[0.95] dark:bg-black/[0.87]" : "bg-highlight/90 dark:bg-highlight-dark/90"}`}></div>
                 <div className="glass-cover-spread z-[-80]"></div>
             </div>
         </div>

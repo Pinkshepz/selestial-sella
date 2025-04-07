@@ -23,7 +23,7 @@ const DisplayCard = ({
     cardImageLink,
     cardName,
     cardDescription,
-    // cardMode,
+    cardQuestionNumber,
     cardTag
 }: {
     cardUid: string,
@@ -31,30 +31,31 @@ const DisplayCard = ({
     cardImageLink: string,
     cardName: string,
     cardDescription: string,
-    // cardMode: {},
+    cardQuestionNumber: number,
     cardTag?: string[]
 }) => {
     // prepare tag chips
     let tagsElements: React.ReactNode[] = [];
 
-    if (cardTag) {cardTag.map((tag) => tagsElements.push(<span key={tag}><ChipTextColor chipText={tag} chipBackgroundOpacity={0.5}/></span>));}
+    if (cardTag) {cardTag.map((tag) => tagsElements.push(<span key={tag}><ChipTextColor chipText={tag} chipBackgroundOpacity={0.5} colorTheme="dark" /></span>));}
 
     return (
         // card template
-        <article className="card-main -card-hover" key={cardUid}>
+        <article className="card-main -card-hover duration-200" key={cardUid}>
             <div className="overflow-hidden">
                 {cardImageLink 
                     ? <img src={cardImageLink} alt="" className="w-full" height={1000} width={1000} />
                     : <Image src={aurora} alt="" width={1000} height={1000} />
                 }
-                <div className="absolute w-full h-full z-[-10] bg-gradient-to-t from-black/60 to-black/60 backdrop-blur-3xl overflow-hidden"></div>
+                <div className="absolute w-full h-full z-[-10] bg-gradient-to-t from-black/60 to-black/60 overflow-hidden"></div>
             </div>
             <div className="flex flex-col h-full p-4">
-                <h4 className="mt-1 text-md font-bold">{cardName.toLocaleUpperCase()}</h4>
-                <p className="mt-auto text-md font-medium">{cardDescription}</p>
-                <div className="flex flex-wrap items-center gap-2 mt-4">
-                    <p className="text-md font-bold">{`${cardId}`}</p>
+                <p className="mb-2 text-md font-bold">{`${cardId}`}</p>
+                <h4 className="max-h-[48px] mt-1 text-md font-black overflow-hidden">{cardName.toLocaleUpperCase()}</h4>
+                <p className="max-h-[36px] mt-6 text-md color-slate overflow-hidden">{cardDescription}</p>
+                <div className="flex flex-wrap items-center gap-2 mt-auto">
                     {cardTag && tagsElements}
+                    <h5 className='ml-auto px-2 py-1 -hover-bg-active rounded-xl'>{`${cardQuestionNumber} QUESTION${(cardQuestionNumber > 1) ? "S" : ""}`}</h5>
                 </div>
             </div>
         </article>
@@ -88,7 +89,7 @@ export default function CardView ({
                         cardImageLink={library.image}
                         cardName={library.name}
                         cardDescription={library.description}
-                        // cardMode={library.mode}
+                        cardQuestionNumber={library.questionUidOrder.length}
                         cardTag={library.tag}
                         key={library.id}/>
                 </Link>

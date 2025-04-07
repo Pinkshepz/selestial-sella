@@ -84,8 +84,8 @@
 .card-main {
     position: relative;
     display: flex;
-    height: 25dvh;
-    background-color: var(--highlight);
+    height: 210px;
+    background-color: rgba(17, 24, 28, 0.75);
     overflow: hidden;
     color: white;
 }
