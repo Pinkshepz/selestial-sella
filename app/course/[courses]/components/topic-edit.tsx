@@ -364,7 +364,7 @@ export default function EditView ({
                     setInterfaceParams("currentTopicUid", topicUid);
                 }}
                     className="flex flex-row px-2 py-2 gap-2 section-center text-left hover:bg-black/10 hover:dark:bg-white/10" key={"Aside_" + topicUid}>
-                    <TextColor chipText={topic.topicId} fontWeight={900} textColor={stringToRgb(section.sectionId)} />
+                    <TextColor chipText={topic.topicId} fontWeight={900} textColor={stringToRgb(section.sectionId, globalParams.theme)} />
                     <span className="font-semibold text-nowrap overflow-hidden">{topic.topicName}</span>
                 </button>
             )
@@ -373,7 +373,7 @@ export default function EditView ({
         elementAsideSection.push(
             <div className="flex flex-col mb-4" key={"Aside_" + sectionUid}>
                 <div className="flex flex-row px-2 py-2 gap-2 section-center text-left -hover-bg-active">
-                    <TextColor chipText={section.sectionId} fontWeight={900} />
+                <ChipTextColor chipText={section.sectionId} fontWeight={900} textColor={stringToRgb(section.sectionId, globalParams.theme)} />
                     <span className="font-semibold text-nowrap overflow-hidden">{section.sectionName}</span>
                 </div>
                 <div className="flex flex-col ml-5 -border-l">
@@ -536,24 +536,23 @@ export default function EditView ({
                     try {
                         const topicLibrary = libraryData[topicContent.topicData.quizUid];
                         elementTopic.quizBanner.push(
-                            <div className='-card-hover card mx-6 rounded-md relative flex flex-col text-white' key={"Display_" + index}>
+                            <div className={`mx-6 -hover-bg -border rounded-xl relative flex flex-col ${(topicLibrary.image) && "text-white"}`} key={"Display_" + index}>
                                 <div className='w-full p-4 z-10'>
-                                    <p className='font-semibold'>TOPIC PRACTICE</p>
-                                    <h3 className='mt-2'>{topicLibrary.name.toLocaleUpperCase()}</h3>
-                                    <p className='mt-8 font-semibold'>{topicLibrary.description}</p>
-                                    <div className="flex flex-row justify-between items-center w-full mt-4">
-                                        <div className='flex flex-row items-center'>
-                                            {/* <span id="chip-action-neu">{topicLibrary.mode}</span> */}
-                                            <h5 className="flex flex-row gap-1 ml-2">{topicLibrary.id}</h5>
+                                        <ChipTextColor chipText="TOPIC PRACTICE" textStringForColor="Q" />
+                                        <h4 className="max-h-[48px] overflow-hidden mt-2 font-black">{topicLibrary.name.toLocaleUpperCase()}</h4>
+                                        <p className='max-h-[36px] overflow-hidden mt-8 font-semibold'>{topicLibrary.description}</p>
+                                        <div className="flex flex-row justify-between items-center w-full mt-4">
+                                            <div className='flex flex-row items-center'>
+                                                <h5 className="flex flex-row gap-1 px-2 py-1 -hover-bg-active rounded-xl">{topicLibrary.id}</h5>
+                                            </div>
+                                            <h5 className='ml-1'>{`${topicLibrary.questionUidOrder.length} QUESTION${(topicLibrary.questionUidOrder.length > 1) ? "S" : ""}`}</h5>
                                         </div>
-                                        {/* <h5 className='ml-1'>{topicLibrary.totalQuestion} Questions</h5> */}
                                     </div>
-                                </div>
-                                <div className='absolute top-0 w-full overflow-hidden z-0'>
-                                    <img src={topicLibrary.image} alt="" className="h-full w-full object-cover"/>
-                                    <div className='absolute top-0 h-full w-full bg-highlight-dark/50 dark:bg-highlight-dark/90'></div>
-                                    <div className="glass-cover-card"></div>
-                                </div>
+                                    <div className='absolute top-0 w-full overflow-hidden z-0'>
+                                        <img src={topicLibrary.image} alt="" className="h-full w-full object-cover"/>
+                                        <div className='absolute top-0 h-full w-full bg-highlight-dark/50 dark:bg-highlight-dark/90'></div>
+                                        <div className="glass-cover-card"></div>
+                                    </div>
                             </div>
                         );
                     } catch (error) {
@@ -593,17 +592,16 @@ export default function EditView ({
                     try {
                         const topicLibrary = libraryData[topicContent.topicData.quizUid];
                         elementTopic.quizCard.push(
-                            <div className='-card-hover card mx-6 rounded-md relative flex flex-col text-white' key={"Display_" + index}>
+                            <div className={`mx-6 -hover-bg -border rounded-xl relative flex flex-col ${(topicLibrary.image) && "text-white"}`} key={"Display_" + index}>
                                 <div className='w-full p-4 z-10'>
-                                    <p className='font-semibold'>TOPIC PRACTICE</p>
-                                    <h3 className='mt-2'>{topicLibrary.name.toLocaleUpperCase()}</h3>
-                                    <p className='mt-8 font-semibold'>{topicLibrary.description}</p>
+                                    <ChipTextColor chipText="PRACTICE" textStringForColor="Q" />
+                                    <h4 className="max-h-[48px] overflow-hidden mt-2 font-black">{topicLibrary.name.toLocaleUpperCase()}</h4>
+                                    <p className='max-h-[36px] overflow-hidden mt-8 font-semibold'>{topicLibrary.description}</p>
                                     <div className="flex flex-row justify-between items-center w-full mt-4">
                                         <div className='flex flex-row items-center'>
-                                            {/* <span id="chip-action-neu">{topicLibrary.mode}</span> */}
-                                            <h5 className="flex flex-row gap-1 ml-2">{topicLibrary.id}</h5>
+                                            <h5 className="flex flex-row gap-1 px-2 py-1 -hover-bg-active rounded-xl">{topicLibrary.id}</h5>
                                         </div>
-                                        {/* <h5 className='ml-1'>{topicLibrary.totalQuestion} Questions</h5> */}
+                                        <h5 className='ml-1'>{`${topicLibrary.questionUidOrder.length} QUESTION${(topicLibrary.questionUidOrder.length > 1) ? "S" : ""}`}</h5>
                                     </div>
                                 </div>
                                 <div className='absolute top-0 w-full overflow-hidden z-0'>
@@ -672,12 +670,12 @@ export default function EditView ({
                 {/* Editing & display interface */}
                 {((searchLibraryKey === "") && (topicUidToLinkLibrary === ""))
                     ? <div className="flex flex-col h-full overflow-y-auto">
-                        <div className="flex flex-row items-center px-2 py-3 gap-4 section-center text-left -hover-bg-active">
-                            <TextColor chipText={section.sectionId} fontWeight={700} fontSize="1.5rem" />
+                        <div className="flex flex-row items-center px-4 py-4 gap-4 section-center text-left -hover-bg-active">
+                        <ChipTextColor chipText={section.sectionId} fontWeight={900} textColor={stringToRgb(section.sectionId, globalParams.theme)} />
                             <h3 className="font-semibold text-nowrap overflow-hidden">{section.sectionName}</h3>
                         </div>
                         <div className="flex flex-row items-center px-4 py-4 gap-4 section-center text-left -border-b">
-                            <TextColor chipText={topic.topicId} fontWeight={700} fontSize="1.25rem" textColor={stringToRgb(section.sectionId)} />
+                        <ChipTextColor chipText={topic.topicId} fontWeight={900} textColor={stringToRgb(section.sectionId, globalParams.theme)} chipBackgroundOpacity={0.1} />
                             <h4 className="font-semibold text-nowrap overflow-hidden">{topic.topicName}</h4>
                         </div>
                         <div className="flex flex-col mb-8">

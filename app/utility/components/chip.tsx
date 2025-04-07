@@ -47,12 +47,11 @@ export function ChipTextColor ({
         : textStringForColor
             ? stringToRgb(textStringForColor, colorTheme)
             : stringToRgb(chipText, colorTheme);
-    
+
     return (
         <div
-            className="flex flex-row gap-2 items-center w-fit px-2 rounded-lg text-nowrap"
+            className={`flex flex-row gap-2 items-center w-fit px-2 rounded-lg text-nowrap ${(chipBackgroundOpacity <= 0.3) ? "text-black dark:text-white" : "text-white"}`}
             style={{
-                color: "white",
                 backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, ${Math.abs((chipBackgroundOpacity - 0.001) % 1)})`,
                 border: `solid 1px rgba(${color.r}, ${color.g}, ${color.b}, ${Math.abs((chipBorderOpacity - 0.001) % 1)})`,
                 fontWeight: fontWeight,

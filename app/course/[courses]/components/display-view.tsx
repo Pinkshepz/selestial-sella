@@ -116,7 +116,7 @@ export default function DisplayView ({
             <div className="flex flex-col mb-4" key={"Aside_" + sectionUid}>
                 <button onClick={() => scrollToRef(sectionUid)}
                     className="flex flex-row px-2 py-2 gap-2 section-center text-left bg-black/5 dark:bg-white/5 -hover-bg">
-                    <ChipTextColor chipText={section.sectionId} fontWeight={900} />
+                    <ChipTextColor chipText={section.sectionId} fontWeight={900} textColor={stringToRgb(section.sectionId, globalParams.theme)} />
                     <span className="font-semibold text-nowrap overflow-hidden">{section.sectionName}</span>
                 </button>
                 <div className="flex flex-col ml-5 border-l border-broder dark:border-border-dark">
@@ -215,8 +215,8 @@ export default function DisplayView ({
                                     className={`-hover-bg -border rounded-xl relative flex flex-col ${(topicLibrary.image) && "text-white"}`} key={topicUid}>
                                     <div className='w-full p-4 z-10'>
                                         <ChipTextColor chipText="TOPIC PRACTICE" textStringForColor="K" />
-                                        <h3 className='mt-4 font-black'>{topicLibrary.name.toLocaleUpperCase()}</h3>
-                                        <p className='mt-8 font-semibold'>{topicLibrary.description}</p>
+                                        <h3 className='max-h-[52px] overflow-hidden mt-4 font-black'>{topicLibrary.name.toLocaleUpperCase()}</h3>
+                                        <p className='max-h-[36px] overflow-hidden mt-8 font-semibold'>{topicLibrary.description}</p>
                                         <div className="flex flex-row justify-between items-center w-full mt-4">
                                             <div className='flex flex-row items-center'>
                                                 <h5 className="flex flex-row gap-1 px-2 py-1 -hover-bg-active rounded-xl">{topicLibrary.id}</h5>
@@ -244,11 +244,10 @@ export default function DisplayView ({
                                     className={`-hover-bg -border rounded-xl relative flex flex-col ${(topicLibrary.image) && "text-white"}`} key={topicUid}>
                                     <div className='w-full p-4 z-10'>
                                         <ChipTextColor chipText="PRACTICE" textStringForColor="Q" />
-                                        <h4 className="mt-2 font-black">{topicLibrary.name.toLocaleUpperCase()}</h4>
-                                        <p className='mt-8 font-semibold'>{topicLibrary.description}</p>
+                                        <h4 className="max-h-[48px] overflow-hidden mt-2 font-black">{topicLibrary.name.toLocaleUpperCase()}</h4>
+                                        <p className='max-h-[36px] overflow-hidden mt-8 font-semibold'>{topicLibrary.description}</p>
                                         <div className="flex flex-row justify-between items-center w-full mt-4">
                                             <div className='flex flex-row items-center'>
-                                                {/* <span id="chip-action-neu">{topicLibrary.mode}</span> */}
                                                 <h5 className="flex flex-row gap-1 px-2 py-1 -hover-bg-active rounded-xl">{topicLibrary.id}</h5>
                                             </div>
                                             <h5 className='ml-1'>{`${topicLibrary.questionUidOrder.length} QUESTION${(topicLibrary.questionUidOrder.length > 1) ? "S" : ""}`}</h5>
@@ -269,9 +268,9 @@ export default function DisplayView ({
             elementMainSectionTopic.push(
                 <div className="flex flex-col my-2" key={"Main_" + topicUid}
                     ref={(element) => {elementsRef.current[topicUid] = element}}>
-                    <div className="flex flex-row items-center px-4 py-2 mb-4 gap-4 section-center text-left">
-                        <TextColor chipText={topic.topicId} fontWeight={700} fontSize="1.25rem" textColor={stringToRgb(section.sectionId, globalParams.theme)} />
-                        <h4 className="font-semibold text-nowrap overflow-hidden">{topic.topicName}</h4>
+                    <div className="flex flex-row items-center px-4 py-4 mb-4 gap-4 section-center text-left">
+                    <ChipTextColor chipText={topic.topicId} fontWeight={900} textColor={stringToRgb(section.sectionId, globalParams.theme)} chipBackgroundOpacity={0.1} />
+                    <h4 className="font-black text-nowrap overflow-hidden">{topic.topicName.toLocaleUpperCase()}</h4>
                     </div>
                     <div className="flex flex-col gap-8 ml-6 pb-8 border-b border-broder/50 dark:border-border-dark/50">
                         {elementTopic.contentCard}
@@ -287,9 +286,9 @@ export default function DisplayView ({
         elementMainSection.push(
             <div className="flex flex-col mb-4" key={"Main_" + sectionUid}
                 ref={(element) => {elementsRef.current[sectionUid] = element}}>
-                <div className="flex flex-row items-center px-2 py-2 gap-2 section-center text-left bg-black/5 dark:bg-white/5">
+                <div className="flex flex-row items-center px-4 py-4 gap-2 section-center text-left bg-black/5 dark:bg-white/5">
                     <ChipTextColor chipText={section.sectionId} fontWeight={900} />
-                    <h3 className="font-semibold text-nowrap overflow-hidden">{section.sectionName}</h3>
+                    <h3 className="font-black text-nowrap overflow-hidden">{section.sectionName.toLocaleUpperCase()}</h3>
                 </div>
                 <div className="flex flex-col mx-5 border-l border-broder dark:border-border-dark">
                     {elementMainSectionTopic}
@@ -304,7 +303,7 @@ export default function DisplayView ({
             <div id="two-cols-fixed" className="-border-t">
                 <aside aria-label="aside-navigator" id="col-scroll-aside" className="-border-r">
                     <strong className="mx-4 my-4">{`COURSE ${courseData.id} ┇ ${courseData.abbreviation}`}</strong>
-                    <div className="flex flex-col gap-4 max-h-84 px-4 pb-4 mb-8 -border-b overflow-y-auto">
+                    <div className="flex flex-col gap-4 min-h-[88px] max-h-[200px] px-4 pb-4 mb-8 -border-b overflow-y-auto">
                         <h2>{courseData.name.toLocaleUpperCase()}</h2>
                         <span className="color-slate">{courseData.description}</span>
                     </div>
