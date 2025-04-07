@@ -69,17 +69,19 @@ export default function CardView ({
     let elements: Array<React.ReactNode> = [];
 
     // Map courseData into each card
-    Object.values(courseData).map((content, index) => {
-        const uid = Object.keys(courseData)[index]
+    Object.keys(courseData).map((contentUid) => {
+        const content = courseData[contentUid];
         if (!content.hidden) {
             elements.push(
                 <Link 
                     href={{ pathname: "./course/[courses]" }}
-                    onClick={() => setGlobalParams("isLoading", true)}
+                    onClick={() => {
+                        setGlobalParams("isLoading", true);
+                    }}
                     as={`course/${content.abbreviation}`}
-                    key={"Card " + uid}>
+                    key={"Card " + contentUid}>
                     <DisplayCard 
-                        cardUid={uid}
+                        cardUid={contentUid}
                         cardId={content.id}
                         cardAbb={content.abbreviation}
                         cardImageLink={content.image}

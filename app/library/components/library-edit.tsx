@@ -162,9 +162,16 @@ export default function LibraryEditor ({
     useEffect(() => {
         if (localLibraryContextParams.addLibraryToggle && !globalParams.popUp) {
             const newUid = makeid(length=20);
-            handleObjectKeyValueUpdate({
-                keysHierachy: [newUid],
-                targetValue: objectUidFill(defaultLibrary({newUid: newUid}))
+            setBufferLibrary({
+                bufferLibrary: objectKeyValueUpdate({
+                    object: objectKeyValueUpdate({
+                        object: localLibraryContextParams.bufferLibrary,
+                        keysHierachy: [newUid],
+                        targetValue: objectUidFill(defaultLibrary({newUid: newUid}))
+                    }),
+                    keysHierachy: [newUid, "uid"],
+                    targetValue: newUid
+                })
             });
             setLocalLibraryContextParams("currentLibraryUid", newUid);
         }

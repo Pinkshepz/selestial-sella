@@ -111,16 +111,24 @@ export default function Controller () {
 
                 {interfaceParams.editMode && 
                     <button
-                        onClick={() => {
-                            setGlobalParams("popUpConfirm", false);
-                            setInterfaceParams("saveChangesToggle", !interfaceParams.saveChangesToggle)
-                            setGlobalParams("popUp", true);
-                            setGlobalParams("popUpAction", "saveChangesToggle");
-                            setGlobalParams("popUpText", "Save all recent changes. All data will be permanently updated")
-                        }}
-                        className="controller-menu">
+                    onClick={() => {
+                        setGlobalParams("popUpConfirm", false);
+                        setInterfaceParams("saveChangesToggle", !interfaceParams.saveChangesToggle)
+                        setGlobalParams("popUp", true);
+                        setGlobalParams("popUpAction", "saveChangesToggle");
+                        setGlobalParams("popUpText", "Save all recent changes. All data will be permanently updated")
+                    }}
+                    className="controller-menu">
                         <Icon icon="save" size={16} />
                         <p>SAVE CHANGES</p>
+                    </button>
+                }
+
+                {
+                    <button className="controller-menu" 
+                        onClick={() => setInterfaceParams("themeToggle", !interfaceParams.themeToggle)}>
+                        <Icon icon={interfaceParams.themeToggle ? "wind" : "sparkles"} size={16} />
+                        <p>{interfaceParams.themeToggle ? "JET BLACK THEME" : "MIDNIGHT BLUE THEME"}</p>
                     </button>
                 }
 
@@ -138,14 +146,6 @@ export default function Controller () {
                         <Icon icon={interfaceParams.editMode ? "edit" : "map"} size={16} />
                         <p>{interfaceParams.editMode ? "EXIT EDIT MODE" : "ENTER EDIT MODE"}</p>
                     </button>}
-
-                {
-                    <button className="controller-menu" 
-                        onClick={() => setInterfaceParams("themeToggle", !interfaceParams.themeToggle)}>
-                        <Icon icon={interfaceParams.themeToggle ? "wind" : "sparkles"} size={16} />
-                        <p>{interfaceParams.themeToggle ? "JET BLACK THEME" : "MIDNIGHT BLUE THEME"}</p>
-                    </button>
-                }
             </div>
         </section>
     );

@@ -74,17 +74,19 @@ export default function CardView ({
     let elements: Array<React.ReactNode> = [];
 
     // Map libraryData into each card
-    Object.values(libraryData).map((library, index) => {
-        const uid = Object.keys(libraryData)[index]
+    Object.keys(libraryData).map((libraryUid) => {
+        const library = libraryData[libraryUid];
         if (!library.hidden) {
             elements.push(
                 <Link 
                     href={{ pathname: "./library/[quiz]" }}
-                    onClick={() => setGlobalParams("isLoading", true)}
-                    as={`library/${uid}`}
-                    key={"Card " + uid}>
+                    onClick={() => {
+                        setGlobalParams("isLoading", true);
+                    }}
+                    as={`library/${libraryUid}`}
+                    key={"Card " + libraryUid}>
                     <DisplayCard 
-                        cardUid={uid}
+                        cardUid={libraryUid}
                         cardId={library.id}
                         cardImageLink={library.image}
                         cardName={library.name}

@@ -536,23 +536,23 @@ export default function EditView ({
                     try {
                         const topicLibrary = libraryData[topicContent.topicData.quizUid];
                         elementTopic.quizBanner.push(
-                            <div className={`mx-6 -hover-bg -border rounded-xl relative flex flex-col ${(topicLibrary.image) && "text-white"}`} key={"Display_" + index}>
+                            <div className={`relative overflow-hidden mx-6 -hover-bg -border rounded-xl flex flex-col ${(topicLibrary.image) && "text-white"}`} key={"Display_" + index}>
                                 <div className='w-full p-4 z-10'>
-                                        <ChipTextColor chipText="TOPIC PRACTICE" textStringForColor="Q" />
-                                        <h4 className="max-h-[48px] overflow-hidden mt-2 font-black">{topicLibrary.name.toLocaleUpperCase()}</h4>
-                                        <p className='max-h-[36px] overflow-hidden mt-8 font-semibold'>{topicLibrary.description}</p>
-                                        <div className="flex flex-row justify-between items-center w-full mt-4">
-                                            <div className='flex flex-row items-center'>
-                                                <h5 className="flex flex-row gap-1 px-2 py-1 -hover-bg-active rounded-xl">{topicLibrary.id}</h5>
-                                            </div>
-                                            <h5 className='ml-1'>{`${topicLibrary.questionUidOrder.length} QUESTION${(topicLibrary.questionUidOrder.length > 1) ? "S" : ""}`}</h5>
+                                    <ChipTextColor chipText="TOPIC PRACTICE" textStringForColor="Q" />
+                                    <h4 className="max-h-[48px] overflow-hidden mt-2 font-black">{topicLibrary.name.toLocaleUpperCase()}</h4>
+                                    <p className='max-h-[36px] overflow-hidden mt-8 font-semibold'>{topicLibrary.description}</p>
+                                    <div className="flex flex-row justify-between items-center w-full mt-4">
+                                        <div className='flex flex-row items-center'>
+                                            <h5 className="flex flex-row gap-1 px-2 py-1 -hover-bg-active rounded-xl">{topicLibrary.id}</h5>
                                         </div>
+                                        <h5 className='ml-1'>{`${topicLibrary.questionUidOrder.length} QUESTION${(topicLibrary.questionUidOrder.length > 1) ? "S" : ""}`}</h5>
                                     </div>
-                                    <div className='absolute top-0 w-full overflow-hidden z-0'>
-                                        <img src={topicLibrary.image} alt="" className="h-full w-full object-cover"/>
-                                        <div className='absolute top-0 h-full w-full bg-highlight-dark/50 dark:bg-highlight-dark/90'></div>
-                                        <div className="glass-cover-card"></div>
-                                    </div>
+                                </div>
+                                <div className='absolute top-0 w-full overflow-hidden z-0'>
+                                    <img src={topicLibrary.image} alt="" className="h-full w-full object-cover"/>
+                                    <div className='absolute top-0 h-full w-full bg-highlight-dark/50 dark:bg-highlight-dark/90'></div>
+                                    <div className="glass-cover-card"></div>
+                                </div>
                             </div>
                         );
                     } catch (error) {
@@ -592,7 +592,7 @@ export default function EditView ({
                     try {
                         const topicLibrary = libraryData[topicContent.topicData.quizUid];
                         elementTopic.quizCard.push(
-                            <div className={`mx-6 -hover-bg -border rounded-xl relative flex flex-col ${(topicLibrary.image) && "text-white"}`} key={"Display_" + index}>
+                            <div className={`relative overflow-hidden mx-6 -hover-bg -border rounded-xl flex flex-col ${(topicLibrary.image) && "text-white"}`} key={"Display_" + index}>
                                 <div className='w-full p-4 z-10'>
                                     <ChipTextColor chipText="PRACTICE" textStringForColor="Q" />
                                     <h4 className="max-h-[48px] overflow-hidden mt-2 font-black">{topicLibrary.name.toLocaleUpperCase()}</h4>

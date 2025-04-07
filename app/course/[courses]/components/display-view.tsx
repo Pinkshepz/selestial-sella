@@ -212,9 +212,9 @@ export default function DisplayView ({
                             elementTopic.quizBanner.push(
                                 <Link href={{ pathname: "./library/[quiz]" }} as={`/library/${topicLibrary.uid}`}
                                     onClick={() => setGlobalParams("isLoading", true)}
-                                    className={`-hover-bg -border rounded-xl relative flex flex-col ${(topicLibrary.image) && "text-white"}`} key={topicUid}>
+                                    className={`relative overflow-hidden -hover-bg -border rounded-xl relative flex flex-col ${(topicLibrary.image) && "text-white"}`} key={topicUid}>
                                     <div className='w-full p-4 z-10'>
-                                        <ChipTextColor chipText="TOPIC PRACTICE" textStringForColor="K" />
+                                        <ChipTextColor chipText="TOPIC PRACTICE" textColor={stringToRgb(section.sectionId, globalParams.theme)} chipBackgroundOpacity={0.5} />
                                         <h3 className='max-h-[52px] overflow-hidden mt-4 font-black'>{topicLibrary.name.toLocaleUpperCase()}</h3>
                                         <p className='max-h-[36px] overflow-hidden mt-8 font-semibold'>{topicLibrary.description}</p>
                                         <div className="flex flex-row justify-between items-center w-full mt-4">
@@ -241,9 +241,9 @@ export default function DisplayView ({
                             elementTopic.quizCard.push(
                                 <Link href={{ pathname: "./library/[quiz]" }} as={`/library/${topicLibrary.uid}`}
                                     onClick={() => setGlobalParams("isLoading", true)}
-                                    className={`-hover-bg -border rounded-xl relative flex flex-col ${(topicLibrary.image) && "text-white"}`} key={topicUid}>
+                                    className={`relative overflow-hidden -hover-bg -border rounded-xl relative flex flex-col ${(topicLibrary.image) && "text-white"}`} key={topicUid}>
                                     <div className='w-full p-4 z-10'>
-                                        <ChipTextColor chipText="PRACTICE" textStringForColor="Q" />
+                                        <ChipTextColor chipText="PRACTICE" textColor={stringToRgb(section.sectionId, globalParams.theme)} chipBackgroundOpacity={0.5} />
                                         <h4 className="max-h-[48px] overflow-hidden mt-2 font-black">{topicLibrary.name.toLocaleUpperCase()}</h4>
                                         <p className='max-h-[36px] overflow-hidden mt-8 font-semibold'>{topicLibrary.description}</p>
                                         <div className="flex flex-row justify-between items-center w-full mt-4">

@@ -34,7 +34,7 @@ const CloudNine = memo(function CloudNine ({
 })
 
 export const parseToHTML = (inputText: string) => {
-  return inputText.split(/(⟪[^⟫]+⟫|❬[^❭]+❭|【[^❭]+】|⎨[^⎬]+⎬)/g).map((part, indexPart) => {
+  return inputText.split(/(⟪[^⟫]+⟫|❬[^❭]+❭|【[^】]+】|⎨[^⎬]+⎬|->|<-|\\up|\\down|<=>)/g).map((part, indexPart) => {
     if (part.startsWith("⟪") && part.endsWith("⟫")) {
       return <strong className="font-black" key={indexPart}>{part.slice(1, -1)}</strong>;
     } else if (part.startsWith("【") && part.endsWith("】")) {
@@ -43,6 +43,16 @@ export const parseToHTML = (inputText: string) => {
       return <span className="italic font-light" key={indexPart}>{part.slice(1, -1)}</span>;
     } else if (part.startsWith("⎨") && part.endsWith("⎬")) {
       return <span key={indexPart}><CloudNine text={part.slice(1, -1)} /></span>
+    } else if (part === "->") {
+      return <span key={indexPart}>{"→"}</span>
+    } else if (part === "<-") {
+      return <span key={indexPart}>{"←"}</span>
+    } else if (part === "\\up") {
+      return <span key={indexPart}>{"↑"}</span>
+    } else if (part === "\\down") {
+      return <span key={indexPart}>{"↓"}</span>
+    } else if (part === "<=>") {
+      return <span key={indexPart}>{"↔"}</span>
     } else {
       return <span className="font-medium" key={indexPart}>{part}</span>;
     }
