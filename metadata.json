@@ -1,6 +1,7 @@
 {
     "appName": "AURICLE",
     "appDescription": "Make medical complexity simple again",
+    "version": "1.9.50",
     "firebaseBranch": ["ALPHA", "BETA"],
     "autosaveMinuteClocks": [-1, 1, 2, 5, 10],
     "entityLimit": {

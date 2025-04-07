@@ -240,7 +240,7 @@ const BackgroundImage = ({
     libraryDataImage: string | undefined,
     theme: boolean
 }) => (
-    <div className="fixed bottom-0 w-dvw h-dvh z-[-100]" key={theme ? "A" : "B"}>
+    <div className="-smooth-appear fixed bottom-0 w-dvw h-dvh z-[-100]" key={theme ? "A" : "B"}>
         {libraryDataImage
             ? <img src={libraryDataImage} alt="" className="absolute h-full w-full z-[-100]" />
             : <Image src={BG} width={1000} height={1000} alt="" className="absolute h-full w-full z-[-100]" />

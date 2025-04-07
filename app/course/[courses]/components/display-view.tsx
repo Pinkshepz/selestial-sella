@@ -323,7 +323,7 @@ export default function DisplayView ({
                     {elementMainSection}
                 </section>
             </div>
-            <div key={interfaceParams.themeToggle ? "A" : "B"} className="fixed bottom-0 w-dvw h-dvh z-[-100]">
+            <div key={interfaceParams.themeToggle ? "A" : "B"} className="-smooth-appear fixed bottom-0 w-dvw h-dvh z-[-100]">
                 <img src={courseData.image} alt="" className="absolute h-full w-full z-[-100]" />
                 <div className={`absolute h-full w-full z-[-90] ${interfaceParams.themeToggle ? "bg-white/[0.95] dark:bg-black/[0.87]" : "bg-highlight/90 dark:bg-highlight-dark/90"}`}></div>
                 <div className="glass-cover-spread z-[-80]"></div>
