@@ -81,10 +81,10 @@ export default React.memo(function QuizEditAside ({
                     setLocalQuizContextParams("currentQuestionUid", eachQuestionUid);
                     setLocalQuizContextParams("currentQuestionModality", "");
                 }}
-                    className="flex flex-row items-center gap-2 w-full px-4 py-2 -border-b -hover-bg">
+                className="flex flex-row items-center gap-2 w-full p-4 -border-y -hover-bg -prevent-select">
                     <p className={`font-bold text-left color-slate ${(index < 100) ? "min-w-4" : "min-w-8"}`}>{index + 1}</p>
                     <span className="mx-2 color-slate"><Icon icon="cube" size={16} /></span>
-                    <div className="font-bold color-slate">
+                    <div className="font-black color-pri text-nowrap overflow-hidden">
                         {localQuizContextParams.bufferLibrary.bookmark[eachQuestionUid].toLocaleUpperCase()}
                     </div>
                 </button>
