@@ -226,7 +226,7 @@ export default function LibraryEditor ({
 
         if (localLibraryContextParams.currentLibraryUid == libraryUid) {
             elementAside.push(
-                <div className="-smooth-appear flex flex-row px-2 py-2 gap-2 content-center text-left -hover-bg-active" key={libraryUid}>
+                <div className="flex flex-row px-2 py-2 gap-2 items-center text-left -hover-bg-active" key={libraryUid}>
                     <span className="text-nowrap">
                         <TextColor chipText={eachLibraryData.id} fontWeight={900} />
                     </span>
@@ -237,7 +237,7 @@ export default function LibraryEditor ({
         } else {
             elementAside.push(
                 <button onClick={() => setLocalLibraryContextParams("currentLibraryUid", libraryUid)} key={libraryUid}
-                    className="-smooth-appear flex flex-row px-2 py-2 gap-2 items-center text-left -hover-bg">
+                    className="flex flex-row px-2 py-2 gap-2 items-center text-left -hover-bg">
                     <span className="text-nowrap">
                         <TextColor chipText={eachLibraryData.id} fontWeight={900} />
                     </span>
@@ -273,24 +273,29 @@ export default function LibraryEditor ({
                             keysHierachy: [localLibraryContextParams.currentLibraryUid, "hidden"],
                             targetValue: !eachLibrary.hidden
                         })}}
-                        className="flex flex-row justify-center items-center gap-2 px-2 py-1 ml-auto rounded-[8px] -border -button-hover-pri font-bold">
+                        className="flex flex-row justify-center items-center gap-2 px-2 py-1 ml-auto rounded-xl -border -button-hover-pri font-bold">
                         <Icon icon={eachLibrary.hidden ? "eyeSlash" : "eye"} size={16} />
                         <span className="lg:inline hidden">{eachLibrary.hidden ? "HIDDEN" : "VISIBLE"}</span>
                     </button>
                     <button
                         onClick={() => {handleDuplicateLibrary(localLibraryContextParams.currentLibraryUid)}}
-                        className="flex flex-row justify-center items-center gap-2 px-2 py-1 rounded-[8px] -border -button-hover-amber font-bold">
+                        className="flex flex-row justify-center items-center gap-2 px-2 py-1 rounded-xl -border -button-hover-amber font-bold">
                         <Icon icon="copy" size={16} />
                         <span className="lg:inline hidden">DUPLICATE</span>
                     </button>
-                    <button
-                        onClick={() => handleObjectKeyDelete({
+                    <button aria-label={`DELETE-LIBRARY ${localLibraryContextParams.currentLibraryUid}`} onClick={() => {
+                        setLocalLibraryContextParams("currentDeleteButtonRef", `DELETE-LIBRARY ${localLibraryContextParams.currentCourseUid}`);
+                        localLibraryContextParams.currentDeleteButtonRef == `DELETE-LIBRARY ${localLibraryContextParams.currentCourseUid}` && handleObjectKeyDelete({
                             keysHierachy: [],
                             keyToDelete: localLibraryContextParams.currentLibraryUid
-                        })}
-                        className="flex flex-row justify-center items-center gap-2 px-2 py-1 rounded-[8px] -border -button-hover-red font-bold">
+                        });
+                        localLibraryContextParams.currentDeleteButtonRef == `DELETE-LIBRARY ${localLibraryContextParams.currentCourseUid}` && setLocalLibraryContextParams("currentDeleteButtonRef", "");
+                    }}
+                        className={`flex flex-row justify-center items-center gap-2 px-2 py-1 rounded-xl -border -button-hover-amber font-bold ${
+                            localLibraryContextParams.currentDeleteButtonRef == `DELETE-LIBRARY ${localLibraryContextParams.currentCourseUid}` && "color-red"
+                        }`}>
                         <Icon icon="trash" size={16} />
-                        <span className="lg:inline hidden">DELETE</span>
+                        <span className="font-bold">DELETE</span>
                     </button>
                 </div>
 

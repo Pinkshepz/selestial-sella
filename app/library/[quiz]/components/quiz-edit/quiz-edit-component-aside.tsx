@@ -94,7 +94,7 @@ export default React.memo(function QuizEditAside ({
                     setLocalQuizContextParams("currentQuestionUid", eachQuestionUid);
                     setLocalQuizContextParams("currentQuestionModality", localQuizContextParams.bufferQuestion[eachQuestionUid].modality);
                 }}
-                    className="flex flex-row items-center gap-2 w-full px-4 py-2 -border-b -hover-bg-50">
+                    className="flex flex-row items-center gap-2 w-full px-4 py-2 -border-b -hover-bg">
                     <p className={`font-bold text-left color-slate ${(index < 100) ? "min-w-4" : "min-w-8"}`}>{index + 1}</p>
                     <TextColor 
                         textColor={stringToRgb(metadata.questionModality[questionData[eachQuestionUid].modality].iconColorCode, globalParams.theme)} 
@@ -113,7 +113,7 @@ export default React.memo(function QuizEditAside ({
     //// -------------------------------------------------------------------------
 
     return (
-        <aside aria-label="aside-navigation" key="aside-navigation" id="quiz-col-scroll-aside" className="relative -border-r -prevent-select">
+        <aside aria-label="aside-navigation-quiz" key="aside-navigation" id="quiz-col-scroll-aside" className="w-[320px] relative flex flex-col -border-r -prevent-select">
             <strong className="mx-4 mt-4">{`QUIZ ${libraryData.id}`}</strong>
             <h1 className="mx-4 max-h-28 overflow-auto">{libraryData.name.toLocaleUpperCase()}</h1>
             <div className="mt-4 h-full overflow-y-scroll -border-t">

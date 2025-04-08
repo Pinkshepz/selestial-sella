@@ -78,8 +78,8 @@ export default function GlobalNavigator (): React.ReactNode {
     <nav className="fixed left-0 top-0 flex flex-row justify-between items-center gap-8 w-full z-100 px-4 backdrop-blur-lg">
 
       {/* Left portion */}
-      <div className='flex flex-row items-center justify-center'>
-        <Link href={'/'} onClick={() => setGlobalParams("isLoading", true)} id="brand-static" className="font-black text-xl relative mr-2">
+      <div className="flex flex-row items-center justify-center">
+        <Link href={"/"} onClick={() => setGlobalParams("isLoading", true)} id="brand-static" className="font-black text-xl relative mr-2">
           AURICLE
         </Link>
         <NavPathName />
@@ -91,7 +91,6 @@ export default function GlobalNavigator (): React.ReactNode {
         <div className="flex flex-row justify-center items-center gap-8 h-full mr-4 text-md overflow-x-scroll overflow-y-hidden -scroll-none">
           <NavigatorLink route="course" />
           <NavigatorLink route="library" />
-          <NavigatorLink route="script" />
         </div>
 
         {/* theme toggle */}

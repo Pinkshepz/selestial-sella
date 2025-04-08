@@ -7,11 +7,11 @@
     "entityLimit": {
         "question": 256,
         "choice": 8,
-        "card": 8,
-        "selectColumn": 4,
+        "card": 16,
+        "selectColumn": 8,
         "selectColumnProperty": 8,
-        "selectColumnPropertyTextLength": 24,
-        "selectRow": 8
+        "selectColumnPropertyTextLength": 32,
+        "selectRow": 16
     },
     "questionModality": {
         "BEST-ANSWER": {

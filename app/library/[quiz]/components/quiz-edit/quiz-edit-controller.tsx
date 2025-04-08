@@ -104,6 +104,7 @@ export default function ControllerEdit ({
                 () => {
                     setGlobalParams("isLoading", false);
                     setAutosaveTimer(autosaveToggle * 60);
+                    setTime(Date.now());
                 }
             );
         }

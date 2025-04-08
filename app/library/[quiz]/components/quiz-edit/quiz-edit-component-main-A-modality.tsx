@@ -238,8 +238,14 @@ export default function QuizEditMain_A_Modality ({
                 <Icon icon="copy" size={16} />
                 <span className="font-bold">DUPLICATE</span>
             </button>
-            <button onClick={() => handleDeleteQuestion()}
-                className="flex flex-row items-center gap-2 px-3 py-1 -border -button-hover-red rounded-full">
+            <button aria-label="DELETE-QUESTION" onClick={() => {
+                setLocalQuizContextParams("currentDeleteButtonRef", "DELETE-QUESTION");
+                localQuizContextParams.currentDeleteButtonRef == "DELETE-QUESTION" && handleDeleteQuestion();
+                localQuizContextParams.currentDeleteButtonRef == "DELETE-QUESTION" && setLocalQuizContextParams("currentDeleteButtonRef", "");
+            }}
+                className={`flex flex-row items-center gap-2 px-3 py-1 -border -button-hover-red rounded-full ${
+                    localQuizContextParams.currentDeleteButtonRef == "DELETE-QUESTION" && "color-red"
+                }`}>
                 <Icon icon="trash" size={16} />
                 <span className="font-bold">DELETE</span>
             </button>

@@ -58,6 +58,11 @@ export default function QuizDisplayMain_A_Modality (): React.ReactNode {
         return (
             <article aria-label="main-A-modality" key="main-A-modality" 
                 className="-smooth-appear min-h-16 px-4 flex flex-row items-center gap-4 -border-b text-nowrap overflow-x-auto -prevent-select">
+                    <button onClick={() => setLocalQuizContextParams("asideHidden", !localQuizContextParams.asideHidden)}
+                        className="p-2 -hover-bg rounded-xl">
+                        <Icon icon="map" size={20} />
+                    </button>
+                    
                     <div className="flex flex-row items-center gap-1 px-2 py-1 -hover-bg-active-half rounded-lg">
                         <span className="mr-1 font-bold">QUESTION</span>
                         <span className="font-black">{questionNumber + 1}</span>

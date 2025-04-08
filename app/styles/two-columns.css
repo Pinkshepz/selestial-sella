@@ -16,7 +16,7 @@
 #col-scroll-main {
   display: flex;
   flex-direction: column;
-  width: calc(100dvw - var(--aside-width));
+  width: 100%;
 }
 
 .w-dvh {

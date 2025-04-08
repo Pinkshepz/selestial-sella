@@ -26,7 +26,7 @@ const CloudNine = memo(function CloudNine ({
 
   return (
     <span onClick={() => setRevealed((prev) => (!prev))}
-      className="relative mx-1 -border-b -hover-bg-active rounded-md cursor-pointer">
+      className="relative mx-1 -border-b -hover-bg-active rounded-md cursor-pointer text-nowrap">
       {!revealed && cloudCover}
       {revealed ? <span key={1} className="z-0 px-1">{text}</span> : <span key={0} className="z-0 px-1 text-pri/0">{text}</span>}
     </span>
@@ -60,7 +60,7 @@ export const parseToHTML = (inputText: string) => {
 }
 
 export const removeSpecialCharacter = (inputText: string) => {
-  return inputText.split(/(⟪[^⟫]+⟫|❬[^❭]+❭|【[^❭]+】|⎨[^⎬]+⎬|\\n)/g).map((part, indexPart) => {
+  return inputText.split(/(⟪[^⟫]+⟫|❬[^❭]+❭|【[^】]+】|⎨[^⎬]+⎬|\\n)/g).map((part, indexPart) => {
     if (part.startsWith("⟪") && part.endsWith("⟫")) {
       return <span key={indexPart}>{part.slice(1, -1)}</span>;
     } else if (part.startsWith("【") && part.endsWith("】")) {
@@ -69,6 +69,16 @@ export const removeSpecialCharacter = (inputText: string) => {
       return <span key={indexPart}>{part.slice(1, -1)}</span>;
     } else if (part.startsWith("⎨") && part.endsWith("⎬")) {
       return <span className="px-1 -hover-bg-active rounded-lg" key={indexPart}>...</span>;
+    } else if (part === "->") {
+      return <span key={indexPart}>{"→"}</span>
+    } else if (part === "<-") {
+      return <span key={indexPart}>{"←"}</span>
+    } else if (part === "\\up") {
+      return <span key={indexPart}>{"↑"}</span>
+    } else if (part === "\\down") {
+      return <span key={indexPart}>{"↓"}</span>
+    } else if (part === "<=>") {
+      return <span key={indexPart}>{"↔"}</span>
     } else {
       return <span className="font-medium" key={indexPart}>{part}</span>;
     }

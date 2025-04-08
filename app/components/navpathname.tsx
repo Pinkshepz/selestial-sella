@@ -72,7 +72,7 @@ export default function NavPathName (): React.ReactNode {
     }
 
     return (
-        <div className="text-md hidden sm:flex flex-row justify-center items-center" key="navpath">
+        <div className="text-md hidden lg:flex flex-row justify-center items-center" key="navpath">
             {pathCollection}
         </div>
     );

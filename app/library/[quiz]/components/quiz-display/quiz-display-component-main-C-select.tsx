@@ -149,16 +149,17 @@ export default function QuizDisplayMain_C_SELECT (): React.ReactNode {
     //// -------------------------------------------------------------------------
     
     ////// C.I Assemble tabular interface
+    let elementRowsFreeze: React.ReactNode[] = []
     let elementRows: React.ReactNode[] = []
 
     //////// C.Ia Render table property header
-    let elementsHeader: React.ReactNode[] = [<th aria-label="table-header-blank" key={0} onClick={() => {setCurrentColumnUid("DEFAULT")}} className="w-48 -border-r"></th>]
+    let elementsHeader: React.ReactNode[] = []
 
     allColumnsUid.map((columnUid, propertyIndex) => {
         elementsHeader.push(
             <th aria-label="table-header-property" key={columnUid} onClick={() => setCurrentColumnUid(columnUid)}
                 className={`min-w-48 max-w-96 -border-l-half`}>
-                <div className="flex flex-row gap-4 m-3 text-left">
+                <div className="flex flex-row items-center gap-4 m-3 text-left">
                     <p className="color-slate">{propertyIndex + 1}</p>
                     <p>{objectKeyRetrieve({
                         object: localQuizContextParams.bufferQuestion,
@@ -214,12 +215,12 @@ export default function QuizDisplayMain_C_SELECT (): React.ReactNode {
                             ? toggleShowSelected
                                 ? (selectedPropertyUid === answerPropertyUid)
                                     // CORRECT ANSWER
-                                    ? {backgroundColor: `${stringToHex("K", globalParams.theme)}24`}
+                                    ? {backgroundColor: `${stringToHex("K", globalParams.theme)}36`}
                                     // INCORRECT ANSWER
-                                    : {backgroundColor: `${stringToHex("G", globalParams.theme)}24`}
+                                    : {backgroundColor: `${stringToHex("G", globalParams.theme)}36`}
                                 : (selectedPropertyUid === answerPropertyUid)
                                     ? {backgroundColor: "pointer"}
-                                    : {backgroundColor: `${stringToHex("A", globalParams.theme)}24`}
+                                    : {backgroundColor: `${stringToHex("A", globalParams.theme)}36`}
                             : {cursor: "pointer"}
                     }
                     onClick={() => {
@@ -286,9 +287,8 @@ export default function QuizDisplayMain_C_SELECT (): React.ReactNode {
                 </td>);
         });
 
-        elementRows.push(
-            <tr key={rowUid}
-            className={`py-2 rounded-xl -border-t-half`}>
+        elementRowsFreeze.push(
+            <tr key={rowUid} className={`py-2 rounded-xl -border-t-half`}>
                 <td className="-border-r">
                     <div aria-label="row-number" className="flex flex-row items-center gap-4 font-bold text-left m-3">
                         <p className="color-slate">{rowIndex + 1}</p>
@@ -298,6 +298,12 @@ export default function QuizDisplayMain_C_SELECT (): React.ReactNode {
                         })} />
                     </div>
                 </td>
+            </tr>
+        );
+
+        elementRows.push(
+            <tr key={rowUid}
+            className={`py-2 rounded-xl -border-t-half`}>
                 {elementRowPropertyAnswer}
             </tr>
         );
@@ -315,15 +321,23 @@ export default function QuizDisplayMain_C_SELECT (): React.ReactNode {
                     {toggleShowSelected ? "YOUR SELECTED CHOICE" : "THE ANSWER KEY"}
                 </button>
             }
-            <div key={toggleShowSelected ? "A" : "B"} className="m-4 -border rounded-xl overflow-x-auto">
-                <table className="-border-r text-nowrap -prevent-select -smooth-appear">
+            <div key={toggleShowSelected ? "A" : "B"} className="flex flex-row m-4 -border rounded-xl overflow-hidden">
+                <table className="-border-r -hover-bg-active-half text-nowrap -prevent-select -smooth-appear">
                     <thead>
-                        <tr className="-border-b -hover-bg-active-half">
-                            {elementsHeader}
-                        </tr>
+                        <th aria-label="table-header-blank" key={0} onClick={() => {setCurrentColumnUid("DEFAULT")}} className="w-48 h-[44px] px-3 text-left color-slate -border-r">~</th>
                     </thead>
-                    <tbody>{elementRows}</tbody>
+                    <tbody>{elementRowsFreeze}</tbody>
                 </table>
+                <div className="overflow-x-auto">
+                    <table className="w-full -border-r text-nowrap -prevent-select -smooth-appear">
+                        <thead>
+                            <tr className="-border-b -hover-bg-active-half">
+                                {elementsHeader}
+                            </tr>
+                        </thead>
+                        <tbody>{elementRows}</tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );

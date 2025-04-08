@@ -414,12 +414,19 @@ export default function EditView ({
                                     className="editor-field w-80 mr-8" value={content.subTopic}></textarea>
                                 <textarea rows={1} cols={4} onChange={e => handleObjectKeyValueUpdate({keysHierachy: [topicContentUid, "topicData", "content", contentUid, "description"], targetValue: e.target.value})}
                                     className="editor-field w-[540px] mr-8" value={content.description}></textarea>
-                                <button
-                                    onClick={() => handleObjectKeyDelete({keysHierachy: [topicContentUid, "topicData", "content"], keyToDelete: contentUid})}
-                                    className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-auto rounded-[8px] -border -button-hover-red font-bold">
+                                
+                                <button aria-label={`DELETE-CONTENT-CARD-SUBTOPIC ${contentUid}`} onClick={() => {
+                                    setInterfaceParams("currentDeleteButtonRef", `DELETE-CONTENT-CARD-SUBTOPIC ${contentUid}`);
+                                    interfaceParams.currentDeleteButtonRef == `DELETE-CONTENT-CARD-SUBTOPIC ${contentUid}` && handleObjectKeyDelete({keysHierachy: [topicContentUid, "topicData", "content"], keyToDelete: contentUid});
+                                    interfaceParams.currentDeleteButtonRef == `DELETE-CONTENT-CARD-SUBTOPIC ${contentUid}` && setInterfaceParams("currentDeleteButtonRef", "");
+                                }}
+                                    className={`flex flex-row justify-center items-center gap-2 px-2 py-1 ml-auto rounded-xl -border -button-hover-red font-bold ${
+                                        interfaceParams.currentDeleteButtonRef == `DELETE-CONTENT-CARD-SUBTOPIC ${contentUid}` && "color-red"
+                                    }`}>
                                     <Icon icon="trash" size={16} />
-                                    <span className="lg:inline hidden">DELETE</span>
+                                    <span className="font-bold">DELETE CONTENT</span>
                                 </button>
+
                             </div>
                         );
                     });
@@ -437,11 +444,17 @@ export default function EditView ({
                                 <Icon icon={resource.icon} size={16}/>
                                 <textarea rows={1} cols={4} onChange={e => handleObjectKeyValueUpdate({keysHierachy: [topicContentUid, "topicData", "resource", resourceUid, "icon"], targetValue: e.target.value})}
                                     className="editor-field w-40 ml-2 mr-8" value={resource.icon}></textarea>
-                                <button
-                                    onClick={() => handleObjectKeyDelete({keysHierachy: [topicContentUid, "topicData", "resource"], keyToDelete: resourceUid})}
-                                    className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-auto rounded-[8px] -border -button-hover-red font-bold">
+                                
+                                <button aria-label={`DELETE-CONTENT-CARD-RESOURCE ${resourceUid}`} onClick={() => {
+                                    setInterfaceParams("currentDeleteButtonRef", `DELETE-CONTENT-CARD-RESOURCE ${resourceUid}`);
+                                    interfaceParams.currentDeleteButtonRef == `DELETE-CONTENT-CARD-RESOURCE ${resourceUid}` && handleObjectKeyDelete({keysHierachy: [topicContentUid, "topicData", "resource"], keyToDelete: resourceUid});
+                                    interfaceParams.currentDeleteButtonRef == `DELETE-CONTENT-CARD-RESOURCE ${resourceUid}` && setInterfaceParams("currentDeleteButtonRef", "");
+                                }}
+                                    className={`flex flex-row justify-center items-center gap-2 px-2 py-1 ml-auto rounded-xl -border -button-hover-red font-bold ${
+                                        interfaceParams.currentDeleteButtonRef == `DELETE-CONTENT-CARD-RESOURCE ${resourceUid}` && "color-red"
+                                    }`}>
                                     <Icon icon="trash" size={16} />
-                                    <span className="lg:inline hidden">DELETE</span>
+                                    <span className="font-bold">DELETE CONTENT</span>
                                 </button>
                             </div>
                         );
@@ -454,10 +467,16 @@ export default function EditView ({
                                 <ChipTextColor chipText="CONTENT CARD" chipIcon="table" fontWeight={900} chipBackgroundOpacity={0.1} paddingY={4} />
                                 {(lastEditUid === topicContentUid) && <LastEdited />}
                                 <div className="w-full -border-b"></div>
-                                <button onClick={() => handleObjectKeyDelete({keysHierachy: [], keyToDelete: topicContentUid})}
-                                    className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-auto rounded-[8px] -border -button-hover-red font-bold">
+                                <button aria-label={`DELETE-CONTENT-CARD ${topicContentUid}`} onClick={() => {
+                                    setInterfaceParams("currentDeleteButtonRef", `DELETE-CONTENT-CARD ${topicContentUid}`);
+                                    interfaceParams.currentDeleteButtonRef == `DELETE-CONTENT-CARD ${topicContentUid}` && handleObjectKeyDelete({keysHierachy: [], keyToDelete: topicContentUid});
+                                    interfaceParams.currentDeleteButtonRef == `DELETE-CONTENT-CARD ${topicContentUid}` && setInterfaceParams("currentDeleteButtonRef", "");
+                                }}
+                                    className={`flex flex-row justify-center items-center gap-2 px-2 py-1 ml-auto rounded-xl -border -button-hover-red font-bold text-nowrap ${
+                                        interfaceParams.currentDeleteButtonRef == `DELETE-CONTENT-CARD ${topicContentUid}` && "color-red"
+                                    }`}>
                                     <Icon icon="trash" size={16} />
-                                    <span className="text-nowrap">DELETE QUIZ BANNER</span>
+                                    <span className="font-bold">DELETE CONTENT CARD</span>
                                 </button>
                             </div>
                             <div className="px-6 flex flex-col gap-8" key={index}>
@@ -476,7 +495,7 @@ export default function EditView ({
                                                 handleObjectKeyValueUpdate({keysHierachy: [topicContentUid, "topicData", "resource", newUidII, "url"], targetValue: ""})
                                                 handleObjectKeyValueUpdate({keysHierachy: [topicContentUid, "topicData", "resource", newUidII, "icon"], targetValue: ""})
                                             }}
-                                            className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-auto rounded-[8px] -border -button-hover-pri font-bold">
+                                            className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-auto rounded-xl -border -button-hover-pri font-bold">
                                             <Icon icon="add" size={16} />
                                             <span className="lg:inline hidden">RESOURCE</span>
                                         </button>
@@ -497,7 +516,7 @@ export default function EditView ({
                                                 handleObjectKeyValueUpdate({keysHierachy: [topicContentUid, "topicData", "content", newUidII, "subTopic"], targetValue: ""})
                                                 handleObjectKeyValueUpdate({keysHierachy: [topicContentUid, "topicData", "content", newUidII, "description"], targetValue: ""})
                                             }}
-                                            className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-auto rounded-[8px] -border -button-hover-pri font-bold">
+                                            className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-auto rounded-xl -border -button-hover-pri font-bold">
                                             <Icon icon="add" size={16} />
                                             <span className="lg:inline hidden">SUBTOPIC</span>
                                         </button>
@@ -519,17 +538,23 @@ export default function EditView ({
                             <ChipTextColor chipText="QUIZ BANNER" chipIcon="tag" fontWeight={900} chipBackgroundOpacity={0.1} paddingY={4} />
                             {(lastEditUid === topicContentUid) && <LastEdited />}
                             <div className="w-full -border-b"></div>
-                            <button onClick={() => handleObjectKeyDelete({keysHierachy: [], keyToDelete: topicContentUid})}
-                                className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-auto rounded-[8px] -border -button-hover-red font-bold">
-                                <Icon icon="trash" size={16} />
-                                <span className="text-nowrap">DELETE CONTENT CARD</span>
-                            </button>
+                            <button aria-label={`DELETE-QUIZ-BANNER ${topicContentUid}`} onClick={() => {
+                                    setInterfaceParams("currentDeleteButtonRef", `DELETE-QUIZ-BANNER ${topicContentUid}`);
+                                    interfaceParams.currentDeleteButtonRef == `DELETE-QUIZ-BANNER ${topicContentUid}` && handleObjectKeyDelete({keysHierachy: [], keyToDelete: topicContentUid});
+                                    interfaceParams.currentDeleteButtonRef == `DELETE-QUIZ-BANNER ${topicContentUid}` && setInterfaceParams("currentDeleteButtonRef", "");
+                                }}
+                                    className={`flex flex-row justify-center items-center gap-2 px-2 py-1 ml-auto rounded-xl -border -button-hover-red font-bold text-nowrap ${
+                                        interfaceParams.currentDeleteButtonRef == `DELETE-QUIZ-BANNER ${topicContentUid}` && "color-red"
+                                    }`}>
+                                    <Icon icon="trash" size={16} />
+                                    <span className="font-bold">DELETE QUIZ BANNER</span>
+                                </button>
                         </div>
                     );
 
                     elementTopic.quizBanner.push(
                         <button onClick={() => setTopicUidToLinkLibrary(topicContentUid)} key={"Editor_" + index}
-                            className="-hover-bg flex flex-row justify-center items-center gap-2 mx-6 mb-4 px-2 py-2 rounded-[8px] -border -button-hover-pri font-bold">
+                            className="-hover-bg flex flex-row justify-center items-center gap-2 mx-6 mb-4 px-2 py-2 rounded-xl -border -button-hover-pri font-bold">
                             <Icon icon="tool" size={16} />
                             <span className="text-lg text-nowrap">CHOOSE REFERENCE LIBRARY</span>
                         </button>
@@ -575,17 +600,23 @@ export default function EditView ({
                             <ChipTextColor chipText="QUIZ CARD" chipIcon="tag" fontWeight={900} chipBackgroundOpacity={0.1} paddingY={4} />
                             {(lastEditUid === topicContentUid) && <LastEdited />}
                             <div className="w-full -border-b"></div>
-                            <button onClick={() => handleObjectKeyDelete({keysHierachy: [], keyToDelete: topicContentUid})}
-                                className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-auto rounded-[8px] -border -button-hover-red font-bold">
+                            <button aria-label={`DELETE-QUIZ-CARD ${topicContentUid}`} onClick={() => {
+                                setInterfaceParams("currentDeleteButtonRef", `DELETE-QUIZ-CARD ${topicContentUid}`);
+                                interfaceParams.currentDeleteButtonRef == `DELETE-QUIZ-CARD ${topicContentUid}` && handleObjectKeyDelete({keysHierachy: [], keyToDelete: topicContentUid});
+                                interfaceParams.currentDeleteButtonRef == `DELETE-QUIZ-CARD ${topicContentUid}` && setInterfaceParams("currentDeleteButtonRef", "");
+                            }}
+                                className={`flex flex-row justify-center items-center gap-2 px-2 py-1 ml-auto rounded-xl -border -button-hover-red font-bold text-nowrap ${
+                                    interfaceParams.currentDeleteButtonRef == `DELETE-QUIZ-CARD ${topicContentUid}` && "color-red"
+                                }`}>
                                 <Icon icon="trash" size={16} />
-                                <span className="text-nowrap">DELETE QUIZ CARD</span>
+                                <span className="font-bold">DELETE QUIZ CARD</span>
                             </button>
                         </div>
                     );
 
                     elementTopic.quizCard.push(
                         <button onClick={() => setTopicUidToLinkLibrary(topicContentUid)} key={"Editor_" + index}
-                            className="-hover-bg flex flex-row justify-center items-center gap-2 mx-6 mb-4 px-2 py-2 rounded-[8px] -border -button-hover-pri font-bold">
+                            className="-hover-bg flex flex-row justify-center items-center gap-2 mx-6 mb-4 px-2 py-2 rounded-xl -border -button-hover-pri font-bold">
                             <Icon icon="tool" size={16} />
                             <span className="text-lg text-nowrap">CHOOSE REFERENCE LIBRARY</span>
                         </button>

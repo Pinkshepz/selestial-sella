@@ -405,10 +405,16 @@ export default function QuizEditMain_C_FLASHCARD (): React.ReactNode {
                         <Icon icon="copy" size={16} />
                         <span className="font-bold">DUPLICATE</span>
                     </button>
-                    <button onClick={() => handleDeleteCard({cardUid: currentCardUid})}
-                        className="flex flex-row items-center gap-2 px-3 py-2 -border -button-hover-red rounded-xl">
+                    <button aria-label="DELETE-CARD" onClick={() => {
+                        setLocalQuizContextParams("currentDeleteButtonRef", "DELETE-CARD");
+                        localQuizContextParams.currentDeleteButtonRef == "DELETE-CARD" && handleDeleteCard({cardUid: currentCardUid});
+                        localQuizContextParams.currentDeleteButtonRef == "DELETE-CARD" && setLocalQuizContextParams("currentDeleteButtonRef", "");
+                    }}
+                        className={`flex flex-row items-center gap-2 px-3 py-2 -border -button-hover-red rounded-xl ${
+                            localQuizContextParams.currentDeleteButtonRef == "DELETE-CARD" && "color-red"
+                        }`}>
                         <Icon icon="trash" size={16} />
-                        <span className="font-bold">DELETE</span>
+                        <span className="font-bold">DELETE CARD</span>
                     </button>
                 </>
             }

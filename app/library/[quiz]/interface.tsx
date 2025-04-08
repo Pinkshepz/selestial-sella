@@ -55,6 +55,25 @@ export default function Interface ({
         setGlobalParams("isLoading", false);
     }, []);
 
+    // 🖍️ Setup screen size and response to screen resizing
+    // Set state variable for browser screen width
+    const handleResize = () => {
+        setLocalQuizContextParams("screenWidth", window.innerWidth);
+        return;
+    };
+
+    // Initially set screen size
+    useEffect(() => {
+        handleResize();
+        return;
+    }, []);
+
+    // Update screen size when resizing happens
+    useEffect(() => {
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, [handleResize]);
+
     if (Object.keys(localQuizContextParams.logUpdate).length > 0) {
         return (
             <>

@@ -21,7 +21,10 @@ interface LocalQuizContextStructure {
   autosaveToggle: number,
   logUpdate: {},
   sortAscending: boolean,
-  themeToggle: boolean
+  themeToggle: boolean,
+  currentDeleteButtonRef: string,
+  screenWidth: number,
+  asideHidden: boolean
 }
 
 const localQuizContextInitialValue = {
@@ -40,7 +43,10 @@ const localQuizContextInitialValue = {
   autosaveToggle: 5,
   logUpdate: {},
   sortAscending: true,
-  themeToggle: true
+  themeToggle: true,
+  currentDeleteButtonRef: "",
+  screenWidth: 0,
+  asideHidden: true
 };
 
 const LocalQuizContext = createContext<any>({});

@@ -594,10 +594,16 @@ export default function QuizEditMain_C_SELECT (): React.ReactNode {
                     <Icon icon="copy" size={18} />
                     <span className="font-bold">DUPLICATE</span>
                 </button>
-                <button onClick={() => handleDeleteColumn()}
-                    className="flex flex-row items-center gap-2 px-3 py-2 -border -button-hover-red rounded-xl">
-                    <Icon icon="trash" size={18} />
-                    <span className="font-bold">DELETE</span>
+                <button aria-label="DELETE-COLUMN" onClick={() => {
+                    setLocalQuizContextParams("currentDeleteButtonRef", "DELETE-COLUMN");
+                    localQuizContextParams.currentDeleteButtonRef == "DELETE-COLUMN" && handleDeleteColumn();
+                    localQuizContextParams.currentDeleteButtonRef == "DELETE-COLUMN" && setLocalQuizContextParams("currentDeleteButtonRef", "");
+                }}
+                    className={`flex flex-row items-center gap-2 px-3 py-2 -border -button-hover-red rounded-xl ${
+                        localQuizContextParams.currentDeleteButtonRef == "DELETE-COLUMN" && "color-red"
+                    }`}>
+                    <Icon icon="trash" size={16} />
+                    <span className="font-bold">DELETE COLUMN</span>
                 </button>
             </div>
 
@@ -618,9 +624,15 @@ export default function QuizEditMain_C_SELECT (): React.ReactNode {
                     <Icon icon="squares-2x2" size={24} />
                     <p className="font-black text-lg mr-auto">PROPERTY COLLECTION</p>
                     {currentPropertyUid &&
-                        <button onClick={() => handleDeleteProperty()}
-                            className="flex flex-row items-center gap-2 ml-auto px-3 py-2 -border -button-hover-red rounded-xl">
-                            <Icon icon="squares-plus" size={18} />
+                        <button aria-label="DELETE-PROPERTY" onClick={() => {
+                            setLocalQuizContextParams("currentDeleteButtonRef", "DELETE-PROPERTY");
+                            localQuizContextParams.currentDeleteButtonRef == "DELETE-PROPERTY" && handleDeleteProperty();
+                            localQuizContextParams.currentDeleteButtonRef == "DELETE-PROPERTY" && setLocalQuizContextParams("currentDeleteButtonRef", "");
+                        }}
+                            className={`flex flex-row items-center gap-2 px-3 py-2 -border -button-hover-red rounded-xl ${
+                                localQuizContextParams.currentDeleteButtonRef == "DELETE-PROPERTY" && "color-red"
+                            }`}>
+                            <Icon icon="trash" size={16} />
                             <span className="font-bold">DELETE PROPERTY</span>
                         </button>
                     }
@@ -759,9 +771,15 @@ export default function QuizEditMain_C_SELECT (): React.ReactNode {
                     <Icon icon="squares-plus" size={18} />
                     <span className="font-bold">DUPLICATE ROW</span>
                 </button>
-                <button onClick={() => handleDeleteRow()}
-                    className="flex flex-row items-center gap-2 px-3 py-2 -border -button-hover-red rounded-xl">
-                    <Icon icon="squares-plus" size={18} />
+                <button aria-label="DELETE-ROW" onClick={() => {
+                    setLocalQuizContextParams("currentDeleteButtonRef", "DELETE-ROW");
+                    localQuizContextParams.currentDeleteButtonRef == "DELETE-ROW" && handleDeleteRow();
+                    localQuizContextParams.currentDeleteButtonRef == "DELETE-ROW" && setLocalQuizContextParams("currentDeleteButtonRef", "");
+                }}
+                    className={`flex flex-row items-center gap-2 px-3 py-2 -border -button-hover-red rounded-xl ${
+                        localQuizContextParams.currentDeleteButtonRef == "DELETE-ROW" && "color-red"
+                    }`}>
+                    <Icon icon="trash" size={16} />
                     <span className="font-bold">DELETE ROW</span>
                 </button>
             </div>

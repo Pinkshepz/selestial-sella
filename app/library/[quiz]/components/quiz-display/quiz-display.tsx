@@ -35,11 +35,6 @@ import BG from "@/public/images/aurora.png"; // Default background image
 
 
 // =========================================================================
-// 2. GLOBAL CONSTANT VARIABLES AND FUNCTIONS
-// =========================================================================
-
-
-// =========================================================================
 // 3. EXPORT DEFAULT FUNCTION
 // =========================================================================
 
@@ -158,8 +153,22 @@ export default function QuizDisplayInterface ({
 
     return (
         <div className="flex flex-col -smooth-appear">
-            <div id="display-two-cols-fixed" className="-border-t" key="interface">
-                <QuizDisplayAside libraryData={libraryData} questionData={sortedFilteredQuestionData} />
+            <div id="display-two-cols-fixed" className="relative -border-t" key="interface">
+                {localQuizContextParams.screenWidth > 1100
+                    ? localQuizContextParams.asideHidden && <aside aria-label="aside-navigation" key="aside-navigation-large" id="quiz-col-scroll-aside" 
+                        className={`relative w-[320px] flex flex-col -border-r -prevent-select"`}>
+                        <QuizDisplayAside libraryData={libraryData} questionData={sortedFilteredQuestionData} />
+                    </aside>
+
+                    : !localQuizContextParams.asideHidden && <>
+                        <aside aria-label="aside-navigation" key="aside-navigation-large" id="quiz-col-scroll-aside" 
+                            className={`absolute w-[50dvw] flex flex-col z-100 -border-r -prevent-select -smooth-appear backdrop-blur-lg ${globalParams.theme ? "bg-white/90 dark:bg-black/50" : "bg-highlight/90 dark:bg-highlight-dark/80"}`}>
+                            <QuizDisplayAside libraryData={libraryData} questionData={sortedFilteredQuestionData} />
+                        </aside>
+                        <div onClick={() => setLocalQuizContextParams("asideHidden", !localQuizContextParams.asideHidden)} className={`absolute h-full w-full z-[90] cursor-pointer ${globalParams.theme ? "bg-white/[0.95] dark:bg-black/[0.87]" : "bg-highlight/90 dark:bg-highlight-dark/90"}`}></div>
+                    </>
+                    
+                }
                 <main id="quiz-col-scroll-main" className="overflow-y-auto" key="interface-main">
                     {elementsEditQuiz}
                 </main>

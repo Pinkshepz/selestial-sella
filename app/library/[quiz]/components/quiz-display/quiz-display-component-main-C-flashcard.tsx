@@ -131,10 +131,10 @@ export default function QuizDisplayMain_C_CARD (): React.ReactNode {
                 </div>
                 {
                     cardContent.flipped
-                        ? <div aria-label="card-back-text" className="flex flex-col gap-2 max-h-36 mx-4 my-8 px-1 font-black text-xl rounded-xl text-nowrap overflow-x-auto">
+                        ? <div aria-label="card-back-text" className="flex flex-col gap-2 max-h-36 mx-4 my-8 px-1 font-black text-xl rounded-xl overflow-x-auto">
                             {cardContent.cardBackText && <AuricleText inputText={cardContent.cardBackText} />}
                         </div>
-                        : <div aria-label="card-front-text" className="flex flex-col gap-2 max-h-36 mx-4 my-8 px-1 font-black text-xl rounded-xl text-nowrap overflow-x-auto">
+                        : <div aria-label="card-front-text" className="flex flex-col gap-2 max-h-36 mx-4 my-8 px-1 font-black text-xl rounded-xl overflow-x-auto">
                         {cardContent.cardFrontText && <AuricleText inputText={cardContent.cardFrontText} />}
                 </div>
                 }

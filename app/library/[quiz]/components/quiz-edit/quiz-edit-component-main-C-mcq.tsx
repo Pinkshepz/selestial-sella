@@ -419,10 +419,16 @@ export default function QuizEditMain_C_MCQ (): React.ReactNode {
                         <Icon icon="copy" size={16} />
                         <span className="font-bold">DUPLICATE</span>
                     </button>
-                    <button onClick={() => handleDeleteChoice({choiceUid: currentChoiceUid})}
-                        className="flex flex-row items-center gap-2 px-3 py-2 -border -button-hover-red rounded-xl">
+                    <button aria-label="DELETE-CHOICE" onClick={() => {
+                        setLocalQuizContextParams("currentDeleteButtonRef", "DELETE-CHOICE");
+                        localQuizContextParams.currentDeleteButtonRef == "DELETE-CHOICE" && handleDeleteChoice({choiceUid: currentChoiceUid});
+                        localQuizContextParams.currentDeleteButtonRef == "DELETE-CHOICE" && setLocalQuizContextParams("currentDeleteButtonRef", "");
+                    }}
+                        className={`flex flex-row items-center gap-2 px-3 py-2 -border -button-hover-red rounded-xl ${
+                            localQuizContextParams.currentDeleteButtonRef == "DELETE-CHOICE" && "color-red"
+                        }`}>
                         <Icon icon="trash" size={16} />
-                        <span className="font-bold">DELETE</span>
+                        <span className="font-bold">DELETE CHOICE</span>
                     </button>
                 </>
             }

@@ -13,7 +13,8 @@ interface LocalCourseContextStructure {
   addCourseToggle: boolean,
   discardChangesToggle: boolean,
   saveChangesToggle: boolean,
-  logUpdate: {}
+  logUpdate: {},
+  currentDeleteButtonRef: string
 }
 
 const localQuizContextInitialValue = {
@@ -26,7 +27,8 @@ const localQuizContextInitialValue = {
   addCourseToggle: false,
   discardChangesToggle: false,
   saveChangesToggle: false,
-  logUpdate: {}
+  logUpdate: {},
+  currentDeleteButtonRef: ""
 };
 
 const LocalCourseContext = createContext<any>({});

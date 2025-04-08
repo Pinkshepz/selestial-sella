@@ -225,7 +225,7 @@ export default function CourseEditor ({
 
         if (localCourseContextParams.currentCourseUid == courseUid) {
             elementAside.push(
-                <div className="flex flex-row px-2 py-2 gap-2 content-center text-left -hover-bg-active" key={courseUid}>
+                <div className="flex flex-row px-2 py-2 gap-2 items-center text-left -hover-bg-active" key={courseUid}>
                     <TextColor chipText={eachCourseData.id} fontWeight={900} />
                     <span className="font-semibold text-nowrap overflow-hidden">{eachCourseData.name}</span>
                     <span className="ml-auto">{eachCourseData.hidden && <Icon icon="eyeSlash" size={16}/>}</span>
@@ -277,14 +277,19 @@ export default function CourseEditor ({
                             targetValue: e.target.value
                         })}
                             className="editor-field w-96 mr-8" value={sectionTopicAtUid.topicName}></textarea>
-                        <button
-                            onClick={() => handleObjectKeyDelete({
+                        <button aria-label={`DELETE-TOPIC ${sectionTopicUid}`} onClick={() => {
+                            setLocalCourseContextParams("currentDeleteButtonRef", `DELETE-TOPIC ${sectionTopicUid}`);
+                            localCourseContextParams.currentDeleteButtonRef == `DELETE-TOPIC ${sectionTopicUid}` && handleObjectKeyDelete({
                                 keysHierachy: [localCourseContextParams.currentCourseUid, "section", sectionUid, "sectionTopics"],
                                 keyToDelete: sectionTopicUid
-                            })}
-                            className="flex flex-row justify-center items-center gap-2 h-[30px] ml-auto px-2 py-1 ml-4 my-2 rounded-[8px] -border -button-hover-red font-bold">
+                            });
+                            localCourseContextParams.currentDeleteButtonRef == `DELETE-TOPIC ${sectionTopicUid}` && setLocalCourseContextParams("currentDeleteButtonRef", "");
+                        }}
+                            className={`flex flex-row justify-center items-center gap-2 ml-auto px-2 py-1 ml-4 my-2 rounded-xl -border -button-hover-red font-bold ${
+                                localCourseContextParams.currentDeleteButtonRef == `DELETE-TOPIC ${sectionTopicUid}` && "color-red"
+                            }`}>
                             <Icon icon="trash" size={16} />
-                            <span className="lg:inline hidden">TOPIC</span>
+                            <span className="font-bold">DELETE TOPIC</span>
                         </button>
                     </div>
                 );
@@ -317,18 +322,23 @@ export default function CourseEditor ({
                                     });
                                 }
                             }
-                                className="flex flex-row justify-center items-center gap-2 h-[30px] ml-auto px-2 py-1 ml-4 rounded-[8px] -border -button-hover-pri font-bold">
+                                className="flex flex-row justify-center items-center gap-2 ml-auto px-2 py-1 ml-4 rounded-xl -border -button-hover-pri font-bold">
                                 <Icon icon="add" size={16} />
                                 <span className="lg:inline hidden">TOPIC</span>
                             </button>
-                            <button
-                                onClick={() => handleObjectKeyDelete({
+                            <button aria-label={`DELETE-TOPIC ${sectionUid}`} onClick={() => {
+                                setLocalCourseContextParams("currentDeleteButtonRef", `DELETE-TOPIC ${sectionUid}`);
+                                localCourseContextParams.currentDeleteButtonRef == `DELETE-TOPIC ${sectionUid}` && handleObjectKeyDelete({
                                     keysHierachy: [localCourseContextParams.currentCourseUid, "section"],
                                     keyToDelete: sectionUid
-                                })}
-                                className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-4 rounded-[8px] -border -button-hover-red font-bold">
+                                });
+                                localCourseContextParams.currentDeleteButtonRef == `DELETE-TOPIC ${sectionUid}` && setLocalCourseContextParams("currentDeleteButtonRef", "");
+                            }}
+                                className={`flex flex-row justify-center items-center gap-2 px-2 py-1 ml-4 my-2 rounded-xl -border -button-hover-red font-bold ${
+                                    localCourseContextParams.currentDeleteButtonRef == `DELETE-TOPIC ${sectionUid}` && "color-red"
+                                }`}>
                                 <Icon icon="trash" size={16} />
-                                <span className="lg:inline hidden">SECTION</span>
+                                <span className="font-bold">DELETE SECTION</span>
                             </button>
                         </div>
                         <div style={{minWidth: "700px"}} className="flex flex-col">
@@ -359,24 +369,29 @@ export default function CourseEditor ({
                             keysHierachy: [localCourseContextParams.currentCourseUid, "hidden"],
                             targetValue: !content.hidden
                         })}}
-                        className="flex flex-row justify-center items-center gap-2 px-2 py-1 ml-auto rounded-[8px] -border -button-hover-pri font-bold">
+                        className="flex flex-row justify-center items-center gap-2 px-2 py-1 ml-auto rounded-xl -border -button-hover-pri font-bold">
                         <Icon icon={content.hidden ? "eyeSlash" : "eye"} size={16} />
                         <span className="lg:inline hidden">{content.hidden ? "HIDDEN" : "VISIBLE"}</span>
                     </button>
                     <button
                         onClick={() => {handleDuplicateCourse(localCourseContextParams.currentCourseUid)}}
-                        className="flex flex-row justify-center items-center gap-2 px-2 py-1 rounded-[8px] -border -button-hover-amber font-bold">
+                        className="flex flex-row justify-center items-center gap-2 px-2 py-1 rounded-xl -border -button-hover-amber font-bold">
                         <Icon icon="copy" size={16} />
                         <span className="lg:inline hidden">DUPLICATE</span>
                     </button>
-                    <button
-                        onClick={() => handleObjectKeyDelete({
+                    <button aria-label={`DELETE-COURSE ${localCourseContextParams.currentCourseUid}`} onClick={() => {
+                        setLocalCourseContextParams("currentDeleteButtonRef", `DELETE-COURSE ${localCourseContextParams.currentCourseUid}`);
+                        localCourseContextParams.currentDeleteButtonRef == `DELETE-COURSE ${localCourseContextParams.currentCourseUid}` && handleObjectKeyDelete({
                             keysHierachy: [],
                             keyToDelete: localCourseContextParams.currentCourseUid
-                        })}
-                        className="flex flex-row justify-center items-center gap-2 px-2 py-1 rounded-[8px] -border -button-hover-red font-bold">
+                        });
+                        localCourseContextParams.currentDeleteButtonRef == `DELETE-COURSE ${localCourseContextParams.currentCourseUid}` && setLocalCourseContextParams("currentDeleteButtonRef", "");
+                    }}
+                        className={`flex flex-row justify-center items-center gap-2 px-2 py-1 rounded-xl -border -button-hover-amber font-bold ${
+                            localCourseContextParams.currentDeleteButtonRef == `DELETE-COURSE ${localCourseContextParams.currentCourseUid}` && "color-red"
+                        }`}>
                         <Icon icon="trash" size={16} />
-                        <span className="lg:inline hidden">DELETE</span>
+                        <span className="font-bold">DELETE</span>
                     </button>
                 </div>
 
@@ -474,7 +489,7 @@ export default function CourseEditor ({
                         <span className="w-96 mr-8">Section Name</span>
                         <button
                             onClick={() => setSectionSortAscending((prev) => !prev)}
-                            className="flex flex-row justify-center items-center text-nowrap gap-2 px-2 py-1 ml-auto rounded-[8px] -border -button-hover-pri font-bold">
+                            className="flex flex-row justify-center items-center text-nowrap gap-2 px-2 py-1 ml-auto rounded-xl -border -button-hover-pri font-bold">
                             <Icon icon="sort" size={16} />
                             {sectionSortAscending ? "A - Z" : "Z - A"}
                         </button>
@@ -486,7 +501,7 @@ export default function CourseEditor ({
                                     targetValue: objectUidFill(defaultCoruse().section["#UID-1"])
                                 });
                             }}
-                            className="flex flex-row justify-center items-center gap-2 h-[30px] px-2 py-1 ml-4 rounded-[8px] -border -button-hover-pri font-bold">
+                            className="flex flex-row justify-center items-center gap-2 px-2 py-1 ml-4 rounded-xl -border -button-hover-pri font-bold">
                             <Icon icon="add" size={16} />
                             <span className="lg:inline hidden">SECTION</span>
                         </button>

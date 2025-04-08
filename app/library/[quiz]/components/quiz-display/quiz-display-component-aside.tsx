@@ -90,8 +90,9 @@ export default React.memo(function QuizDisplayAside ({
                     setLocalQuizContextParams("currentQuestionUid", eachQuestionUid);
                     setLocalQuizContextParams("currentQuestionUid", eachQuestionUid);
                     setLocalQuizContextParams("currentQuestionModality", localQuizContextParams.bufferQuestion[eachQuestionUid].modality);
+                    (localQuizContextParams.screenWidth <= 1100) && setLocalQuizContextParams("asideHidden", !localQuizContextParams.asideHidden);
                 }}
-                    className="flex flex-row items-center gap-2 w-full px-4 py-2 -border-b -hover-bg-50">
+                    className="flex flex-row items-center gap-2 w-full px-4 py-2 -border-b -hover-bg">
                     <p className={`font-bold text-left color-slate ${(index < 100) ? "min-w-4" : "min-w-8"}`}>{index + 1}</p>
                     <TextColor 
                         textColor={eachQuestionData!.graded
@@ -113,13 +114,13 @@ export default React.memo(function QuizDisplayAside ({
 
     try {
         return (
-            <aside aria-label="aside-navigation" key="aside-navigation" id="quiz-col-scroll-aside" className="relative -border-r -prevent-select">
+            <>
                 <strong className="mx-4 mt-4">{`QUIZ ${libraryData.id}`}</strong>
-                <h1 className="mx-4 max-h-28 overflow-auto">{libraryData.name.toLocaleUpperCase()}</h1>
+                <h2 className={`mx-4 mt-3 h-fit max-h-36 overflow-auto ${(localQuizContextParams.screenWidth <= 1100) && "text-nowrap"}`}>{libraryData.name.toLocaleUpperCase()}</h2>
                 <div className="mt-4 h-full overflow-y-scroll -border-t">
                     {elementQuizAside}
                 </div>
-            </aside>
+            </>
         );
     } catch (error) {null}
 });
