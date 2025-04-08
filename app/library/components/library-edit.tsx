@@ -187,6 +187,7 @@ export default function LibraryEditor ({
                 keysHierachy: [newUid],
                 targetValue: {
                     ...localLibraryContextParams.bufferLibrary[uid],
+                    uid: newUid,
                     id: localLibraryContextParams.bufferLibrary[uid].id + " copy",
                     name: localLibraryContextParams.bufferLibrary[uid].name + " copy",
                 }

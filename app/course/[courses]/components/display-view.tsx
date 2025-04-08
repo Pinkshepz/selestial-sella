@@ -145,7 +145,9 @@ export default function DisplayView ({
 
             let elementTopic: {[key: string]: Array<React.ReactNode>} = {contentCard: [], quizBanner: [], quizCard: []};
 
-            Object.values(filteredTopicContent).map((topicContent) => {
+            Object.keys(filteredTopicContent).map((topicContentUid) => {
+                const topicContent = filteredTopicContent[topicContentUid];
+
                 // Render topic (match topic data from course and topic collection)
                 if (topicContent.topicUid === topicUid) {
 
