@@ -11,7 +11,8 @@ export default interface Library {
     mode: {[key in keyof typeof metadata.questionModality]?: number},
     questionUidOrder: string[],
     allowShuffleQuestion: boolean,
-    allowShuffleChoice: boolean
+    allowShuffleChoice: boolean,
+    bookmark: {[key: string]: string}
 }
 
 export const defaultLibrary = ({newUid}: {newUid: string}): Library => {
@@ -26,6 +27,7 @@ export const defaultLibrary = ({newUid}: {newUid: string}): Library => {
         mode: {},
         questionUidOrder: [],
         allowShuffleQuestion: false,
-        allowShuffleChoice: false
+        allowShuffleChoice: false,
+        bookmark: {}
     });
 }

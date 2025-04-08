@@ -26,7 +26,7 @@ import { UnformattedAuricleText } from "@/app/utility/components/auricleText";
 import { stringToRgb } from "@/app/utility/function/color/string-to-rgb";
 
 //// 1.5 Public and others
-//// N/A
+import Icon from "@/public/icon";
 
 
 // =========================================================================
@@ -65,47 +65,62 @@ export default React.memo(function QuizDisplayAside ({
     let elementQuizAside: React.ReactNode[] = [];
 
     const alllQuestionUid = localQuizContextParams.bufferLibrary.questionUidOrder as string[];
-    
-    alllQuestionUid.filter(value => Object.keys(questionData).includes(value)).map((eachQuestionUid, index) => {
-        const eachQuestionData = questionData[eachQuestionUid].questionData[questionData[eachQuestionUid].modality] as UniversalQuestionModality_Action;
 
-        if (eachQuestionUid === localQuizContextParams.currentQuestionUid) {
+    alllQuestionUid.map((eachQuestionUid, index) => {
+        // Catch for bookmark uid first
+        if (eachQuestionUid.startsWith("《")) {
             elementQuizAside.push(
                 <div key={eachQuestionUid}
-                    className="flex flex-row items-center gap-2 w-full px-4 py-2 -border-b -hover-bg-active">
+                    className="flex flex-row items-center gap-2 w-full p-4 -border-y -hover-bg-active-half -prevent-select">
                     <p className={`font-bold text-left color-slate ${(index < 100) ? "min-w-4" : "min-w-8"}`}>{index + 1}</p>
-                    <TextColor 
-                        textColor={eachQuestionData!.graded
-                            ? stringToRgb(metadata.questionModality[questionData[eachQuestionUid].modality].iconColorCode, globalParams.theme)
-                            : {r: 128, g: 128, b: 128}}
-                        chipIcon={metadata.questionModality[questionData[eachQuestionUid].modality].icon} />
-                    <div className="font-bold whitespace-nowrap overflow-hidden">
-                        <UnformattedAuricleText inputText={eachQuestionData!.questionText} />
+                    <span className="mx-2 color-pri"><Icon icon="cube" size={16} /></span>
+                    <div className="font-black color-pri">
+                        {localQuizContextParams.bufferLibrary.bookmark[eachQuestionUid].toLocaleUpperCase()}
                     </div>
                 </div>
             );
-        } else {
-            elementQuizAside.push(
-                <button key={eachQuestionUid} onClick={() => {
-                    setLocalQuizContextParams("currentQuestionUid", eachQuestionUid);
-                    setLocalQuizContextParams("currentQuestionUid", eachQuestionUid);
-                    setLocalQuizContextParams("currentQuestionModality", localQuizContextParams.bufferQuestion[eachQuestionUid].modality);
-                    (localQuizContextParams.screenWidth <= 1100) && setLocalQuizContextParams("asideHidden", !localQuizContextParams.asideHidden);
-                }}
-                    className="flex flex-row items-center gap-2 w-full px-4 py-2 -border-b -hover-bg">
-                    <p className={`font-bold text-left color-slate ${(index < 100) ? "min-w-4" : "min-w-8"}`}>{index + 1}</p>
-                    <TextColor 
-                        textColor={eachQuestionData!.graded
-                            ? stringToRgb(metadata.questionModality[questionData[eachQuestionUid].modality].iconColorCode, globalParams.theme)
-                            : {r: 128, g: 128, b: 128}}
-                        chipIcon={metadata.questionModality[questionData[eachQuestionUid].modality].icon} />
-                    <div className="font-bold whitespace-nowrap overflow-hidden">
-                        <UnformattedAuricleText inputText={eachQuestionData!.questionText} />
+        } else if (Object.keys(questionData).includes(eachQuestionUid)) {
+            const eachQuestionData = questionData[eachQuestionUid].questionData[questionData[eachQuestionUid].modality] as UniversalQuestionModality_Action;
+        
+            if (eachQuestionUid === localQuizContextParams.currentQuestionUid) {
+                elementQuizAside.push(
+                    <div key={eachQuestionUid}
+                        className="flex flex-row items-center gap-2 w-full px-4 py-2 -border-b-half -hover-bg-active -prevent-select">
+                        <p className={`font-bold text-left color-slate ${(index < 100) ? "min-w-4" : "min-w-8"}`}>{index + 1}</p>
+                        <TextColor 
+                            textColor={eachQuestionData!.graded
+                                ? stringToRgb(metadata.questionModality[questionData[eachQuestionUid].modality].iconColorCode, globalParams.theme)
+                                : {r: 128, g: 128, b: 128}}
+                            chipIcon={metadata.questionModality[questionData[eachQuestionUid].modality].icon} />
+                        <div className="font-bold whitespace-nowrap overflow-hidden">
+                            <UnformattedAuricleText inputText={eachQuestionData!.questionText} />
+                        </div>
                     </div>
-                </button>
-            );
+                );
+            } else {
+                elementQuizAside.push(
+                    <button key={eachQuestionUid} onClick={() => {
+                        setLocalQuizContextParams("currentQuestionUid", eachQuestionUid);
+                        setLocalQuizContextParams("currentQuestionUid", eachQuestionUid);
+                        setLocalQuizContextParams("currentQuestionModality", localQuizContextParams.bufferQuestion[eachQuestionUid].modality);
+                        (localQuizContextParams.screenWidth <= 1100) && setLocalQuizContextParams("asideHidden", !localQuizContextParams.asideHidden);
+                    }}
+                        className="flex flex-row items-center gap-2 w-full px-4 py-2 -border-b-half -hover-bg -prevent-select">
+                        <p className={`font-bold text-left color-slate ${(index < 100) ? "min-w-4" : "min-w-8"}`}>{index + 1}</p>
+                        <TextColor 
+                            textColor={eachQuestionData!.graded
+                                ? stringToRgb(metadata.questionModality[questionData[eachQuestionUid].modality].iconColorCode, globalParams.theme)
+                                : {r: 128, g: 128, b: 128}}
+                            chipIcon={metadata.questionModality[questionData[eachQuestionUid].modality].icon} />
+                        <div className="font-bold whitespace-nowrap overflow-hidden">
+                            <UnformattedAuricleText inputText={eachQuestionData!.questionText} />
+                        </div>
+                    </button>
+                );
+            }
         }
     });
+    
 
     
     //// -------------------------------------------------------------------------
@@ -115,8 +130,8 @@ export default React.memo(function QuizDisplayAside ({
     try {
         return (
             <>
-                <strong className="mx-4 mt-4">{`QUIZ ${libraryData.id}`}</strong>
-                <h2 className={`mx-4 mt-3 h-fit max-h-36 overflow-auto ${(localQuizContextParams.screenWidth <= 1100) && "text-nowrap"}`}>{libraryData.name.toLocaleUpperCase()}</h2>
+                <strong className="mx-4 mt-4 -prevent-select">{`QUIZ ${libraryData.id}`}</strong>
+                <h2 className={`mx-4 mt-3 h-fit max-h-36 overflow-auto -prevent-select ${(localQuizContextParams.screenWidth <= 1100) && "text-nowrap"}`}>{libraryData.name.toLocaleUpperCase()}</h2>
                 <div className="mt-4 h-full overflow-y-scroll -border-t">
                     {elementQuizAside}
                 </div>

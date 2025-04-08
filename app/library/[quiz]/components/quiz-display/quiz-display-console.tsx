@@ -47,16 +47,28 @@ export default function ConsoleDisplay (): React.ReactNode {
     });
 
     // IV. Function to handle move question
-    const handleQuestionChange = (direction: 1 | -1) => {
+    const handleQuestionChange = (direction: number) => {
+        if (direction === 0) {return}
+
         const currentIndex: number = arrayIndexOf<string>({
             array: localQuizContextParams.bufferLibrary.questionUidOrder,
             targetValue: localQuizContextParams.currentQuestionUid
         });
+
+        const l = localQuizContextParams.bufferLibrary.questionUidOrder.legth;
         const newQuestionUid = localQuizContextParams.bufferLibrary.questionUidOrder[(currentIndex + direction) % localQuizContextParams.bufferLibrary.questionUidOrder.length];
         
+        // Lower limit
+        if ((direction < 0) && (Math.abs(direction) > currentIndex)) {return}
+        
+        // Upper limit
+        if ((direction > 0) && (direction > (l - 1 - currentIndex))) {return}
+
         // Change to new modality
-        setLocalQuizContextParams("currentQuestionUid", newQuestionUid);
-        setLocalQuizContextParams("currentQuestionModality", localQuizContextParams.bufferQuestion[newQuestionUid].modality);
+        if (Object.keys(localQuizContextParams.bufferQuestion).includes(newQuestionUid)) {
+            setLocalQuizContextParams("currentQuestionUid", newQuestionUid);
+            setLocalQuizContextParams("currentQuestionModality", localQuizContextParams.bufferQuestion[newQuestionUid].modality);
+        } else {handleQuestionChange(direction + direction)}
     }
 
     // V. Function to handle move question

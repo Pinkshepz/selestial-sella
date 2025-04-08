@@ -83,9 +83,14 @@ export default function QuizDisplayInterface ({
     }, []);
 
     ////// B.III Go to the first question
+    ////// If go to bookmark -> skip -> fint out next question instead
     useEffect(() => {
-        setLocalQuizContextParams("currentQuestionUid", libraryData.questionUidOrder[0]);
-        setLocalQuizContextParams("currentQuestionModality", questionData[libraryData.questionUidOrder[0]].modality);
+        for (let i = 0; i < 100; i++) {
+            try {
+                setLocalQuizContextParams("currentQuestionUid", libraryData.questionUidOrder[i]);
+                setLocalQuizContextParams("currentQuestionModality", questionData[libraryData.questionUidOrder[i]].modality);
+                break;
+            } catch (error) {null}}
     }, []);
 
     ////// B.IV useEffect to discard changes
@@ -130,8 +135,6 @@ export default function QuizDisplayInterface ({
     let elementsEditQuiz: React.ReactNode = <></>;
 
     if (Object.keys(sortedFilteredQuestionData).includes(localQuizContextParams.currentQuestionUid)) {
-        // Get current question data
-        const currentQuestion = sortedFilteredQuestionData[localQuizContextParams.currentQuestionUid];
         // Assemble each sub-components
         elementsEditQuiz = <section aria-label="main-quiz-edit" className="flex flex-col h-full">
             <div className="h-16">

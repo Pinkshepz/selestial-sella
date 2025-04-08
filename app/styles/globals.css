@@ -481,6 +481,13 @@ button {
   color: var(--pri);
 }
 
+.-button-hover-teal:hover {
+  background-color: var(--bg-hover);
+  transition: all ease-in-out 200ms;
+  border: solid 1px var(--teal);
+  color: var(--teal);
+}
+
 .-hover-bg:hover {
   background-color: var(--bg-hover);
   transition: all ease-in-out 200ms;

@@ -23,6 +23,7 @@ import { UnformattedAuricleText } from "@/app/utility/components/auricleText";
 
 //// 1.4 Utility functions
 import { stringToRgb } from "@/app/utility/function/color/string-to-rgb";
+import Icon from "@/public/icon";
 
 //// 1.5 Public and others
 //// N/A
@@ -72,38 +73,56 @@ export default React.memo(function QuizEditAside ({
 
     const alllQuestionUid = localQuizContextParams.bufferLibrary.questionUidOrder as string[];
     
-    alllQuestionUid.filter(value => Object.keys(questionData).includes(value)).map((eachQuestionUid, index) => {
-        const eachQuestionData = questionData[eachQuestionUid].questionData[questionData[eachQuestionUid].modality];
-
-        if (eachQuestionUid === localQuizContextParams.currentQuestionUid) {
-            elementQuizAside.push(
-                <div key={eachQuestionUid}
-                    className="flex flex-row items-center gap-2 w-full px-4 py-2 -border-b -hover-bg-active">
-                    <p className={`font-bold text-left color-slate ${(index < 100) ? "min-w-4" : "min-w-8"}`}>{index + 1}</p>
-                    <TextColor 
-                        textColor={stringToRgb(metadata.questionModality[questionData[eachQuestionUid].modality].iconColorCode, globalParams.theme)} 
-                        chipIcon={metadata.questionModality[questionData[eachQuestionUid].modality].icon} />
-                    <div className="font-bold whitespace-nowrap overflow-hidden">
-                        <UnformattedAuricleText inputText={eachQuestionData!.questionText} />
-                    </div>
-                </div>
-            );
-        } else {
+    alllQuestionUid.map((eachQuestionUid, index) => {
+        // Catch for bookmark uid first
+        if (eachQuestionUid.startsWith("《")) {
             elementQuizAside.push(
                 <button key={eachQuestionUid} onClick={() => {
                     setLocalQuizContextParams("currentQuestionUid", eachQuestionUid);
-                    setLocalQuizContextParams("currentQuestionModality", localQuizContextParams.bufferQuestion[eachQuestionUid].modality);
+                    setLocalQuizContextParams("currentQuestionModality", "");
                 }}
                     className="flex flex-row items-center gap-2 w-full px-4 py-2 -border-b -hover-bg">
                     <p className={`font-bold text-left color-slate ${(index < 100) ? "min-w-4" : "min-w-8"}`}>{index + 1}</p>
-                    <TextColor 
-                        textColor={stringToRgb(metadata.questionModality[questionData[eachQuestionUid].modality].iconColorCode, globalParams.theme)} 
-                        chipIcon={metadata.questionModality[questionData[eachQuestionUid].modality].icon} />
-                    <div className="font-bold whitespace-nowrap overflow-hidden">
-                        <UnformattedAuricleText inputText={eachQuestionData!.questionText} />
+                    <span className="mx-2 color-slate"><Icon icon="cube" size={16} /></span>
+                    <div className="font-bold color-slate">
+                        {localQuizContextParams.bufferLibrary.bookmark[eachQuestionUid].toLocaleUpperCase()}
                     </div>
                 </button>
             );
+        } else if (Object.keys(questionData).includes(eachQuestionUid)) {
+            // Manage typical question uid and filter that uid from both library and course are corresponded
+            const eachQuestionData = questionData[eachQuestionUid].questionData[questionData[eachQuestionUid].modality];
+    
+            if (eachQuestionUid === localQuizContextParams.currentQuestionUid) {
+                elementQuizAside.push(
+                    <div key={eachQuestionUid}
+                        className="flex flex-row items-center gap-2 w-full px-4 py-2 -border-b -hover-bg-active">
+                        <p className={`font-bold text-left color-slate ${(index < 100) ? "min-w-4" : "min-w-8"}`}>{index + 1}</p>
+                        <TextColor 
+                            textColor={stringToRgb(metadata.questionModality[questionData[eachQuestionUid].modality].iconColorCode, globalParams.theme)} 
+                            chipIcon={metadata.questionModality[questionData[eachQuestionUid].modality].icon} />
+                        <div className="font-bold whitespace-nowrap overflow-hidden">
+                            <UnformattedAuricleText inputText={eachQuestionData!.questionText} />
+                        </div>
+                    </div>
+                );
+            } else {
+                elementQuizAside.push(
+                    <button key={eachQuestionUid} onClick={() => {
+                        setLocalQuizContextParams("currentQuestionUid", eachQuestionUid);
+                        setLocalQuizContextParams("currentQuestionModality", localQuizContextParams.bufferQuestion[eachQuestionUid].modality);
+                    }}
+                        className="flex flex-row items-center gap-2 w-full px-4 py-2 -border-b -hover-bg">
+                        <p className={`font-bold text-left color-slate ${(index < 100) ? "min-w-4" : "min-w-8"}`}>{index + 1}</p>
+                        <TextColor 
+                            textColor={stringToRgb(metadata.questionModality[questionData[eachQuestionUid].modality].iconColorCode, globalParams.theme)} 
+                            chipIcon={metadata.questionModality[questionData[eachQuestionUid].modality].icon} />
+                        <div className="font-bold whitespace-nowrap overflow-hidden">
+                            <UnformattedAuricleText inputText={eachQuestionData!.questionText} />
+                        </div>
+                    </button>
+                );
+            }
         }
     });
 

@@ -23,6 +23,7 @@ import Question from "@/app/utility/interface/interface-quiz";
 import QuizEditAside from "./quiz-edit-component-aside";
 import QuizEditMain_A_Modality from "./quiz-edit-component-main-A-modality";
 import QuizEditMain_B_Header from "./quiz-edit-component-main-B-header";
+import QuizEditMain_B_Bookmark from "./quiz-edit-component-main-B-bookmark";
 import QuizEditMain_C_MCQ from "./quiz-edit-component-main-C-mcq";
 import QuizEditMain_C_FLASHCARD from "./quiz-edit-component-main-C-flashcard";
 import QuizEditMain_C_SELECT from "./quiz-edit-component-main-C-select";
@@ -35,6 +36,7 @@ import sortUidObjectByValue from "@/app/utility/function/object/sort-uid-object-
 //// 1.5 Public and others
 import Icon from "@/public/icon";
 import BG from "@/public/images/aurora.png"; // Default background image
+import QuizEditMain_A_Bookmark from "./quiz-edit-component-main-A-bookmark";
 
 
 // =========================================================================
@@ -180,8 +182,17 @@ export default function QuizEditorInterface ({
 
     ////// C.III Render main editing interface
     let elementsEditQuiz: React.ReactNode = <></>;
-
-    if (Object.keys(sortedFilteredQuestionData).includes(localQuizContextParams.currentQuestionUid)) {
+    if (localQuizContextParams.currentQuestionUid.startsWith("《")) {
+        // Assemble each sub-components
+        elementsEditQuiz = <section aria-label="main-quiz-edit" className="flex flex-col h-full">
+            <div className="h-16">
+                <QuizEditMain_A_Bookmark />
+            </div>
+            <div className="h-full overflow-y-auto">
+                <QuizEditMain_B_Bookmark />
+            </div>
+        </section>;
+    } else if (Object.keys(sortedFilteredQuestionData).includes(localQuizContextParams.currentQuestionUid)) {
         try {
             // Get current question data
             const currentQuestion = sortedFilteredQuestionData[localQuizContextParams.currentQuestionUid];
@@ -189,7 +200,7 @@ export default function QuizEditorInterface ({
             // Assemble each sub-components
             elementsEditQuiz = <section aria-label="main-quiz-edit" className="flex flex-col h-full">
                 <div className="h-16">
-                    <QuizEditMain_A_Modality libraryData={libraryData} questionDatum={currentQuestion}/>
+                    <QuizEditMain_A_Modality questionDatum={currentQuestion}/>
                 </div>
                 <div className="h-full overflow-y-auto">
                     <QuizEditMain_B_Header />
@@ -201,8 +212,7 @@ export default function QuizEditorInterface ({
         } catch (error) {
             elementsEditQuiz = <ChooseQuizToEdit />;
         }
-    }
-    else elementsEditQuiz = <ChooseQuizToEdit />;
+    } else elementsEditQuiz = <ChooseQuizToEdit />;
 
     //// -------------------------------------------------------------------------
     //// D. RETURN FINAL COMPONENT

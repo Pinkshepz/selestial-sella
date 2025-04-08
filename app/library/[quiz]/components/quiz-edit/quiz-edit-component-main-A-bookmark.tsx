@@ -36,6 +36,7 @@ import objectUidFill from "@/app/utility/function/object/object-uid-fill";
 import Icon from "@/public/icon";
 import arrayIndexOf from "@/app/utility/function/array/array-index-of";
 import makeid from "@/app/utility/function/make-id";
+import objectKeyDelete from "@/app/utility/function/object/object-dynamic-delete";
 
 
 // =========================================================================
@@ -49,11 +50,7 @@ const questionModalities = Object.keys(metadata.questionModality) as unknown as 
 // 3. EXPORT DEFAULT FUNCTION
 // =========================================================================
 
-export default function QuizEditMain_A_Modality ({
-    questionDatum
-}: {
-    questionDatum: Question, // Individual question data
-}): React.ReactNode {
+export default function QuizEditMain_A_Bookmark (): React.ReactNode {
 
     //// -------------------------------------------------------------------------
     //// A. LOCAL CONSTANTS & CONSTANT-RELATED REACT HOOKS
@@ -70,94 +67,27 @@ export default function QuizEditMain_A_Modality ({
     //// -------------------------------------------------------------------------
 
     ////// -------------------------------------------------------------------------
-    ////// QUESTION FX.
-
-    ////// B.III Function to handle duplicate question
-    const handleDuplicateQuestion = (): void => {
-        if (Object.keys(localQuizContextParams.bufferQuestion).length < metadata.entityLimit.question) {
-            // Duplicate question
-            const processedBufferQuestion = processDuplicateQuestion({
-                bufferQuestion: localQuizContextParams.bufferQuestion,
-                questionUid: localQuizContextParams.currentQuestionUid
-            });
-            setLocalQuizContextParams("bufferQuestion", processedBufferQuestion.newBufferQuestion);
-            
-            // Insert new question uid to library uid array
-            setLocalQuizContextParams("bufferLibrary", processInsertArrayDataString({
-                object: localQuizContextParams.bufferLibrary,
-                keysHierachyToTargetObjectUidSequenceArray: ["questionUidOrder"],
-                targetValueToInsert: processedBufferQuestion.newQuestionUid,
-                insertPosition: arrayIndexOf({
-                    array: localQuizContextParams.bufferLibrary.questionUidOrder,
-                    targetValue: localQuizContextParams.currentQuestionUid
-                }) + 1
-            }));
-            
-            // Set current question Uid
-            setLocalQuizContextParams("currentQuestionUid", processedBufferQuestion.newQuestionUid);
-        } else {
-            setGlobalParams("popUp", true);
-            setGlobalParams("popUpAction", "⟨EXCEPTION⟩: entity limit");
-            setGlobalParams("popUpText", `Total questions exceeds limit at ${metadata.entityLimit.question} questions per library`);
-        }
-    }
+    ////// BOOKMARK FX.
 
     ////// B.IV Function to handle delete question
-    const handleDeleteQuestion = (): void => {
-        // Delete question
-        setLocalQuizContextParams("bufferQuestion", processDeleteQuestion({
-            bufferQuestion: localQuizContextParams.bufferQuestion,
-            questionUid: localQuizContextParams.currentQuestionUid
-        }));
-
+    const handleDeleteBookmark = (): void => {
         // Delete question uid from library uid array
-        setLocalQuizContextParams("bufferLibrary", processDeleteArrayDataString({
-            object: localQuizContextParams.bufferLibrary,
-            keysHierachyToTargetObjectUidSequenceArray: ["questionUidOrder"],
-            targetValueToDelete: localQuizContextParams.currentQuestionUid
+        setLocalQuizContextParams("bufferLibrary", objectKeyDelete({
+            object: processDeleteArrayDataString({
+                object: localQuizContextParams.bufferLibrary,
+                keysHierachyToTargetObjectUidSequenceArray: ["questionUidOrder"],
+                targetValueToDelete: localQuizContextParams.currentQuestionUid
+            }),
+            keysHierachy: ["bookmark"],
+            keyToDelete: localQuizContextParams.currentQuestionUid
         }));
 
         // Reset current question Uid
         setLocalQuizContextParams("currentQuestionUid", "");
     }
 
-    ////// B.V Function to toggle question modality
-    const handleQuestionModalityToggle = (): void => {
-        const currentIndex: number = arrayIndexOf<typeof questionModalities[number]>({
-            array: questionModalities,
-            targetValue: localQuizContextParams.currentQuestionModality
-        });
-        const newModality = questionModalities[(currentIndex + 1) % questionModalities.length] as typeof questionModalities[number];
-        
-        // Change to new modality
-        let updatedBufferQuestion = objectKeyValueUpdate<typeof localQuizContextParams.bufferQuestion>({
-            object: localQuizContextParams.bufferQuestion,
-            keysHierachy: [localQuizContextParams.currentQuestionUid, "modality"],
-            targetValue: newModality
-        });
-
-        // Add new modality's questionData if it is not already existed
-        if (!Object.keys(objectKeyRetrieve({
-            object: localQuizContextParams.bufferQuestion,
-            keysHierachy: [localQuizContextParams.currentQuestionUid, "questionData"]
-        })).includes(newModality)) {
-            setLocalQuizContextParams("bufferQuestion",
-                objectKeyValueUpdate<typeof updatedBufferQuestion>({
-                    object: updatedBufferQuestion,
-                    keysHierachy: [localQuizContextParams.currentQuestionUid, "questionData", newModality],
-                    targetValue: objectUidFill(metadata.questionModality[newModality].questionDataFormat)
-                })
-            )
-        } else {
-            setLocalQuizContextParams("bufferQuestion", updatedBufferQuestion);
-        }
-
-        setLocalQuizContextParams("currentQuestionModality", newModality);
-        return;
-    };
-
     ////// B.VI Function to move question number up
-    const handleMoveUpQuestionNumber = (): void => {
+    const handleMoveUpBookmarkNumber = (): void => {
         setLocalQuizContextParams("bufferLibrary", processSwapArrayDataString({
             object: localQuizContextParams.bufferLibrary,
             keysHierachyToTargetObjectUidSequenceArray: ["questionUidOrder"],
@@ -167,7 +97,7 @@ export default function QuizEditMain_A_Modality ({
     }
 
     ////// B.VII Function to move question number down
-    const handleMoveDownQuestionNumber = (): void => {
+    const handleMoveDownBookmarkNumber = (): void => {
         setLocalQuizContextParams("bufferLibrary", processSwapArrayDataString({
             object: localQuizContextParams.bufferLibrary,
             keysHierachyToTargetObjectUidSequenceArray: ["questionUidOrder"],
@@ -206,11 +136,11 @@ export default function QuizEditMain_A_Modality ({
     }) + 1;
     const totalQuestionCount = localQuizContextParams.bufferLibrary.questionUidOrder.length;
 
-    const ModalityInterfaceMoveQuestion = () => {
+    const ModalityInterfaceMoveBookmark = () => {
         return <div aria-label="main-A-modality-move-question" key="main-A-modality-move-question"
             className="h-16 flex flex-row items-center p-2 -border-r">
             {(questionNumber > 1)
-                ? <button onClick={() => handleMoveUpQuestionNumber()} className="p-2 -hover-bg rounded-full">
+                ? <button onClick={() => handleMoveUpBookmarkNumber()} className="p-2 -hover-bg rounded-full">
                     <Icon icon="up" size={20} />
                 </button>
                 : <div className="p-2 rounded-full color-slate">
@@ -219,7 +149,7 @@ export default function QuizEditMain_A_Modality ({
             }
             <span className="font-black text-3xl text-center min-w-16 px-2">{questionNumber}</span>
             {(questionNumber < totalQuestionCount)
-                ? <button onClick={() => handleMoveDownQuestionNumber()} className="p-2 -hover-bg rounded-full">
+                ? <button onClick={() => handleMoveDownBookmarkNumber()} className="p-2 -hover-bg rounded-full">
                     <Icon icon="down" size={20} />
                 </button>
                 : <div className="p-2 rounded-full color-slate">
@@ -227,25 +157,6 @@ export default function QuizEditMain_A_Modality ({
                 </div>
             }
         </div>
-    }
-
-    const ModalityInterfaceChangeModality = () => {
-        return <div aria-label="main-A-modality-change-modality" key="main-A-modality-change-modality"
-            className="h-16 flex flex-row items-center p-3 -border-r">
-            <button onClick={() => handleQuestionModalityToggle()}
-                className="flex flex-row items-center gap-2 px-3 py-1 -border -hover-bg rounded-full">
-                <TextColor
-                    textColor={stringToRgb(metadata.questionModality[questionDatum.modality].iconColorCode, globalParams.theme)}
-                    chipIcon={metadata.questionModality[questionDatum.modality].icon} />
-                <span className="font-bold">{questionDatum.modality}</span>
-            </button>
-        </div>
-    }
-
-    const ModalityInterfaceStatusTab = () => {
-
-        return <>
-        </>
     }
 
     const ModalityInterfaceButtons = () => {
@@ -257,18 +168,13 @@ export default function QuizEditMain_A_Modality ({
                 <Icon icon="cube" size={16} />
                 <span className="font-bold">ADD BOOKMARK</span>
             </button>
-            <button onClick={() => handleDuplicateQuestion()}
-                className="flex flex-row items-center gap-2 px-3 py-1 -border -button-hover-amber rounded-full">
-                <Icon icon="copy" size={16} />
-                <span className="font-bold">DUPLICATE</span>
-            </button>
-            <button aria-label="DELETE-QUESTION" onClick={() => {
-                setLocalQuizContextParams("currentDeleteButtonRef", "DELETE-QUESTION");
-                localQuizContextParams.currentDeleteButtonRef == "DELETE-QUESTION" && handleDeleteQuestion();
-                localQuizContextParams.currentDeleteButtonRef == "DELETE-QUESTION" && setLocalQuizContextParams("currentDeleteButtonRef", "");
+            <button aria-label="DELETE-BOOKMARK" onClick={() => {
+                setLocalQuizContextParams("currentDeleteButtonRef", "DELETE-BOOKMARK");
+                localQuizContextParams.currentDeleteButtonRef == "DELETE-BOOKMARK" && handleDeleteBookmark();
+                localQuizContextParams.currentDeleteButtonRef == "DELETE-BOOKMARK" && setLocalQuizContextParams("currentDeleteButtonRef", "");
             }}
                 className={`flex flex-row items-center gap-2 px-3 py-1 -border -button-hover-red rounded-full ${
-                    localQuizContextParams.currentDeleteButtonRef == "DELETE-QUESTION" && "color-red"
+                    localQuizContextParams.currentDeleteButtonRef == "DELETE-BOOKMARK" && "color-red"
                 }`}>
                 <Icon icon="trash" size={16} />
                 <span className="font-bold">DELETE</span>
@@ -284,9 +190,7 @@ export default function QuizEditMain_A_Modality ({
     return (
         <article aria-label="main-A-modality" key="main-A-modality" 
             className="min-h-16 flex flex-row items-center -border-b text-nowrap overflow-x-auto -hover-bg-active -prevent-select">
-            <ModalityInterfaceMoveQuestion />
-            <ModalityInterfaceChangeModality />
-            <ModalityInterfaceStatusTab />
+            <ModalityInterfaceMoveBookmark />
             <ModalityInterfaceButtons />
         </article>
     );
