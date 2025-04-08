@@ -74,7 +74,7 @@ export default React.memo(function QuizDisplayAside ({
                     className="flex flex-row items-center gap-2 w-full p-4 -border-y -hover-bg-active-half -prevent-select">
                     <p className={`font-bold text-left color-slate ${(index < 100) ? "min-w-4" : "min-w-8"}`}>{index + 1}</p>
                     <span className="mx-2 color-pri"><Icon icon="cube" size={16} /></span>
-                    <div className="font-black color-pri">
+                    <div className="font-black color-pri text-nowrap overflow-hidden">
                         {localQuizContextParams.bufferLibrary.bookmark[eachQuestionUid].toLocaleUpperCase()}
                     </div>
                 </div>
@@ -92,7 +92,7 @@ export default React.memo(function QuizDisplayAside ({
                                 ? stringToRgb(metadata.questionModality[questionData[eachQuestionUid].modality].iconColorCode, globalParams.theme)
                                 : {r: 128, g: 128, b: 128}}
                             chipIcon={metadata.questionModality[questionData[eachQuestionUid].modality].icon} />
-                        <div className="font-bold whitespace-nowrap overflow-hidden">
+                        <div className="font-bold text-nowrap overflow-hidden">
                             <UnformattedAuricleText inputText={eachQuestionData!.questionText} />
                         </div>
                     </div>
@@ -112,7 +112,7 @@ export default React.memo(function QuizDisplayAside ({
                                 ? stringToRgb(metadata.questionModality[questionData[eachQuestionUid].modality].iconColorCode, globalParams.theme)
                                 : {r: 128, g: 128, b: 128}}
                             chipIcon={metadata.questionModality[questionData[eachQuestionUid].modality].icon} />
-                        <div className="font-bold whitespace-nowrap overflow-hidden">
+                        <div className="font-bold text-nowrap overflow-hidden">
                             <UnformattedAuricleText inputText={eachQuestionData!.questionText} />
                         </div>
                     </button>

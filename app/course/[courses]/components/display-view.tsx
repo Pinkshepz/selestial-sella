@@ -105,7 +105,7 @@ export default function DisplayView ({
 
             elementAsideSectionTopic.push(
                 <button onClick={() => scrollToRef(topicUid)}
-                    className="-smooth-appear flex flex-row px-2 py-2 gap-2 section-center text-left -hover-bg" key={"Aside_" + topicUid}>
+                    className="-smooth-appear -prevent-select flex flex-row px-2 py-2 gap-2 section-center text-left -hover-bg" key={"Aside_" + topicUid}>
                     <TextColor chipText={topic.topicId} fontWeight={900} textColor={stringToRgb(section.sectionId, globalParams.theme)} />
                     <span className="font-semibold text-nowrap overflow-hidden">{topic.topicName}</span>
                 </button>
@@ -113,7 +113,7 @@ export default function DisplayView ({
         });
 
         elementAsideSection.push(
-            <div className="-smooth-appear flex flex-col mb-4" key={"Aside_" + sectionUid}>
+            <div className="-smooth-appear -prevent-select flex flex-col mb-4" key={"Aside_" + sectionUid}>
                 <button onClick={() => scrollToRef(sectionUid)}
                     className="flex flex-row px-2 py-2 gap-2 section-center text-left bg-black/5 dark:bg-white/5 -hover-bg">
                     <ChipTextColor chipText={section.sectionId} fontWeight={900} textColor={stringToRgb(section.sectionId, globalParams.theme)} />
@@ -305,9 +305,9 @@ export default function DisplayView ({
     return (
         <div>
             <div id="two-cols-fixed" className="-border-t">
-                <aside aria-label="aside-navigator" id="col-scroll-aside" className="-border-r">
-                    <strong className="mx-4 my-4">{`COURSE ${courseData.id} ┇ ${courseData.abbreviation}`}</strong>
-                    <div className="flex flex-col gap-4 min-h-[88px] max-h-[200px] px-4 pb-4 mb-8 -border-b overflow-y-auto">
+                <aside aria-label="aside-navigator" id="col-scroll-aside" className="-border-r -prevent-select">
+                    <strong className="mx-4 my-4 -prevent-select">{`COURSE ${courseData.id} ┇ ${courseData.abbreviation}`}</strong>
+                    <div className="flex flex-col gap-4 min-h-[88px] max-h-[200px] px-4 pb-4 mb-8 -border-b overflow-y-auto -prevent-select">
                         <h2>{courseData.name.toLocaleUpperCase()}</h2>
                         <span className="color-slate">{courseData.description}</span>
                     </div>
