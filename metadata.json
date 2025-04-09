@@ -88,6 +88,7 @@
         "SELECT": {
             "questionDataFormat": {
                 "questionText": "New select tabular question",
+                "questionImageUrl": "",
                 "questionResourceUrl": "",
                 "questionColumns": {
                     "columnsDataUidSequence": ["#UID-1", "#UID-2"],

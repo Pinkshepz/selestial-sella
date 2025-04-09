@@ -290,7 +290,7 @@ export default function QuizDisplayMain_C_SELECT (): React.ReactNode {
         elementRowsFreeze.push(
             <tr key={rowUid} className={`py-2 rounded-xl -border-t-half`}>
                 <td className="-border-r">
-                    <div aria-label="row-number" className="flex flex-row items-center gap-4 font-bold text-left m-3">
+                    <div aria-label="row-number" className="max-w-[36dvw] flex flex-row items-center gap-4 font-bold text-left text-nowrap m-3 overflow-x-auto -scroll-none">
                         <p className="color-slate">{rowIndex + 1}</p>
                         <AuricleText inputText={objectKeyRetrieve({
                             object: localQuizContextParams.bufferQuestion,
@@ -324,7 +324,7 @@ export default function QuizDisplayMain_C_SELECT (): React.ReactNode {
             <div key={toggleShowSelected ? "A" : "B"} className="flex flex-row m-4 -border rounded-xl overflow-hidden">
                 <table className="-border-r -hover-bg-active-half text-nowrap -prevent-select -smooth-appear">
                     <thead>
-                        <th aria-label="table-header-blank" key={0} onClick={() => {setCurrentColumnUid("DEFAULT")}} className="w-48 h-[44px] px-3 text-left color-slate -border-r">~</th>
+                        <th aria-label="table-header-blank" key={0} onClick={() => {setCurrentColumnUid("DEFAULT")}} className="h-[44px] px-3 text-left color-slate -border-r">~</th>
                     </thead>
                     <tbody>{elementRowsFreeze}</tbody>
                 </table>
