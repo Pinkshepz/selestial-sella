@@ -98,7 +98,7 @@ export default function QuizDisplayMain_C_CARD (): React.ReactNode {
                     bufferQuestion: localQuizContextParams.bufferQuestion,
                     questionUid: localQuizContextParams.currentQuestionUid,
                     cardUid: cardUid})}
-                key={cardUid + cardContent.flipped} className={`-smooth-appear flex flex-col -border-half rounded-xl pb-4 -prevent-select ${
+                key={cardUid + cardContent.flipped} className={`-smooth-appear flex flex-col gap-4 -border-half rounded-xl pb-4 -prevent-select ${
                     cardContent.cardAllowFlipped ? "-hover-bg-active-half cursor-pointer" : "-hover-bg-half"}`}
                 style={
                     cardContent.cardAllowFlipped
@@ -129,14 +129,13 @@ export default function QuizDisplayMain_C_CARD (): React.ReactNode {
 
                     }
                 </div>
-                {
-                    cardContent.flipped
-                        ? <div aria-label="card-back-text" className="flex flex-col gap-2 max-h-36 mx-4 my-8 px-1 font-black text-xl rounded-xl overflow-x-auto">
-                            {cardContent.cardBackText && <AuricleText inputText={cardContent.cardBackText} />}
-                        </div>
-                        : <div aria-label="card-front-text" className="flex flex-col gap-2 max-h-36 mx-4 my-8 px-1 font-black text-xl rounded-xl overflow-x-auto">
+                {cardContent.flipped
+                    ? <div aria-label="card-back-text" className="flex flex-col gap-2 max-h-72 mx-4 px-1 font-black text-xl rounded-xl overflow-x-auto">
+                        {cardContent.cardBackText && <AuricleText inputText={cardContent.cardBackText} />}
+                    </div>
+                    : <div aria-label="card-front-text" className="flex flex-col gap-2 max-h-36 mx-4 px-1 font-black text-xl rounded-xl overflow-x-auto">
                         {cardContent.cardFrontText && <AuricleText inputText={cardContent.cardFrontText} />}
-                </div>
+                    </div>
                 }
             </div>
         );

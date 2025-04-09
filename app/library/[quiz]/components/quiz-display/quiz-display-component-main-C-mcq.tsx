@@ -231,10 +231,10 @@ export default function QuizDisplayMain_C_MCQ (): React.ReactNode {
                         }
                     </div>
                 </div>
-                <div aria-label="choice-text" className="flex flex-col gap-2 max-h-36 mx-4 px-1 font-black text-xl rounded-xl text-nowrap overflow-x-auto">
+                <div aria-label="choice-text" className="flex flex-col gap-2 max-h-36 mx-4 px-1 font-black text-xl rounded-xl">
                     {choiceContent.choiceText && <AuricleText inputText={choiceContent.choiceText} />}
                 </div>
-                {currentQuestionData.graded && choiceContent.choiceComment && <div aria-label="choice-comment" className="flex flex-col gap-2 max-h-36 mx-4 mt-4 px-1 font-bold rounded-xl text-nowrap overflow-x-auto">
+                {currentQuestionData.graded && choiceContent.choiceComment && <div aria-label="choice-comment" className="flex flex-col gap-2 max-h-36 mx-4 mt-4 px-1 font-bold rounded-xl">
                     <p className="text-xs color-slate">CHOICE COMMENT</p>
                     <AuricleText inputText={choiceContent.choiceComment} />
                 </div>}

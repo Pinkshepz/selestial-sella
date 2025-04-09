@@ -15,6 +15,7 @@ import { ChipTextColor } from "@/app/utility/components/chip";
 
 //// 1.5 Public and others
 import aurora from "@/public/images/aurora.png";
+import sortUidObjectByValue from "@/app/utility/function/object/sort-uid-object-by-value";
 
 
 const DisplayCard = ({
@@ -74,7 +75,7 @@ export default function CardView ({
     let elements: Array<React.ReactNode> = [];
 
     // Map libraryData into each card
-    Object.keys(libraryData).map((libraryUid) => {
+    Object.keys(sortUidObjectByValue(libraryData, "id")).map((libraryUid) => {
         const library = libraryData[libraryUid];
         if (!library.hidden) {
             elements.push(
