@@ -99,8 +99,13 @@ export default function QuizDisplayInterface ({
             globalParams.popUpConfirm &&
             (globalParams.popUpAction === "discardChangesToggle")) {
                 setLocalQuizContextParams("bufferQuestion", questionData);
-                setLocalQuizContextParams("currentQuestionUid", libraryData.questionUidOrder[0]);
-                setLocalQuizContextParams("currentQuestionModality", questionData[libraryData.questionUidOrder[0]].modality);
+                for (let i = 0; i < 100; i++) {
+                    try {
+                        setLocalQuizContextParams("currentQuestionUid", libraryData.questionUidOrder[i]);
+                        setLocalQuizContextParams("currentQuestionModality", questionData[libraryData.questionUidOrder[i]].modality);
+                        break;
+                    } catch (error) {null}
+                }
                 setLocalQuizContextParams("discardChangesToggle", false);
                 setGlobalParams("popUpConfirm", false);
                 setGlobalParams("popUpAction", "");

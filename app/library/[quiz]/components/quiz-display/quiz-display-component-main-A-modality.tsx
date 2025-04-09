@@ -26,6 +26,7 @@ import { stringToRgb } from "@/app/utility/function/color/string-to-rgb";
 //// 1.5 Public and others
 import arrayIndexOf from "@/app/utility/function/array/array-index-of";
 import Icon from "@/public/icon";
+import objectKeyValueUpdate from "@/app/utility/function/object/object-dynamic-change";
 
 
 // =========================================================================
@@ -76,8 +77,17 @@ export default function QuizDisplayMain_A_Modality (): React.ReactNode {
                             chipIcon={metadata.questionModality[localQuizContextParams.currentQuestionModality as keyof typeof metadata.questionModality].icon} />
                         <span className="font-bold">{localQuizContextParams.currentQuestionModality as keyof typeof metadata.questionModality}</span>
                     </div>
+
+                    <button className="flex flex-row items-center ml-auto px-2 py-1 -hover-bg-active-half rounded-lg"
+                        onClick={() => setLocalQuizContextParams("bufferQuestion", objectKeyValueUpdate({
+                            object: localQuizContextParams.bufferQuestion,
+                            keysHierachy: [localQuizContextParams.currentQuestionUid],
+                            targetValue: localQuizContextParams.bufferQuestion[localQuizContextParams.currentQuestionUid]
+                        }))}>
+                        <span className="mr-1 font-bold">CLEAR ANSWER</span>
+                    </button>
     
-                    <div className="flex flex-row items-center gap-2 ml-auto px-2 py-1 -hover-bg-active-half rounded-lg">
+                    <div className="flex flex-row items-center gap-2 px-2 py-1 -hover-bg-active-half rounded-lg">
                         <Icon icon="rocket" size={16} />
                         <div className="flex flex-row items-center gap-1 font-bold">
                             <span className="mr-2">PROGRESS</span>

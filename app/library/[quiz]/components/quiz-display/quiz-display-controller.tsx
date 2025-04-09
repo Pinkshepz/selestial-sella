@@ -50,7 +50,7 @@ export default function ControllerDisplay () {
                 }}
                     className="controller-menu -smooth-appear">
                     <Icon icon="false" size={16} />
-                    <p>RESET ALL</p>
+                    <p>RESET ALL ANSWER</p>
                 </button>
 
                 <div className="controller-menu -smooth-appear">

@@ -92,7 +92,7 @@ export default function CardView ({
                         cardImageLink={library.image}
                         cardName={library.name}
                         cardDescription={library.description}
-                        cardQuestionNumber={library.questionUidOrder.length}
+                        cardQuestionNumber={library.questionUidOrder.filter((value) => !value.startsWith("《")).length}
                         cardTag={library.tag}
                         key={library.id}/>
                 </Link>
