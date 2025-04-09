@@ -179,7 +179,7 @@ export default function QuizEditMain_C_MCQ (): React.ReactNode {
 
     ////// B.VIII Function to add new choice
     const handleAddChoice = (): void => {
-        if (Object.keys(currentQuestionData.questionChoices).length < choiceLimit) {
+        if (Object.keys(currentQuestionData.questionChoices).length <= choiceLimit) {
             // Add question choice
             const processedBufferQuestion = processAddQuestionChoice({
                 bufferQuestion: localQuizContextParams.bufferQuestion,
@@ -225,7 +225,7 @@ export default function QuizEditMain_C_MCQ (): React.ReactNode {
 
     ////// B.IX Function to duplicate choice
     const handleDuplicateChoice = ({choiceUid}: {choiceUid: string}): void => {
-        if (Object.keys(currentQuestionData.questionChoices).length < choiceLimit) {
+        if (Object.keys(currentQuestionData.questionChoices).length <= choiceLimit) {
             // Duplicate question choice
             const processedBufferQuestion = processDuplicateQuestionChoice({
                 bufferQuestion: localQuizContextParams.bufferQuestion,
@@ -363,11 +363,27 @@ export default function QuizEditMain_C_MCQ (): React.ReactNode {
                 </div>
                 <div aria-label="choice-preview-text" className="-hover-bg-active-half flex flex-col gap-2 max-h-36 mx-4 p-3 font-bold rounded-xl text-nowrap overflow-x-auto">
                     <p className="text-xs color-slate">CHOICE TEXT</p>
-                    {choiceContent.choiceText && <AuricleText inputText={choiceContent.choiceText} />}
+                    {currentChoiceUid == choiceUid
+                        ? <textarea rows={1} className="p-2 -border rounded-xl"
+                            onChange={e => handleQuestionKeyValueUpdate({
+                                keysHierachy: [...rootKeysHierachy, "questionChoices", currentChoiceUid, "choiceText"],
+                                targetValue: e.target.value
+                            })}
+                            value={currentChoiceData.choiceText}>
+                        </textarea>
+                        : choiceContent.choiceText && <AuricleText inputText={choiceContent.choiceText} />}
                 </div>
                 <div aria-label="choice-preview-comment" className="-hover-bg-active-half flex flex-col gap-2 max-h-36 mx-4 p-3 font-bold rounded-xl text-nowrap overflow-x-auto">
                     <p className="text-xs color-slate">CHOICE COMMENT</p>
-                    {choiceContent.choiceComment && <AuricleText inputText={choiceContent.choiceComment} />}
+                    {currentChoiceUid == choiceUid
+                        ? <textarea rows={1} className="p-2 -border rounded-xl"
+                            onChange={e => handleQuestionKeyValueUpdate({
+                                keysHierachy: [...rootKeysHierachy, "questionChoices", currentChoiceUid, "choiceComment"],
+                                targetValue: e.target.value
+                            })}
+                            value={currentChoiceData.choiceComment}>
+                        </textarea>
+                        : choiceContent.choiceComment && <AuricleText inputText={choiceContent.choiceComment} />}
                 </div>
             </div>
         );
@@ -463,7 +479,7 @@ export default function QuizEditMain_C_MCQ (): React.ReactNode {
                             <Icon icon="italic" size={16} /><p className="font-bold text-md text-nowrap">ITALIC TEXT</p>
                         </button>
                     </div>
-                    <textarea rows={3} className="editor-fieldk mx-4 p-4 -border rounded-xl"
+                    <textarea rows={3} className="mx-4 p-4 -border rounded-xl"
                         onChange={e => handleQuestionKeyValueUpdate({
                             keysHierachy: [...rootKeysHierachy, "questionChoices", currentChoiceUid, "choiceText"],
                             targetValue: e.target.value

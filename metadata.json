@@ -6,11 +6,11 @@
     "autosaveMinuteClocks": [-1, 1, 2, 5, 10],
     "entityLimit": {
         "question": 256,
-        "choice": 8,
+        "choice": 10,
         "card": 16,
         "selectColumn": 8,
         "selectColumnProperty": 8,
-        "selectColumnPropertyTextLength": 32,
+        "selectColumnPropertyTextLength": 36,
         "selectRow": 16
     },
     "questionModality": {
