@@ -17,7 +17,6 @@ import firestoreUpdate from "@/app/utility/firestore/firestore-manager-library";
 import firestoreUpdateQuiz from "@/app/utility/firestore/firestore-manager-quiz";
 import { processAddQuestion, processInsertArrayDataString } from "./quiz-edit-function-general";
 import arrayIndexOf from "@/app/utility/function/array/array-index-of";
-import makeid from "@/app/utility/function/make-id";
 
 //// 1.5 Public and others
 import Icon from "@/public/icon";
@@ -36,7 +35,7 @@ export default function ControllerEdit ({
     // connect to interface context
     const {localQuizContextParams, setLocalQuizContextParams} = useLocalQuizContext();
 
-    const [autosaveToggle, setAutosaveToggle] = useState(5);
+    const [autosaveToggle, setAutosaveToggle] = useState(metadata.autosaveMinuteClocks[2]);
     const [autosaveTimer, setAutosaveTimer] = useState(300);
 
     const handleSearchKeyChange = (searchKey: string) => {
