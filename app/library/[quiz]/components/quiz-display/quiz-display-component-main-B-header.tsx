@@ -69,7 +69,7 @@ export default function QuizDisplayMain_B_Header (): React.ReactNode {
                         }
                     </div>
                     {currentQuestionData.questionImageUrl && 
-                        <div className="overflow-hidden w-[50%] p-4">
+                        <div className="overflow-hidden w-[90%] p-4 resize max-w-full">
                             <img className="rounded-xl" src={currentQuestionData.questionImageUrl} alt="" />
                         </div>
                     }
