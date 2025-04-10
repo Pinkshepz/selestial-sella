@@ -143,7 +143,7 @@ export default function QuizDisplayInterface ({
         // Assemble each sub-components
         elementsEditQuiz = <section aria-label="main-quiz-edit" className="flex flex-col h-full">
             <div className="h-16">
-                <QuizDisplayMain_A_Modality />
+                <QuizDisplayMain_A_Modality questionData={questionData} />
             </div>
             <div className="h-full overflow-y-auto">
                 <QuizDisplayMain_B_Header />

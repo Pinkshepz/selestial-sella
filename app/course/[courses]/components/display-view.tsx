@@ -225,7 +225,7 @@ export default function DisplayView ({
                                             <div className='flex flex-row items-center'>
                                                 <h5 className="flex flex-row gap-1 px-2 py-1 -hover-bg-active rounded-xl">{topicLibrary.id}</h5>
                                             </div>
-                                            <h5 className='ml-1'>{`${topicLibrary.questionUidOrder.length} QUESTION${(topicLibrary.questionUidOrder.length > 1) ? "S" : ""}`}</h5>
+                                            <h5 className='ml-1'>{`${topicLibrary.questionUidOrder.filter((value) => !value.startsWith("《")).length} QUESTION${(topicLibrary.questionUidOrder.filter((value) => !value.startsWith("《")).length > 1) ? "S" : ""}`}</h5>
                                         </div>
                                     </div>
                                     <div className='absolute top-0 w-full overflow-hidden z-0'>
@@ -256,7 +256,7 @@ export default function DisplayView ({
                                             <div className='flex flex-row items-center'>
                                                 <h5 className="flex flex-row gap-1 px-2 py-1 -hover-bg-active rounded-xl">{topicLibrary.id}</h5>
                                             </div>
-                                            <h5 className='ml-1'>{`${topicLibrary.questionUidOrder.length} QUESTION${(topicLibrary.questionUidOrder.length > 1) ? "S" : ""}`}</h5>
+                                            <h5 className='ml-1'>{`${topicLibrary.questionUidOrder.filter((value) => !value.startsWith("《")).length} QUESTION${(topicLibrary.questionUidOrder.filter((value) => !value.startsWith("《")).length > 1) ? "S" : ""}`}</h5>
                                         </div>
                                     </div>
                                     <div className='absolute top-0 w-full overflow-hidden z-0'>

@@ -15,7 +15,6 @@ import { useGlobalContext } from "@/app/global-provider";
 import { useLocalQuizContext } from "@/app/library/[quiz]/local-quiz-provider";
 
 //// 1.3 React components
-import Library from "@/app/utility/interface/interface-library";
 import QuestionAction from "@/app/utility/interface/interface-quiz";
 
 import { TextColor } from "@/app/utility/components/chip";
@@ -33,7 +32,11 @@ import objectKeyValueUpdate from "@/app/utility/function/object/object-dynamic-c
 // 3. EXPORT DEFAULT FUNCTION
 // =========================================================================
 
-export default function QuizDisplayMain_A_Modality (): React.ReactNode {
+export default function QuizDisplayMain_A_Modality ({
+    questionData
+}:{
+    questionData: {[key: string]: QuestionAction} // {uid: {each question}}
+}): React.ReactNode {
 
     //// -------------------------------------------------------------------------
     //// A. LOCAL CONSTANTS & CONSTANT-RELATED REACT HOOKS
@@ -82,7 +85,7 @@ export default function QuizDisplayMain_A_Modality (): React.ReactNode {
                         onClick={() => setLocalQuizContextParams("bufferQuestion", objectKeyValueUpdate({
                             object: localQuizContextParams.bufferQuestion,
                             keysHierachy: [localQuizContextParams.currentQuestionUid],
-                            targetValue: localQuizContextParams.bufferQuestion[localQuizContextParams.currentQuestionUid]
+                            targetValue: questionData[localQuizContextParams.currentQuestionUid]
                         }))}>
                         <span className="mr-1 font-bold">CLEAR ANSWER</span>
                     </button>
