@@ -24,12 +24,22 @@ export default async function firestoreRandomQuiz(lastEditedMaximum?: number, fe
             if (maxFetch == 0) break;
             maxFetch--;
 
-            // Try query document
-            const q = query(collection(getFirestore(appClientAlpha), "quiz"), where("lastEdited", ">=", randNid), limit(fetchLimit));
-            const querySnapshot = await getDocs(q);
+            // Try query document ">='"
+            const q1 = query(collection(getFirestore(appClientAlpha), "quiz"), where("lastEdited", ">=", randNid), limit(fetchLimit));
+            const querySnapshot1 = await getDocs(q1);
         
             // Extract data
-            querySnapshot.forEach((doc) => docs[doc.id] = doc.data());
+            querySnapshot1.forEach((doc) => docs[doc.id] = doc.data());
+            
+            // Break when successful
+            if (Object.keys(docs).length > 0) break;
+
+            // Then, try query document "<'"
+            const q2 = query(collection(getFirestore(appClientAlpha), "quiz"), where("lastEdited", "<", randNid), limit(fetchLimit));
+            const querySnapshot3 = await getDocs(q2);
+        
+            // Extract data
+            querySnapshot3.forEach((doc) => docs[doc.id] = doc.data());
             
             // Break when successful
             if (Object.keys(docs).length > 0) break;
