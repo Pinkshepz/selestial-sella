@@ -1,12 +1,12 @@
 {
     "appName": "AURICLE",
     "appDescription": "Make medical complexity simple again",
-    "version": "1.9.53",
+    "version": "1.9.60",
     "firebaseBranch": ["ALPHA", "BETA"],
     "autosaveMinuteClocks": [-1, 1, 2, 5, 10],
     "entityLimit": {
         "question": 256,
-        "choice": 10,
+        "choice": 12,
         "card": 16,
         "selectColumn": 8,
         "selectColumnProperty": 8,

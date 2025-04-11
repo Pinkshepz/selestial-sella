@@ -20,25 +20,20 @@ import { TextColor } from "@/app/utility/components/chip";
 //// 1.4 Utility functions
 import firestoreUpdate from "@/app/utility/firestore/firestore-manager-library";
 import makeid from "@/app/utility/function/make-id";
+import objectUidFill from "@/app/utility/function/object/object-uid-fill";
 import sortUidObjectByValue from "@/app/utility/function/object/sort-uid-object-by-value";
 
 import objectKeyValueUpdate from "@/app/utility/function/object/object-dynamic-change";
 import objectKeyDelete from "@/app/utility/function/object/object-dynamic-delete";
 
 //// 1.5 Public and others
-////     N/A
-
-// =========================================================================
-// 2. GLOBAL CONSTANT VARIABLES AND FUNCTIONS
-// =========================================================================
+import Icon from "@/public/icon";
 
 
 // =========================================================================
 // 3. EXPORT DEFAULT FUNCTION
 // =========================================================================
 
-import Icon from "@/public/icon";
-import objectUidFill from "@/app/utility/function/object/object-uid-fill";
 
 export default function LibraryEditor ({
     libraryData

@@ -30,7 +30,7 @@ export default async function firestoreReadQuery({
   collectionName: string,
   queryKey: string,
   queryComparator: WhereFilterOp,
-  queryValue: string
+  queryValue: string | number
 }): Promise<string> {
 
   // Prepare docs varaible storing fetch data

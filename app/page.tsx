@@ -5,7 +5,7 @@ import HomeStats from "./components/home-stats";
 export default async function Home () {
   const courseCount = await firestoreCountCollection("course");
   const libraryCount = await firestoreCountCollection("library");
-  const contentCount = await firestoreCountCollection("content");
+  const contentCount = await firestoreCountCollection("quiz");
   
   return (
     <main>

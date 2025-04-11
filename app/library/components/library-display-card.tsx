@@ -72,13 +72,18 @@ export default function CardView ({
     const {globalParams, setGlobalParams} = useGlobalContext();
 
     // Store all elements
-    let elements: Array<React.ReactNode> = [];
+    let mapCardGroup: {[key: string]: Array<React.ReactNode>} = {};
 
     // Map libraryData into each card
-    Object.keys(sortUidObjectByValue(libraryData, "id")).map((libraryUid) => {
+    const sortedLibraryData = sortUidObjectByValue<Library>(libraryData, "id");
+
+    Object.keys(sortedLibraryData).map((libraryUid) => {
+        // Check for current library tag. If new tag 
         const library = libraryData[libraryUid];
         if (!library.hidden) {
-            elements.push(
+            const tag = library.tag[0] ?? "GENERAL"
+            if (mapCardGroup[tag] === undefined) {mapCardGroup[tag] = []};
+            mapCardGroup[tag].push(
                 <Link 
                     href={{ pathname: "./library/[quiz]" }}
                     onClick={() => {
@@ -100,9 +105,18 @@ export default function CardView ({
         }
     });
 
+    let elementsCardGroup: React.ReactNode[] = [];
+
+    Object.keys(mapCardGroup).map((mapdGroupUid, index) => {
+        elementsCardGroup.push(
+            <article key={index} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-1">
+                {mapCardGroup[mapdGroupUid]}
+            </article>)
+    })
+
     return (
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-1">
-            {elements}
+        <section className="flex flex-col gap-16">
+            {elementsCardGroup}
         </section>
     );
 }

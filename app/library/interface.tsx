@@ -14,6 +14,7 @@ import { useLocalLibraryContext } from "@/app/library/local-library-provider";
 //// 1.3 React components
 import Library from "@/app/utility/interface/interface-library";
 
+import LibraryHeader from "./components/library-header";
 import LibraryEditor from './components/library-edit';
 import CardView from './components/library-display-card';
 import Controller from "./components/controller";
@@ -81,7 +82,8 @@ export default function Interface ({
 
     return <>
         <ConfirmPopUp />
-        <main className="relative flex flex-col pt-36 mb-16">
+        <main className="relative flex flex-col pt-32 mb-16">
+            {!localLibraryContextParams.editMode && <LibraryHeader />}
             <Controller />
             {(Object.keys(localLibraryContextParams.logUpdate).length > 0)
                 ? <LogUpdate />

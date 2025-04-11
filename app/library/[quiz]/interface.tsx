@@ -30,10 +30,12 @@ import uidObjectToArray from "@/app/utility/function/object/uid-object-to-array"
 
 export default function Interface ({
     libraryData,
-    questionData
+    questionData,
+    buffetMode
 }: {
     libraryData: Library, // {library data}
-    questionData: {[key: string]: Question} // {uid: {each question}}
+    questionData: {[key: string]: Question}, // {uid: {each question}}
+    buffetMode: boolean
 }) {
 
     //// -------------------------------------------------------------------------
@@ -108,7 +110,8 @@ export default function Interface ({
                         <ControllerDisplay />
                         <QuizDisplayInterface
                             libraryData={libraryData}
-                            questionData={questionData} />
+                            questionData={questionData}
+                            buffetMode={buffetMode} />
                     </>
                     }
                     <div className="glass-cover-spread"></div>

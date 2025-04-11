@@ -47,10 +47,12 @@ import BG from "@/public/images/aurora.png"; // Default background image
 
 export default function QuizDisplayInterface ({
     libraryData,
-    questionData
+    questionData,
+    buffetMode
 }: {
     libraryData: Library, // {uid: {library data}}
     questionData: {[key: string]: QuestionAction}, // {uid: {each question}}
+    buffetMode: boolean
 }): React.ReactNode {
 
     // console.log("RENDER QUIZ-EDIT")
@@ -165,13 +167,13 @@ export default function QuizDisplayInterface ({
                 {localQuizContextParams.screenWidth > 1100
                     ? localQuizContextParams.asideHidden && <aside aria-label="aside-navigation" key="aside-navigation-large" id="quiz-col-scroll-aside" 
                         className={`relative w-[320px] flex flex-col -border-r -prevent-select"`}>
-                        <QuizDisplayAside libraryData={libraryData} questionData={sortedFilteredQuestionData} />
+                        <QuizDisplayAside libraryData={libraryData} questionData={sortedFilteredQuestionData} buffetMode={buffetMode} />
                     </aside>
 
                     : !localQuizContextParams.asideHidden && <>
                         <aside aria-label="aside-navigation" key="aside-navigation-large" id="quiz-col-scroll-aside" 
                             className={`absolute w-[50dvw] flex flex-col z-100 -border-r -prevent-select -smooth-appear backdrop-blur-lg ${globalParams.theme ? "bg-white/90 dark:bg-black/50" : "bg-highlight/90 dark:bg-highlight-dark/80"}`}>
-                            <QuizDisplayAside libraryData={libraryData} questionData={sortedFilteredQuestionData} />
+                            <QuizDisplayAside libraryData={libraryData} questionData={sortedFilteredQuestionData} buffetMode={buffetMode} />
                         </aside>
                         <div onClick={() => setLocalQuizContextParams("asideHidden", !localQuizContextParams.asideHidden)} className={`absolute h-full w-full z-[90] cursor-pointer ${globalParams.theme ? "bg-white/[0.95] dark:bg-black/[0.87]" : "bg-highlight/90 dark:bg-highlight-dark/90"}`}></div>
                     </>
@@ -181,7 +183,7 @@ export default function QuizDisplayInterface ({
                     {elementsEditQuiz}
                 </main>
             </div>
-            <ConsoleDisplay />
+            <ConsoleDisplay buffetMode={buffetMode} />
             <BackgroundImage libraryDataImage={libraryData.image} theme={localQuizContextParams.themeToggle} />
         </div>
     );

@@ -40,10 +40,12 @@ import Icon from "@/public/icon";
 
 export default React.memo(function QuizDisplayAside ({
     libraryData,
-    questionData
+    questionData,
+    buffetMode
 }: {
     libraryData: Library, // {uid: {library data}}
     questionData: {[key: string]: QuestionAction}, // {uid: {each question}}
+    buffetMode: boolean
 }): React.ReactNode {
 
     //// -------------------------------------------------------------------------
@@ -64,7 +66,7 @@ export default React.memo(function QuizDisplayAside ({
     ////// C.I Assembly each question data into navigation data rows
     let elementQuizAside: React.ReactNode[] = [];
 
-    const alllQuestionUid = localQuizContextParams.bufferLibrary.questionUidOrder as string[];
+    let alllQuestionUid = localQuizContextParams.bufferLibrary.questionUidOrder as string[];
 
     alllQuestionUid.map((eachQuestionUid, index) => {
         // Catch for bookmark uid first
@@ -131,7 +133,7 @@ export default React.memo(function QuizDisplayAside ({
         return (
             <>
                 <strong className="mx-4 mt-4 -prevent-select">{`QUIZ ${libraryData.id}`}</strong>
-                <h2 className={`mx-4 mt-3 h-fit max-h-36 overflow-auto -prevent-select ${(localQuizContextParams.screenWidth <= 1100) && "text-nowrap"}`}>{libraryData.name.toLocaleUpperCase()}</h2>
+                <h2 className={`mx-4 mt-3 minh-24 max-h-36 overflow-auto -prevent-select ${(localQuizContextParams.screenWidth <= 1100) && "text-nowrap"}`}>{libraryData.name.toLocaleUpperCase()}</h2>
                 <div className="mt-4 h-full overflow-y-scroll -border-t">
                     {elementQuizAside}
                 </div>

@@ -5,7 +5,6 @@
 //// 1.2 Custom React hooks
 import { useGlobalContext } from "@/app/global-provider"
 import { useLocalQuizContext } from "@/app/library/[quiz]/local-quiz-provider";
-import makeid from "@/app/utility/function/make-id";
 
 //// 1.3 React components
 

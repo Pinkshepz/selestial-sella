@@ -11,6 +11,7 @@ import metadata from "@/metadata.json";
 import firestoreWrite from "./firestore-write";
 import firestoreDelete from "./firestore-delete";
 import object_compare from "@/app/utility/function/object/object-compare";
+import LastEdited from "../components/last-edited";
 
 //// 1.5 Public and others
 ////     N/A
@@ -58,6 +59,11 @@ export default async function firestoreUpdateQuiz ({
                 result: result, 
                 error: error
             };
+
+            firestoreWrite({
+                firebaseBranch: firebaseBranch, collectionName: "quiz", id: "0", data: {LastEdited: Date.now() + 1}
+            });
+
             continue;
         }
 

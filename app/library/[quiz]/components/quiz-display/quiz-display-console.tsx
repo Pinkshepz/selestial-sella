@@ -15,6 +15,8 @@ import { useLocalQuizContext } from "@/app/library/[quiz]/local-quiz-provider";
 //// 1.3 React components
 
 //// 1.4 Utility functions
+import firestoreRandomQuiz from "@/app/utility/firestore/firestore-query-random-quiz";
+
 import objectKeyRetrieve from "@/app/utility/function/object/object-key-retrieve";
 import objectKeyValueUpdate from "@/app/utility/function/object/object-dynamic-change";
 
@@ -33,7 +35,11 @@ import makeid from "@/app/utility/function/make-id";
 // 3. EXPORT DEFAULT FUNCTION
 // =========================================================================
 
-export default function ConsoleDisplay (): React.ReactNode {
+export default function ConsoleDisplay ({
+    buffetMode
+}: {
+    buffetMode: boolean
+}): React.ReactNode {
     // I. Connect to global context
     const {globalParams, setGlobalParams} = useGlobalContext();
     
@@ -69,6 +75,35 @@ export default function ConsoleDisplay (): React.ReactNode {
             setLocalQuizContextParams("currentQuestionUid", newQuestionUid);
             setLocalQuizContextParams("currentQuestionModality", localQuizContextParams.bufferQuestion[newQuestionUid].modality);
         } else {handleQuestionChange(direction + direction)}
+
+        // Fetch next question if buffetMode is activated
+        if (buffetMode) {
+            let fetchLimit = 50;
+            let toggleGetNewQuestion = false;
+            while (fetchLimit) {
+                fetchLimit--
+                firestoreRandomQuiz(localQuizContextParams.bufferLibrary.lastEdited).then(
+                    (data) => {
+                        const newQuestionUid = Object.keys(data)[0];
+                        if (!localQuizContextParams.bufferLibrary.questionUidOrder.includes(newQuestionUid)) {
+                            setLocalQuizContextParams("bufferQuestion", {
+                                ...localQuizContextParams.bufferQuestion,
+                                ...data
+                            });
+                            setLocalQuizContextParams("bufferLibrary", {
+                                ...localQuizContextParams.bufferLibrary,
+                                questionUidOrder: [
+                                    ...localQuizContextParams.bufferLibrary.questionUidOrder,
+                                    ...Object.keys(data)
+                                ]
+                            });
+                            toggleGetNewQuestion = true;
+                        }
+                    }
+                );
+                if (toggleGetNewQuestion) break;
+            }
+        }
     }
 
     // V. Function to handle move question
@@ -93,7 +128,7 @@ export default function ConsoleDisplay (): React.ReactNode {
                 
                 {(arrayIndexOf<string>({
                     array: localQuizContextParams.bufferLibrary.questionUidOrder,
-                    targetValue: localQuizContextParams.currentQuestionUid}) + 1 < localQuizContextParams.bufferLibrary.questionUidOrder.length) 
+                    targetValue: localQuizContextParams.currentQuestionUid}) + 1 < localQuizContextParams.bufferLibrary.questionUidOrder.length) || buffetMode
                     ? <button key={makeid(20)} onClick={() => handleQuestionChange(1)} className={`h-full ${currentQuestionData.graded ? "w-full" : "w-48"} -border-l -hover-bg-half`}>NEXT</button>
                     : currentQuestionData.graded && <button key={makeid(20)} onClick={() => {
                             setGlobalParams("isLoading", true);
