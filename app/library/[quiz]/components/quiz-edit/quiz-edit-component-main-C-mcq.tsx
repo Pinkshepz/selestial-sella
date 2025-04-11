@@ -179,7 +179,7 @@ export default function QuizEditMain_C_MCQ (): React.ReactNode {
 
     ////// B.VIII Function to add new choice
     const handleAddChoice = (): void => {
-        if (Object.keys(currentQuestionData.questionChoices).length < choiceLimit) {
+        if (Object.keys(currentQuestionData.questionChoices).length !== choiceLimit) {
             // Add question choice
             const processedBufferQuestion = processAddQuestionChoice({
                 bufferQuestion: localQuizContextParams.bufferQuestion,
@@ -225,7 +225,7 @@ export default function QuizEditMain_C_MCQ (): React.ReactNode {
 
     ////// B.IX Function to duplicate choice
     const handleDuplicateChoice = ({choiceUid}: {choiceUid: string}): void => {
-        if (Object.keys(currentQuestionData.questionChoices).length < choiceLimit) {
+        if (Object.keys(currentQuestionData.questionChoices).length !== choiceLimit) {
             // Duplicate question choice
             const processedBufferQuestion = processDuplicateQuestionChoice({
                 bufferQuestion: localQuizContextParams.bufferQuestion,
