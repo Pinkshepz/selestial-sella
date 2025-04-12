@@ -72,7 +72,6 @@ export default function QuizDisplayMain_A_Modality ({
                         <span className="font-black">{questionNumber + 1}</span>
                         <span>┇</span>
                         <span className="font-black">{totalQuestion}</span>
-                        {localQuizContextParams.currentQuestionUid}
                     </div>
     
                     <div className="flex flex-row items-center gap-2 px-2 py-1 -hover-bg-active-half rounded-lg">

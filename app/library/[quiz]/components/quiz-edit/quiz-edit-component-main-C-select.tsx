@@ -321,10 +321,16 @@ export default function QuizEditMain_C_SELECT (): React.ReactNode {
     const handleDuplicateColumn = (): void => {
         if (allColumnsUid.length < selectColumnLimit) {
             const newUid = makeid(20);
-            const duplicateTarget = objectKeyRetrieve({
+            let duplicateTarget = structuredClone(objectKeyRetrieve({
                 object: localQuizContextParams.bufferQuestion,
                 keysHierachy: [...rootKeysHierachy, "questionColumns", "columnsData", currentRowOrColumnUid]
-            });
+            }));
+
+            // Copy property and set new Uid
+            Object.keys(duplicateTarget.columnSelect).map((propertyUid) => {
+                duplicateTarget.columnSelect[makeid(20)] = structuredClone(duplicateTarget.columnSelect[propertyUid]);
+                delete duplicateTarget.columnSelect[propertyUid];
+            })
 
             setLocalQuizContextParams("bufferQuestion", objectKeyValueUpdate({
                 object: processInsertArrayDataString({
@@ -338,11 +344,7 @@ export default function QuizEditMain_C_SELECT (): React.ReactNode {
                     }) + 1
                 }),
                 keysHierachy: [...rootKeysHierachy, "questionColumns", "columnsData", newUid],
-                targetValue: objectKeyValueUpdate({
-                    object: duplicateTarget,
-                    keysHierachy: ["columnText"],
-                    targetValue: `Copy of ${duplicateTarget.columnText}`
-                })
+                targetValue: duplicateTarget
             }));
             setCurrentRowOrColumnUid(newUid);
         } else {
