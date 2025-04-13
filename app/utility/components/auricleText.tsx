@@ -28,7 +28,7 @@ const CloudNine = memo(function CloudNine ({
     <span onClick={() => setRevealed((prev) => (!prev))}
       className="relative mx-1 -border-b -hover-bg-active rounded-md cursor-pointer text-nowrap">
       {!revealed && cloudCover}
-      {revealed ? <span key={1} className="z-0 px-1">{text}</span> : <span key={0} className="z-0 px-1 text-pri/0">{text}</span>}
+      {revealed ? <span key={1} className="z-0 px-1">{parseToHTML(text)}</span> : <span key={0} className="z-0 px-1 text-pri/0">{parseToHTML(text)}</span>}
     </span>
   );
 })
