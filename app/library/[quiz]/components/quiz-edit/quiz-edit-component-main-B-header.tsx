@@ -205,7 +205,7 @@ export default function QuizEditMain_B_Header (): React.ReactNode {
                     <Icon icon="cloud" size={16} /><p className="font-bold text-md text-nowrap">Add CloudNine®</p>
                 </button>
             </div>
-            <textarea rows={localQuizContextParams.currentQuestionModality === "WORD-CLOUD" ? 5 : 12} className="editor-fieldk mx-4 my-1 p-4 -border rounded-xl"
+            <textarea rows={localQuizContextParams.currentQuestionModality == "WORD-CLOUD" ? 12 : 5} className="editor-fieldk mx-4 my-1 p-4 -border rounded-xl"
                 onChange={e => handleQuestionKeyValueUpdate({
                     keysHierachy: [...rootKeysHierachy, "questionText"],
                     targetValue: e.target.value
