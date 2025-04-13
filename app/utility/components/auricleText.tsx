@@ -93,12 +93,26 @@ export default function AuricleText ({
     let processedParagraphs: React.ReactNode[] = [];
 
     try {
-      inputText.split("\\n").map((paragraph, indexParagraph) => {
-        processedParagraphs.push(
+      inputText.split(/(?<=\\[nh])/).map((part, indexParagraph) => {
+        if (part.endsWith("\\n")) {
+          processedParagraphs.push(
             <div key={indexParagraph}>
-                {parseToHTML(paragraph)}
+                {parseToHTML(part.slice(0, part.length - 2))}
             </div>
           );
+        } else if (part.endsWith("\\h")) {
+          processedParagraphs.push(
+            <div className="pb-2 -border-b" key={indexParagraph}>
+                {parseToHTML(part.slice(0, part.length - 2))}
+            </div>
+          );
+        } else {
+          processedParagraphs.push(
+            <div key={indexParagraph}>
+                {parseToHTML(part.slice(0, part.length - 2))}
+            </div>
+          );
+        }
       });
     } catch (error) {
       console.error(error);
