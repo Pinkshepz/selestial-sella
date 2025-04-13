@@ -71,7 +71,7 @@ export default function ControllerEdit ({
     ////// B.VIII useEffect to run autosave
     useEffect(() => {
         if (autosaveTimer === 0) {
-            console.log("A");
+            console.log("PROCESS AUTOSAVE");
             setGlobalParams("isLoading", true);
             const libraryUid = libraryData.uid
             

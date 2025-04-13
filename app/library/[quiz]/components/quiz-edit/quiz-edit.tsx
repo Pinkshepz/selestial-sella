@@ -63,8 +63,6 @@ export default function QuizEditorInterface ({
     questionData: {[key: string]: Question}, // {uid: {each question}}
 }): React.ReactNode {
 
-    // console.log("RENDER QUIZ-EDIT")
-
     //// -------------------------------------------------------------------------
     //// A. LOCAL CONSTANTS & CONSTANT-RELATED REACT HOOKS
     //// -------------------------------------------------------------------------

@@ -294,64 +294,68 @@ export default function QuizEditMain_C_SELECT (): React.ReactNode {
     ////// PROPERTY FX.
 
     const handleAddColumn = (): void => {
-        if (allColumnsUid.length < selectColumnLimit) {
-            const newUid = makeid(20);
-            setLocalQuizContextParams("bufferQuestion", objectKeyValueUpdate({
-                object: processInsertArrayDataString({
-                    object: localQuizContextParams.bufferQuestion,
-                    keysHierachyToTargetObjectUidSequenceArray: [...rootKeysHierachy, "questionColumns", "columnsDataUidSequence"],
-                    targetValueToInsert: newUid,
-                    insertPosition: arrayIndexOf({
-                        array: allColumnsUid,
-                        targetValue: currentRowOrColumnUid,
-                        indexIfError: -2
-                    }) + 1
-                }),
-                keysHierachy: [...rootKeysHierachy, "questionColumns", "columnsData", newUid],
-                targetValue: metadata.questionModality.SELECT.questionDataFormat.questionColumns.columnsData["#UID-1"]
-            }));
-            setCurrentRowOrColumnUid(newUid);
-        } else {
-            setGlobalParams("popUp", true);
-            setGlobalParams("popUpAction", "⟨EXCEPTION⟩: entity limit");
-            setGlobalParams("popUpText", `Total columns exceeds limit at ${selectColumnLimit} columns per select table`);
-        }
+        try {
+            if (allColumnsUid.length < selectColumnLimit) {
+                const newUid = makeid(20);
+                setLocalQuizContextParams("bufferQuestion", objectKeyValueUpdate({
+                    object: processInsertArrayDataString({
+                        object: localQuizContextParams.bufferQuestion,
+                        keysHierachyToTargetObjectUidSequenceArray: [...rootKeysHierachy, "questionColumns", "columnsDataUidSequence"],
+                        targetValueToInsert: newUid,
+                        insertPosition: arrayIndexOf({
+                            array: allColumnsUid,
+                            targetValue: currentRowOrColumnUid,
+                            indexIfError: -2
+                        }) + 1
+                    }),
+                    keysHierachy: [...rootKeysHierachy, "questionColumns", "columnsData", newUid],
+                    targetValue: metadata.questionModality.SELECT.questionDataFormat.questionColumns.columnsData["#UID-1"]
+                }));
+                setCurrentRowOrColumnUid(newUid);
+            } else {
+                setGlobalParams("popUp", true);
+                setGlobalParams("popUpAction", "⟨EXCEPTION⟩: entity limit");
+                setGlobalParams("popUpText", `Total columns exceeds limit at ${selectColumnLimit} columns per select table`);
+            }
+        } catch (error) {null}
     }
 
     const handleDuplicateColumn = (): void => {
-        if (allColumnsUid.length < selectColumnLimit) {
-            const newUid = makeid(20);
-            let duplicateTarget = structuredClone(objectKeyRetrieve({
-                object: localQuizContextParams.bufferQuestion,
-                keysHierachy: [...rootKeysHierachy, "questionColumns", "columnsData", currentRowOrColumnUid]
-            }));
-
-            // Copy property and set new Uid
-            Object.keys(duplicateTarget.columnSelect).map((propertyUid) => {
-                duplicateTarget.columnSelect[makeid(20)] = structuredClone(duplicateTarget.columnSelect[propertyUid]);
-                delete duplicateTarget.columnSelect[propertyUid];
-            })
-
-            setLocalQuizContextParams("bufferQuestion", objectKeyValueUpdate({
-                object: processInsertArrayDataString({
+        try {
+            if (allColumnsUid.length < selectColumnLimit) {
+                const newUid = makeid(20);
+                let duplicateTarget = structuredClone(objectKeyRetrieve({
                     object: localQuizContextParams.bufferQuestion,
-                    keysHierachyToTargetObjectUidSequenceArray: [...rootKeysHierachy, "questionColumns", "columnsDataUidSequence"],
-                    targetValueToInsert: newUid,
-                    insertPosition: arrayIndexOf({
-                        array: allColumnsUid,
-                        targetValue: currentRowOrColumnUid,
-                        indexIfError: -2
-                    }) + 1
-                }),
-                keysHierachy: [...rootKeysHierachy, "questionColumns", "columnsData", newUid],
-                targetValue: duplicateTarget
-            }));
-            setCurrentRowOrColumnUid(newUid);
-        } else {
-            setGlobalParams("popUp", true);
-            setGlobalParams("popUpAction", "⟨EXCEPTION⟩: entity limit");
-            setGlobalParams("popUpText", `Total columns exceeds limit at ${selectColumnLimit} columns per select table`);
-        }
+                    keysHierachy: [...rootKeysHierachy, "questionColumns", "columnsData", currentRowOrColumnUid]
+                }));
+    
+                // Copy property and set new Uid
+                Object.keys(duplicateTarget.columnSelect).map((propertyUid) => {
+                    duplicateTarget.columnSelect[makeid(20)] = structuredClone(duplicateTarget.columnSelect[propertyUid]);
+                    delete duplicateTarget.columnSelect[propertyUid];
+                })
+    
+                setLocalQuizContextParams("bufferQuestion", objectKeyValueUpdate({
+                    object: processInsertArrayDataString({
+                        object: localQuizContextParams.bufferQuestion,
+                        keysHierachyToTargetObjectUidSequenceArray: [...rootKeysHierachy, "questionColumns", "columnsDataUidSequence"],
+                        targetValueToInsert: newUid,
+                        insertPosition: arrayIndexOf({
+                            array: allColumnsUid,
+                            targetValue: currentRowOrColumnUid,
+                            indexIfError: -2
+                        }) + 1
+                    }),
+                    keysHierachy: [...rootKeysHierachy, "questionColumns", "columnsData", newUid],
+                    targetValue: duplicateTarget
+                }));
+                setCurrentRowOrColumnUid(newUid);
+            } else {
+                setGlobalParams("popUp", true);
+                setGlobalParams("popUpAction", "⟨EXCEPTION⟩: entity limit");
+                setGlobalParams("popUpText", `Total columns exceeds limit at ${selectColumnLimit} columns per select table`);
+            }
+        } catch (error) {null}
     }
 
     const handleDeleteColumn = (): void => {

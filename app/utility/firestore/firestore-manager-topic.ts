@@ -29,15 +29,9 @@ export default async function firestoreUpdateTopic ({
 }) {
     console.log(`✏️ START UPDATE ${firebaseBranch}/COLLECTION/TOPIC DATA`);
 
-    console.log(originalData);
-    console.log(editedData);
-    
     let resultLog: {[key: string]: {[key: string]: any}} = {}; // record each doc writing result
     const uidOriginal: string[] = Object.keys(originalData); // all uids of original data
     const uidEdited: string[] = Object.keys(editedData); // all uids of edited data
-
-    console.log(uidOriginal);
-    console.log(uidEdited);
     
     if ((uidOriginal.length === 0) && (uidEdited.length === 0)){
         return {0: {
