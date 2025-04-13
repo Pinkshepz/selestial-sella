@@ -109,7 +109,7 @@ export default function AuricleText ({
         } else {
           processedParagraphs.push(
             <div key={indexParagraph}>
-                {parseToHTML(part.slice(0, part.length - 2))}
+                {parseToHTML(part)}
             </div>
           );
         }
