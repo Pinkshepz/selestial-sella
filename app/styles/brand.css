@@ -121,5 +121,5 @@ html.dark #brand-static {
 }
 
 .-smooth-appear {
-animation: smooth-appear 555ms ease-in-out forwards;
+animation: smooth-appear 500ms ease-in-out forwards;
 }

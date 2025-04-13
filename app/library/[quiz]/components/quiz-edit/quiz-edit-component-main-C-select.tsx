@@ -311,6 +311,7 @@ export default function QuizEditMain_C_SELECT (): React.ReactNode {
                     keysHierachy: [...rootKeysHierachy, "questionColumns", "columnsData", newUid],
                     targetValue: metadata.questionModality.SELECT.questionDataFormat.questionColumns.columnsData["#UID-1"]
                 }));
+                setCurrentPropertyUid("");
                 setCurrentRowOrColumnUid(newUid);
             } else {
                 setGlobalParams("popUp", true);
@@ -349,6 +350,7 @@ export default function QuizEditMain_C_SELECT (): React.ReactNode {
                     keysHierachy: [...rootKeysHierachy, "questionColumns", "columnsData", newUid],
                     targetValue: duplicateTarget
                 }));
+                setCurrentPropertyUid("");
                 setCurrentRowOrColumnUid(newUid);
             } else {
                 setGlobalParams("popUp", true);

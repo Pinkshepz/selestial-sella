@@ -92,7 +92,7 @@ export default function SettingInterface ({
                     {/* Content data */}
                     <div className='flex flex-wrap gap-4 items-center mt-4'>
                         <ChipTextColor chipText={libraryData.id} />
-                        <ChipTextColor chipText={`${questionData.length} QUESTION ${(questionData.length > 0) ? "S" : ""}`} />
+                        <ChipTextColor chipText={`${questionData.length} QUESTION${(questionData.length > 0) ? "S" : ""}`} />
                     </div>
 
                     {/* Settings */}
