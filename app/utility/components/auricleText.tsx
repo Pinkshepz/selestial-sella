@@ -36,11 +36,11 @@ const CloudNine = memo(function CloudNine ({
 export const parseToHTML = (inputText: string) => {
   return inputText.split(/(⟪[^⟫]+⟫|❬[^❭]+❭|【[^】]+】|⎨[^⎬]+⎬|->|<-|\\up|\\down|<=>)/g).map((part, indexPart) => {
     if (part.startsWith("⟪") && part.endsWith("⟫")) {
-      return <strong className="font-black" key={indexPart}>{part.slice(1, -1)}</strong>;
+      return <strong className="font-black mx-0.5" key={indexPart}>{part.slice(1, -1)}</strong>;
     } else if (part.startsWith("【") && part.endsWith("】")) {
-      return <strong className="rounded-lg bg-amber-dark/30 px-1" key={indexPart}>{part.slice(1, -1)}</strong>;
+      return <strong className="rounded-lg bg-amber-dark/30 mx-0.5 px-1" key={indexPart}>{part.slice(1, -1)}</strong>;
     } else if (part.startsWith("❬") && part.endsWith("❭")) {
-      return <span className="italic font-light" key={indexPart}>{part.slice(1, -1)}</span>;
+      return <span className="italic font-bold mx-0.5" key={indexPart}>{part.slice(1, -1)}</span>;
     } else if (part.startsWith("⎨") && part.endsWith("⎬")) {
       return <span key={indexPart}><CloudNine text={part.slice(1, -1)} /></span>
     } else if (part === "->") {
