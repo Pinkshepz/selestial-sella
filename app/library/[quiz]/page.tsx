@@ -26,7 +26,7 @@ export default async function Quizset ({ params }: { params: {quiz: string} }) {
             queryKey: "metadata", queryComparator: "==", queryValue: "metadata"
         }).then((doc) => JSON.parse(doc).lastEdited);
 
-        const questionData = await firestoreRandomQuiz(lastEditedMaximum, 2);
+        const questionData = await firestoreRandomQuiz(2);
 
         let libraryData = {
             uid: "99-BUFFET",

@@ -1,7 +1,7 @@
 "use client";
 
 //// 1.1 Metadata & module & framework
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 //// 1.2 Custom React hooks
 import useEventListener from "../utility/hooks/useEventListener";
@@ -61,9 +61,9 @@ export default function Particles (): React.ReactNode {
 
 
     // 3A. track cursor position. Update when cursor position is changed
-    const setCoordinate = (e: MouseEvent) => {
-        setCursorPos({ x: e.clientX, y: e.clientY });
-    };
+    const setCoordinate = useCallback((e: MouseEvent) => {
+            setCursorPos({ x: e.clientX, y: e.clientY });
+    }, [])
 
     useEffect(() => {
         window.addEventListener("mousemove", setCoordinate);
@@ -208,7 +208,7 @@ export default function Particles (): React.ReactNode {
                 temp_objects_style.push({
                     pos_x: spaceControl(objectPosX + objectStyle[index].velocity_x, window.innerWidth).toString() + "px",
                     pos_y: spaceControl(objectPosY + objectStyle[index].velocity_y, window.innerHeight).toString() + "px",
-                    velocity_x: 0.05 + ((power / 10) * (cursorPos.x - (window.innerWidth / 2)) / window.innerWidth) + ((objectStyle[index].velocity_x) + acceleration(dx, distance_xy)) * 0.97 + (Math.random() - 0.5) / 2,
+                    velocity_x: 0.025 + ((power / 10) * (cursorPos.x - (window.innerWidth / 2)) / window.innerWidth) + ((objectStyle[index].velocity_x) + acceleration(dx, distance_xy)) * 0.97 + (Math.random() - 0.5) / 2,
                     velocity_y: 0.0 + ((power / 10) * (cursorPos.y - (window.innerHeight / 2)) / window.innerHeight) + ((objectStyle[index].velocity_y) + acceleration(dy, distance_xy)) * 0.97 + (Math.random() - 0.5) / 2,
                     height: objectStyle[index].height,
                     width: objectStyle[index].width,
