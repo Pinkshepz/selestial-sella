@@ -5,7 +5,7 @@
 import firestoreRead from "./firestore-read";
 import firestoreWrite from "./firestore-write";
 
-export default async function firestoreCollectionTransferAlphaToBeta({
+export default async function firestoreCollectionChangeAll({
     collectionName
 }: {
     collectionName: string
@@ -16,17 +16,17 @@ export default async function firestoreCollectionTransferAlphaToBeta({
         const collectionSourceData = await firestoreRead(
             {firebaseBranch: "ALPHA", collectionName: collectionName}).then((docs) => JSON.parse(docs));
 
-        // const collectionDestinationData = await firestoreRead(
-        //     {firebaseBranch: "BETA", collectionName: collectionName}).then((docs) => JSON.parse(docs));
-    
         // TRANSFER ALPHA TO BETA IN CASE OF NEW DATA
         Object.keys(collectionSourceData).map((dataUid) => {
+            const data = collectionSourceData[dataUid];
+            const editedData = {
+                ...data,
+                nid: Math.round(Math.random() * 10000)
+            }
+
             firestoreWrite({
-                firebaseBranch: "BETA", collectionName: collectionName, id: dataUid, data: collectionSourceData[dataUid]
+                firebaseBranch: "ALPHA", collectionName: collectionName, id: dataUid, data: editedData
             });
-            // if (Object.keys(collectionDestinationData).includes(dataUid)) {
-            //     log.push(dataUid)
-            // }
         });
 
         console.log(log);

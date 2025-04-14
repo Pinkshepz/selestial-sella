@@ -76,14 +76,13 @@ export const processDuplicateQuestion = ({
     const newQuestionUid = makeid(length=20);
     return {
         newQuestionUid: newQuestionUid,
-        newBufferQuestion: objectKeyValueUpdate<typeof bufferQuestion>({
-            object: bufferQuestion,
-            keysHierachy: [newQuestionUid],
-            targetValue: objectKeyRetrieve({
-                object: bufferQuestion,
-                keysHierachy: [questionUid]
-            })
-        })
+        newBufferQuestion: {
+            ...bufferQuestion,
+            [newQuestionUid]: {
+                ...bufferQuestion[questionUid],
+                nid: Math.round(Math.random() * metadata.nidScale)
+            }
+        }
     };
 }
 

@@ -20,6 +20,7 @@ type QuestionDataAction = {
     "WORD-CLOUD"?: QuestionModalityCloud_Action};
 
 export default interface Question {
+    nid: number, //number id
     libraryConnectionUidFootprint: string[], // libraryUid
     libraryConnectionUid: string[], // libraryUid
     modality: keyof typeof metadata.questionModality,
@@ -41,6 +42,7 @@ export const defaultQuestion = ({
     libraryUid: string
 }): Question => {
     return ({
+        "nid": Math.round(Math.random() * metadata.nidScale),
         "libraryConnectionUidFootprint": [libraryUid],
         "libraryConnectionUid": [libraryUid],
         "modality": questionModality,

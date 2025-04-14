@@ -3,6 +3,7 @@
     "appDescription": "Make medical complexity simple again",
     "version": "1.9.60",
     "firebaseBranch": ["ALPHA", "BETA"],
+    "nidScale": 10000,
     "autosaveMinuteClocks": [-1, 1, 2, 5, 10],
     "entityLimit": {
         "question": 256,
