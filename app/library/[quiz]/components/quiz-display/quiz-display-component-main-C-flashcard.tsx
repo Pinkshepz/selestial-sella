@@ -130,10 +130,10 @@ export default function QuizDisplayMain_C_CARD (): React.ReactNode {
                     }
                 </div>
                 {cardContent.flipped
-                    ? <div aria-label="card-back-text" className="flex flex-col gap-2 max-h-72 mx-4 px-1 font-black text-xl rounded-xl overflow-x-auto">
+                    ? <div aria-label="card-back-text" className="flex flex-col gap-2 mx-4 px-1 font-black text-xl rounded-xl overflow-x-auto">
                         {cardContent.cardBackText && <AuricleText inputText={cardContent.cardBackText} />}
                     </div>
-                    : <div aria-label="card-front-text" className="flex flex-col gap-2 max-h-36 mx-4 px-1 font-black text-xl rounded-xl overflow-x-auto">
+                    : <div aria-label="card-front-text" className="flex flex-col gap-2 mx-4 px-1 font-black text-xl rounded-xl overflow-x-auto">
                         {cardContent.cardFrontText && <AuricleText inputText={cardContent.cardFrontText} />}
                     </div>
                 }
@@ -147,7 +147,7 @@ export default function QuizDisplayMain_C_CARD (): React.ReactNode {
             <p className="mx-4 mt-8 mb-2 p-1 font-bold text-md color-slate -border-b-half -prevent-select">FLASHCARD TO INTERACT; CLOUD CARD IS STATIC, WHILE FLIP CARD CAN BE FLIPPED</p>
             { (allCardsUid.length === 0)
                 ? <NoChoice />
-                : <div className={"grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 items-start gap-8 w-full p-4 overflow-x-auto"}>
+                : <div className={"grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 items-start gap-8 w-full p-4 overflow-x-auto"}>
                     {questionChoicesElements}
                 </div>
             }
