@@ -1,6 +1,7 @@
 "use-client";
 
 import React, { useState, memo } from "react";
+import { makeNid } from "../function/make-id";
 
 const CloudNine = memo(function CloudNine ({
   text
@@ -42,7 +43,7 @@ export const parseToHTML = (inputText: string) => {
     } else if (part.startsWith("❬") && part.endsWith("❭")) {
       return <span className="italic font-bold mx-0.5" key={indexPart}>{part.slice(1, -1)}</span>;
     } else if (part.startsWith("⎨") && part.endsWith("⎬")) {
-      return <span key={indexPart}><CloudNine text={part.slice(1, -1)} /></span>
+      return <span key={makeNid(5)}><CloudNine text={part.slice(1, -1)} /></span>
     } else if (part === "->") {
       return <span key={indexPart}>{"→"}</span>
     } else if (part === "<-") {

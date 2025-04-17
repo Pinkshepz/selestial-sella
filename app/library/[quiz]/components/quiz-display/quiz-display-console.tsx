@@ -124,7 +124,9 @@ export default function ConsoleDisplay ({
                     targetValue: localQuizContextParams.currentQuestionUid}) > 0) 
                     && <button key={makeid(20)} onClick={() => handleQuestionChange(-1)} className="h-full w-48 -hover-bg-half">PREVIOUS</button>}
                 
-                <button key={makeid(20)} onClick={() => handleQuestionGrade()} className={`h-full ${currentQuestionData.graded ? "w-0" : "w-full"} -border-l -hover-bg-half`}>{!currentQuestionData.graded && "SUBMIT"}</button>
+                <button key={makeid(20)} onClick={() => handleQuestionGrade()} className={`h-full ${currentQuestionData.graded ? "w-0" : "w-full"} -border-l -hover-bg-half`}>{
+                    ((!currentQuestionData.graded) && !(currentQuestionData.modality == "FLASHCARD") && !(currentQuestionData.modality == "WORD-CLOUD")) && "SUBMIT"
+                }</button>
                 
                 {(arrayIndexOf<string>({
                     array: localQuizContextParams.bufferLibrary.questionUidOrder,
