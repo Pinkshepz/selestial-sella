@@ -72,7 +72,6 @@ export default function ControllerEdit ({
     useEffect(() => {
         if (autosaveTimer === 0) {
             console.log("PROCESS AUTOSAVE");
-            setGlobalParams("isLoading", true);
             const libraryUid = libraryData.uid
             
             // Update library data
@@ -101,7 +100,6 @@ export default function ControllerEdit ({
                 editedData: localQuizContextParams.bufferQuestion
             }).then(
                 () => {
-                    setGlobalParams("isLoading", false);
                     setAutosaveTimer(autosaveToggle * 60);
                     setTime(Date.now());
                 }
